@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Ulord
+Comment=Ulord P2P Cryptocurrency
+Comment[fr]=Ulord, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=Ulord, eşten eşe kriptografik sanal para birimi
+Exec=ulord-qt %u
+Terminal=false
+Type=Application
+Icon=ulord128
+MimeType=x-scheme-handler/ulord;
+Categories=Office;Finance;

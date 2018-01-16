@@ -1,0 +1,6 @@
+usr/local/bin/ulord-qt usr/bin
+share/pixmaps/ulord32.xpm usr/share/pixmaps
+share/pixmaps/ulord16.xpm usr/share/pixmaps
+share/pixmaps/ulord128.png usr/share/pixmaps
+debian/ulord-qt.desktop usr/share/applications
+debian/ulord-qt.protocol usr/share/kde4/services/
