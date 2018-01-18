@@ -13,8 +13,6 @@ Modifications for testing
 8. in chainparams.cpp, masternodepubkey & sporkpubkey have no corresponding private key.
 9. changed budget, superblock starting height to 1500.
 
-`master:` [![Build Status](https://travis-ci.org/ulordpay/ulord.svg?branch=master)](https://travis-ci.org/ulordpay/ulord) `v0.12.0.x:` [![Build Status](https://travis-ci.org/ulordpay/ulord.svg?branch=v0.12.0.x)](https://travis-ci.org/ulordpay/ulord/branches) `v0.12.1.x:` [![Build Status](https://travis-ci.org/ulordpay/ulord.svg?branch=v0.12.1.x)](https://travis-ci.org/ulordpay/ulord/branches)
-
 https://www.ulord.org
 
 
