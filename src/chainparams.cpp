@@ -1,6 +1,7 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
+// Copyright (c) 2016-2018 The Ulord Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -234,8 +235,8 @@ public:
 
         nPoolMaxTransactions = 3;
         nFulfilledRequestExpireTime = 60*60; // fulfilled requests expire in 1 hour
-        strSporkPubKey = "04747fb00c0a3699be2bd0006c65a72214631f6be4a71a470f42ecc7f1c1e64f09fcb954cec3b532bff3ee338e8e1f6c30f0b13ad7d0457e44decc5e0a1e5d4eeb";
-        strMasternodePaymentsPubKey = "04747fb00c0a3699be2bd0006c65a72214631f6be4a71a470f42ecc7f1c1e64f09fcb954cec3b532bff3ee338e8e1f6c30f0b13ad7d0457e44decc5e0a1e5d4eeb";
+        strSporkPubKey = "044adbc8019f33ad556e99e73f00afa0fe50e9617fdc3098aac24125f517261822affad3ff5ea5f6e37ab39f9443b6912c4f8f806bb8c8bf5aa812a3dc0b3a8c55";
+        strMasternodePaymentsPubKey = "047e9c232f68712e279eb5b399e3150f04a44b1c4f0d41a62a4f93b6b09e2c6cbb1cddfd14e1fad92f442432d4c452ab697f5366fda39b8a32002d39b667a9a5a3";
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
