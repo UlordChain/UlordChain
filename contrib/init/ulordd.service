@@ -1,0 +1,22 @@
+[Unit]
+Description=Ulord's distributed currency daemon
+After=network.target
+
+[Service]
+User=ulordcore
+Group=ulordcore
+
+Type=forking
+PIDFile=/var/lib/ulordd/ulordd.pid
+ExecStart=/usr/bin/ulordd -daemon -pid=/var/lib/ulordd/ulordd.pid \
+-conf=/etc/ulordcore/ulord.conf -datadir=/var/lib/ulordd -disablewallet
+
+Restart=always
+PrivateTmp=true
+TimeoutStopSec=60s
+TimeoutStartSec=2s
+StartLimitInterval=120s
+StartLimitBurst=5
+
+[Install]
+WantedBy=multi-user.target

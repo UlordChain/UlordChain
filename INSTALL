@@ -1,0 +1,16 @@
+Building Ulord Core
+
+Use the autogen script to prepare the build environment.
+
+    ./autogen.sh
+    ./configure
+    make
+user gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.5)   
+Precompiled binaries are available at github, see
+https://github.com/ulordpay/ulord-binaries
+
+Always verify the signatures and checksums.
+
+See doc/build-*.md for instructions on building ulordd,
+the intended-for-services, no-graphical-interface, reference
+implementation of Ulord.
