@@ -11,7 +11,7 @@
 #include "primitives/transaction.h"
 #include "script/standard.h"
 #include "uint256.h"
-
+#include "nameclaim.h"
 #include <boost/foreach.hpp>
 
 using namespace std;
@@ -66,9 +66,9 @@ static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptP
                      CScript& scriptSigRet, txnouttype& whichTypeRet)
 {
     scriptSigRet.clear();
-
+    const CScript strippedScriptPubkey = StripClaimScriptPrefix(scriptPubkey);
     vector<valtype> vSolutions;
-    if (!Solver(scriptPubKey, whichTypeRet, vSolutions))
+    if (!Solver(strippedScriptPubkey, whichTypeRet, vSolutions))
         return false;
 
     CKeyID keyID;
