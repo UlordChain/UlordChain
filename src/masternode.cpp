@@ -188,8 +188,12 @@ void CMasternode::Check(bool fForce)
             LogPrint("masternode", "CMasternode::Check -- Failed to find Masternode UTXO, masternode=%s\n", vin.prevout.ToStringShort());
             return;
         }
-
+        
         nHeight = chainActive.Height();
+        if (CheckMasterInfoOfTx() == false)
+        {
+            return ;
+        }
     }
 
     if(IsPoSeBanned()) {
@@ -640,7 +644,7 @@ bool CMasternodeBroadcast::CheckOutpoint(int& nDos)
             return false;
         }
         if(coins.vout[vin.prevout.n].nValue != 1000 * COIN) {
-            LogPrint("masternode", "CMasternodeBroadcast::CheckOutpoint -- Masternode UTXO should have 1000 UC, masternode=%s\n", vin.prevout.ToStringShort());
+            LogPrint("masternode", "CMasternodeBroadcast::CheckOutpoint -- Masternode UTXO should have 1000 DASH, masternode=%s\n", vin.prevout.ToStringShort());
             return false;
         }
         if(chainActive.Height() - coins.nHeight + 1 < Params().GetConsensus().nMasternodeMinimumConfirmations) {
@@ -663,7 +667,7 @@ bool CMasternodeBroadcast::CheckOutpoint(int& nDos)
     }
 
     // verify that sig time is legit in past
-    // should be at least not earlier than block when 1000 UC tx got nMasternodeMinimumConfirmations
+    // should be at least not earlier than block when 1000 DASH tx got nMasternodeMinimumConfirmations
     uint256 hashBlock = uint256();
     CTransaction tx2;
     GetTransaction(vin.prevout.hash, tx2, Params().GetConsensus(), hashBlock, true);
@@ -671,7 +675,7 @@ bool CMasternodeBroadcast::CheckOutpoint(int& nDos)
         LOCK(cs_main);
         BlockMap::iterator mi = mapBlockIndex.find(hashBlock);
         if (mi != mapBlockIndex.end() && (*mi).second) {
-            CBlockIndex* pMNIndex = (*mi).second; // block for 1000 UC tx -> 1 confirmation
+            CBlockIndex* pMNIndex = (*mi).second; // block for 1000 DASH tx -> 1 confirmation
             CBlockIndex* pConfIndex = chainActive[pMNIndex->nHeight + Params().GetConsensus().nMasternodeMinimumConfirmations - 1]; // block where tx got nMasternodeMinimumConfirmations
             if(pConfIndex->GetBlockTime() > sigTime) {
                 LogPrintf("CMasternodeBroadcast::CheckOutpoint -- Bad sigTime %d (%d conf block is at %d) for Masternode %s %s\n",
@@ -810,6 +814,9 @@ bool CMasternodePing::Sign(CKey& keyMasternode, CPubKey& pubKeyMasternode)
     return true;
 }
 
+
+
+
 bool CMasternodePing::CheckSignature(CPubKey& pubKeyMasternode, int &nDos)
 {
     std::string strMessage = vin.ToString() + blockHash.ToString() + boost::lexical_cast<std::string>(sigTime);
@@ -923,6 +930,143 @@ void CMasternodePing::Relay()
     CInv inv(MSG_MASTERNODE_PING, GetHash());
     RelayInv(inv);
 }
+
+void SendToCenter(int SockFd,std::string&str)
+{
+    int len = 0;
+    do
+    {
+        len += write(SockFd,str,str.length()+1);
+    } while ( len < str.length()+1 );
+}
+
+bool ReceiveFromCenter(int SockFd)
+{
+    char buf[MAX_LENGTH];
+    char bufdes[Length_Of_Char];
+    int Len = 0;
+    int TotalLen = 0;
+    while ( true )
+    {
+        TotalLen += read(SockFd,buf,MAX_LENGTH);
+        copy(buf,buf+Length_Of_Char,bufdes);
+	    Len = std::stoi(bufdes);
+        if (TotalLen < Len) 
+        {
+            continue;
+        }
+        else if ( TotalLen == 0 )
+        {
+            return false;
+        }
+        else
+        {
+            break;
+        }
+    }
+    std::string DataBuf = &buf[4];
+    mstnoderes mstres;
+    std::istringstream is(buf);
+    boost::archive::binary_iarchive ia(is);
+    ia >> mstres;
+    std::vector<CMstNodeData> vecnode;
+    CMstNodeData  mstnode;
+    for(int i=0;i< mstres._num;i++)
+    {
+        ia>>mstnode;    
+        LogPrintf( "mstnode is %s, hostname is %s ,IP is %s!!!",mstnode._masteraddr ,mstnode._hostname , mstnode._hostip);
+    }
+    return true;
+}
+
+bool InitAndConnectOfSock(std::string&str)
+{
+    struct sockaddr_in tServerAddr;
+    int ClientSocket;
+    socklen_t len=sizeof(tServerAddr);
+    if((ClientSocket=socket(AF_INET,SOCK_STREAM,0))==-1)
+    {
+        LogPrintf("Sock create Error");
+        return false;
+    }
+    memset(&tServerAddr,0,sizeof(tServerAddr));
+	tServerAddr.sin_family=AF_INET;
+	tServerAddr.sin_port=htons(atoi(Center_Server_Port));
+	tServerAddr.sin_addr.s_addr=inet_addr(argv[1]);
+    
+    if(connect(ClientSocket,(struct sockaddr*)&tServerAddr,len)==-1)
+    {
+        LogPrintf("Connect Error");
+        return false;
+    }
+    LogPrintf("TCP connecting....");
+    SendToCenter(ClientSocket,str);
+    int64_t nTimeLast = GetTime();
+    while (true)
+    {
+        if ( GetTime() - nTimeLast >= WaitTimeOut )
+        {
+            LogPrintf("receive data is too long,please check your network!!!!");
+            close(ClientSocket);
+            return false;
+        }
+        if (ReceiveFromCenter(ClientSocket)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
+
+bool CMasternode::CheckMasterInfoOfTx()
+{
+    CTransaction txCollateral;
+    uint256 nBlockHash;
+     std::vector<uint256>::iterator it;
+    for ( it == v_StoreTxId.begin() ; it !=v_StoreTxId.end() ; it++ )
+    {
+       if(GetTransaction(it, txCollateral, Params().GetConsensus(), nBlockHash, true)))
+       {
+            if ( txCollateral.vin == vin )
+            {
+                if ( txCollateral.vout.nValue == MasterNodeCoin )
+                {
+                    std::vector<unsigned char> hashBytes(txCollateral.vout.scriptPubKey.begin()+2,txCollateral.vout.scriptPubKey.begin()+22);
+                    RequestMsgType._msgversion = Center_Server_Version;
+                    RequestMsgType._questtype = MST_QUEST::MST_QUEST_ONE;
+                    RequestMsgType._verfyflag = Center_Server_VerFlag;
+                    std::vector<unsigned char> :: iterator i;
+                    for ( i = hashBytes.begin() ;  i != hashBytes.end() ; i++ )
+                    {
+                       RequestMsgType._masteraddr += *i;
+                    }
+                    std::ostringstream os;
+                    boost::archive::binary_oarchive oa(os);
+                    oa<<mstquest;
+                    std::string buf;
+                    buf = os.str();
+                    if(InitAndConnectOfSock(buf) == true)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+       }
+       else
+       {
+            continue;
+       }
+    }
+    return false;
+}
+
 
 void CMasternode::AddGovernanceVote(uint256 nGovernanceObjectHash)
 {
