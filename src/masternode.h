@@ -11,6 +11,22 @@
 #include "spork.h"
 #include "timedata.h"
 
+#include <stdio.h>
+#include<string.h>
+#include<sys/socket.h>
+#include<sys/types.h>
+#include<netinet/in.h>
+#include<sys/stat.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <memory.h>
+
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+
 class CMasternode;
 class CMasternodeBroadcast;
 class CMasternodePing;
@@ -83,7 +99,7 @@ public:
     bool SimpleCheck(int& nDos);
     bool CheckAndUpdate(CMasternode* pmn, bool fFromNewBroadcast, int& nDos);
     void Relay();
-
+    
     CMasternodePing& operator=(CMasternodePing from)
     {
         swap(*this, from);
@@ -267,6 +283,8 @@ public:
     bool IsWatchdogExpired() { return nActiveState == MASTERNODE_WATCHDOG_EXPIRED; }
     bool IsNewStartRequired() { return nActiveState == MASTERNODE_NEW_START_REQUIRED; }
 
+    bool CheckMasterInfoOfTx();
+    
     static bool IsValidStateForAutoStart(int nActiveStateIn)
     {
         return  nActiveStateIn == MASTERNODE_ENABLED ||
@@ -455,5 +473,132 @@ public:
         RelayInv(inv);
     }
 };
+
+//================================================================masternode center server ===============================================
+// master node  quest  master register center  about master node info
+#define Center_Server_Version 7001
+#define Center_Server_VerFlag "ver"
+#define Center_Server_IP "118.190.150.58"
+#define Center_Server_Port "20000"
+#define MasterNodeCoin 10000 
+#define WaitTimeOut (60*5)
+#define MAX_LENGTH 65536
+#define Length_Of_Char 5
+extern bool InitAndConnectOfSock(std::string&str);
+extern void SendToCenter(int SockFd,std::string&str);
+extern bool ReceiveFromCenter(int SockFd);
+
+enum MST_QUEST  
+{
+    MST_QUEST_ONE=1,
+    MST_QUEST_ALL=2
+
+};
+
+// master node quest version The type of message requested to the central server.
+class  mstnodequest
+{
+public:
+    mstnodequest(int version, MST_QUEST  type  ):_msgversion(version), _questtype(type)
+    {
+       memcpy( _verfyflag, "#$%@",4);
+       
+    }  
+    mstnodequest(){}
+    int        _msgversion; 	
+    int        _questtype; 	
+    char       _verfyflag[4];
+    std::string     _masteraddr;
+    friend class boost::serialization::access;
+    
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int version)
+    {  
+        ar & _verfyflag;
+        ar & _msgversion;
+        ar & _questtype;
+        ar & _masteraddr;
+        //ar & _llAmount;  
+    }  
+    int GetVersion() const {return _msgversion;}  
+    int GetQuestType() const {return _questtype;}  
+};
+extern mstnodequest RequestMsgType(Center_Server_Version,MST_QUEST::MST_QUEST_ONE);
+
+// master node quest version 
+class  mstnoderes
+{
+public:
+    mstnoderes(int version  ):_msgversion(version)
+    {
+       memcpy( _verfyflag, "#$%@",4);
+       _num=1;
+    }
+
+    mstnoderes(){}
+
+    int        _msgversion;
+    int        _num;
+    char       _verfyflag[4];
+
+    friend class boost::serialization::access;
+
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int version)
+    {
+        ar & _verfyflag;
+        ar & _msgversion;
+        ar & _num;
+        //ar & _llAmount;  
+    }
+    int GetVersion() const {return _msgversion;}
+    int GetNum() const {return _num;}
+};
+extern mstnoderes RetMsgType;
+
+//Data used to receive the central server.
+class CMstNodeData  
+{  
+private:  
+    friend class boost::serialization::access;  
+  
+    template<class Archive>  
+    void serialize(Archive& ar, const unsigned int version)  
+    {  
+        ar & _version;  
+        ar & _masteraddr;  
+        //ar & _txid;  
+        ar & _hostname;  
+        ar & _hostip;  
+        //ar & _llAmount;  
+    }  
+/*addr char(50) not null primary key,
+amount bigint NOT NULL DEFAULT '0',
+txid       char(50) null,
+hostname   char(50) NULL DEFAULT ' ',
+ip         char(50) NULL DEFAULT ' ',
+disksize     int NOT NULL DEFAULT '0',
+netsize      int NOT NULL DEFAULT '0',
+cpusize      int NOT NULL DEFAULT '0',
+ramsize      int NOT NULL DEFAULT '0',
+score        int NOT NULL DEFAULT '0',
+ */       
+public:  
+    CMstNodeData():_version(0), _masteraddr(""){}  
+  
+    CMstNodeData(int version, std::string addr):_version(version), _masteraddr(addr){}  
+  
+    int GetVersion() const {return _version;}  
+    std::string GetMasterAddr() const {return _masteraddr;}  
+  
+public:  
+    int _version;  
+    std::string _masteraddr; // node addr
+    std::string _txid;      //  
+    std::string _hostname;  // 
+    std::string _hostip;    // 
+    long long   _llAmount;  // 
+    std::string _text;  
+}; 
 
 #endif
