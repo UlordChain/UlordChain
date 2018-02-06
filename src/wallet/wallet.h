@@ -763,6 +763,9 @@ public:
      */
     bool CreateTransaction(const std::vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, int& nChangePosRet,
                            std::string& strFailReason, const CCoinControl *coinControl = NULL, bool sign = true, AvailableCoinsType nCoinType=ALL_COINS, bool fUseInstantSend=false);
+    bool AbandonCash(const std::vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, int& nChangePosRet,\
+                        std::string& strFailReason, const CCoinControl *coinControl = NULL, bool sign = true, const CWalletTx* pwtxIn = NULL ,unsigned int nTxOut = -1);
+    
     bool CommitTransaction(CWalletTx& wtxNew, CReserveKey& reservekey, std::string strCommand="tx");
 
     bool CreateCollateralTransaction(CMutableTransaction& txCollateral, std::string& strReason);
