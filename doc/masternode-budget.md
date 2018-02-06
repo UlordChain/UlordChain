@@ -23,9 +23,9 @@ In this transaction we prepare collateral for "_cool-project_". This proposal wi
 
 **Warning: if you change any fields within this command, the collateral transaction will become invalid.**
 
-Format: ```mngovernance prepare proposal-name url payment-count block-start ulord-address monthly-payment-ulord```
+Format: ```gobject prepare proposal-name url payment-count block-start ulord-address monthly-payment-ulord```
 
-Example: ```mngovernance prepare cool-project http://www.cool-project/one.json 12 100000 y6R9oN12KnB9zydzTLc3LikD9cCjjQzYG7 1200 true```
+Example: ```gobject prepare cool-project http://www.cool-project/one.json 12 100000 y6R9oN12KnB9zydzTLc3LikD9cCjjQzYG7 1200 true```
 
 Output: ```464a0eb70ea91c94295214df48c47baa72b3876cfb658744aaf863c7b5bf1ff0```
 
@@ -36,9 +36,9 @@ This is the collateral hash, copy this output for the next step.
 
 Now we can submit our proposal to the network.
 
-Format: ```mngovernance submit proposal-name url payment-count block-start ulord-address monthly-payment-ulord fee-tx```
+Format: ```gobject submit proposal-name url payment-count block-start ulord-address monthly-payment-ulord fee-tx```
 
-Example: ```mngovernance submit cool-project http://www.cool-project/one.json 12 100000 y6R9oN12KnB9zydzTLc3LikD9cCjjQzYG7 1200 464a0eb70ea91c94295214df48c47baa72b3876cfb658744aaf863c7b5bf1ff0```
+Example: ```gobject submit cool-project http://www.cool-project/one.json 12 100000 y6R9oN12KnB9zydzTLc3LikD9cCjjQzYG7 1200 464a0eb70ea91c94295214df48c47baa72b3876cfb658744aaf863c7b5bf1ff0```
 
 Output : ```a2b29778ae82e45a973a94309ffa6aa2e2388b8f95b39ab3739f0078835f0491```
 
@@ -49,9 +49,9 @@ This is your proposal hash, which other nodes will use to vote on it.
 
 Double check your information.
 
-Format: ```mngovernance getproposal proposal-hash```
+Format: ```gobject getproposal proposal-hash```
 
-Example: ```mngovernance getproposal a2b29778ae82e45a973a94309ffa6aa2e2388b8f95b39ab3739f0078835f0491```
+Example: ```gobject getproposal a2b29778ae82e45a973a94309ffa6aa2e2388b8f95b39ab3739f0078835f0491```
 ￼
 ```
 {
@@ -77,16 +77,16 @@ Example: ```mngovernance getproposal a2b29778ae82e45a973a94309ffa6aa2e2388b8f95b
 
 If everything looks correct, you can ask for votes from other masternodes. To vote on a proposal, load a wallet with _masternode.conf_ file. You do not need to access your cold wallet to vote for proposals.
 
-Format: ```mngovernance vote proposal-hash [yes|no]```
+Format: ```gobject vote proposal-hash [yes|no]```
 
-Example: ```mngovernance vote a2b29778ae82e45a973a94309ffa6aa2e2388b8f95b39ab3739f0078835f0491 yes```
+Example: ```gobject vote a2b29778ae82e45a973a94309ffa6aa2e2388b8f95b39ab3739f0078835f0491 yes```
 
 4.  Make it into the budget
 --
 
 After you get enough votes, execute ```mngovernance projection``` to see if you made it into the budget. If you the budget was finalized at this moment which proposals would be in it. Note: Proposals must be active at least 1 day on the network and receive 10% of the masternode network in yes votes in order to qualify (E.g. if there is 3500 masternodes, you will need 350 yes votes.)
 
-```mngovernance projection```:￼
+```gobject projection```:￼
 ```
 {
     "cool-project" : {
