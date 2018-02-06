@@ -23,7 +23,7 @@ static void TestBlockSubsidyHalvings(const Consensus::Params& consensusParams)
     //BOOST_CHECK_EQUAL(nPreviousSubsidy, nInitialSubsidy * 2);
     //for (int nHalvings = 0; nHalvings < maxHalvings; nHalvings++) {
     //    int nHeight = nHalvings * consensusParams.nSubsidyHalvingInterval;
-    //    CAmount nSubsidy = GetBlockSubsidy(0, nHeight, consensusParams);
+    //    CAmount nSubsidy = GetBlockSubsidy(nHeight, consensusParams);
     //    BOOST_CHECK(nSubsidy <= nInitialSubsidy);
     //    BOOST_CHECK_EQUAL(nSubsidy, nPreviousSubsidy / 2);
     //    nPreviousSubsidy = nSubsidy;

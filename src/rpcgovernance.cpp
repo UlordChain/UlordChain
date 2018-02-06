@@ -909,7 +909,7 @@ UniValue getsuperblockbudget(const UniValue& params, bool fHelp)
         throw JSONRPCError(RPC_INVALID_PARAMETER, "Block height out of range");
     }
 
-    CAmount nBudget = CSuperblock::GetPaymentsLimit(nBlockHeight);
+    CAmount nBudget = GetBudget(nBlockHeight, Params().GetConsensus());
     std::string strBudget = FormatMoney(nBudget);
 
     return strBudget;

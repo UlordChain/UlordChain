@@ -1,4 +1,5 @@
 // Copyright (c) 2014-2017 The Dash Core developers
+// Copyright (c) 2016-2018 The Ulord Core developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -8,8 +9,8 @@
 #include "governance-classes.h"
 #include "init.h"
 #include "main.h"
+#include "chainparams.h"
 #include "utilstrencodings.h"
-
 #include <boost/algorithm/string.hpp>
 #include <boost/foreach.hpp>
 
@@ -386,6 +387,35 @@ bool CSuperblockManager::GetBestSuperblock(CSuperblock_sptr& pSuperblockRet, int
 }
 
 /**
+*	Append Founders reward
+*	- Append selected founder address according to a given height
+*/
+
+void CSuperblockManager::AppendFoundersReward(CMutableTransaction& txNewRet, int nBlockHeight)
+{
+	// add founders reward
+    const Consensus::Params& cp = Params().GetConsensus();
+    const CAmount foundersReward = cp.foundersReward;
+    const CScript foundersScript = Params().GetFoundersRewardScriptAtHeight(nBlockHeight);
+    
+    CTxOut txout = CTxOut(foundersReward, foundersScript);
+    txNewRet.vout.push_back(txout);
+//    voutSuperblockRet.push_back(txout);
+
+    // PRINT NICE LOG OUTPUT FOR SUPERBLOCK PAYMENT
+
+    CTxDestination address1;
+    ExtractDestination(foundersScript, address1);
+    CBitcoinAddress address2(address1);
+
+    // TODO: PRINT NICE N.N UC OUTPUT
+
+    DBG( cout << "CSuperblockManager::AppendFoundersReward Before LogPrintf call, nAmount = " << foundersReward << endl; );
+    LogPrintf("NEW Superblock : output to founders (addr %s, amount %d)\n", address2.ToString(), foundersReward);
+    DBG( cout << "CSuperblockManager::AppendFoundersReward After LogPrintf call " << endl; );
+}
+
+/**
 *   Create Superblock Payments
 *
 *   - Create the correct payment structure for a given superblock
@@ -418,6 +448,10 @@ void CSuperblockManager::CreateSuperblock(CMutableTransaction& txNewRet, int nBl
     //       Consider at least following limits:
     //          - max coinbase tx size
     //          - max "budget" available
+
+	// add founders reward
+	AppendFoundersReward(txNewRet, nBlockHeight);
+
     for(int i = 0; i < pSuperblock->CountPayments(); i++) {
         CGovernancePayment payment;
         DBG( cout << "CSuperblockManager::CreateSuperblock i = " << i << endl; );
@@ -532,11 +566,7 @@ CAmount CSuperblock::GetPaymentsLimit(int nBlockHeight)
         return 0;
     }
 
-    // min subsidy for high diff networks and vice versa
-    int nBits = consensusParams.fPowAllowMinDifficultyBlocks ? UintToArith256(consensusParams.powLimit).GetCompact() : 1;
-    // some part of all blocks issued during the cycle goes to superblock, see GetBlockSubsidy
-    CAmount nSuperblockPartOfSubsidy = GetBlockSubsidy(nBits, nBlockHeight, consensusParams, true);
-    CAmount nPaymentsLimit = nSuperblockPartOfSubsidy * consensusParams.nSuperblockCycle;
+    CAmount nPaymentsLimit = GetBlockSubsidy(nBlockHeight, consensusParams);
     LogPrint("gobject", "CSuperblock::GetPaymentsLimit -- Valid superblock height %d, payments max %lld\n", nBlockHeight, nPaymentsLimit);
 
     return nPaymentsLimit;
@@ -656,7 +686,7 @@ bool CSuperblock::IsValid(const CTransaction& txNew, int nBlockHeight, CAmount b
 
     int nOutputs = txNew.vout.size();
     int nPayments = CountPayments();
-    int nMinerPayments = nOutputs - nPayments;
+    int nMinerPayments = nOutputs - nPayments - 1;			// founders reward
 
     LogPrint("gobject", "CSuperblock::IsValid nOutputs = %d, nPayments = %d, strData = %s\n",
              nOutputs, nPayments, GetGovernanceObject()->GetDataAsHex());
@@ -673,17 +703,39 @@ bool CSuperblock::IsValid(const CTransaction& txNew, int nBlockHeight, CAmount b
     }
 
     // payments should not exceed limit
-    CAmount nPaymentsTotalAmount = GetPaymentsTotalAmount();
-    CAmount nPaymentsLimit = GetPaymentsLimit(nBlockHeight);
-    if(nPaymentsTotalAmount > nPaymentsLimit) {
-        LogPrintf("CSuperblock::IsValid -- ERROR: Block invalid, payments limit exceeded: payments %lld, limit %lld\n", nPaymentsTotalAmount, nPaymentsLimit);
+	const Consensus::Params& cp = Params().GetConsensus();
+    CAmount budgetsActual = GetPaymentsTotalAmount();
+    CAmount budgetLimit = GetBudget(nBlockHeight, cp);
+    if(budgetsActual > budgetLimit) {
+        LogPrintf("CSuperblock::IsValid -- ERROR: Block invalid, payments limit exceeded: payments %lld, limit %lld\n", budgetsActual, budgetLimit);
         return false;
     }
 
+	// founder reward check
+	// it's ok to use founders address as budget address ?
+	CAmount foundersActual(0), foundersExpected(cp.foundersReward);
+	CAmount nBlockValue = txNew.GetValueOut();
+	for (const CTxOut &out: txNew.vout)
+	{
+		if (out.scriptPubKey == Params().GetFoundersRewardScriptAtHeight(nBlockHeight))
+		{
+			foundersActual += out.nValue;
+		}
+	}
+	if (foundersActual < foundersExpected)
+	{
+		if (foundersActual == 0)
+		{
+			LogPrintf("CSuperblock::IsValid -- ERROR: Block invalid, founders reward missing: block %lld, expected value  %lld\n", nBlockValue, foundersExpected);
+			return false;
+		}
+		LogPrintf("CSuperblock::IsValid -- ERROR: Block invalid, wrong founders reward: block %lld, actual value %lld, expected value  %lld\n", nBlockValue, foundersActual, foundersExpected);
+        return false;
+	}
+
     // miner should not get more than he would usually get
-    CAmount nBlockValue = txNew.GetValueOut();
-    if(nBlockValue > blockReward + nPaymentsTotalAmount) {
-        LogPrintf("CSuperblock::IsValid -- ERROR: Block invalid, block value limit exceeded: block %lld, limit %lld\n", nBlockValue, blockReward + nPaymentsTotalAmount);
+    if(nBlockValue > blockReward + budgetLimit + foundersExpected) {
+        LogPrintf("CSuperblock::IsValid -- ERROR: Block invalid, block value limit exceeded: block %lld, limit %lld\n", nBlockValue, blockReward + budgetLimit + foundersExpected);
         return false;
     }
 

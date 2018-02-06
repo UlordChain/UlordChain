@@ -257,9 +257,11 @@ bool GetTransaction(const uint256 &hash, CTransaction &tx, const Consensus::Para
 /** Find the best known block, and make it the tip of the block chain */
 bool ActivateBestChain(CValidationState& state, const CChainParams& chainparams, const CBlock* pblock = NULL);
 
-double ConvertBitsToDouble(unsigned int nBits);
-CAmount GetBlockSubsidy(int nBits, int nHeight, const Consensus::Params& consensusParams, bool fSuperblockPartOnly = false);
-CAmount GetMasternodePayment(int nHeight, CAmount blockValue);
+CAmount GetMinerSubsidy(const int height, const Consensus::Params &cp);
+CAmount GetMasternodePayment(const int height);
+CAmount GetBudget(const int height, const Consensus::Params &cp);
+CAmount GetFoundersReward(const int height, const Consensus::Params &cp);
+CAmount GetBlockSubsidy(const int height, const Consensus::Params &cp);
 
 /**
  * Prune block and undo files (blk???.dat and undo???.dat) so that the disk space used is less than a user-defined target.
