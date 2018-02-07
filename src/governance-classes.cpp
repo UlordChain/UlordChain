@@ -427,6 +427,14 @@ void CSuperblockManager::CreateSuperblock(CMutableTransaction& txNewRet, int nBl
 
     LOCK(governance.cs);
 
+    // TODO: How many payments can we add before things blow up?
+    //       Consider at least following limits:
+    //          - max coinbase tx size
+    //          - max "budget" available
+
+    // add founders reward
+    AppendFoundersReward(txNewRet, nBlockHeight);
+
     // GET THE BEST SUPERBLOCK FOR THIS BLOCK HEIGHT
 
     CSuperblock_sptr pSuperblock;
@@ -443,14 +451,6 @@ void CSuperblockManager::CreateSuperblock(CMutableTransaction& txNewRet, int nBl
 
     // Superblock payments are appended to the end of the coinbase vout vector
     DBG( cout << "CSuperblockManager::CreateSuperblock Number payments: " << pSuperblock->CountPayments() << endl; );
-
-    // TODO: How many payments can we add before things blow up?
-    //       Consider at least following limits:
-    //          - max coinbase tx size
-    //          - max "budget" available
-
-    // add founders reward
-    AppendFoundersReward(txNewRet, nBlockHeight);
 
     for(int i = 0; i < pSuperblock->CountPayments(); i++) {
         CGovernancePayment payment;
