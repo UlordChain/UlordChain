@@ -19,12 +19,11 @@ https://www.ulord.org
 What is Ulord?
 ----------------
 
-Ulord is determined to the leader of of the digital content industry revolution.
-Following the main idea of "Your content, you decide", Ulord is a bridge connecting 
-content creators and consumers, and a platform that is free, open and respects creation. 
-It faces the global ecosystem, and has the advantages of affirming and distributing copyright,
-no platform fee, integrated payment system, supporting different formats of digital content, 
-and facilitating transactions.
+Ulord is a decentralized content distribution platform that provides content distribution public 
+chains based on blockchain technology, creates a complete ecosystem for content distribution by 
+creative work, where people can create a wide variety of content-based decentralized applications, 
+such as video, music, pictures, text, code, animation material, etc., and it by smart contract 
+ensures content creators and communicators get the corresponding benefits.
 
 For more information, as well as an immediately useable, binary version of
 the Ulord Core software, see https://www.ulord.org/downloads.
