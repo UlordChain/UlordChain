@@ -445,7 +445,7 @@ public:
         consensus.nMajorityWindow = 1000;
         consensus.BIP34Height = -1;                                     // BIP34 has not necessarily activated on regtest
         consensus.BIP34Hash = uint256();
-        consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.powLimit = uint256S("0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f");
 	consensus.nPowAveragingWindow = 17;
         assert(maxUint/UintToArith256(consensus.powLimit) >= consensus.nPowAveragingWindow);
         consensus.nPowMaxAdjustDown = 0;                                // Turn off adjustment down
@@ -461,7 +461,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 999999999999ULL;
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 0;
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 999999999999ULL;
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1000000000000ULL;
 
         pchMessageStart[0] = 0xf0;
         pchMessageStart[1] = 0xc5;
@@ -471,12 +471,12 @@ public:
         nDefaultPort = 29888;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1517650354, 1162212459, 0x207fffff, 1, 1 * COIN);
+        genesis = CreateGenesisBlock(1517650354, 551787281, 0x200f0f0f, 1, 1 * COIN);
 #ifdef GENESIS_GENERATION
         findGenesis(&genesis, "regtest");
 #endif
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("18a1149b7dc6fdc2540b3b112e246ec93af0dad1ff31f60bb9dd7d48e4818f98"));
+        assert(consensus.hashGenesisBlock == uint256S("0158f211e2881c0e725fcc6ec25db2b72ad4a3f8f7830a516e9d6570e9527fd1"));
         assert(genesis.hashMerkleRoot == uint256S("2b5ff31e4f2bccf51441d2f78849c2ca393daa187cede58373ccad8f1794b8d9"));
 
         vFixedSeeds.clear();                                             //! Regtest mode doesn't have any fixed seeds.
@@ -492,7 +492,7 @@ public:
 
         checkpointData = (CCheckpointData){
             boost::assign::map_list_of
-            ( 0, uint256S("18a1149b7dc6fdc2540b3b112e246ec93af0dad1ff31f60bb9dd7d48e4818f98")),
+            ( 0, uint256S("0158f211e2881c0e725fcc6ec25db2b72ad4a3f8f7830a516e9d6570e9527fd1")),
             0,
             0,
             0
