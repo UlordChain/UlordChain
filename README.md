@@ -12,12 +12,3 @@ Modifications for testing
 7. unit tests are not usable currently.
 8. in chainparams.cpp, masternodepubkey & sporkpubkey have no corresponding private key.
 9. changed budget, superblock starting height to 1500.
-
-[Official site](ulord.one)
-----------------
-
-License
--------
-
-Ulord Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
-information or see https://opensource.org/licenses/MIT.
