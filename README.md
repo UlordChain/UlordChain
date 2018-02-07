@@ -13,11 +13,8 @@ Modifications for testing
 8. in chainparams.cpp, masternodepubkey & sporkpubkey have no corresponding private key.
 9. changed budget, superblock starting height to 1500.
 
-What is Ulord?
+[Official site](ulord.one)
 ----------------
-
-https://www.ulord.org
-
 
 License
 -------
