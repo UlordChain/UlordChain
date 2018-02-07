@@ -221,7 +221,7 @@ public:
         assert(consensus.hashGenesisBlock == uint256S("0x00000f471d45750f8b9757728877fb50e0f867a10ca5fd3564be2bd521500446"));
         assert(genesis.hashMerkleRoot == uint256S("0x2b5ff31e4f2bccf51441d2f78849c2ca393daa187cede58373ccad8f1794b8d9"));
 
-        vSeeds.push_back(CDNSSeedData("ulord.one", "dnsseed1.ulord.one"));
+
         // Ulord addresses start with 'U'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,68);
         // Ulord script addresses start with '7'
@@ -238,7 +238,7 @@ public:
 //        vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
 		vFixedSeeds.clear();
 		vSeeds.clear();		
-
+        vSeeds.push_back(CDNSSeedData("ulord.one", "dnsseed1.ulord.one"));
         fMiningRequiresPeers = true;
         fDefaultConsistencyChecks = false;
         fRequireStandard = true;
@@ -361,10 +361,8 @@ public:
 
         vFixedSeeds.clear();
         vSeeds.clear();
-/*
-        vSeeds.push_back(CDNSSeedData("ulorddot.io",  "testnet-seed.ulorddot.io"));
-        vSeeds.push_back(CDNSSeedData("masternode.io", "test.dnsseed.masternode.io"));
-*/
+	vSeeds.push_back(CDNSSeedData("ulord.one",  "testnet-seed1.ulord.one"));    
+
         // Testnet Ulord addresses start with 'u'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,130);
         // Testnet Ulord script addresses start with '8' or '9'
