@@ -141,7 +141,7 @@ CBlockTemplate* CreateNewBlock(const CChainParams& chainparams, const CScript& s
             return NULL;
         }
         CClaimTrieCache trieCache(pclaimTrie);
-	    const int64_t nMedianTimePast = pindexPrev->GetMedianTimePast();
+        const int64_t nMedianTimePast = pindexPrev->GetMedianTimePast();
 
         // Add our coinbase tx as first transaction
         pblock->vtx.push_back(txNew);
@@ -582,10 +582,10 @@ void static BitcoinMiner(const CChainParams& chainparams)
             arith_uint256 hashTarget = arith_uint256().SetCompact(pblock->nBits);
             while (true)
             {
-				uint256 hash;
+		uint256 hash;
                 while (true) 
-				{ 
-					hash = pblock->GetHash();
+		{ 
+		    hash = pblock->GetHash();
                     if (UintToArith256(hash) <= hashTarget)
                     {
                         // Found a solution
@@ -602,9 +602,11 @@ void static BitcoinMiner(const CChainParams& chainparams)
 
                         break;
                     }
-					pblock->nNonce += 1;
-					if ((pblock->nNonce & 0xFF) == 0)
-						break;
+		    pblock->nNonce += 1;
+		    if ((pblock->nNonce & 0xFF) == 0)
+		    {
+		        break;
+		    }
                 }
 
                 // Check for stop or if block needs to be rebuilt
