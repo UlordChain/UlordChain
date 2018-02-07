@@ -1726,114 +1726,113 @@ bool ReadBlockFromDisk(CBlock& block, const CBlockIndex* pindex, const Consensus
 
 CAmount GetMinerSubsidy(const int height, const Consensus::Params &cp)
 {
-	// genesis
-	if (!height)
-	{
-		return cp.genesisReward;
-	}
-	// first block
-	else if (height == 1)
-	{
-		return cp.premine;
-	}
-	// the others
-	else
-	{
-	    const int intval = cp.nSubsidyHalvingInterval;
+    // genesis
+    if (!height)
+    {
+        return cp.genesisReward;
+    }
+    // first block
+    else if (height == 1)
+    {
+ 	return cp.premine;
+    }
+    // the others
+    else
+    {
+        const int intval = cp.nSubsidyHalvingInterval;
 
-    	// first 4 years
-    	if (height < intval)
-    	{
-			return cp.minerReward4;
-    	}
-		// from the 5th year on
-		else
-		{
-			int halvings = (height - intval) / intval;
-
-			// force subsidy to 0 when right shift 64 bit is undifined
-			if (halvings > 63)
-			{
-				return 0;
-			}
-			CAmount subsidy(cp.minerReward5);
-			subsidy >>= halvings;
-			return subsidy;
-		}
-	}
+        // first 4 years
+        if (height < intval)
+        {
+            return cp.minerReward4;
+        }
+        // from the 5th year on
+        else
+        {
+            int halvings = (height - intval) / intval;
+ 	    // force subsidy to 0 when right shift 64 bit is undifined
+            if (halvings > 63)
+	    {
+	        return 0;
+	    }
+	    CAmount subsidy(cp.minerReward5);
+	    subsidy >>= halvings;
+            return subsidy;
+        }
+    }
 }
 
 CAmount GetMasternodePayment(const int height)
 {
-	const Consensus::Params cp = Params().GetConsensus();
-	
-	const int starting = cp.nMasternodePaymentsStartBlock;
-	const int period = cp.nMasternodePaymentsIncreasePeriod;
-	const int intval = cp.nSubsidyHalvingInterval;
+    const Consensus::Params cp = Params().GetConsensus();
 
-	if (height < starting) return 0;
+    const int starting = cp.nMasternodePaymentsStartBlock;
+    const int period = cp.nMasternodePaymentsIncreasePeriod;
+    const int intval = cp.nSubsidyHalvingInterval;
 
-	if (height < starting + period)					// in the first year
-	{
-		return cp.mnReward4;
-	} 
-	else if (height < starting + period * 2)		// in first 2 years
-	{
-		return cp.mnReward4 * 2;
-	}
-	else if (height < starting + period * 3)		// 3rd year
-	{
-		return cp.mnReward4 * 3;
-	}
-	else if (height < starting + period * 4)		// 4th
-	{
-		return cp.mnReward4 * 4;
-	}
-	else											// 5th and after
-	{
-		int halvings = (height - intval) / intval;
-		if (halvings > 63)
-		{
-			return 0;
-		}
+    if (height < starting) return 0;
 
-		return cp.mnReward5 >> halvings;
+    if (height < starting + period)			// in the first year
+    {
+  	return cp.mnReward4;
+    } 
+    else if (height < starting + period * 2)		// in first 2 years
+    {
+        return cp.mnReward4 * 2;
+    }
+    else if (height < starting + period * 3)		// 3rd year
+    {
+	return cp.mnReward4 * 3;
+    }
+    else if (height < starting + period * 4)		// 4th
+    {
+	return cp.mnReward4 * 4;
+    }
+    else						// 5th and after
+    {
+  	int halvings = (height - intval) / intval;
+	if (halvings > 63)
+	{
+   	     return 0;
 	}
+
+	return cp.mnReward5 >> halvings;
+    }
 }
 
 CAmount GetBudget(const int height, const Consensus::Params &cp)
 {
-	const int beg = cp.nSuperblockStartBlock;
-	const int intval = cp.nSubsidyHalvingInterval;
+    const int beg = cp.nSuperblockStartBlock;
+    const int intval = cp.nSubsidyHalvingInterval;
 	
-	if (height < beg)									// before starting
+    if (height < beg)		     // before starting
+    {
+  	return 0;
+    }
+    else if (height < intval)        // first 4 years
+    {
+  	return cp.bdgetReward4;
+    }
+    else                             // 5th year and thereafter
+    {
+        int halvings = (height - intval) / intval;
+	if (halvings > 63)
 	{
-		return 0;
+	    return 0;
 	}
-	else if (height < intval)								// first 4 years
-	{
-		return cp.bdgetReward4;
-	}
-	else													// 5th year and thereafter
-	{
-		int halvings = (height - intval) / intval;
-		if (halvings > 63)
-		{
-			return 0;
-		}
-		return cp.bdgetReward5 >> halvings;
-	}
+	return cp.bdgetReward5 >> halvings;
+    }
 }
 
 CAmount GetFoundersReward(const int height, const Consensus::Params &cp)
 {
-	const int beg = cp.nSuperblockStartBlock;
-	const int end = cp.endOfFoundersReward();
-	if (height >= beg && height < end)				// before super block starting
-	{
-		return cp.foundersReward;
-	}
-	return 0;
+    const int beg = cp.nSuperblockStartBlock;
+    const int end = cp.endOfFoundersReward();
+    if (height >= beg && height < end)			// before super block starting
+    {
+        return cp.foundersReward;
+    }
+    return 0;
 }
 
 // return all subsidy

@@ -72,7 +72,7 @@ public:
 
     static bool IsSuperblockTriggered(int nBlockHeight);
 
-	static void AppendFoundersReward(CMutableTransaction &txNewRet, int nBlockHeight);
+    static void AppendFoundersReward(CMutableTransaction &txNewRet, int nBlockHeight);
     static void CreateSuperblock(CMutableTransaction& txNewRet, int nBlockHeight, std::vector<CTxOut>& voutSuperblockRet);
 
     static std::string GetRequiredPaymentsString(int nBlockHeight);

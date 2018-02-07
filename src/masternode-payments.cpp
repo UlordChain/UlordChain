@@ -219,19 +219,19 @@ void FillBlockPayments(CMutableTransaction& txNew, int nBlockHeight, CAmount blo
     }
 
     // FILL BLOCK PAYEE WITH MASTERNODE PAYMENT OTHERWISE
-	const Consensus::Params &cp = Params().GetConsensus();
+    const Consensus::Params &cp = Params().GetConsensus();
 
-	if (nBlockHeight < cp.nMasternodePaymentsStartBlock)
-	{
-		LogPrint("mnpayments", "FillBlockPayments -- nBlockHeight %d not reaching masternode payments start block yet"
-				 "skipping masternode payment\n", nBlockHeight, cp.nMasternodePaymentsStartBlock);
-	}
+    if (nBlockHeight < cp.nMasternodePaymentsStartBlock)
+    {
+	LogPrint("mnpayments", "FillBlockPayments -- nBlockHeight %d not reaching masternode payments start block yet"
+             "skipping masternode payment\n", nBlockHeight, cp.nMasternodePaymentsStartBlock);
+    }
     else
-	{
-		mnpayments.FillBlockPayee(txNew, nBlockHeight, blockReward, txoutMasternodeRet);
+    {
+	mnpayments.FillBlockPayee(txNew, nBlockHeight, blockReward, txoutMasternodeRet);
     	LogPrint("mnpayments", "FillBlockPayments -- nBlockHeight %d blockReward %lld txoutMasternodeRet %s txNew %s",
-        	                    nBlockHeight, blockReward, txoutMasternodeRet.ToString(), txNew.ToString());
-	}
+  	                    nBlockHeight, blockReward, txoutMasternodeRet.ToString(), txNew.ToString());
+    }
 }
 
 std::string GetRequiredPaymentsString(int nBlockHeight)

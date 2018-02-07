@@ -624,6 +624,7 @@ bool CMasternodeBroadcast::CheckOutpoint(int& nDos)
     }
 
     {
+	const CAmount ct = Params().GetConsensus().colleteral;		// colleteral
         TRY_LOCK(cs_main, lockMain);
         if(!lockMain) {
             // not mnb fault, let it to be checked again later
@@ -639,7 +640,7 @@ bool CMasternodeBroadcast::CheckOutpoint(int& nDos)
             LogPrint("masternode", "CMasternodeBroadcast::CheckOutpoint -- Failed to find Masternode UTXO, masternode=%s\n", vin.prevout.ToStringShort());
             return false;
         }
-        if(coins.vout[vin.prevout.n].nValue != 10000 * COIN) {
+        if(coins.vout[vin.prevout.n].nValue != ct) {
             LogPrint("masternode", "CMasternodeBroadcast::CheckOutpoint -- Masternode UTXO should have 10000 UC, masternode=%s\n", vin.prevout.ToStringShort());
             return false;
         }

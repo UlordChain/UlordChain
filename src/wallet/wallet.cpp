@@ -2105,8 +2105,8 @@ void CWallet::AvailableCoins(vector<COutput>& vCoins, bool fOnlyConfirmed, const
             // It's possible for these to be conflicted via ancestors which we may never be able to detect
             if (nDepth == 0 && !pcoin->InMempool())
                 continue;
-
-		 	const int64_t ct = Params().GetConsensus().colleteral;		// colleteral amount
+            
+            const int64_t ct = Params().GetConsensus().colleteral;     // colleteral amount
 
             for (unsigned int i = 0; i < pcoin->vout.size(); i++) {
                 bool found = false;
@@ -2570,7 +2570,7 @@ bool CWallet::SelectCoinsGrouppedByAddresses(std::vector<CompactTallyItem>& vecT
         }
     }
 
-	const CAmount ct = Params().GetConsensus().colleteral;
+    const CAmount ct = Params().GetConsensus().colleteral;
 
     // Tally
     map<CBitcoinAddress, CompactTallyItem> mapTally;
@@ -2653,7 +2653,7 @@ bool CWallet::SelectCoinsDark(CAmount nValueMin, CAmount nValueMax, std::vector<
     //order the array so largest nondenom are first, then denominations, then very small inputs.
     sort(vCoins.rbegin(), vCoins.rend(), CompareByPriority());
 
-	const CAmount ct = Params().GetConsensus().colleteral;
+    const CAmount ct = Params().GetConsensus().colleteral;
 
     BOOST_FOREACH(const COutput& out, vCoins)
     {

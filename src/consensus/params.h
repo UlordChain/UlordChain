@@ -38,30 +38,29 @@ struct BIP9Deployment {
 struct Params {
     uint256 hashGenesisBlock;
 
-	// subsidy constants
-	// miner reward
-	typedef int64_t i64;
-	i64 premine;			// premine
-	i64 genesisReward;		// genesis reward
-	i64 minerReward4;		// block reward to miners per block in the 1st 4 years
-	i64 minerReward5;		// block reward to miners per block in the 2nd 4 years
+    // miner reward
+    typedef int64_t i64;
+    i64 premine;		// premine
+    i64 genesisReward;          // genesis reward
+    i64 minerReward4;		// block reward to miners per block in the 1st 4 years
+    i64 minerReward5;		// block reward to miners per block in the 2nd 4 years
 
-	// masternode reward
-	i64 mnReward4;			// block reward to masternode per block in the 1st 2 years
-	i64 mnReward5;			// block reward to masternode per block in the 5th year
+    // masternode reward
+    i64 mnReward4;              // block reward to masternode per block in the 1st 2 years
+    i64 mnReward5;              // block reward to masternode per block in the 5th year
 
-	// founders reward
-	i64 foundersReward;		// super block reward to founders in first 4 years
+    // founders reward
+    i64 foundersReward;         // super block reward to founders in first 4 years
 
-	// budget
-	i64 bdgetReward4;		// super block reward to budget in the 1st 4 years
-	i64 bdgetReward5;		// super block reward to budget in the 5th year
+    // budget
+    i64 bdgetReward4;           // super block reward to budget in the 1st 4 years
+    i64 bdgetReward5;           // super block reward to budget in the 5th year
 
-	// masternode colleteral
-	i64 colleteral;
-
+    // masternode colleteral
+    i64 colleteral;
+ 
     int nSubsidyHalvingInterval;
-    int endOfFoundersReward() const { 		// [2, 840960)
+    int endOfFoundersReward() const {
         return 4 * 12 * nSuperblockCycle + 1;		
     }
 

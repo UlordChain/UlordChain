@@ -202,6 +202,7 @@ LogPrintf("GetLocal() = %c, IsValidNetAddr = %c \n", GetLocal(service, &pnode->a
     // Default to REMOTE
     eType = MASTERNODE_REMOTE;
 
+    const CAmount ct = Params().GetConsensus().colleteral;
     // Check if wallet funds are available
     if(!pwalletMain) {
         LogPrintf("CActiveMasternode::ManageStateInitial -- %s: Wallet not available\n", GetStateString());
@@ -213,7 +214,7 @@ LogPrintf("GetLocal() = %c, IsValidNetAddr = %c \n", GetLocal(service, &pnode->a
         return;
     }
 
-    if(pwalletMain->GetBalance() < 10000*COIN) {
+    if(pwalletMain->GetBalance() < ct) {
         LogPrintf("CActiveMasternode::ManageStateInitial -- %s: Wallet balance is < 10000 UC\n", GetStateString());
         return;
     }

@@ -387,20 +387,20 @@ bool CSuperblockManager::GetBestSuperblock(CSuperblock_sptr& pSuperblockRet, int
 }
 
 /**
-*	Append Founders reward
-*	- Append selected founder address according to a given height
+*    Append Founders reward
+*    - Append selected founder address according to a given height
 */
 
 void CSuperblockManager::AppendFoundersReward(CMutableTransaction& txNewRet, int nBlockHeight)
 {
-	// add founders reward
+    // add founders reward
     const Consensus::Params& cp = Params().GetConsensus();
     const CAmount foundersReward = cp.foundersReward;
     const CScript foundersScript = Params().GetFoundersRewardScriptAtHeight(nBlockHeight);
     
     CTxOut txout = CTxOut(foundersReward, foundersScript);
     txNewRet.vout.push_back(txout);
-//    voutSuperblockRet.push_back(txout);
+    //voutSuperblockRet.push_back(txout);
 
     // PRINT NICE LOG OUTPUT FOR SUPERBLOCK PAYMENT
 
@@ -449,8 +449,8 @@ void CSuperblockManager::CreateSuperblock(CMutableTransaction& txNewRet, int nBl
     //          - max coinbase tx size
     //          - max "budget" available
 
-	// add founders reward
-	AppendFoundersReward(txNewRet, nBlockHeight);
+    // add founders reward
+    AppendFoundersReward(txNewRet, nBlockHeight);
 
     for(int i = 0; i < pSuperblock->CountPayments(); i++) {
         CGovernancePayment payment;
@@ -686,7 +686,7 @@ bool CSuperblock::IsValid(const CTransaction& txNew, int nBlockHeight, CAmount b
 
     int nOutputs = txNew.vout.size();
     int nPayments = CountPayments();
-    int nMinerPayments = nOutputs - nPayments - 1;			// founders reward
+    int nMinerPayments = nOutputs - nPayments - 1;        // founders reward
 
     LogPrint("gobject", "CSuperblock::IsValid nOutputs = %d, nPayments = %d, strData = %s\n",
              nOutputs, nPayments, GetGovernanceObject()->GetDataAsHex());
@@ -703,7 +703,7 @@ bool CSuperblock::IsValid(const CTransaction& txNew, int nBlockHeight, CAmount b
     }
 
     // payments should not exceed limit
-	const Consensus::Params& cp = Params().GetConsensus();
+    const Consensus::Params& cp = Params().GetConsensus();
     CAmount budgetsActual = GetPaymentsTotalAmount();
     CAmount budgetLimit = GetBudget(nBlockHeight, cp);
     if(budgetsActual > budgetLimit) {
@@ -711,27 +711,27 @@ bool CSuperblock::IsValid(const CTransaction& txNew, int nBlockHeight, CAmount b
         return false;
     }
 
-	// founder reward check
-	// it's ok to use founders address as budget address ?
-	CAmount foundersActual(0), foundersExpected(cp.foundersReward);
-	CAmount nBlockValue = txNew.GetValueOut();
-	for (const CTxOut &out: txNew.vout)
+    // founder reward check
+    // it's ok to use founders address as budget address ?
+    CAmount foundersActual(0), foundersExpected(cp.foundersReward);
+    CAmount nBlockValue = txNew.GetValueOut();
+    for (const CTxOut &out: txNew.vout)
+    {
+        if (out.scriptPubKey == Params().GetFoundersRewardScriptAtHeight(nBlockHeight))
 	{
-		if (out.scriptPubKey == Params().GetFoundersRewardScriptAtHeight(nBlockHeight))
-		{
-			foundersActual += out.nValue;
-		}
+	    foundersActual += out.nValue;
+        }
+    }
+    if (foundersActual < foundersExpected)
+    {
+  	if (foundersActual == 0)
+	{
+    	    LogPrintf("CSuperblock::IsValid -- ERROR: Block invalid, founders reward missing: block %lld, expected value  %lld\n", nBlockValue, foundersExpected);
+	    return false;
 	}
-	if (foundersActual < foundersExpected)
-	{
-		if (foundersActual == 0)
-		{
-			LogPrintf("CSuperblock::IsValid -- ERROR: Block invalid, founders reward missing: block %lld, expected value  %lld\n", nBlockValue, foundersExpected);
-			return false;
-		}
-		LogPrintf("CSuperblock::IsValid -- ERROR: Block invalid, wrong founders reward: block %lld, actual value %lld, expected value  %lld\n", nBlockValue, foundersActual, foundersExpected);
+        LogPrintf("CSuperblock::IsValid -- ERROR: Block invalid, wrong founders reward: block %lld, actual value %lld, expected value  %lld\n", nBlockValue, foundersActual, foundersExpected);
         return false;
-	}
+    }
 
     // miner should not get more than he would usually get
     if(nBlockValue > blockReward + budgetLimit + foundersExpected) {
