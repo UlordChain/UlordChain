@@ -32,12 +32,12 @@
 #include "keepass.h"
 #include "spork.h"
 
+#include <string>
 #include <assert.h>
 
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/thread.hpp>
-
 
 using namespace std;
 
@@ -3004,10 +3004,11 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
                 set<pair<const CWalletTx*,unsigned int> > setCoins;
                 CAmount nValueIn = 0;
 
+		const std::string ct = std::to_string(Params().GetConsensus().colleteral);
                 if (!SelectCoins(nValueToSelect, setCoins, nValueIn, coinControl, nCoinType, fUseInstantSend))
                 {
                     if (nCoinType == ONLY_NOT1000IFMN) {
-                        strFailReason = _("Unable to locate enough funds for this transaction that are not equal 10000 UC.");
+                        strFailReason = _(("Unable to locate enough funds for this transaction that are not equal " + ct  + " UC.").c_str());
                     } else if (nCoinType == ONLY_NONDENOMINATED_NOT1000IFMN) {
                         strFailReason = _("Unable to locate enough PrivateSend non-denominated funds for this transaction that are not equal 1000 UC.");
                     } else if (nCoinType == ONLY_DENOMINATED) {

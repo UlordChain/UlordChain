@@ -215,7 +215,7 @@ LogPrintf("GetLocal() = %c, IsValidNetAddr = %c \n", GetLocal(service, &pnode->a
     }
 
     if(pwalletMain->GetBalance() < ct) {
-        LogPrintf("CActiveMasternode::ManageStateInitial -- %s: Wallet balance is < 10000 UC\n", GetStateString());
+        LogPrintf("CActiveMasternode::ManageStateInitial -- %s: Wallet balance is < %lld UC\n", GetStateString(), ct);
         return;
     }
 
