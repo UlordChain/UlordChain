@@ -52,11 +52,11 @@ reachable from the Tor network. Add these lines to your /etc/tor/torrc (or equiv
 config file):
 
 	HiddenServiceDir /var/lib/tor/ulordcore-service/
-	HiddenServicePort 9456 127.0.0.1:9456
-	HiddenServicePort 19456 127.0.0.1:19456
+	HiddenServicePort 9888 127.0.0.1:9888
+	HiddenServicePort 19888 127.0.0.1:19888
 
 The directory can be different of course, but (both) port numbers should be equal to
-your ulordd's P2P listen port (9456 by default).
+your ulordd's P2P listen port (9888 by default).
 
 	-externalip=X   You can tell Ulord Core about its publicly reachable address using
 	                this option, and this can be a .onion address. Given the above
@@ -91,7 +91,7 @@ as well, use `discover` instead:
 
 	./ulordd ... -discover
 
-and open port 9456 on your firewall (or use -upnp).
+and open port 9888 on your firewall (or use -upnp).
 
 If you only want to use Tor to reach onion addresses, but not use it as a proxy
 for normal IPv4/IPv6 communication, use:
