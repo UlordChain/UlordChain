@@ -20,7 +20,7 @@
 #include "chainparamsseeds.h"
 
 typedef int64_t i64;
-//#define GENESIS_GENERATION
+#define GENESIS_GENERATION
 
 #ifdef GENESIS_GENERATION
 #include <iostream>
@@ -139,8 +139,6 @@ static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits
  * + Contains no strange transactions
  */
 
-const arith_uint256 maxUint = UintToArith256(uint256S("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));
-
 class CMainParams : public CChainParams {
 public:
     CMainParams() {
@@ -181,7 +179,6 @@ public:
         consensus.BIP34Hash = uint256S("0x00000f471d45750f8b9757728877fb50e0f867a10ca5fd3564be2bd521500446");
         consensus.powLimit = uint256S("00000fffff000000000000000000000000000000000000000000000000000000");
         consensus.nPowAveragingWindow = 17;
-        assert(maxUint/UintToArith256(consensus.powLimit) >= consensus.nPowAveragingWindow);
         consensus.nPowMaxAdjustDown = 32;                               // 32% adjustment down
         consensus.nPowMaxAdjustUp = 16;                                 // 16% adjustment up
         consensus.nPowTargetTimespan = 24 * 60 * 60;                    // Ulord: 1 day
@@ -224,15 +221,15 @@ public:
 
         // Ulord addresses start with 'U'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,68);
-        // Ulord script addresses start with '7'
-        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,16);
-        // Ulord private keys start with '7' or 'X'
-        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,204);
+        // Ulord script addresses start with 'S'
+        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,63);
+        // Ulord private keys start with 'W'
+        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,73);
         // Ulord BIP32 pubkeys start with 'xpub' (Bitcoin defaults)
         base58Prefixes[EXT_PUBLIC_KEY] = boost::assign::list_of(0x04)(0x88)(0xB2)(0x1E).convert_to_container<std::vector<unsigned char> >();
         // Ulord BIP32 prvkeys start with 'xprv' (Bitcoin defaults)
         base58Prefixes[EXT_SECRET_KEY] = boost::assign::list_of(0x04)(0x88)(0xAD)(0xE4).convert_to_container<std::vector<unsigned char> >();
-        // Ulord BIP44 coin type is '5'
+        // Ulord BIP44 coin type is '247'
         base58Prefixes[EXT_COIN_TYPE]  = boost::assign::list_of(0x80)(0x00)(0x00)(0xf7).convert_to_container<std::vector<unsigned char> >();
 
 	//vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
@@ -323,10 +320,9 @@ public:
         consensus.nMajorityRejectBlockOutdated = 75;
         consensus.nMajorityWindow = 100;
         consensus.BIP34Height = 0;
-        consensus.BIP34Hash = uint256S("000009c278dda2285ff7d1595d919b2ae1f3728306409f50e374ea313391db8f");
-        consensus.powLimit = uint256S("00000fffff000000000000000000000000000000000000000000000000000000");
+        consensus.BIP34Hash = uint256S("00cef5fc5328768c82fd51ed1537c98f84e557df5093929a4bd4a88587552f64");
+        consensus.powLimit = uint256S("00ffffffff000000000000000000000000000000000000000000000000000000");
         consensus.nPowAveragingWindow = 17;
-        assert(maxUint/UintToArith256(consensus.powLimit) >= consensus.nPowAveragingWindow);
         consensus.nPowMaxAdjustDown = 32;                               // 32% adjustment down
         consensus.nPowMaxAdjustUp = 16;                                 // 16% adjustment up
         consensus.nPowTargetTimespan = 24 * 60 * 60;                    // Ulord: 1 day
@@ -341,8 +337,8 @@ public:
 
         // Deployment of BIP68, BIP112, and BIP113.
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1517639556;                      // Sat Feb  3 14:32:36 CST 2018
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout =   1549175556;                      // Sun Feb  3 14:32:36 CST 2019
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1518059142;                      // Thu Feb  8 11:05:42 CST 2018
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout =   1549595142;                      // Thu Feb  8 11:05:42 CST 2019
 
         pchMessageStart[0] = 0xc2;
         pchMessageStart[1] = 0xe6;
@@ -350,15 +346,17 @@ public:
         pchMessageStart[3] = 0xf3;
         vAlertPubKey = ParseHex("041c508f27e982c369486c0f1a42779208b3f5dc96c21a2af6004cb18d1529f42182425db1e1632dc6e73ff687592e148569022cee52b4b4eb10e8bb11bd927ec0");
         nDefaultPort = 19888;
-        nMaxTipAge = 0x7fffffff; 									// allow mining on top of old blocks for testnet
+        nMaxTipAge = 0x7fffffff; 		// allow mining on top of old blocks for testnet
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1517639556, 1233862468, 0x1e0ffff0, 1,  1 * COIN);
+        genesis = CreateGenesisBlock(1518059142, 1940147270, 0x2000ffff, 1,  1 * COIN);
 #ifdef GENESIS_GENERATION
+	arith_uint256 a("00ffffffff000000000000000000000000000000000000000000000000000000");
+	cout << "pow limit : " << a.GetCompact() << endl;
         findGenesis(&genesis, "testnet");
 #endif
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x000009c278dda2285ff7d1595d919b2ae1f3728306409f50e374ea313391db8f"));
+        assert(consensus.hashGenesisBlock == uint256S("0x00cef5fc5328768c82fd51ed1537c98f84e557df5093929a4bd4a88587552f64"));
         assert(genesis.hashMerkleRoot == uint256S("0x2b5ff31e4f2bccf51441d2f78849c2ca393daa187cede58373ccad8f1794b8d9"));
 
         vFixedSeeds.clear();
@@ -367,10 +365,10 @@ public:
 
         // Testnet Ulord addresses start with 'u'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,130);
-        // Testnet Ulord script addresses start with '8' or '9'
-        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,19);
-        // Testnet private keys start with '9' or 'c' (Bitcoin defaults)
-        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,239);
+        // Testnet Ulord script addresses start with 's'
+        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,125);
+        // Testnet private keys start with 'w'
+        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,135);
         // Testnet Ulord BIP32 pubkeys start with 'tpub' (Bitcoin defaults)
         base58Prefixes[EXT_PUBLIC_KEY] = boost::assign::list_of(0x04)(0x35)(0x87)(0xCF).convert_to_container<std::vector<unsigned char> >();
         // Testnet Ulord BIP32 prvkeys start with 'tprv' (Bitcoin defaults)
@@ -393,7 +391,7 @@ public:
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-	    (0, uint256S("000009c278dda2285ff7d1595d919b2ae1f3728306409f50e374ea313391db8f")),
+	    (0, uint256S("00cef5fc5328768c82fd51ed1537c98f84e557df5093929a4bd4a88587552f64")),
             1517639556,     // * UNIX timestamp of last checkpoint block
             0,              // * total number of transactions between genesis and last checkpoint
                             //   (the tx=... number in the SetBestChain debug.log lines)
@@ -447,7 +445,6 @@ public:
         consensus.BIP34Hash = uint256();
         consensus.powLimit = uint256S("0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f");
 	consensus.nPowAveragingWindow = 17;
-        assert(maxUint/UintToArith256(consensus.powLimit) >= consensus.nPowAveragingWindow);
         consensus.nPowMaxAdjustDown = 0;                                // Turn off adjustment down
         consensus.nPowMaxAdjustUp = 0;                                  // Turn off adjustment up
         consensus.nPowTargetTimespan = 24 * 60 * 60;                    // Ulord: 1 day
@@ -497,12 +494,12 @@ public:
             0,
             0
         };
-        // Regtest Ulord addresses start with 'u'
-        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,130);
-        // Regtest Ulord script addresses start with '8' or '9'
-        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,19);
-        // Regtest private keys start with '9' or 'c' (Bitcoin defaults)
-        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,239);
+        // Regtest Ulord addresses start with 'y'
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,140);
+        // Regtest Ulord script addresses start with 'q'
+        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,120);
+        // Regtest private keys start with 'm'
+        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,110);
         // Regtest Ulord BIP32 pubkeys start with 'tpub' (Bitcoin defaults)
         base58Prefixes[EXT_PUBLIC_KEY] = boost::assign::list_of(0x04)(0x35)(0x87)(0xCF).convert_to_container<std::vector<unsigned char> >();
         // Regtest Ulord BIP32 prvkeys start with 'tprv' (Bitcoin defaults)
