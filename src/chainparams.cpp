@@ -292,6 +292,7 @@ public:
     CTestNetParams() {
         strNetworkID = "test";
         // reward setting
+	consensus.premine = i64(1e8 * COIN);                            // premine
         consensus.genesisReward = i64(1 * COIN);                        // genesis                                                           
         consensus.minerReward4 = i64(112.966 * COIN);                   // miners
         consensus.minerReward5 = i64(535.103 * COIN);
@@ -415,6 +416,7 @@ public:
     CRegTestParams() {
         strNetworkID = "regtest";
         // reward setting
+	consensus.premine = i64(1e8 * COIN);                            // premine    
         consensus.genesisReward = i64(1 * COIN);                        // genesis
         consensus.minerReward4 = i64(112.966 * COIN);                   // miners
         consensus.minerReward5 = i64(535.103 * COIN);
