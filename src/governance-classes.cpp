@@ -433,7 +433,10 @@ void CSuperblockManager::CreateSuperblock(CMutableTransaction& txNewRet, int nBl
     //          - max "budget" available
 
     // add founders reward
-    AppendFoundersReward(txNewRet, nBlockHeight);
+    if (nBlockHeight > 1 && nBlockHeight < Params().GetConsensus().endOfFoundersReward())
+    {
+        AppendFoundersReward(txNewRet, nBlockHeight);
+    }
 
     // GET THE BEST SUPERBLOCK FOR THIS BLOCK HEIGHT
 
@@ -713,28 +716,32 @@ bool CSuperblock::IsValid(const CTransaction& txNew, int nBlockHeight, CAmount b
 
     // founder reward check
     // it's ok to use founders address as budget address ?
-    CAmount foundersActual(0), foundersExpected(cp.foundersReward);
+    CAmount foundersActual(0), foundersExpected(GetFoundersReward(nBlockHeight, cp));
     CAmount nBlockValue = txNew.GetValueOut();
-    for (const CTxOut &out: txNew.vout)
+    if (nBlockHeight > 1 && nBlockHeight < cp.endOfFoundersReward())
     {
-        if (out.scriptPubKey == Params().GetFoundersRewardScriptAtHeight(nBlockHeight))
-	{
-	    foundersActual += out.nValue;
+        for (const CTxOut &out: txNew.vout)
+        {
+            if (out.scriptPubKey == Params().GetFoundersRewardScriptAtHeight(nBlockHeight))
+	    {
+	        foundersActual += out.nValue;
+            }
         }
-    }
-    if (foundersActual < foundersExpected)
-    {
-  	if (foundersActual == 0)
-	{
-    	    LogPrintf("CSuperblock::IsValid -- ERROR: Block invalid, founders reward missing: block %lld, expected value  %lld\n", nBlockValue, foundersExpected);
-	    return false;
-	}
-        LogPrintf("CSuperblock::IsValid -- ERROR: Block invalid, wrong founders reward: block %lld, actual value %lld, expected value  %lld\n", nBlockValue, foundersActual, foundersExpected);
-        return false;
+        if (foundersActual < foundersExpected)
+        {
+    	    if (foundersActual == 0)
+	    {
+    	        LogPrintf("CSuperblock::IsValid -- ERROR: Block invalid, founders reward missing: block %lld, expected value  %lld\n", nBlockValue, foundersExpected);
+	        return false;
+	    }
+            LogPrintf("CSuperblock::IsValid -- ERROR: Block invalid, wrong founders reward: block %lld, actual value %lld, expected value  %lld\n", nBlockValue, foundersActual, foundersExpected);
+            return false;
+        }
     }
 
     // miner should not get more than he would usually get
-    if(nBlockValue > blockReward + budgetLimit + foundersExpected) {
+    if(nBlockValue > blockReward + budgetLimit + foundersExpected)
+    {
         LogPrintf("CSuperblock::IsValid -- ERROR: Block invalid, block value limit exceeded: block %lld, limit %lld\n", nBlockValue, blockReward + budgetLimit + foundersExpected);
         return false;
     }
