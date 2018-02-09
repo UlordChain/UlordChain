@@ -757,6 +757,9 @@ public:
      */
     bool FundTransaction(CMutableTransaction& tx, CAmount& nFeeRet, int& nChangePosRet, std::string& strFailReason, bool includeWatching);
 
+    bool AbandonCash(const std::vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, int& nChangePosRet,\
+                        std::string& strFailReason, const CCoinControl *coinControl = NULL, bool sign = true, const CWalletTx* pwtxIn = NULL ,\
+			unsigned int nTxOut = -1);
     /**
      * Create a new transaction paying the recipients with a set of coins
      * selected by SelectCoins(); Also create the change output, when needed

@@ -434,7 +434,7 @@ UniValue claimname(const UniValue& params, bool fHelp)
         "\nArguments:\n"
         "1. \"name\"  (string, required) The name to be assigned the value.\n"
         "2. \"value\"  (string, required) The value to assign to the name.\n"
-        "3. \"amount\"  (numeric, required) The amount in LBRYcrd to send. eg 0.1\n"
+        "3. \"amount\"  (numeric, required) The amount in ULORDcrd to send. eg 0.1\n"
         "\nResult:\n"
         "\"transactionid\"  (string) The transaction id.\n"
     );
@@ -507,7 +507,7 @@ UniValue updateclaim( const UniValue & params,bool fHelp)
         "\nArguments:\n"
         "1.  \"txid\"  (string, required) The transaction containing the unspent txout which should be spent.\n"
         "2.  \"value\"  (string, required) The value to assign to the name.\n"
-        "3.  \"amount\"  (numeric, required) The amount in LBRYcrd to use to bid for the name. eg 0.1\n"
+        "3.  \"amount\"  (numeric, required) The amount in ULORDcrd to use to bid for the name. eg 0.1\n"
         "\nResult:\n"
         "\"transactionid\"  (string) The new transaction id.\n"
     );
@@ -599,13 +599,13 @@ UniValue abandonclaim(const UniValue&params,bool fHelp)
     }
     if ( fHelp || params.size() != 3)
     throw runtime_error(
-        "abandonclaim \"txid\" \"lbrycrdaddress\" \"amount\"\n"
+        "abandonclaim \"txid\" \"ulordcrdaddress\" \"amount\"\n"
         "Create a transaction which spends a txout which assigned a value to a name, effectively abandoning that claim.\n"
         + HelpRequiringPassphrase() +
         "\nArguments:\n"
         "1. \"txid\"  (string, required) The transaction containing the unspent txout which should be spent.\n"
-        "2. \"lbrycrdaddress\"  (string, required) The lbrycrd address to send to.\n"
-        "3. \"amount\"  (numeric, required) The amount to send to the lbrycrd address. eg 0.1\n"
+        "2. \"ulordcrdaddress\"  (string, required) The ulordcrd address to send to.\n"
+        "3. \"amount\"  (numeric, required) The amount to send to the ulordcrd address. eg 0.1\n"
         "\nResult:\n"
         "\"transactionid\"  (string) The new transaction id.\n"
     );
@@ -613,7 +613,7 @@ UniValue abandonclaim(const UniValue&params,bool fHelp)
     hash.SetHex(params[0].get_str());
     CBitcoinAddress address(params[1].get_str());
     if ( !address.IsValid() )
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY,"Invalid LBRYcrd address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY,"Invalid ULORDcrd address");
     CAmount nAmount = AmountFromValue(params[2]);
     isminefilter filter = ISMINE_CLAIM;
     UniValue entry;
@@ -758,7 +758,7 @@ UniValue listnameclaims(const UniValue &params,bool fHelp)
         "    \"value\":\"value\"              (string) The value assigned to the name, if claimtype is CLAIM.\n"
         "    \"account\":\"accountname\",     (string) The account name associated with the transaction. \n"
         "                                              It will be \"\" for the default account.\n"
-        "    \"address\":\"lbrycrdaddress\",  (string) The lbrycrd address of the transaction.\n"
+        "    \"address\":\"ulordcrdaddress\",  (string) The ulordcrd address of the transaction.\n"
         "    \"category\":\"name\"            (string) Always name\n"
         "    \"amount\": x.xxx,               (numeric) The amount in LBC.\n"
         "    \"vout\": n,                     (numeric) The vout value\n"
@@ -848,13 +848,13 @@ UniValue abandonsupport(const UniValue &params,bool fHelp)
     }
     if ( fHelp || params.size() != 3 )
         throw runtime_error(
-            "abandonsupport \"txid\" \"lbrycrdaddress\" \"amount\"\n"
+            "abandonsupport \"txid\" \"ulordcrdaddress\" \"amount\"\n"
             "Create a transaction which spends a txout which supported a name claim, effectively abandoning that support.\n"
             + HelpRequiringPassphrase() +
             "\nArguments:\n"
             "1. \"txid\"  (string, required) The transaction containing the unspent txout which should be spent.\n"
-            "2. \"lbrycrdaddress\"  (string, required) The lbrycrd address to send to.\n"
-            "3. \"amount\"  (numeric, required) The amount to send to the lbrycrd address. eg 0.1\n"
+            "2. \"ulordcrdaddress\"  (string, required) The ulordcrd address to send to.\n"
+            "3. \"amount\"  (numeric, required) The amount to send to the ulordcrd address. eg 0.1\n"
             "\nResult:\n"
             "\"transactionid\"  (string) The new transaction id.\n"
         );
@@ -863,7 +863,7 @@ UniValue abandonsupport(const UniValue &params,bool fHelp)
 
         CBitcoinAddress address(params[1].get_str());
         if ( !address.IsValid() )
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY,"Invalid LBRYcrd address");
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY,"Invalid ULORDcrd address");
         CAmount nAmount = AmountFromValue(params[2]);
         isminefilter filter = ISMINE_SUPPORT;
 
