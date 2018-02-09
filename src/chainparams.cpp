@@ -20,7 +20,7 @@
 #include "chainparamsseeds.h"
 
 typedef int64_t i64;
-#define GENESIS_GENERATION
+//#define GENESIS_GENERATION
 
 #ifdef GENESIS_GENERATION
 #include <iostream>
@@ -223,8 +223,8 @@ public:
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,68);
         // Ulord script addresses start with 'S'
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,63);
-        // Ulord private keys start with 'W'
-        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,73);
+        // Ulord private keys start with '5' or 'K' or 'L'(as in Bitcoin)
+        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,0x80);
         // Ulord BIP32 pubkeys start with 'xpub' (Bitcoin defaults)
         base58Prefixes[EXT_PUBLIC_KEY] = boost::assign::list_of(0x04)(0x88)(0xB2)(0x1E).convert_to_container<std::vector<unsigned char> >();
         // Ulord BIP32 prvkeys start with 'xprv' (Bitcoin defaults)
@@ -367,8 +367,8 @@ public:
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,130);
         // Testnet Ulord script addresses start with 's'
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,125);
-        // Testnet private keys start with 'w'
-        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,135);
+        // Testnet private keys start with '9' or 'c'(as in Bitcoin)
+        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,0xef);
         // Testnet Ulord BIP32 pubkeys start with 'tpub' (Bitcoin defaults)
         base58Prefixes[EXT_PUBLIC_KEY] = boost::assign::list_of(0x04)(0x35)(0x87)(0xCF).convert_to_container<std::vector<unsigned char> >();
         // Testnet Ulord BIP32 prvkeys start with 'tprv' (Bitcoin defaults)
@@ -499,7 +499,7 @@ public:
         // Regtest Ulord script addresses start with 'q'
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,120);
         // Regtest private keys start with 'm'
-        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,110);
+        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,0xef);
         // Regtest Ulord BIP32 pubkeys start with 'tpub' (Bitcoin defaults)
         base58Prefixes[EXT_PUBLIC_KEY] = boost::assign::list_of(0x04)(0x35)(0x87)(0xCF).convert_to_container<std::vector<unsigned char> >();
         // Regtest Ulord BIP32 prvkeys start with 'tprv' (Bitcoin defaults)
