@@ -71,6 +71,7 @@ private:
 public:
 
     static bool IsSuperblockTriggered(int nBlockHeight);
+    static bool IsSuperblockVoteTriggered(int nBlockHeight);
 
     static void AppendFoundersReward(CMutableTransaction &txNewRet, int nBlockHeight);
     static void CreateSuperblock(CMutableTransaction& txNewRet, int nBlockHeight, std::vector<CTxOut>& voutSuperblockRet);
