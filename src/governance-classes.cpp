@@ -285,64 +285,70 @@ bool CSuperblockManager::IsSuperblockTriggered(int nBlockHeight)
     if (!CSuperblock::IsValidBlockHeight(nBlockHeight)) {
         return false;
     }
-
-    LOCK(governance.cs);
-    // GET ALL ACTIVE TRIGGERS
-    std::vector<CSuperblock_sptr> vecTriggers = triggerman.GetActiveTriggers();
-
-    LogPrint("gobject", "CSuperblockManager::IsSuperblockTriggered -- vecTriggers.size() = %d\n", vecTriggers.size());
-
-    DBG( cout << "IsSuperblockTriggered Number triggers = " << vecTriggers.size() << endl; );
-
-    BOOST_FOREACH(CSuperblock_sptr pSuperblock, vecTriggers)
-    {
-        if(!pSuperblock) {
-            LogPrintf("CSuperblockManager::IsSuperblockTriggered -- Non-superblock found, continuing\n");
-            DBG( cout << "IsSuperblockTriggered Not a superblock, continuing " << endl; );
-            continue;
-        }
-
-        CGovernanceObject* pObj = pSuperblock->GetGovernanceObject();
-
-        if(!pObj) {
-            LogPrintf("CSuperblockManager::IsSuperblockTriggered -- pObj == NULL, continuing\n");
-            DBG( cout << "IsSuperblockTriggered pObj is NULL, continuing" << endl; );
-            continue;
-        }
-
-        LogPrint("gobject", "CSuperblockManager::IsSuperblockTriggered -- data = %s\n", pObj->GetDataAsString());
-
-        // note : 12.1 - is epoch calculation correct?
-
-        if(nBlockHeight != pSuperblock->GetBlockStart()) {
-            LogPrint("gobject", "CSuperblockManager::IsSuperblockTriggered -- block height doesn't match nBlockHeight = %d, blockStart = %d, continuing\n",
-                     nBlockHeight,
-                     pSuperblock->GetBlockStart());
-            DBG( cout << "IsSuperblockTriggered Not the target block, continuing"
-                 << ", nBlockHeight = " << nBlockHeight
-                 << ", superblock->GetBlockStart() = " << pSuperblock->GetBlockStart()
-                 << endl; );
-            continue;
-        }
-
-        // MAKE SURE THIS TRIGGER IS ACTIVE VIA FUNDING CACHE FLAG
-
-        pObj->UpdateSentinelVariables();
-
-        if(pObj->IsSetCachedFunding()) {
-            LogPrint("gobject", "CSuperblockManager::IsSuperblockTriggered -- fCacheFunding = true, returning true\n");
-            DBG( cout << "IsSuperblockTriggered returning true" << endl; );
-            return true;
-        }
-        else  {
-            LogPrint("gobject", "CSuperblockManager::IsSuperblockTriggered -- fCacheFunding = false, continuing\n");
-            DBG( cout << "IsSuperblockTriggered No fCachedFunding, continuing" << endl; );
-        }
-    }
-
-    return false;
+    else LogPrintf("SuperBlockHeight right %d\n",nBlockHeight);
+    return true;
 }
 
+bool CSuperblockManager::IsSuperblockVoteTriggered(int nBlockHeight)
+{
+    if (CSuperblockManager::IsSuperblockTriggered(nBlockHeight)){
+        LOCK(governance.cs);
+        // GET ALL ACTIVE TRIGGERS
+        std::vector<CSuperblock_sptr> vecTriggers = triggerman.GetActiveTriggers();
+
+        LogPrint("gobject", "CSuperblockManager::IsSuperblockTriggered -- vecTriggers.size() = %d\n", vecTriggers.size());
+
+        DBG( cout << "IsSuperblockTriggered Number triggers = " << vecTriggers.size() << endl; );
+
+        BOOST_FOREACH(CSuperblock_sptr pSuperblock, vecTriggers)
+        {
+            if(!pSuperblock) {
+                LogPrintf("CSuperblockManager::IsSuperblockTriggered -- Non-superblock found, continuing\n");
+                DBG( cout << "IsSuperblockTriggered Not a superblock, continuing " << endl; );
+                continue;
+            }
+
+            CGovernanceObject* pObj = pSuperblock->GetGovernanceObject();
+
+            if(!pObj) {
+                LogPrintf("CSuperblockManager::IsSuperblockTriggered -- pObj == NULL, continuing\n");
+                DBG( cout << "IsSuperblockTriggered pObj is NULL, continuing" << endl; );
+                continue;
+            }
+
+            LogPrint("gobject", "CSuperblockManager::IsSuperblockTriggered -- data = %s\n", pObj->GetDataAsString());
+
+            // note : 12.1 - is epoch calculation correct?
+
+            if(nBlockHeight != pSuperblock->GetBlockStart()) {
+                LogPrint("gobject", "CSuperblockManager::IsSuperblockTriggered -- block height doesn't match nBlockHeight = %d, blockStart = %d, continuing\n",
+                         nBlockHeight,
+                         pSuperblock->GetBlockStart());
+                DBG( cout << "IsSuperblockTriggered Not the target block, continuing"
+                     << ", nBlockHeight = " << nBlockHeight
+                     << ", superblock->GetBlockStart() = " << pSuperblock->GetBlockStart()
+                     << endl; );
+                continue;
+            }
+
+            // MAKE SURE THIS TRIGGER IS ACTIVE VIA FUNDING CACHE FLAG
+
+            pObj->UpdateSentinelVariables();
+
+            if(pObj->IsSetCachedFunding()) {
+                LogPrint("gobject", "CSuperblockManager::IsSuperblockTriggered -- fCacheFunding = true, returning true\n");
+                DBG( cout << "IsSuperblockTriggered returning true" << endl; );
+                return true;
+            }
+            else  {
+                LogPrint("gobject", "CSuperblockManager::IsSuperblockTriggered -- fCacheFunding = false, continuing\n");
+                DBG( cout << "IsSuperblockTriggered No fCachedFunding, continuing" << endl; );
+            }
+        }
+        return false;
+    }
+    return false;
+}
 
 bool CSuperblockManager::GetBestSuperblock(CSuperblock_sptr& pSuperblockRet, int nBlockHeight)
 {
