@@ -292,6 +292,7 @@ public:
     CTestNetParams() {
         strNetworkID = "test";
         // reward setting
+	consensus.premine = i64(1e8 * COIN);                            // premine
         consensus.genesisReward = i64(1 * COIN);                        // genesis                                                           
         consensus.minerReward4 = i64(112.966 * COIN);                   // miners
         consensus.minerReward5 = i64(535.103 * COIN);
@@ -307,7 +308,7 @@ public:
         consensus.nMasternodePaymentsIncreaseBlock = 46000;
         consensus.nMasternodePaymentsIncreasePeriod = 576;
         consensus.nInstantSendKeepLock = 6;
-        consensus.nBudgetPaymentsStartBlock = 60000;
+        consensus.nBudgetPaymentsStartBlock = 300;
         consensus.nBudgetPaymentsCycleBlocks = 50;
         consensus.nBudgetPaymentsWindowBlocks = 10;
         consensus.nBudgetProposalEstablishingTime = 60*20;
@@ -415,6 +416,7 @@ public:
     CRegTestParams() {
         strNetworkID = "regtest";
         // reward setting
+	consensus.premine = i64(1e8 * COIN);                            // premine    
         consensus.genesisReward = i64(1 * COIN);                        // genesis
         consensus.minerReward4 = i64(112.966 * COIN);                   // miners
         consensus.minerReward5 = i64(535.103 * COIN);
