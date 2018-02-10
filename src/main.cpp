@@ -1786,7 +1786,7 @@ CAmount GetMasternodePayment(const int height)
     }
     else if (height < starting + period * 4)		// 4th
     {
-	return cp.mnReward4 * 3;
+	return cp.mnReward2 * 3;
     }
     else						// 5th and after
     {
