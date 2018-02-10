@@ -432,6 +432,9 @@ void CSuperblockManager::CreateSuperblock(CMutableTransaction& txNewRet, int nBl
     DBG( cout << "CSuperblockManager::CreateSuperblock Start" << endl; );
 
     LOCK(governance.cs);
+	
+    // make sure it's empty, just in case
+    voutSuperblockRet.clear();
 
     // TODO: How many payments can we add before things blow up?
     //       Consider at least following limits:
@@ -443,6 +446,12 @@ void CSuperblockManager::CreateSuperblock(CMutableTransaction& txNewRet, int nBl
     {
         AppendFoundersReward(txNewRet, nBlockHeight);
     }
+	
+    if(!IsSuperblockVoteTriggered(nBlockHeight))
+    {
+        LogPrint("CSuperblockManager::IsSuperblockVoteTriggered -- Can't get vote at height %d\n", nBlockHeight);
+        return;
+    }
 
     // GET THE BEST SUPERBLOCK FOR THIS BLOCK HEIGHT
 
@@ -452,9 +461,6 @@ void CSuperblockManager::CreateSuperblock(CMutableTransaction& txNewRet, int nBl
         DBG( cout << "CSuperblockManager::CreateSuperblock Failed to get superblock for height, returning" << endl; );
         return;
     }
-
-    // make sure it's empty, just in case
-    voutSuperblockRet.clear();
 
     // CONFIGURE SUPERBLOCK OUTPUTS
 
