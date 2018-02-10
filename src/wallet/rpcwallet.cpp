@@ -5,7 +5,7 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "sodium.h"
+//#include "sodium.h"
 #include "amount.h"
 #include "base58.h"
 #include "chain.h"
