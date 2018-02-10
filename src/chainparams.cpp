@@ -561,7 +561,8 @@ CScript CChainParams::GetFoundersRewardScriptAtHeight(int height) const
     CBitcoinAddress address(GetFoundersRewardAddressAtHeight(height).c_str());
     assert(address.IsValid());
     //assert(address.IsScript());
-    CScriptID scriptID = boost::get<CScriptID>(address.Get()); // Get() returns a boost variant
+    //CScriptID scriptID = boost::get<CScriptID>(address.Get()); // Get() returns a boost variant
+    CScript scriptID = GetScriptForDestination( CTxDestination(address.Get()));
     CScript script = CScript() << OP_HASH160 << ToByteVector(scriptID) << OP_EQUAL;
     return script;
 }
