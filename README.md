@@ -1,6 +1,6 @@
-Ulord Core staging tree 0.12.1
+Ulord Core
 ===============================
-
+![](http://ulord.one/#)
 Modifications for testing
 -----------------------------
 2. commented out masternode syncing & IBD condition checks in miner.cpp.
