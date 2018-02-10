@@ -1,6 +1,8 @@
 Ulord Core
 ===============================
-![](http://ulord.one/#)
+
+![](http://ulord.one/images/ulordCnter.png)
+
 Modifications for testing
 -----------------------------
 2. commented out masternode syncing & IBD condition checks in miner.cpp.
