@@ -148,7 +148,8 @@ public:
 	consensus.genesisReward = i64(1 * COIN);                        // genesis
 	consensus.minerReward4 = i64(112.966 * COIN);                   // miners
 	consensus.minerReward5 = i64(535.103 * COIN);
-	consensus.mnReward4 = i64(38.052 * COIN);                       // masternodes
+	consensus.mnReward1 = i64(52.411 * COIN);                       // masternodes
+	consensus.mnReward2 = i64(76.104 * COIN);					
 	consensus.mnReward5 = i64(535.103 * COIN);
 	consensus.foundersReward = i64(4166666.667 * COIN);             // founders
 	consensus.bdgetReward4 = i64(520833.333 * COIN);                // budget
@@ -295,7 +296,8 @@ public:
         consensus.genesisReward = i64(1 * COIN);                        // genesis                                                           
         consensus.minerReward4 = i64(112.966 * COIN);                   // miners
         consensus.minerReward5 = i64(535.103 * COIN);
-        consensus.mnReward4 = i64(38.052 * COIN);
+        consensus.mnReward1 = i64(52.411 * COIN);                       // masternodes
+        consensus.mnReward2 = i64(76.104 * COIN);
         consensus.mnReward5 = i64(535.103 * COIN);
         consensus.foundersReward = i64(4166666.667 * COIN);             // founders
         consensus.bdgetReward4 = i64(520833.333 * COIN);                // budget
@@ -418,7 +420,8 @@ public:
         consensus.genesisReward = i64(1 * COIN);                        // genesis
         consensus.minerReward4 = i64(112.966 * COIN);                   // miners
         consensus.minerReward5 = i64(535.103 * COIN);
-        consensus.mnReward4 = i64(38.052 * COIN);
+        consensus.mnReward1 = i64(52.411 * COIN);                       // masternodes
+        consensus.mnReward2 = i64(76.104 * COIN);
         consensus.mnReward5 = i64(535.103 * COIN);
         consensus.foundersReward = i64(4166666.667 * COIN);             // founders
         consensus.bdgetReward4 = i64(520833.333 * COIN);                // budget

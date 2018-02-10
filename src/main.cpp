@@ -1774,19 +1774,19 @@ CAmount GetMasternodePayment(const int height)
 
     if (height < starting + period)			// in the first year
     {
-  	return cp.mnReward4;
+  	return cp.mnReward1;
     } 
     else if (height < starting + period * 2)		// in first 2 years
     {
-        return cp.mnReward4 * 2;
+        return cp.mnReward2;
     }
     else if (height < starting + period * 3)		// 3rd year
     {
-	return cp.mnReward4 * 3;
+	return cp.mnReward2 * 2;
     }
     else if (height < starting + period * 4)		// 4th
     {
-	return cp.mnReward4 * 4;
+	return cp.mnReward4 * 3;
     }
     else						// 5th and after
     {

@@ -46,7 +46,8 @@ struct Params {
     i64 minerReward5;		// block reward to miners per block in the 2nd 4 years
 
     // masternode reward
-    i64 mnReward4;              // block reward to masternode per block in the 1st 2 years
+    i64 mnReward1;              // block reward to masternode per block in the 1st year
+    i64 mnReward2;              // block reward to masternode per block in the 2nd year
     i64 mnReward5;              // block reward to masternode per block in the 5th year
 
     // founders reward
