@@ -12,7 +12,6 @@
 #include "util.h"
 #include "utilstrencodings.h"
 #include "nameclaim.h"
-
 #include <boost/foreach.hpp>
 
     /**
