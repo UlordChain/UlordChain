@@ -400,9 +400,9 @@ public:
         };
 
 	// Founders reward script expects a vector of 2-of-3 multisig addresses
-        vFoundersRewardAddress = {
-            "u2UNzUUx8mWBCRYPRezvA363EYXyEpHokyi", "u2N9PH9Wk9xjqYg9iin1Ua3aekJqfAtE543", "u2NGQjYMQhFndDHguvUw4wZdNdsssA6K7x2", "u2ENg7hHVqqs9JwU5cgjvSbxnT2a9USNfhy",
-            "u2BS7Mrbaef3fA4xrmkvDisFVXVrRBnZ6Qj", "u2FuSwoLCdBVPwdZuYoHrEzxAb9qy4qjbnL", "u2SX3U8NtrT6gz5Db1AtQCSGjrpptr8JC6h", "u2V51gZNSoJ5kRL74bf9YTtbZuv8Fcqx2FH", 
+         vFoundersRewardAddress = {
+            "uZh9wcva8EcLoWKPN9vg7noNC9DyiZxxwT", "uaR5hJ945reXYdHZg4Q5KUw965z1qQtGqZ", "uL64mZSkKfZxuK4Efb7S1bKx7FZEGgZvXT", "ugwMzDZpKYQBZT8ww9NPLJkDbaL1fHvQ8G",
+            "uP521JazFfhhYJJhCAYWjdi12x5EsBS547", "uWhnptz2YePSidUvA6chcDHojBXUPhNKzv", "ueWxneuF4UMEtKgT3K59ukiLzCWLKtuweC", "uR6eL6bKK9oJgWUB6zDLu3BjP3PqSxWRHs", 
         };
     }
 };
