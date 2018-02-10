@@ -449,7 +449,7 @@ void CSuperblockManager::CreateSuperblock(CMutableTransaction& txNewRet, int nBl
 	
     if(!IsSuperblockVoteTriggered(nBlockHeight))
     {
-        LogPrint("CSuperblockManager::IsSuperblockVoteTriggered -- Can't get vote at height %d\n", nBlockHeight);
+        LogPrintf("CSuperblockManager::IsSuperblockVoteTriggered -- Can't get vote at height %d\n", nBlockHeight);
         return;
     }
 
