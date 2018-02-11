@@ -143,19 +143,19 @@ class CMainParams : public CChainParams {
 public:
     CMainParams() {
         strNetworkID = "main";
-	// reward setting
-	consensus.premine = i64(1e8 * COIN);                            // premine
-	consensus.genesisReward = i64(1 * COIN);                        // genesis
-	consensus.minerReward4 = i64(112.966 * COIN);                   // miners
-	consensus.minerReward5 = i64(535.103 * COIN);
-	consensus.mnReward1 = i64(52.411 * COIN);                       // masternodes
-	consensus.mnReward2 = i64(76.104 * COIN);					
-	consensus.mnReward5 = i64(535.103 * COIN);
-	consensus.foundersReward = i64(4166666.667 * COIN);             // founders
-	consensus.bdgetReward4 = i64(520833.333 * COIN);                // budget
-	consensus.bdgetReward5 = i64(2083333.333 * COIN);
+	    // reward setting
+	    consensus.premine = i64(1e8 * COIN);                            // premine
+	    consensus.genesisReward = i64(1 * COIN);                        // genesis
+	    consensus.minerReward4 = i64(112.966 * COIN);                   // miners
+	    consensus.minerReward5 = i64(535.103 * COIN);
+	    consensus.mnReward1 = i64(52.411 * COIN);                       // masternodes
+	    consensus.mnReward2 = i64(76.104 * COIN);					
+	    consensus.mnReward5 = i64(535.103 * COIN);
+	    consensus.foundersReward = i64(4166666.667 * COIN);             // founders
+     	consensus.bdgetReward4 = i64(520833.333 * COIN);                // budget
+	    consensus.bdgetReward5 = i64(2083333.333 * COIN);
 
-	consensus.colleteral = i64(1e4 * COIN);                         // masternode colleteral
+	    consensus.colleteral = i64(1e4 * COIN);                         // masternode colleteral
 
         consensus.nSubsidyHalvingInterval = 840960;                     // 4 years, 24 * 60 / 2.5 * 365 * 4 
         consensus.nMasternodePaymentsStartBlock = 57600;                // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
@@ -233,9 +233,9 @@ public:
         // Ulord BIP44 coin type is '247'
         base58Prefixes[EXT_COIN_TYPE]  = boost::assign::list_of(0x80)(0x00)(0x00)(0xf7).convert_to_container<std::vector<unsigned char> >();
 
-	//vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
-	vFixedSeeds.clear();
-	vSeeds.clear();		
+	    //vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
+	    vFixedSeeds.clear();
+	    vSeeds.clear();		
         vSeeds.push_back(CDNSSeedData("ulord.one", "dnsseed1.ulord.one"));
         fMiningRequiresPeers = true;
         fDefaultConsistencyChecks = false;
@@ -292,7 +292,7 @@ public:
     CTestNetParams() {
         strNetworkID = "test";
         // reward setting
-	consensus.premine = i64(1e8 * COIN);                            // premine
+	    consensus.premine = i64(1e8 * COIN);                            // premine
         consensus.genesisReward = i64(1 * COIN);                        // genesis                                                           
         consensus.minerReward4 = i64(112.966 * COIN);                   // miners
         consensus.minerReward5 = i64(535.103 * COIN);
@@ -353,8 +353,8 @@ public:
 
         genesis = CreateGenesisBlock(1518059142, 1940147270, 0x2000ffff, 1,  1 * COIN);
 #ifdef GENESIS_GENERATION
-	arith_uint256 a("00ffffffff000000000000000000000000000000000000000000000000000000");
-	cout << "pow limit : " << a.GetCompact() << endl;
+	    arith_uint256 a("00ffffffff000000000000000000000000000000000000000000000000000000");
+	    cout << "pow limit : " << a.GetCompact() << endl;
         findGenesis(&genesis, "testnet");
 #endif
         consensus.hashGenesisBlock = genesis.GetHash();
@@ -363,7 +363,7 @@ public:
 
         vFixedSeeds.clear();
         vSeeds.clear();
-	vSeeds.push_back(CDNSSeedData("ulord.one",  "testnet-seed1.ulord.one"));    
+	    vSeeds.push_back(CDNSSeedData("ulord.one",  "testnet-seed1.ulord.one"));    
 
         // Testnet Ulord addresses start with 'u'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,130);
@@ -378,7 +378,7 @@ public:
         // Testnet Ulord BIP44 coin type is '1' (All coin's testnet default)
         base58Prefixes[EXT_COIN_TYPE]  = boost::assign::list_of(0x80)(0x00)(0x00)(0x01).convert_to_container<std::vector<unsigned char> >();
 
-//vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
+        //vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
 
         fMiningRequiresPeers = true;
         fDefaultConsistencyChecks = false;
@@ -399,10 +399,10 @@ public:
             0               // * estimated number of transactions per day after checkpoint
         };
 
-	// Founders reward script expects a vector of 2-of-3 multisig addresses
-         vFoundersRewardAddress = {
-            "uZh9wcva8EcLoWKPN9vg7noNC9DyiZxxwT", "uaR5hJ945reXYdHZg4Q5KUw965z1qQtGqZ", "uL64mZSkKfZxuK4Efb7S1bKx7FZEGgZvXT", "ugwMzDZpKYQBZT8ww9NPLJkDbaL1fHvQ8G",
-            "uP521JazFfhhYJJhCAYWjdi12x5EsBS547", "uWhnptz2YePSidUvA6chcDHojBXUPhNKzv", "ueWxneuF4UMEtKgT3K59ukiLzCWLKtuweC", "uR6eL6bKK9oJgWUB6zDLu3BjP3PqSxWRHs", 
+	    // Founders reward script expects a vector of 2-of-3 multisig addresses
+        vFoundersRewardAddress = {
+            "uKd87HUL1DqazrCxquRWEUprfEnGXx8Eap", "uQpN4XWvwK3YEAeJUUB5ajPuap6Kvc1Fqh", "uR5THQEvaNHD663Em9VyB5QyPh2N1P8Tp1", "uYJYVJWiUKsbqeYvPWAHkTJ7DWXuSen5di",
+            "uaUQ3E8LW1XiGGe4seb2er9TyULtduGsxD", "uaVj7mwhs2dD1HNYH1tdLH5hPZPbct1eXw", "ueHo7CQV6N1PQwyYjUu9zPVASE9RCVKNsv", "uL13kLc4bMuRjYePLC1cSkH3TJV225Au5S", 
         };
     }
 };
@@ -416,7 +416,7 @@ public:
     CRegTestParams() {
         strNetworkID = "regtest";
         // reward setting
-	consensus.premine = i64(1e8 * COIN);                            // premine    
+	    consensus.premine = i64(1e8 * COIN);                            // premine    
         consensus.genesisReward = i64(1 * COIN);                        // genesis
         consensus.minerReward4 = i64(112.966 * COIN);                   // miners
         consensus.minerReward5 = i64(535.103 * COIN);
@@ -426,7 +426,7 @@ public:
         consensus.foundersReward = i64(4166666.667 * COIN);             // founders
         consensus.bdgetReward4 = i64(520833.333 * COIN);                // budget
         consensus.bdgetReward5 = i64(2083333.333 * COIN);
-	consensus.colleteral = i64(1e4 * COIN);                         // masternode colleteral
+	    consensus.colleteral = i64(1e4 * COIN);                         // masternode colleteral
         consensus.nSubsidyHalvingInterval = 150;
         consensus.nMasternodePaymentsStartBlock = 240;
         consensus.nMasternodePaymentsIncreaseBlock = 350;
@@ -447,7 +447,7 @@ public:
         consensus.BIP34Height = -1;                                     // BIP34 has not necessarily activated on regtest
         consensus.BIP34Hash = uint256();
         consensus.powLimit = uint256S("0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f");
-	consensus.nPowAveragingWindow = 17;
+	    consensus.nPowAveragingWindow = 17;
         consensus.nPowMaxAdjustDown = 0;                                // Turn off adjustment down
         consensus.nPowMaxAdjustUp = 0;                                  // Turn off adjustment up
         consensus.nPowTargetTimespan = 24 * 60 * 60;                    // Ulord: 1 day
@@ -560,11 +560,8 @@ CScript CChainParams::GetFoundersRewardScriptAtHeight(int height) const
 
     CBitcoinAddress address(GetFoundersRewardAddressAtHeight(height).c_str());
     assert(address.IsValid());
-    //assert(address.IsScript());
-    //CScriptID scriptID = boost::get<CScriptID>(address.Get()); // Get() returns a boost variant
-    CScript scriptID = GetScriptForDestination( CTxDestination(address.Get()));
-    CScript script = CScript() << OP_HASH160 << ToByteVector(scriptID) << OP_EQUAL;
-    return script;
+    CScript scriptPubKey = GetScriptForDestination(address.Get());
+    return scriptPubKey;
 }
 
 std::string CChainParams::GetFoundersRewardAddressAtIndex(int i) const
