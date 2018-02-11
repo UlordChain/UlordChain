@@ -170,7 +170,7 @@ changelog reaches back further but remains valid as all commits are visible now.
 0.10.15.1 Release notes
 ------------------------
 
-- Darksend tested with 2.5 DRK successfully and I've set that as the minimum
+- Darksend tested with 2.5 UC successfully and I've set that as the minimum
   amount that's compatible
 - Fixed a locking bug on inputs
 - Fixed a collateral calculation bug
@@ -227,7 +227,7 @@ changelog reaches back further but remains valid as all commits are visible now.
 -----------------------
 
 - Testnet merges use two, while mainnet merges will use 3 participants
-- Fixed the endless splitting issue causes by splitting 1000DRK and not making a DS compatible input
+- Fixed the endless splitting issue causes by splitting 1000UC and not making a DS compatible input
 
 
 0.10.13.8 Release notes
@@ -273,10 +273,10 @@ changelog reaches back further but remains valid as all commits are visible now.
 0.10.13.4 Release notes
 -----------------------
 
-- Fixed issue with denominating small amounts of DRK in large wallet
-  (http://jira.darkcoin.qa/browse/DRK-46)
+- Fixed issue with denominating small amounts of UC in large wallet
+  (http://jira.ulord.qa/browse/UC-46)
 - Made splitting up initial inputs much more efficient. Now when splitting up,
-  it will use powers of two from 4096 DRK in reverse to get the best possible
+  it will use powers of two from 4096 UC in reverse to get the best possible
   mix of inputs for the next phase without any bloat to the blockchain or to
   the users wallet.
 - Fixed "transaction too large" due to the initial splitting function
@@ -289,8 +289,8 @@ changelog reaches back further but remains valid as all commits are visible now.
 - Added Amount/Rounds to overview screen so you can see current settings
 - Overview darksend cache is cleared on settings change (will instantly update)
 - Fixed issue with completed amount jumping around
-  (http://jira.darkcoin.qa/browse/DRK-46)
-- Made messages less threatening (http://jira.darkcoin.qa/browse/DRK-60)
+  (http://jira.ulord.qa/browse/UC-46)
+- Made messages less threatening (http://jira.ulord.qa/browse/UC-60)
 
 PS : Please move testing funds to a new wallet. This version has massive
 optimizations for the way inputs are stored and split up. This will make
@@ -419,8 +419,8 @@ http://test.explorer.darkcoin.fr/tx/ce0ea2bdf630233955d459489b6f764e0d0bbe9e8a62
 ------------------------
 
 - Added GUI configuration for Darksend Rounds, Enable Darksend and Anonymize
-  amount of DRK
-- Removed 5000DRK hard limit
+  amount of UC
+- Removed 5000UC hard limit
 - Fixed another cause of getting hit by collateral
 - Send dialog now shows selected balance (Anon, non-anon and Total)
 
@@ -448,11 +448,11 @@ http://test.explorer.darkcoin.fr/tx/6de2c5204abdea451da930f61bae0f954eef13188a3a
     3.) Another user will check that queue, if it's got a recent node, it will
         try that node first, otherwise it will go to 1.)
 
-- Darksend limited to 5000DRK per wallet.dat. Client will warn about this the
+- Darksend limited to 5000UC per wallet.dat. Client will warn about this the
   first time it's opened, then disable darksend from then on.
 - Fixed some bugs with connecting to the correct masternodes
-- Send was sending way too many coins for all modes, (I sent 100DRK anon and it
-  sent 2000DRK, then sent me change for the rest causing a whole reprocess of
+- Send was sending way too many coins for all modes, (I sent 100UC anon and it
+  sent 2000UC, then sent me change for the rest causing a whole reprocess of
   everything in the wallet)
 - Client now updates Anonymized balance when you send money out
 - Fixed coin locking issues
@@ -571,8 +571,8 @@ anonymity improvements:
 - Darksend is turned off by default in the daemon now. In most cases daemons
   won't want to run with anonymity (pools, exchanges, etc), if a user does they
   can override the default setting with -enabledaemondarksend=true
-- Fees per round of Darksend are 0.001DRK or $0.00538 at current prices. This
-  means to anonymize 1000DRK with 3 rounds (an average use case) it would cost
+- Fees per round of Darksend are 0.001UC or $0.00538 at current prices. This
+  means to anonymize 1000UC with 3 rounds (an average use case) it would cost
   a user 1.5 cents.
 - Protocol version is updated to kick old clients off testnet
 
@@ -591,10 +591,10 @@ DS+ seems to be pretty stable now :-)
 
 - RPC calls are changed a bit:
 
-    darksend denominate 100 - Will denominate 100DRK
+    darksend denominate 100 - Will denominate 100UC
     darksend auto - Will run AutoDenominate
-    darksend Xaddr 100 - Will send 100 denominated DRK to Xaddr
-    sendtoaddress Xaddr 100 - Will send 100 non-denominated DRK to Xaddr
+    darksend Xaddr 100 - Will send 100 denominated UC to Xaddr
+    sendtoaddress Xaddr 100 - Will send 100 non-denominated UC to Xaddr
 
 
 0.10.12.8 Release notes
@@ -639,7 +639,7 @@ and even disable darksend auto-denom if wanted:
 0.10.12.7 Release notes
 -----------------------
 
-- Added a smart input splitting method. Place 1000+DRK into a brand new wallet
+- Added a smart input splitting method. Place 1000+UC into a brand new wallet
   and it will be split into many inputs compatible with Darksend
 - DoAutodenomination now tries the correct balance (it was getting stuck on
   the wrong inputs)
@@ -656,7 +656,7 @@ and even disable darksend auto-denom if wanted:
 - Inputs that are large will be broken up automatically for denomination
 - Masternodes should change every block now (missed a mod=10 last time)
 - Mixing requires 5 clients to merge now, should improve anonymity.
-- Mixing rounds are limited to 1000DRK, per block
+- Mixing rounds are limited to 1000UC, per block
 
 
 0.10.12.5 Release notes
@@ -692,7 +692,7 @@ This is a pretty large update to the RC client.
 - Improved DarksendInput add entry verification. Masternodes will now reject
   transactions that look like fees are too low, too high, have spent inputs, etc.
 - Incremented protocol version to kick off clients with vout(0) payment bug
-- DoAutomaticDenominations 100DRK limit changed to 500DRK (we should see a bunch
+- DoAutomaticDenominations 100UC limit changed to 500UC (we should see a bunch
   of denominations happen now)
 
 

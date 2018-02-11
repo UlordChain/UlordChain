@@ -434,8 +434,8 @@ void CDarksendPool::InitDenominations()
         is convertable to another.
 
         For example:
-        1DRK+1000 == (.1DRK+100)*10
-        10DRK+10000 == (1DRK+1000)*10
+        1UC+1000 == (.1UC+100)*10
+        10UC+10000 == (1UC+1000)*10
     */
     /* Disabled
     vecPrivateSendDenominations.push_back( (100      * COIN)+100000 );
@@ -750,7 +750,7 @@ void CDarksendPool::ChargeFees()
     with using it to stop abuse. Otherwise it could serve as an attack vector and
     allow endless transaction that would bloat Ulord and make it unusable. To
     stop these kinds of attacks 1 in 10 successful transactions are charged. This
-    adds up to a cost of 0.001DRK per transaction on average.
+    adds up to a cost of 0.001UC per transaction on average.
 */
 void CDarksendPool::ChargeRandomFees()
 {
