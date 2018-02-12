@@ -578,6 +578,7 @@ void static BitcoinMiner(const CChainParams& chainparams)
             //
             // Search
             //
+	    pblock->nNonce=GetRandInt(0x1ffffffe);	
             int64_t nStart = GetTime();
             arith_uint256 hashTarget = arith_uint256().SetCompact(pblock->nBits);
             while (true)
@@ -605,6 +606,7 @@ void static BitcoinMiner(const CChainParams& chainparams)
 		    pblock->nNonce += 1;
 		    if ((pblock->nNonce & 0xFF) == 0)
 		    {
+			//LogPrintf("UlordMiner: %d   nExtraNonce: %d\n", pblock->nNonce, nExtraNonce);    
 		        break;
 		    }
                 }
