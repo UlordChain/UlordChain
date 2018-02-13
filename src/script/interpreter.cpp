@@ -1160,7 +1160,9 @@ bool TransactionSignatureChecker::CheckSig(const vector<unsigned char>& vchSigIn
 
     if (!VerifySignature(vchSig, pubkey, sighash))
     {
+        vector<char> temp(scriptCode.begin(),scriptCode.end()); 
         LogPrintf("VerifySignature failed %s : %s : %s  %d\n", HexStr(vchSig),HexStr(pubkey) ,sighash.ToString(),nIn);
+        LogPrintf("VerifySignature failed script %s tx %s in %d type %d\n",HexStr(temp),txTo->ToString(),nIn,nHashType);
         return false;
     }
     return true;
