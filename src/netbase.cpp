@@ -15,6 +15,7 @@
 #include "random.h"
 #include "util.h"
 #include "utilstrencodings.h"
+#include "chainparams.h"
 
 #ifdef HAVE_GETADDRINFO_A
 #include <netdb.h>
@@ -850,6 +851,10 @@ bool CNetAddr::IsValid() const
 
 bool CNetAddr::IsRoutable() const
 {
+    if(Params().NetworkIDString() == CBaseChainParams::TESTNET)
+	{
+		return true;
+	}
     return IsValid() && !(IsRFC1918() || IsRFC2544() || IsRFC3927() || IsRFC4862() || IsRFC6598() || IsRFC5737() || (IsRFC4193() && !IsTor()) || IsRFC4843() || IsLocal());
 }
 
