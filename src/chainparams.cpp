@@ -401,8 +401,7 @@ public:
 
 	    // Founders reward script expects a vector of 2-of-3 multisig addresses
         vFoundersRewardAddress = {
-            "uKd87HUL1DqazrCxquRWEUprfEnGXx8Eap", "uQpN4XWvwK3YEAeJUUB5ajPuap6Kvc1Fqh", "uR5THQEvaNHD663Em9VyB5QyPh2N1P8Tp1", "uYJYVJWiUKsbqeYvPWAHkTJ7DWXuSen5di",
-            "uaUQ3E8LW1XiGGe4seb2er9TyULtduGsxD", "uaVj7mwhs2dD1HNYH1tdLH5hPZPbct1eXw", "ueHo7CQV6N1PQwyYjUu9zPVASE9RCVKNsv", "uL13kLc4bMuRjYePLC1cSkH3TJV225Au5S", 
+            "sNf43eLTrXdKKbDefUYiM6euWS5M1uwi9y"
         };
     }
 };
