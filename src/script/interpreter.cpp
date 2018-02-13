@@ -1159,8 +1159,10 @@ bool TransactionSignatureChecker::CheckSig(const vector<unsigned char>& vchSigIn
     uint256 sighash = SignatureHash(scriptCode, *txTo, nIn, nHashType);
 
     if (!VerifySignature(vchSig, pubkey, sighash))
+    {
+        LogPrintf("VerifySignature failed %s : %s : %s  %d\n", HexStr(vchSig),HexStr(pubkey) ,sighash.ToString(),nIn);
         return false;
-
+    }
     return true;
 }
 
