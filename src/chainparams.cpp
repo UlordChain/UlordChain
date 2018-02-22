@@ -48,7 +48,7 @@ static void findGenesis(CBlockHeader *pb, const string & net)
 	
     arith_uint256 hashTarget = arith_uint256().SetCompact(pb->nBits);
     fout << " finding genesis using target " << hashTarget.ToString()
-         << ", " << net << endl;;
+         << ", " << net << endl;
     cout << " finding genesis using target " << hashTarget.ToString()
         << ", " << net << endl;
 
@@ -143,19 +143,19 @@ class CMainParams : public CChainParams {
 public:
     CMainParams() {
         strNetworkID = "main";
-	    // reward setting
-	    consensus.premine = i64(1e8 * COIN);                            // premine
-	    consensus.genesisReward = i64(1 * COIN);                        // genesis
-	    consensus.minerReward4 = i64(112.966 * COIN);                   // miners
-	    consensus.minerReward5 = i64(535.103 * COIN);
-	    consensus.mnReward1 = i64(52.411 * COIN);                       // masternodes
-	    consensus.mnReward2 = i64(76.104 * COIN);					
-	    consensus.mnReward5 = i64(535.103 * COIN);
-	    consensus.foundersReward = i64(4166666.667 * COIN);             // founders
+	// reward setting
+	consensus.premine = i64(1e8 * COIN);                            // premine
+	consensus.genesisReward = i64(1 * COIN);                        // genesis
+	consensus.minerReward4 = i64(112.966 * COIN);                   // miners
+	consensus.minerReward5 = i64(535.103 * COIN);
+	consensus.mnReward1 = i64(52.411 * COIN);                       // masternodes
+	consensus.mnReward2 = i64(76.104 * COIN);					
+	consensus.mnReward5 = i64(535.103 * COIN);
+	consensus.foundersReward = i64(4166666.667 * COIN);             // founders
      	consensus.bdgetReward4 = i64(520833.333 * COIN);                // budget
-	    consensus.bdgetReward5 = i64(2083333.333 * COIN);
+	consensus.bdgetReward5 = i64(2083333.333 * COIN);
 
-	    consensus.colleteral = i64(1e4 * COIN);                         // masternode colleteral
+	consensus.colleteral = i64(1e4 * COIN);                         // masternode colleteral
 
         consensus.nSubsidyHalvingInterval = 840960;                     // 4 years, 24 * 60 / 2.5 * 365 * 4 
         consensus.nMasternodePaymentsStartBlock = 57600;                // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
@@ -233,9 +233,9 @@ public:
         // Ulord BIP44 coin type is '247'
         base58Prefixes[EXT_COIN_TYPE]  = boost::assign::list_of(0x80)(0x00)(0x00)(0xf7).convert_to_container<std::vector<unsigned char> >();
 
-	    //vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
-	    vFixedSeeds.clear();
-	    vSeeds.clear();		
+	//vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
+	vFixedSeeds.clear();
+	vSeeds.clear();		
         vSeeds.push_back(CDNSSeedData("ulord.one", "dnsseed1.ulord.one"));
         fMiningRequiresPeers = true;
         fDefaultConsistencyChecks = false;
@@ -292,7 +292,7 @@ public:
     CTestNetParams() {
         strNetworkID = "test";
         // reward setting
-	    consensus.premine = i64(1e8 * COIN);                            // premine
+	consensus.premine = i64(1e8 * COIN);                            // premine
         consensus.genesisReward = i64(1 * COIN);                        // genesis                                                           
         consensus.minerReward4 = i64(112.966 * COIN);                   // miners
         consensus.minerReward5 = i64(535.103 * COIN);
@@ -353,8 +353,8 @@ public:
 
         genesis = CreateGenesisBlock(1518059142, 1940147270, 0x2000ffff, 1,  1 * COIN);
 #ifdef GENESIS_GENERATION
-	    arith_uint256 a("00ffffffff000000000000000000000000000000000000000000000000000000");
-	    cout << "pow limit : " << a.GetCompact() << endl;
+	arith_uint256 a("00ffffffff000000000000000000000000000000000000000000000000000000");
+	cout << "pow limit : " << a.GetCompact() << endl;
         findGenesis(&genesis, "testnet");
 #endif
         consensus.hashGenesisBlock = genesis.GetHash();
@@ -363,7 +363,7 @@ public:
 
         vFixedSeeds.clear();
         vSeeds.clear();
-	    vSeeds.push_back(CDNSSeedData("ulord.one",  "testnet-seed1.ulord.one"));    
+	vSeeds.push_back(CDNSSeedData("ulord.one",  "testnet-seed1.ulord.one"));    
 
         // Testnet Ulord addresses start with 'u'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,130);
@@ -415,7 +415,7 @@ public:
     CRegTestParams() {
         strNetworkID = "regtest";
         // reward setting
-	    consensus.premine = i64(1e8 * COIN);                            // premine    
+	consensus.premine = i64(1e8 * COIN);                            // premine    
         consensus.genesisReward = i64(1 * COIN);                        // genesis
         consensus.minerReward4 = i64(112.966 * COIN);                   // miners
         consensus.minerReward5 = i64(535.103 * COIN);
@@ -425,7 +425,7 @@ public:
         consensus.foundersReward = i64(4166666.667 * COIN);             // founders
         consensus.bdgetReward4 = i64(520833.333 * COIN);                // budget
         consensus.bdgetReward5 = i64(2083333.333 * COIN);
-	    consensus.colleteral = i64(1e4 * COIN);                         // masternode colleteral
+	consensus.colleteral = i64(1e4 * COIN);                         // masternode colleteral
         consensus.nSubsidyHalvingInterval = 150;
         consensus.nMasternodePaymentsStartBlock = 240;
         consensus.nMasternodePaymentsIncreaseBlock = 350;
@@ -446,7 +446,7 @@ public:
         consensus.BIP34Height = -1;                                     // BIP34 has not necessarily activated on regtest
         consensus.BIP34Hash = uint256();
         consensus.powLimit = uint256S("0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f");
-	    consensus.nPowAveragingWindow = 17;
+	consensus.nPowAveragingWindow = 17;
         consensus.nPowMaxAdjustDown = 0;                                // Turn off adjustment down
         consensus.nPowMaxAdjustUp = 0;                                  // Turn off adjustment up
         consensus.nPowTargetTimespan = 24 * 60 * 60;                    // Ulord: 1 day
@@ -547,7 +547,7 @@ std::string CChainParams::GetFoundersRewardAddressAtHeight(int height) const
     assert(height > 1 && height < consensus.endOfFoundersReward());
 
     height /= consensus.nSuperblockCycle;
-    size_t i = height % vFoundersRewardAddress.size();;
+    size_t i = height % vFoundersRewardAddress.size();
     return vFoundersRewardAddress[i];
 }
 
