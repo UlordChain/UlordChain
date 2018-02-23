@@ -151,7 +151,7 @@ public:
 	consensus.mnReward1 = i64(52.411 * COIN);                       // masternodes
 	consensus.mnReward2 = i64(76.104 * COIN);					
 	consensus.mnReward5 = i64(535.103 * COIN);
-	consensus.foundersReward = i64(4166666.667 * COIN);             // founders
+	consensus.foundersReward = i64(8333333.333 * COIN);             // founders
      	consensus.bdgetReward4 = i64(520833.333 * COIN);                // budget
 	consensus.bdgetReward5 = i64(2083333.333 * COIN);
 
@@ -177,11 +177,11 @@ public:
         consensus.nMajorityRejectBlockOutdated = 950;
         consensus.nMajorityWindow = 1000;
         consensus.BIP34Height = 0; 
-        consensus.BIP34Hash = uint256S("0x00000f471d45750f8b9757728877fb50e0f867a10ca5fd3564be2bd521500446");
-        consensus.powLimit = uint256S("00000fffff000000000000000000000000000000000000000000000000000000");
+        consensus.BIP34Hash = uint256S("0x00005b4dffc4822fe26a2d95d421082fdcf79e60c2434dc86d20945cc232e72f");
+        consensus.powLimit = uint256S("0x0000ffffff000000000000000000000000000000000000000000000000000000");
         consensus.nPowAveragingWindow = 17;
         consensus.nPowMaxAdjustDown = 32;                               // 32% adjustment down
-        consensus.nPowMaxAdjustUp = 16;                                 // 16% adjustment up
+        consensus.nPowMaxAdjustUp = 48;                                 // 48% adjustment up
         consensus.nPowTargetTimespan = 24 * 60 * 60;                    // Ulord: 1 day
         consensus.nPowTargetSpacing = 2.5 * 60;                         // Ulord: 2.5 minutes
         consensus.fPowAllowMinDifficultyBlocks = false;
@@ -194,8 +194,8 @@ public:
 
         // Deployment of BIP68, BIP112, and BIP113.
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1517636489;              // Sat Feb  3 13:41:29 CST 2018 
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1549172489;                // Sun Feb  3 13:41:29 CST 2019
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1519350036;              // Sat Feb  3 13:41:29 CST 2018 
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1550886036;                // Sun Feb  3 13:41:29 CST 2019
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -211,12 +211,14 @@ public:
         nMaxTipAge = 6 * 60 * 60; // ~144 blocks behind -> 2 x fork detection time, was 24 * 60 * 60 in bitcoin
         nPruneAfterHeight = 100000;
 
-        genesis = CreateGenesisBlock(1517636489, 3393649461, 0x1e0ffff0, 1, consensus.genesisReward);
+        genesis = CreateGenesisBlock(1519350036, 893106383, 0x1f00ffff, 1, consensus.genesisReward);
 #ifdef GENESIS_GENERATION
+        arith_uint256 a("0000ffffff000000000000000000000000000000000000000000000000000000");
+        cout << "\tpow:\t" << a.GetCompact() << endl;
         findGenesis(&genesis, "main");
 #endif
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x00000f471d45750f8b9757728877fb50e0f867a10ca5fd3564be2bd521500446"));
+        assert(consensus.hashGenesisBlock == uint256S("0x00005b4dffc4822fe26a2d95d421082fdcf79e60c2434dc86d20945cc232e72f"));
         assert(genesis.hashMerkleRoot == uint256S("0x2b5ff31e4f2bccf51441d2f78849c2ca393daa187cede58373ccad8f1794b8d9"));
 
 
@@ -249,8 +251,8 @@ public:
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-	    (0, uint256S("00000f471d45750f8b9757728877fb50e0f867a10ca5fd3564be2bd521500446")),
-            1517636489,                       // * UNIX timestamp of last checkpoint block
+	    (0, uint256S("00005b4dffc4822fe26a2d95d421082fdcf79e60c2434dc86d20945cc232e72f")),
+            1519350036,                       // * UNIX timestamp of last checkpoint block
             0,                                // * total number of transactions between genesis and last checkpoint
                                               //   (the tx=... number in the SetBestChain debug.log lines)
             0                                 // * estimated number of transactions per day after checkpoint
@@ -299,7 +301,7 @@ public:
         consensus.mnReward1 = i64(52.411 * COIN);                       // masternodes
         consensus.mnReward2 = i64(76.104 * COIN);
         consensus.mnReward5 = i64(535.103 * COIN);
-        consensus.foundersReward = i64(4166666.667 * COIN);             // founders
+        consensus.foundersReward = i64(8333333.333 * COIN);             // founders
         consensus.bdgetReward4 = i64(520833.333 * COIN);                // budget
         consensus.bdgetReward5 = i64(2083333.333 * COIN);
         consensus.colleteral = i64(1e4 * COIN);                         // masternode colleteral
@@ -422,7 +424,7 @@ public:
         consensus.mnReward1 = i64(52.411 * COIN);                       // masternodes
         consensus.mnReward2 = i64(76.104 * COIN);
         consensus.mnReward5 = i64(535.103 * COIN);
-        consensus.foundersReward = i64(4166666.667 * COIN);             // founders
+        consensus.foundersReward = i64(8333333.333 * COIN);             // founders
         consensus.bdgetReward4 = i64(520833.333 * COIN);                // budget
         consensus.bdgetReward5 = i64(2083333.333 * COIN);
 	consensus.colleteral = i64(1e4 * COIN);                         // masternode colleteral
