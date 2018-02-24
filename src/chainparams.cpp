@@ -177,8 +177,8 @@ public:
         consensus.nMajorityRejectBlockOutdated = 950;
         consensus.nMajorityWindow = 1000;
         consensus.BIP34Height = 0; 
-        consensus.BIP34Hash = uint256S("0x00005b4dffc4822fe26a2d95d421082fdcf79e60c2434dc86d20945cc232e72f");
-        consensus.powLimit = uint256S("0x0000ffffff000000000000000000000000000000000000000000000000000000");
+        consensus.BIP34Hash = uint256S("0x000064440d74c1ebea3234a8d778fbb49267ded6b11fe7117dc6f6d41d8cf705");
+        consensus.powLimit = uint256S("0x00007fffff000000000000000000000000000000000000000000000000000000");
         consensus.nPowAveragingWindow = 17;
         consensus.nPowMaxAdjustDown = 32;                               // 32% adjustment down
         consensus.nPowMaxAdjustUp = 48;                                 // 48% adjustment up
@@ -194,8 +194,8 @@ public:
 
         // Deployment of BIP68, BIP112, and BIP113.
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1519350036;              // Sat Feb  3 13:41:29 CST 2018 
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1550886036;                // Sun Feb  3 13:41:29 CST 2019
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1519436895;              // BeiJing 2018/2/24 9:48:15 
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1550972895;                // 2019/2/24 9:48:15
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -211,14 +211,14 @@ public:
         nMaxTipAge = 6 * 60 * 60; // ~144 blocks behind -> 2 x fork detection time, was 24 * 60 * 60 in bitcoin
         nPruneAfterHeight = 100000;
 
-        genesis = CreateGenesisBlock(1519350036, 893106383, 0x1f00ffff, 1, consensus.genesisReward);
+        genesis = CreateGenesisBlock(1519436895, 3646556512, 0x1e7fffff, 1, consensus.genesisReward);
 #ifdef GENESIS_GENERATION
-        arith_uint256 a("0000ffffff000000000000000000000000000000000000000000000000000000");
+        arith_uint256 a("0x00007fffff000000000000000000000000000000000000000000000000000000");
         cout << "\tpow:\t" << a.GetCompact() << endl;
         findGenesis(&genesis, "main");
 #endif
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x00005b4dffc4822fe26a2d95d421082fdcf79e60c2434dc86d20945cc232e72f"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000064440d74c1ebea3234a8d778fbb49267ded6b11fe7117dc6f6d41d8cf705"));
         assert(genesis.hashMerkleRoot == uint256S("0x2b5ff31e4f2bccf51441d2f78849c2ca393daa187cede58373ccad8f1794b8d9"));
 
 
@@ -251,8 +251,8 @@ public:
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-	    (0, uint256S("00005b4dffc4822fe26a2d95d421082fdcf79e60c2434dc86d20945cc232e72f")),
-            1519350036,                       // * UNIX timestamp of last checkpoint block
+	    (0, uint256S("0x000064440d74c1ebea3234a8d778fbb49267ded6b11fe7117dc6f6d41d8cf705")),
+            1519436895,                       // * UNIX timestamp of last checkpoint block
             0,                                // * total number of transactions between genesis and last checkpoint
                                               //   (the tx=... number in the SetBestChain debug.log lines)
             0                                 // * estimated number of transactions per day after checkpoint
