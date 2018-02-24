@@ -631,6 +631,17 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
     result.push_back(Pair("masternode_payments_started", pindexPrev->nHeight + 1 > Params().GetConsensus().nMasternodePaymentsStartBlock));
     result.push_back(Pair("masternode_payments_enforced", sporkManager.IsSporkActive(SPORK_8_MASTERNODE_PAYMENT_ENFORCEMENT)));
 
+    UniValue FoundnodeObj(UniValue::VOBJ);
+    if(pblock->txoutFound != CTxOut()) {
+        CTxDestination address1;
+        ExtractDestination(pblock->txoutFound.scriptPubKey, address1);
+        CBitcoinAddress address2(address1);
+        FoundnodeObj.push_back(Pair("foundpayee", address2.ToString().c_str()));
+        FoundnodeObj.push_back(Pair("foundscript", HexStr(pblock->txoutFound.scriptPubKey.begin(), pblock->txoutFound.scriptPubKey.end())));
+        FoundnodeObj.push_back(Pair("foundamount", pblock->txoutFound.nValue));
+    }	
+	result.push_back(Pair("Foundnode", FoundnodeObj));
+
     UniValue superblockObjArray(UniValue::VARR);
     if(pblock->voutSuperblock.size()) {
         BOOST_FOREACH (const CTxOut& txout, pblock->voutSuperblock) {
