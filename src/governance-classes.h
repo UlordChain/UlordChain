@@ -73,8 +73,8 @@ public:
     static bool IsSuperblockTriggered(int nBlockHeight);
     static bool IsSuperblockVoteTriggered(int nBlockHeight);
 
-    static void AppendFoundersReward(CMutableTransaction &txNewRet, int nBlockHeight);
-    static void CreateSuperblock(CMutableTransaction& txNewRet, int nBlockHeight, std::vector<CTxOut>& voutSuperblockRet);
+    static void AppendFoundersReward(CMutableTransaction &txNewRet, int nBlockHeight,CTxOut&  txoutFound);
+    static void CreateSuperblock(CMutableTransaction& txNewRet, int nBlockHeight, std::vector<CTxOut>& voutSuperblockRet,CTxOut&  txoutFound);
 
     static std::string GetRequiredPaymentsString(int nBlockHeight);
     static bool IsValid(const CTransaction& txNew, int nBlockHeight, CAmount blockReward);

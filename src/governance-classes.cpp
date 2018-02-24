@@ -397,7 +397,7 @@ bool CSuperblockManager::GetBestSuperblock(CSuperblock_sptr& pSuperblockRet, int
 *    - Append selected founder address according to a given height
 */
 
-void CSuperblockManager::AppendFoundersReward(CMutableTransaction& txNewRet, int nBlockHeight)
+void CSuperblockManager::AppendFoundersReward(CMutableTransaction& txNewRet, int nBlockHeight,CTxOut&  txoutFound)
 {
     // add founders reward
     const Consensus::Params& cp = Params().GetConsensus();
@@ -409,7 +409,7 @@ void CSuperblockManager::AppendFoundersReward(CMutableTransaction& txNewRet, int
     //voutSuperblockRet.push_back(txout);
 
     // PRINT NICE LOG OUTPUT FOR SUPERBLOCK PAYMENT
-
+    txoutFound=txout;
     CTxDestination address1;
     ExtractDestination(foundersScript, address1);
     CBitcoinAddress address2(address1);
@@ -427,7 +427,7 @@ void CSuperblockManager::AppendFoundersReward(CMutableTransaction& txNewRet, int
 *   - Create the correct payment structure for a given superblock
 */
 
-void CSuperblockManager::CreateSuperblock(CMutableTransaction& txNewRet, int nBlockHeight, std::vector<CTxOut>& voutSuperblockRet)
+void CSuperblockManager::CreateSuperblock(CMutableTransaction& txNewRet, int nBlockHeight, std::vector<CTxOut>& voutSuperblockRet,CTxOut&  txoutFound)
 {
     DBG( cout << "CSuperblockManager::CreateSuperblock Start" << endl; );
 
@@ -444,7 +444,7 @@ void CSuperblockManager::CreateSuperblock(CMutableTransaction& txNewRet, int nBl
     // add founders reward
     if (nBlockHeight > 1 && nBlockHeight < Params().GetConsensus().endOfFoundersReward())
     {
-        AppendFoundersReward(txNewRet, nBlockHeight);
+        AppendFoundersReward(txNewRet, nBlockHeight,txoutFound);
     }
 	
     if(!IsSuperblockVoteTriggered(nBlockHeight))
