@@ -35,7 +35,11 @@
 #include "hash-ops.h"
 
 #if !defined(__FreeBSD__) && !defined(__OpenBSD__)
- #include <alloca.h>
+ #if defined(WIN32) || defined(__WIN32) || defined(__WIN32__)
+   #include <malloc.h>
+ #else
+   #include <alloca.h>
+ #endif
 #else
  #include <stdlib.h>
 #endif
