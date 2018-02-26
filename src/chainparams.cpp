@@ -151,7 +151,7 @@ public:
 	consensus.mnReward1 = i64(52.411 * COIN);                       // masternodes
 	consensus.mnReward2 = i64(76.104 * COIN);					
 	consensus.mnReward5 = i64(535.103 * COIN);
-	consensus.foundersReward = i64(8333333.333 * COIN);             // founders
+	consensus.foundersReward = i64(4166666.667 * COIN);             // founders
      	consensus.bdgetReward4 = i64(520833.333 * COIN);                // budget
 	consensus.bdgetReward5 = i64(2083333.333 * COIN);
 
@@ -301,7 +301,7 @@ public:
         consensus.mnReward1 = i64(52.411 * COIN);                       // masternodes
         consensus.mnReward2 = i64(76.104 * COIN);
         consensus.mnReward5 = i64(535.103 * COIN);
-        consensus.foundersReward = i64(8333333.333 * COIN);             // founders
+        consensus.foundersReward = i64(4166666.667 * COIN);             // founders
         consensus.bdgetReward4 = i64(520833.333 * COIN);                // budget
         consensus.bdgetReward5 = i64(2083333.333 * COIN);
         consensus.colleteral = i64(1e4 * COIN);                         // masternode colleteral
@@ -424,7 +424,7 @@ public:
         consensus.mnReward1 = i64(52.411 * COIN);                       // masternodes
         consensus.mnReward2 = i64(76.104 * COIN);
         consensus.mnReward5 = i64(535.103 * COIN);
-        consensus.foundersReward = i64(8333333.333 * COIN);             // founders
+        consensus.foundersReward = i64(4166666.667 * COIN);             // founders
         consensus.bdgetReward4 = i64(520833.333 * COIN);                // budget
         consensus.bdgetReward5 = i64(2083333.333 * COIN);
 	consensus.colleteral = i64(1e4 * COIN);                         // masternode colleteral
