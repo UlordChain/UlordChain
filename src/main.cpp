@@ -4179,6 +4179,7 @@ bool ContextualCheckBlockHeader(const CBlockHeader& block, CValidationState& sta
         return true;
 
     int nHeight = pindexPrev->nHeight + 1;
+    LogPrintf("check block headder height  %d  \n", nHeight);	
     // Check proof of work
     if (block.nBits != GetNextWorkRequired(pindexPrev, &block, consensusParams))
 	    return state.DoS(100, error("%s : incorrect proof of work at %d", __func__, nHeight),
