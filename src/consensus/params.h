@@ -62,7 +62,7 @@ struct Params {
  
     int nSubsidyHalvingInterval;
     int endOfFoundersReward() const {
-        return 2 * 12 * nSuperblockCycle + 1;		
+        return 4 * 12 * nSuperblockCycle + 1;
     }
 
     int nMasternodePaymentsStartBlock;
