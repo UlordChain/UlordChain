@@ -6359,9 +6359,28 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, 
         }
 
         CBlockIndex *pindexLast = NULL;
+	    
+	/* Need more test.  
+	CBlockIndex *pindexLastCheckpoint = NULL;
+        const CChainParams& chainparams = Params();
+        if (fCheckpointsEnabled) {
+            pindexLastCheckpoint = Checkpoints::GetLastCheckpoint(chainparams.Checkpoints());
+        }
+        LogPrintf("testpoint1  pidexLastCheckpoint->GetBlockHash() = ,%s\n",pindexLastCheckpoint->GetBlockHash().ToString());
+	*/   
+	    
         BOOST_FOREACH(const CBlockHeader& header, headers) {
             CValidationState state;
-
+		
+	/*
+            if (pindexLast !=NULL && pindexLast->nHeight == pindexLastCheckpoint->nHeight && pindexLastCheckpoint->nHeight != 0){
+            	if (header.hashPrevBlock != pindexLastCheckpoint->GetBlockHash()){
+			LogPrintf("header.hashPrevBlock = ,%s\n",header.hashPrevBlock.ToString());
+                        return error("prevent block sync.\n");
+			}
+                }
+	*/
+		
             if (pindexLast != NULL && header.hashPrevBlock != pindexLast->GetBlockHash()) {
                 Misbehaving(pfrom->GetId(), 20);
                 return error("non-continuous headers sequence");
