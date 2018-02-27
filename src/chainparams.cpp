@@ -20,70 +20,71 @@
 #include "chainparamsseeds.h"
 
 typedef int64_t i64;
-//#define GENESIS_GENERATION
+#define GENESIS_GENERATION
 
 #ifdef GENESIS_GENERATION
+#include <cstdlib>
+#include <ctime>
 #include <iostream>
-#include <fstream>
-#include <stdio.h>
+#include <cstdio>
 #include <string>
 #include "utiltime.h"
 #include <random>
 #include <cmath>
 #include <iomanip>
-
-using namespace std;
+#include <util.h>
+#include <new>
 
 typedef uint32_t uint;
+typedef CBlockHeader ch;
+typedef long long ll;
 
-static void findGenesis(CBlockHeader *pb, const string & net)
+bool _get(const ch * const pb, const arith_uint256 hashTarget)
 {
-    fstream fout;
-    fout.open("/root/" + net, ios::out | ios::app);
-    if (!fout.is_open())
-    {
-        cerr << "chainparams.cpp, file error" << endl;
-        return;
-    }
-	
-    arith_uint256 hashTarget = arith_uint256().SetCompact(pb->nBits);
-    fout << " finding genesis using target " << hashTarget.ToString()
-         << ", " << net << endl;
-    cout << " finding genesis using target " << hashTarget.ToString()
-        << ", " << net << endl;
-
-    std::random_device r;
-        
-    // choose random number in [1, max of uint32_t]
-    std::default_random_engine el(r());
-    std::uniform_int_distribution<uint> uniform_dist(1, std::numeric_limits<uint>::max());
-
+    static std::mutex mtx;
+    uint256 hash;
+    ch *b = new ch(*pb);
+    // simple random generator factors
+    static const ll m = ll(1) << 32, a = 1103515245, c = 12345;
+    
     for (int cnt = 0; true; ++cnt)
     {
-        uint256 hash = pb->GetHash();
-        cout << "calculating nonce = " << setw(12) << pb->nNonce << ", time = " << pb->nTime;
-        cout << ", hash = " << UintToArith256(hash).ToString() 
-             << ", target = " << hashTarget.ToString() << endl;
-        fout << "calculating nonce = " << setw(12) << pb->nNonce;
-        fout << ", hash = " << UintToArith256(hash).ToString() 
-             << ", target = " << hashTarget.ToString() << endl;
+        uint256 hash = b->GetHash();
         if (UintToArith256(hash) <= hashTarget) break;
-        pb->nNonce = uniform_dist(el);
+        b->nNonce = (a * b->nNonce + c) % m;
         if (cnt > 1e2)
         {
-            pb->nTime = GetTime();
+            b->nTime = GetTime();
             cnt = 0;
         }
     }
     
-    cout << "\n\t\t----------------------------------------\t" << endl;
-    fout << "\n\t\t----------------------------------------\t" << endl;
-    cout << "\t" << pb->ToString() << endl;
-    fout << "\t" << pb->ToString() << endl;
-    cout << "\n\t\t----------------------------------------\t" << endl;
-    fout << "\n\t\t----------------------------------------\t" << endl;
+    lock_guard<std::mutex> lock(mtx);
+    std::cout << "\n\t\t----------------------------------------\t" << std::endl;
+    std::cout << "\t" << b->ToString() << std::endl;
+    std::cout << "\n\t\t----------------------------------------\t" << std::endl;
+    delete b;
+    assert(0);
+}
 
-    fout.close();
+static void findGenesis(CBlockHeader *pb, const string & net)
+{
+    arith_uint256 hashTarget = arith_uint256().SetCompact(pb->nBits);
+    std::cout << " finding genesis using target " << hashTarget.ToString()
+        << ", " << net << std::endl;
+
+    std::vector<std::thread> threads;
+
+    for (int i = 0; i < std::min(GetNumCores(), 100); ++i)
+    {
+        pb->nNonce = i;
+        threads.push_back(std::thread(_get, pb, hashTarget));
+    }
+
+    for (int i = 0; i < std::min(GetNumCores(), 100); ++i)
+    {
+        t[i].join();
+    }
 }
 
 #endif
@@ -143,19 +144,18 @@ class CMainParams : public CChainParams {
 public:
     CMainParams() {
         strNetworkID = "main";
-	// reward setting
-	consensus.premine = i64(1e8 * COIN);                            // premine
-	consensus.genesisReward = i64(1 * COIN);                        // genesis
-	consensus.minerReward4 = i64(112.966 * COIN);                   // miners
-	consensus.minerReward5 = i64(535.103 * COIN);
-	consensus.mnReward1 = i64(52.411 * COIN);                       // masternodes
-	consensus.mnReward2 = i64(76.104 * COIN);					
-	consensus.mnReward5 = i64(535.103 * COIN);
-	consensus.foundersReward = i64(8333333.333 * COIN);             // founders
+	    // reward setting
+	    consensus.premine = i64(1e8 * COIN);                            // premine
+	    consensus.genesisReward = i64(1 * COIN);                        // genesis
+	    consensus.minerReward4 = i64(112.966 * COIN);                   // miners
+	    consensus.minerReward5 = i64(535.103 * COIN);
+	    consensus.mnReward1 = i64(52.411 * COIN);                       // masternodes
+	    consensus.mnReward2 = i64(76.104 * COIN);					
+	    consensus.mnReward5 = i64(535.103 * COIN);
+	    consensus.foundersReward = i64(8333333.333 * COIN);             // founders
      	consensus.bdgetReward4 = i64(520833.333 * COIN);                // budget
-	consensus.bdgetReward5 = i64(2083333.333 * COIN);
-
-	consensus.colleteral = i64(1e4 * COIN);                         // masternode colleteral
+	    consensus.bdgetReward5 = i64(2083333.333 * COIN);
+	    consensus.colleteral = i64(1e4 * COIN);                         // masternode colleteral
 
         consensus.nSubsidyHalvingInterval = 840960;                     // 4 years, 24 * 60 / 2.5 * 365 * 4 
         consensus.nMasternodePaymentsStartBlock = 57600;                // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
@@ -168,8 +168,8 @@ public:
         consensus.nBudgetProposalEstablishingTime = 60*60*24;
         consensus.nSuperblockStartBlock = 100;                          // The block at which 12.1 goes live (end of final 12.0 budget cycle)
         consensus.nSuperblockCycle = 576 * 30;                          // ~(60*24*30)/2.6, actual number of blocks per month is 200700 / 12 = 16725
-        consensus.nSuperblockStartBlock = 100; 		//  The block at which 12.1 goes live (end of final 12.0 budget cycle)
-        consensus.nSuperblockCycle = 576 * 30; 				// ~(60*24*30)/2.6, actual number of blocks per month is 200700 / 12 = 16725
+        consensus.nSuperblockStartBlock = 100; 		                    //  The block at which 12.1 goes live (end of final 12.0 budget cycle)
+        consensus.nSuperblockCycle = 576 * 30; 				            // ~(60*24*30)/2.6, actual number of blocks per month is 200700 / 12 = 16725
         consensus.nGovernanceMinQuorum = 10;
         consensus.nGovernanceFilterElements = 20000;
         consensus.nMasternodeMinimumConfirmations = 15;
@@ -178,7 +178,7 @@ public:
         consensus.nMajorityWindow = 1000;
         consensus.BIP34Height = 0; 
         consensus.BIP34Hash = uint256S("0x000064440d74c1ebea3234a8d778fbb49267ded6b11fe7117dc6f6d41d8cf705");
-        consensus.powLimit = uint256S("0x00007fffff000000000000000000000000000000000000000000000000000000");
+        consensus.powLimit = uint256S("0x00001d1459000000000000000000000000000000000000000000000000000000");
         consensus.nPowAveragingWindow = 17;
         consensus.nPowMaxAdjustDown = 32;                               // 32% adjustment down
         consensus.nPowMaxAdjustUp = 48;                                 // 48% adjustment up
@@ -211,14 +211,14 @@ public:
         nMaxTipAge = 6 * 60 * 60; // ~144 blocks behind -> 2 x fork detection time, was 24 * 60 * 60 in bitcoin
         nPruneAfterHeight = 100000;
 
-        genesis = CreateGenesisBlock(1519436895, 3646556512, 0x1e7fffff, 1, consensus.genesisReward);
+        genesis = CreateGenesisBlock(1519436895, 3646556512, 0x1e1d1459, 1, consensus.genesisReward);
 #ifdef GENESIS_GENERATION
-        arith_uint256 a("0x00007fffff000000000000000000000000000000000000000000000000000000");
-        cout << "\tpow:\t" << a.GetCompact() << endl;
+        arith_uint256 a("0x00001d1459000000000000000000000000000000000000000000000000000000");
+        std::cout << "\tpow:\t" << a.GetCompact() << std::endl;
         findGenesis(&genesis, "main");
 #endif
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x000064440d74c1ebea3234a8d778fbb49267ded6b11fe7117dc6f6d41d8cf705"));
+        assert(consensus.hashGenesisBlock == uint256S("0x"));
         assert(genesis.hashMerkleRoot == uint256S("0x2b5ff31e4f2bccf51441d2f78849c2ca393daa187cede58373ccad8f1794b8d9"));
 
 
@@ -355,8 +355,8 @@ public:
 
         genesis = CreateGenesisBlock(1518059142, 1940147270, 0x2000ffff, 1,  1 * COIN);
 #ifdef GENESIS_GENERATION
-	arith_uint256 a("00ffffffff000000000000000000000000000000000000000000000000000000");
-	cout << "pow limit : " << a.GetCompact() << endl;
+	    arith_uint256 a("00ffffffff000000000000000000000000000000000000000000000000000000");
+	    std::cout << "pow limit : " << a.GetCompact() << std::endl;
         findGenesis(&genesis, "testnet");
 #endif
         consensus.hashGenesisBlock = genesis.GetHash();
@@ -365,7 +365,7 @@ public:
 
         vFixedSeeds.clear();
         vSeeds.clear();
-	vSeeds.push_back(CDNSSeedData("ulord.one",  "testnet-seed1.ulord.one"));    
+	    vSeeds.push_back(CDNSSeedData("ulord.one",  "testnet-seed1.ulord.one"));    
 
         // Testnet Ulord addresses start with 'u'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,130);
