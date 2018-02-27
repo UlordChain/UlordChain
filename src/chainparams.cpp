@@ -143,19 +143,18 @@ class CMainParams : public CChainParams {
 public:
     CMainParams() {
         strNetworkID = "main";
-	// reward setting
-	consensus.premine = i64(1e8 * COIN);                            // premine
-	consensus.genesisReward = i64(1 * COIN);                        // genesis
-	consensus.minerReward4 = i64(112.966 * COIN);                   // miners
-	consensus.minerReward5 = i64(535.103 * COIN);
-	consensus.mnReward1 = i64(52.411 * COIN);                       // masternodes
-	consensus.mnReward2 = i64(76.104 * COIN);					
-	consensus.mnReward5 = i64(535.103 * COIN);
-	consensus.foundersReward = i64(4166666.667 * COIN);             // founders
+	    // reward setting
+	    consensus.premine = i64(1e8 * COIN);                            // premine
+	    consensus.genesisReward = i64(1 * COIN);                        // genesis
+	    consensus.minerReward4 = i64(112.966 * COIN);                   // miners
+	    consensus.minerReward5 = i64(535.103 * COIN);
+	    consensus.mnReward1 = i64(52.411 * COIN);                       // masternodes
+	    consensus.mnReward2 = i64(76.104 * COIN);					
+	    consensus.mnReward5 = i64(535.103 * COIN);
+	    consensus.foundersReward = i64(4166666.667 * COIN);             // founders
      	consensus.bdgetReward4 = i64(520833.333 * COIN);                // budget
-	consensus.bdgetReward5 = i64(2083333.333 * COIN);
-
-	consensus.colleteral = i64(1e4 * COIN);                         // masternode colleteral
+	    consensus.bdgetReward5 = i64(2083333.333 * COIN);
+	    consensus.colleteral = i64(1e4 * COIN);                         // masternode colleteral
 
         consensus.nSubsidyHalvingInterval = 840960;                     // 4 years, 24 * 60 / 2.5 * 365 * 4 
         consensus.nMasternodePaymentsStartBlock = 57600;                // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
@@ -177,8 +176,8 @@ public:
         consensus.nMajorityRejectBlockOutdated = 950;
         consensus.nMajorityWindow = 1000;
         consensus.BIP34Height = 0; 
-        consensus.BIP34Hash = uint256S("0x000064440d74c1ebea3234a8d778fbb49267ded6b11fe7117dc6f6d41d8cf705");
-        consensus.powLimit = uint256S("0x00007fffff000000000000000000000000000000000000000000000000000000");
+        consensus.BIP34Hash = uint256S("00001bb0c5dbd1a010b20809985a1cfe701a43fdcce12b4400cdf30bee2a11b9");
+        consensus.powLimit = uint256S("0x00001d1459000000000000000000000000000000000000000000000000000000");
         consensus.nPowAveragingWindow = 17;
         consensus.nPowMaxAdjustDown = 32;                               // 32% adjustment down
         consensus.nPowMaxAdjustUp = 48;                                 // 48% adjustment up
@@ -194,8 +193,8 @@ public:
 
         // Deployment of BIP68, BIP112, and BIP113.
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1519436895;              // BeiJing 2018/2/24 9:48:15 
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1550972895;                // 2019/2/24 9:48:15
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1519648090;              // BeiJing 2018/2/24 9:48:15 
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1551184090;                // 2019/2/24 9:48:15
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -211,14 +210,14 @@ public:
         nMaxTipAge = 6 * 60 * 60; // ~144 blocks behind -> 2 x fork detection time, was 24 * 60 * 60 in bitcoin
         nPruneAfterHeight = 100000;
 
-        genesis = CreateGenesisBlock(1519436895, 3646556512, 0x1e7fffff, 1, consensus.genesisReward);
+        genesis = CreateGenesisBlock(1519648090, 3258119499, 0x1e1d1459, 1, consensus.genesisReward);
 #ifdef GENESIS_GENERATION
         arith_uint256 a("0x00007fffff000000000000000000000000000000000000000000000000000000");
         cout << "\tpow:\t" << a.GetCompact() << endl;
         findGenesis(&genesis, "main");
 #endif
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x000064440d74c1ebea3234a8d778fbb49267ded6b11fe7117dc6f6d41d8cf705"));
+        assert(consensus.hashGenesisBlock == uint256S("0x00001bb0c5dbd1a010b20809985a1cfe701a43fdcce12b4400cdf30bee2a11b9"));
         assert(genesis.hashMerkleRoot == uint256S("0x2b5ff31e4f2bccf51441d2f78849c2ca393daa187cede58373ccad8f1794b8d9"));
 
 
@@ -235,9 +234,9 @@ public:
         // Ulord BIP44 coin type is '247'
         base58Prefixes[EXT_COIN_TYPE]  = boost::assign::list_of(0x80)(0x00)(0x00)(0xf7).convert_to_container<std::vector<unsigned char> >();
 
-	//vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
-	vFixedSeeds.clear();
-	vSeeds.clear();		
+	    //vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
+	    vFixedSeeds.clear();
+	    vSeeds.clear();		
         vSeeds.push_back(CDNSSeedData("ulord.one", "dnsseed1.ulord.one"));
         fMiningRequiresPeers = true;
         fDefaultConsistencyChecks = false;
@@ -251,8 +250,8 @@ public:
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-	    (0, uint256S("0x000064440d74c1ebea3234a8d778fbb49267ded6b11fe7117dc6f6d41d8cf705")),
-            1519436895,                       // * UNIX timestamp of last checkpoint block
+	        (0, uint256S("0x00001bb0c5dbd1a010b20809985a1cfe701a43fdcce12b4400cdf30bee2a11b9")),
+            1519648090,                       // * UNIX timestamp of last checkpoint block
             0,                                // * total number of transactions between genesis and last checkpoint
                                               //   (the tx=... number in the SetBestChain debug.log lines)
             0                                 // * estimated number of transactions per day after checkpoint
@@ -281,7 +280,7 @@ public:
             "UUPLH2XgRZWTShiDSQEpu6QdXwKgAf3LNM", /* main-index: 18*/
             "UUPLPbyre94vLQMDe2yvvucFHqX5ye4DXM", /* main-index: 19*/
             "UURodxCQSC8PW4BKFwQ6h3tBRgr8gxTTEu", /* main-index: 20*/
-	};
+	    };
     }
 };
 static CMainParams mainParams;
@@ -294,7 +293,7 @@ public:
     CTestNetParams() {
         strNetworkID = "test";
         // reward setting
-	consensus.premine = i64(1e8 * COIN);                            // premine
+	    consensus.premine = i64(1e8 * COIN);                            // premine
         consensus.genesisReward = i64(1 * COIN);                        // genesis                                                           
         consensus.minerReward4 = i64(112.966 * COIN);                   // miners
         consensus.minerReward5 = i64(535.103 * COIN);
@@ -355,8 +354,8 @@ public:
 
         genesis = CreateGenesisBlock(1518059142, 1940147270, 0x2000ffff, 1,  1 * COIN);
 #ifdef GENESIS_GENERATION
-	arith_uint256 a("00ffffffff000000000000000000000000000000000000000000000000000000");
-	cout << "pow limit : " << a.GetCompact() << endl;
+	    arith_uint256 a("00ffffffff000000000000000000000000000000000000000000000000000000");
+	    cout << "pow limit : " << a.GetCompact() << endl;
         findGenesis(&genesis, "testnet");
 #endif
         consensus.hashGenesisBlock = genesis.GetHash();
@@ -365,7 +364,7 @@ public:
 
         vFixedSeeds.clear();
         vSeeds.clear();
-	vSeeds.push_back(CDNSSeedData("ulord.one",  "testnet-seed1.ulord.one"));    
+	    vSeeds.push_back(CDNSSeedData("ulord.one",  "testnet-seed1.ulord.one"));    
 
         // Testnet Ulord addresses start with 'u'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,130);
@@ -394,7 +393,7 @@ public:
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-	    (0, uint256S("00cef5fc5328768c82fd51ed1537c98f84e557df5093929a4bd4a88587552f64")),
+	        (0, uint256S("00cef5fc5328768c82fd51ed1537c98f84e557df5093929a4bd4a88587552f64")),
             1518059142,     // * UNIX timestamp of last checkpoint block
             0,              // * total number of transactions between genesis and last checkpoint
                             //   (the tx=... number in the SetBestChain debug.log lines)
@@ -417,7 +416,7 @@ public:
     CRegTestParams() {
         strNetworkID = "regtest";
         // reward setting
-	consensus.premine = i64(1e8 * COIN);                            // premine    
+	    consensus.premine = i64(1e8 * COIN);                            // premine    
         consensus.genesisReward = i64(1 * COIN);                        // genesis
         consensus.minerReward4 = i64(112.966 * COIN);                   // miners
         consensus.minerReward5 = i64(535.103 * COIN);
@@ -427,7 +426,7 @@ public:
         consensus.foundersReward = i64(4166666.667 * COIN);             // founders
         consensus.bdgetReward4 = i64(520833.333 * COIN);                // budget
         consensus.bdgetReward5 = i64(2083333.333 * COIN);
-	consensus.colleteral = i64(1e4 * COIN);                         // masternode colleteral
+	    consensus.colleteral = i64(1e4 * COIN);                         // masternode colleteral
         consensus.nSubsidyHalvingInterval = 150;
         consensus.nMasternodePaymentsStartBlock = 240;
         consensus.nMasternodePaymentsIncreaseBlock = 350;
@@ -448,7 +447,7 @@ public:
         consensus.BIP34Height = -1;                                     // BIP34 has not necessarily activated on regtest
         consensus.BIP34Hash = uint256();
         consensus.powLimit = uint256S("0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f");
-	consensus.nPowAveragingWindow = 17;
+	    consensus.nPowAveragingWindow = 17;
         consensus.nPowMaxAdjustDown = 0;                                // Turn off adjustment down
         consensus.nPowMaxAdjustUp = 0;                                  // Turn off adjustment up
         consensus.nPowTargetTimespan = 24 * 60 * 60;                    // Ulord: 1 day
