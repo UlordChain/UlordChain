@@ -34,40 +34,56 @@ typedef int64_t i64;
 #include <iomanip>
 #include <util.h>
 #include <new>
+#include <chrono>
+#include <thread>
+#include <mutex>
 
 typedef uint32_t uint;
 typedef CBlockHeader ch;
 typedef long long ll;
 
+static std::mutex mtx;
+
 bool _get(const ch * const pb, const arith_uint256 hashTarget)
 {
-    static std::mutex mtx;
     uint256 hash;
     ch *b = new ch(*pb);
-    // simple random generator factors
+    // simple random generator factors(from https://stackoverflow.com/questions/3062746/special-simple-random-number-generator)
     static const ll m = ll(1) << 32, a = 1103515245, c = 12345;
     
     for (int cnt = 0; true; ++cnt)
     {
         uint256 hash = b->GetHash();
+
+        // for debug purpose
+        mtx.lock();
+        std::cout << "========================================" << std::endl;
+        std::cout << "thread : " << std::this_thread::get_id() << std::endl;
+        std::cout << "\tgenesis finding using nonce = " << b->nNonce << ", hash = "
+                  << hash.ToString() << ", powLimit = " << hashTarget.ToString() << std::endl;
+        std::cout << "========================================" << std::endl;
+        mtx.unlock();
+
         if (UintToArith256(hash) <= hashTarget) break;
         b->nNonce = (a * b->nNonce + c) % m;
-        if (cnt > 1e2)
+        if (cnt > 1e3)
         {
             b->nTime = GetTime();
             cnt = 0;
         }
     }
     
-    lock_guard<std::mutex> lock(mtx);
+    std::lock_guard<std::mutex> guard(mtx);
     std::cout << "\n\t\t----------------------------------------\t" << std::endl;
     std::cout << "\t" << b->ToString() << std::endl;
     std::cout << "\n\t\t----------------------------------------\t" << std::endl;
     delete b;
+
+    // stop while found one
     assert(0);
 }
 
-static void findGenesis(CBlockHeader *pb, const string & net)
+static void findGenesis(CBlockHeader *pb, const std::string &net)
 {
     arith_uint256 hashTarget = arith_uint256().SetCompact(pb->nBits);
     std::cout << " finding genesis using target " << hashTarget.ToString()
@@ -81,12 +97,11 @@ static void findGenesis(CBlockHeader *pb, const string & net)
         threads.push_back(std::thread(_get, pb, hashTarget));
     }
 
-    for (int i = 0; i < std::min(GetNumCores(), 100); ++i)
+    for (auto &t : threads)
     {
-        t[i].join();
+        t.join();
     }
 }
-
 #endif
 
 static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesisOutputScript, uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount &genesisReward)
@@ -235,9 +250,9 @@ public:
         // Ulord BIP44 coin type is '247'
         base58Prefixes[EXT_COIN_TYPE]  = boost::assign::list_of(0x80)(0x00)(0x00)(0xf7).convert_to_container<std::vector<unsigned char> >();
 
-	//vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
-	vFixedSeeds.clear();
-	vSeeds.clear();		
+        //vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
+        vFixedSeeds.clear();
+        vSeeds.clear();		
         vSeeds.push_back(CDNSSeedData("ulord.one", "dnsseed1.ulord.one"));
         fMiningRequiresPeers = true;
         fDefaultConsistencyChecks = false;
@@ -294,7 +309,7 @@ public:
     CTestNetParams() {
         strNetworkID = "test";
         // reward setting
-	consensus.premine = i64(1e8 * COIN);                            // premine
+        consensus.premine = i64(1e8 * COIN);                            // premine
         consensus.genesisReward = i64(1 * COIN);                        // genesis                                                           
         consensus.minerReward4 = i64(112.966 * COIN);                   // miners
         consensus.minerReward5 = i64(535.103 * COIN);
@@ -417,7 +432,7 @@ public:
     CRegTestParams() {
         strNetworkID = "regtest";
         // reward setting
-	consensus.premine = i64(1e8 * COIN);                            // premine    
+        consensus.premine = i64(1e8 * COIN);                            // premine    
         consensus.genesisReward = i64(1 * COIN);                        // genesis
         consensus.minerReward4 = i64(112.966 * COIN);                   // miners
         consensus.minerReward5 = i64(535.103 * COIN);
@@ -427,7 +442,7 @@ public:
         consensus.foundersReward = i64(8333333.333 * COIN);             // founders
         consensus.bdgetReward4 = i64(520833.333 * COIN);                // budget
         consensus.bdgetReward5 = i64(2083333.333 * COIN);
-	consensus.colleteral = i64(1e4 * COIN);                         // masternode colleteral
+        consensus.colleteral = i64(1e4 * COIN);                         // masternode colleteral
         consensus.nSubsidyHalvingInterval = 150;
         consensus.nMasternodePaymentsStartBlock = 240;
         consensus.nMasternodePaymentsIncreaseBlock = 350;
@@ -448,7 +463,7 @@ public:
         consensus.BIP34Height = -1;                                     // BIP34 has not necessarily activated on regtest
         consensus.BIP34Hash = uint256();
         consensus.powLimit = uint256S("0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f");
-	consensus.nPowAveragingWindow = 17;
+        consensus.nPowAveragingWindow = 17;
         consensus.nPowMaxAdjustDown = 0;                                // Turn off adjustment down
         consensus.nPowMaxAdjustUp = 0;                                  // Turn off adjustment up
         consensus.nPowTargetTimespan = 24 * 60 * 60;                    // Ulord: 1 day
