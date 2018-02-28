@@ -6,6 +6,7 @@
 #define BITCOIN_CHECKPOINTS_H
 
 #include "uint256.h"
+#include "chainparams.h"
 
 #include <map>
 
@@ -24,6 +25,7 @@ int GetTotalBlocksEstimate(const CCheckpointData& data);
 
 //! Returns last CBlockIndex* in mapBlockIndex that is a checkpoint
 CBlockIndex* GetLastCheckpoint(const CCheckpointData& data);
+PairCheckpoints ForceGetLastCheckpoint(const CCheckpointData& data);
 
 double GuessVerificationProgress(const CCheckpointData& data, CBlockIndex* pindex, bool fSigchecks = true);
 
