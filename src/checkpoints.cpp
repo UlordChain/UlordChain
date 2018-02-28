@@ -6,7 +6,7 @@
 #include "checkpoints.h"
 
 #include "chain.h"
-#include "chainparams.h"
+//#include "chainparams.h"
 #include "main.h"
 #include "uint256.h"
 
@@ -79,5 +79,16 @@ namespace Checkpoints {
         }
         return NULL;
     }
+    
+    PairCheckpoints ForceGetLastCheckpoint(const CCheckpointData& data){
+        const MapCheckpoints& checkpoints = data.mapCheckpoints;
+
+        BOOST_REVERSE_FOREACH(const MapCheckpoints::value_type& i, checkpoints){
+            LogPrintf("i.first(height) = %d\n",i.first);
+            LogPrintf("i.second(hash) = %s\n",i.second.ToString());
+            return i;
+        }
+    }
+
 
 } // namespace Checkpoints
