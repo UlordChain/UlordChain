@@ -6360,26 +6360,24 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, 
 
         CBlockIndex *pindexLast = NULL;
 	    
-	/* Need more test.  
-	CBlockIndex *pindexLastCheckpoint = NULL;
-        const CChainParams& chainparams = Params();
+	//prevent chain sync.    
+	PairCheckpoints lastCheckpoint_t;
+        const CChainParams& chainparams_t = Params();
         if (fCheckpointsEnabled) {
-            pindexLastCheckpoint = Checkpoints::GetLastCheckpoint(chainparams.Checkpoints());
+            lastCheckpoint_t = Checkpoints::ForceGetLastCheckpoint(chainparams_t.Checkpoints());
         }
-        LogPrintf("testpoint1  pidexLastCheckpoint->GetBlockHash() = ,%s\n",pindexLastCheckpoint->GetBlockHash().ToString());
-	*/   
 	    
         BOOST_FOREACH(const CBlockHeader& header, headers) {
             CValidationState state;
 		
-	/*
-            if (pindexLast !=NULL && pindexLast->nHeight == pindexLastCheckpoint->nHeight && pindexLastCheckpoint->nHeight != 0){
-            	if (header.hashPrevBlock != pindexLastCheckpoint->GetBlockHash()){
-			LogPrintf("header.hashPrevBlock = ,%s\n",header.hashPrevBlock.ToString());
-                        return error("prevent block sync.\n");
-			}
+	if (pindexLast !=NULL && pindexLast->nHeight == lastCheckpoint_t.first && lastCheckpoint_t.first != 0){
+		if (header.hashPrevBlock != lastCheckpoint_t.second){
+                	LogPrintf("synchronous chain hash = %s\n",header.hashPrevBlock.ToString());
+                    	LogPrintf("lastCheckpoint height = %d, lastCheckpoint hash = %s\n",lastCheckpoint_t.first,lastCheckpoint_t.second.ToString());
+                    	return error("prevent chain synchronization.\n");
                 }
-	*/
+                else LogPrintf("checkpoint verify correct.\n");
+            }
 		
             if (pindexLast != NULL && header.hashPrevBlock != pindexLast->GetBlockHash()) {
                 Misbehaving(pfrom->GetId(), 20);
