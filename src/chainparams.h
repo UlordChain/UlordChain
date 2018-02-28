@@ -12,6 +12,7 @@
 #include "protocol.h"
 
 #include <vector>
+#include <iostream>
 
 struct CDNSSeedData {
     std::string name, host;
@@ -24,6 +25,7 @@ struct SeedSpec6 {
 };
 
 typedef std::map<int, uint256> MapCheckpoints;
+typedef std::pair<int, uint256> PairCheckpoints;
 
 struct CCheckpointData {
     MapCheckpoints mapCheckpoints;
