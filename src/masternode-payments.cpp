@@ -75,6 +75,13 @@ bool IsBlockValueValid(const CBlock& block, int nBlockHeight, CAmount blockRewar
     CAmount nSuperblockMaxValue = CSuperblock::GetPaymentsLimit(nBlockHeight);
     bool isSuperblockMaxValueMet = (block.vtx[0].GetValueOut() <= nSuperblockMaxValue);
 
+	if(CSuperblock::IsValidBlockHeight(nBlockHeight)) {
+		if(CSuperblock::IsFounderValid( block.vtx[0], nBlockHeight, blockReward )==false)
+		{
+			return false;
+		}
+	}
+
     LogPrint("gobject", "block.vtx[0].GetValueOut() %lld <= nSuperblockMaxValue %lld\n", block.vtx[0].GetValueOut(), nSuperblockMaxValue);
 
     if(!masternodeSync.IsSynced()) {
