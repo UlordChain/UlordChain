@@ -91,9 +91,9 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     
     /* Theme selector */
     ui->theme->addItem(QString("UC-light"), QVariant("light"));
-    ui->theme->addItem(QString("UC-blue"), QVariant("drkblue"));
-    ui->theme->addItem(QString("UC-Crownium"), QVariant("crownium"));
-    ui->theme->addItem(QString("UC-traditional"), QVariant("trad"));
+    // ui->theme->addItem(QString("UC-blue"), QVariant("drkblue"));
+    // ui->theme->addItem(QString("UC-Crownium"), QVariant("crownium"));
+    // ui->theme->addItem(QString("UC-traditional"), QVariant("trad"));
     
     /* Language selector */
     QDir translations(":translations");
