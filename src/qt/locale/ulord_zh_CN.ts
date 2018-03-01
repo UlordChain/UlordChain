@@ -2545,7 +2545,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>A&amp;mount:</source>
-        <translation>金额(&amp;M)</translation>
+        <translation>金额(&amp;M)：</translation>
     </message>
     <message>
         <source>Message:</source>
@@ -3939,7 +3939,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Wallet needed to be rewritten: restart Ulord Core to complete</source>
-        <translation>錢包需要重寫: 請重新啓動達世幣核心來完成
+        <translation>錢包需要重寫: 請重新啓動Ulord核心來完成
 钱包需要重写: 请重新启动Ulord核心来完成</translation>
     </message>
     <message>
