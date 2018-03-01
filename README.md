@@ -1,15 +1,70 @@
-Ulord Core
-===============================
+What is Ulord ?
+-------------
 
-![](http://ulord.one/images/ulordCnter.png)
-
-Modifications for testing
------------------------------
-1. commented out masternode syncing & IBD condition checks in miner.cpp.
-2. commented out masternode number check in masternode-sync.cpp in ProcessTick.
-3. disabled argument externalip out-routable condition check.
-4. to replace libsodium.a to libsodium.so in Makefile.am to reduce ulordd & ulord-cli program size.
-5. unit tests are not usable currently.
-
-## What is Ulord?
 Ulord is a decentralized content distribution platform that provides content distribution in public chain based on blockchain technology, creates a complete ecosystem for content distribution by creative work, where people can create a wide variety of content-based decentralized applications, such as video, music, pictures, text, code, animation material, etc., and thus by taking advantage of the smart contract it ensures content creators and communicators get the corresponding benefits.
+
+UlordChain Documentation and Usage Resources
+---------------
+
+Resources may be helpful to know about Ulord.
+
+Basic usage resources:
+
+* [Official site](http://ulord.one/)
+* [Whitepaper](http://ulord.one/whitepaper/web/viewer.html?lang=zh)
+* [Downloads](http://ulord.one/download.html)
+
+General Info about Qtum:
+
+* [Community](https://www.jianshu.com/c/a63d65402fd7)
+
+What is UlordChain?
+------------------
+
+UlordChain is the basic layer of Ulord, a decentralized featured blockchain based on Dash Core, which supports 
+intermediate layer and top application layer commands.
+
+Building UlordChain----------
+
+### Build on Ubuntu(16.04 LTS)
+
+    git clone https://github.com/UlordChain/UlordChain.git
+
+Install dependency
+
+    sudo apt-get install build-essential libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils
+    sudo apt-get install libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-program-options-dev libboost-test-dev libboost-thread-dev
+    sudo add-apt-repository ppa:bitcoin/bitcoin
+    sudo apt-get update
+    sudo apt-get install libdb4.8-dev libdb4.8++-dev
+    sudo apt-get install libminiupnpc-dev
+    sudo apt-get install libzmq3-dev
+
+    # QT 5, for GUI
+    sudo apt-get install libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev protobuf-compiler    
+    # optional
+    sudo apt-get install libqrencode-dev
+
+Configure and build
+
+    ./autogen.sh
+    ./configure
+    make -j(number of threads you want to use)
+
+### Run
+
+        cd src && ./ulordd -daemon # use ./ulord-cli to make rpc call
+
+Development Process
+-------------------
+
+The master branch is constantly updated and developed, while stable
+executables will be published once mainnet is published.
+
+Welcome to commit changes or issues.
+
+Testing
+-------
+
+Tests are placed in /tests directory.
+
