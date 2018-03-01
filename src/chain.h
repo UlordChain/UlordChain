@@ -143,7 +143,7 @@ public:
 	uint256 hashClaimTrie;
     unsigned int nTime;
     unsigned int nBits;
-	unsigned int  nNonce;
+	uint256  nNonce;
 
     //! (memory only) Sequential id assigned to distinguish order in which blocks are received.
     uint32_t nSequenceId;
@@ -168,7 +168,7 @@ public:
 		hashClaimTrie   = uint256();
         nTime          = 0;
         nBits          = 0;
-        nNonce         = 0;
+        nNonce         = uint256();
     }
 
     CBlockIndex()

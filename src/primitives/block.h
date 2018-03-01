@@ -28,7 +28,7 @@ public:
     uint256 hashClaimTrie; 							   // for claim operation
     uint32_t nTime;
     uint32_t nBits;
-	uint32_t nNonce;
+	uint256 nNonce;
 
     CBlockHeader()
     {
@@ -57,7 +57,7 @@ public:
         hashClaimTrie.SetNull();
         nTime = 0;
         nBits = 0;
-        nNonce = 0;
+        nNonce.SetNull();
     }
 
     bool IsNull() const

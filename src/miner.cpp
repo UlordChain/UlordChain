@@ -30,6 +30,7 @@
 #include "masternode-payments.h"
 #include "masternode-sync.h"
 #include "validationinterface.h"
+#include "arith_uint256.h"
 
 #include <boost/thread.hpp>
 #include <boost/tuple/tuple.hpp>
@@ -453,7 +454,7 @@ CBlockTemplate* CreateNewBlock(const CChainParams& chainparams, const CScript& s
         pblock->hashPrevBlock  = pindexPrev->GetBlockHash();
         UpdateTime(pblock, chainparams.GetConsensus(), pindexPrev);
         pblock->nBits          = GetNextWorkRequired(pindexPrev, pblock, chainparams.GetConsensus());
-        pblock->nNonce         = 0;
+        pblock->nNonce.SetNull();
         pblocktemplate->vTxSigOps[0] = GetLegacySigOpCount(pblock->vtx[0]);
 
 		// claim operation
@@ -578,15 +579,15 @@ void static BitcoinMiner(const CChainParams& chainparams)
             //
             // Search
             //
-	    pblock->nNonce=GetRandInt(0x1ffffffe);	
+            pblock->nNonce = GetRandHash();	
             int64_t nStart = GetTime();
             arith_uint256 hashTarget = arith_uint256().SetCompact(pblock->nBits);
             while (true)
             {
-		uint256 hash;
+                uint256 hash;
                 while (true) 
-		{ 
-		    hash = pblock->GetHash();
+		        { 
+		            hash = pblock->GetHash();
                     if (UintToArith256(hash) <= hashTarget)
                     {
                         // Found a solution
@@ -603,12 +604,12 @@ void static BitcoinMiner(const CChainParams& chainparams)
 
                         break;
                     }
-		    pblock->nNonce += 1;
-		    if ((pblock->nNonce & 0xFF) == 0)
-		    {
-			//LogPrintf("UlordMiner: %d   nExtraNonce: %d\n", pblock->nNonce, nExtraNonce);    
-		        break;
-		    }
+                    pblock->nNonce = ArithToUint256(UintToArith256(pblock->nNonce) + 1);
+                    if ((UintToArith256(pblock->nNonce) & 0xFF) == 0)
+		            {
+			            //LogPrintf("UlordMiner: %d   nExtraNonce: %d\n", pblock->nNonce, nExtraNonce);    
+		                break;
+                    }
                 }
 
                 // Check for stop or if block needs to be rebuilt
@@ -616,7 +617,7 @@ void static BitcoinMiner(const CChainParams& chainparams)
                 // Regtest mode doesn't require peers
                 if (vNodes.empty() && chainparams.MiningRequiresPeers())
                     break;
-                if (pblock->nNonce >= 0xffff0000)
+                if (UintToArith256(pblock->nNonce) >= 0xffff0000)
                     break;
                 if (mempool.GetTransactionsUpdated() != nTransactionsUpdatedLast && GetTime() - nStart > 60)
                     break;

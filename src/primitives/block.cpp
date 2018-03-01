@@ -23,13 +23,13 @@ uint256 CBlockHeader::GetHash() const
 std::string CBlockHeader::ToString() const                                                                                                                                                                                                                                   
 {
     std::stringstream s;
-    s << strprintf("CBlock(hash=%s, ver=%d, hashPrevBlock=%s, hashMerkleRoot=%s, hashClaimTrie=%s, nTime=%u, nBits=%08x, nNonce=%u)\n",
+    s << strprintf("CBlock(hash=%s, ver=%d, hashPrevBlock=%s, hashMerkleRoot=%s, hashClaimTrie=%s, nTime=%u, nBits=%08x, nNonce=%s)\n",
 		GetHash().ToString(),
         nVersion,
         hashPrevBlock.ToString(),
         hashMerkleRoot.ToString(),
         hashClaimTrie.ToString(),
-        nTime, nBits, nNonce);
+        nTime, nBits, nNonce.ToString());
 
     return s.str();
 }
@@ -37,13 +37,13 @@ std::string CBlockHeader::ToString() const
 std::string CBlock::ToString() const
 {
     std::stringstream s;
-    s << strprintf("CBlock(hash=%s, ver=%d, hashPrevBlock=%s, hashMerkleRoot=%s, hashClaimTrie=%s, nTime=%u, nBits=%08x, nNonce=%u, vtx=%u)\n",
+    s << strprintf("CBlock(hash=%s, ver=%d, hashPrevBlock=%s, hashMerkleRoot=%s, hashClaimTrie=%s, nTime=%u, nBits=%08x, nNonce=%s, vtx=%u)\n",
         GetHash().ToString(),
         nVersion,
         hashPrevBlock.ToString(),
         hashMerkleRoot.ToString(),
         hashClaimTrie.ToString(),
-        nTime, nBits, nNonce,
+        nTime, nBits, nNonce.ToString(),
         vtx.size());
     for (unsigned int i = 0; i < vtx.size(); i++)
     {

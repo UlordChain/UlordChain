@@ -20,7 +20,7 @@
 #include "chainparamsseeds.h"
 
 typedef int64_t i64;
-//#define GENESIS_GENERATION
+#define GENESIS_GENERATION
 
 #ifdef GENESIS_GENERATION
 #include <cstdlib>
@@ -37,6 +37,7 @@ typedef int64_t i64;
 #include <chrono>
 #include <thread>
 #include <mutex>
+#include "random.h"
 
 typedef uint32_t uint;
 typedef CBlockHeader ch;
@@ -45,40 +46,38 @@ typedef long long ll;
 static std::mutex mtx;
 
 // find a genesis in about 10-20 mins
-bool _get(const ch * const pb, const arith_uint256 hashTarget)
+void _get(const ch * const pblock, const arith_uint256 hashTarget, uint256 nonce)
 {
     uint256 hash;
-    ch *b = new ch(*pb);
-    // simple random generator factors(from https://stackoverflow.com/questions/3062746/special-simple-random-number-generator)
-    static const ll m = ll(1) << 32, a = 1103515245, c = 12345;
+    ch *pb = new ch(*pblock);
     
     for (int cnt = 0; true; ++cnt)
     {
-        uint256 hash = b->GetHash();
+        uint256 hash = pb->GetHash();
 
         // for debug purpose
         mtx.lock();
         std::cout << "========================================" << std::endl;
         std::cout << "thread : " << std::this_thread::get_id() << std::endl;
-        std::cout << "\tgenesis finding using nonce = " << b->nNonce << ", hash = "
+        std::cout << "\tgenesis finding using nonce = " << pb->nNonce.ToString() << ", hash = "
                   << hash.ToString() << ", powLimit = " << hashTarget.ToString() << std::endl;
         std::cout << "========================================" << std::endl;
         mtx.unlock();
 
         if (UintToArith256(hash) <= hashTarget) break;
-        b->nNonce = (a * b->nNonce + c) % m;
+        pb->nNonce = ArithToUint256(UintToArith256(pb->nNonce) + 1);
         if (cnt > 1e3)
         {
-            b->nTime = GetTime();
+            pb->nTime = GetTime();
             cnt = 0;
         }
     }
     
     std::lock_guard<std::mutex> guard(mtx);
     std::cout << "\n\t\t----------------------------------------\t" << std::endl;
-    std::cout << "\t" << b->ToString() << std::endl;
+    std::cout << "\t" << pb->ToString() << std::endl;
     std::cout << "\n\t\t----------------------------------------\t" << std::endl;
-    delete b;
+    delete pb;
 
     // stop while found one
     assert(0);
@@ -94,11 +93,7 @@ static void findGenesis(CBlockHeader *pb, const std::string &net)
 
     for (int i = 0; i < std::min(GetNumCores(), 100); ++i)
     {
-        if (i)
-        {
-            pb->nNonce = i;
-        }
-        threads.push_back(std::thread(_get, pb, hashTarget));
+        threads.push_back(std::thread(_get, pb, hashTarget, i ? uint256S(std::to_string(i)) : pb->nNonce));
     }
 
     for (auto &t : threads)
@@ -108,7 +103,7 @@ static void findGenesis(CBlockHeader *pb, const std::string &net)
 }
 #endif
 
-static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesisOutputScript, uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount &genesisReward)
+static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesisOutputScript, uint32_t nTime, uint256 nNonce, uint32_t nBits, int32_t nVersion, const CAmount &genesisReward)
 {
     CMutableTransaction txNew;
     txNew.nVersion = 1;
@@ -141,7 +136,7 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
  *     CTxOut(nValue=50.00000000, scriptPubKey=0xA9037BAC7050C479B121CF)
  *   vMerkleTree: e0028e
  */
-static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const i64& genesisReward)
+static CBlock CreateGenesisBlock(uint32_t nTime, uint256 nNonce, uint32_t nBits, int32_t nVersion, const i64& genesisReward)
 {
     const char* pszTimestamp = "abracadabra";
     const CScript genesisOutputScript = CScript() << ParseHex("041c508f27e982c369486c0f1a42779208b3f5dc96c21a2af6004cb18d1529f42182425db1e1632dc6e73ff687592e148569022cee52b4b4eb10e8bb11bd927ec0") << OP_CHECKSIG;
@@ -228,7 +223,7 @@ public:
         nMaxTipAge = 6 * 60 * 60; // ~144 blocks behind -> 2 x fork detection time, was 24 * 60 * 60 in bitcoin
         nPruneAfterHeight = 100000;
 
-        genesis = CreateGenesisBlock(1519648090, 3258119499, 0x1e1d1459, 1, consensus.genesisReward);
+        genesis = CreateGenesisBlock(1519648090, uint256S("0"), 0x1e1d1459, 1, consensus.genesisReward);
 #ifdef GENESIS_GENERATION
         arith_uint256 a("0x00001d1459000000000000000000000000000000000000000000000000000000");
         std::cout << "\tpow:\t" << a.GetCompact() << std::endl;
@@ -370,7 +365,7 @@ public:
         nMaxTipAge = 0x7fffffff; 		// allow mining on top of old blocks for testnet
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1518059142, 1940147270, 0x2000ffff, 1,  1 * COIN);
+        genesis = CreateGenesisBlock(1518059142, uint256S("0"), 0x2000ffff, 1,  1 * COIN);
 #ifdef GENESIS_GENERATION
         arith_uint256 a("00ffffffff000000000000000000000000000000000000000000000000000000");
         std::cout << "pow limit : " << a.GetCompact() << std::endl;
@@ -489,7 +484,7 @@ public:
         nDefaultPort = 29888;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1517650354, 551787281, 0x200f0f0f, 1, 1 * COIN);
+        genesis = CreateGenesisBlock(1517650354, uint256S("0"), 0x200f0f0f, 1, 1 * COIN);
 #ifdef GENESIS_GENERATION
         findGenesis(&genesis, "regtest");
 #endif

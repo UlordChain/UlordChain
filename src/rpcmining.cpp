@@ -179,7 +179,7 @@ UniValue generate(const UniValue& params, bool fHelp)
         while (!CheckProofOfWork(pblock->GetHash(), pblock->nBits, Params().GetConsensus())) {
             // Yes, there is a chance every nonce could fail to satisfy the -regtest
             // target -- 1 in 2^(2^32). That ain't gonna happen
-			++pblock->nNonce;
+			pblock->nNonce = ArithToUint256(UintToArith256(pblock->nNonce) + 1);
         }
         CValidationState state;
         if (!ProcessNewBlock(state, Params(), NULL, pblock, true, NULL))
@@ -551,7 +551,7 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
 
     // Update nTime
     UpdateTime(pblock, Params().GetConsensus(), pindexPrev);
-    pblock->nNonce = 0;
+    pblock->nNonce.SetNull();
 
     UniValue aCaps(UniValue::VARR); aCaps.push_back("proposal");
 

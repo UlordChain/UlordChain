@@ -77,8 +77,8 @@ public:
 	{
 		CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
 		ss << *pblock;
-		assert(ss.size() == 112);
-		write((uchar *)&ss[0], 112).finalize(hash);
+		assert(ss.size() == 140);
+		write((uchar *)&ss[0], 140).finalize(hash);
 	}
 
 	CryptoHello& write(uchar *data, size_t len)
