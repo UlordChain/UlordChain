@@ -5,7 +5,7 @@ Ulord is a decentralized content distribution platform that provides content dis
 
 UlordChain Documentation and Usage Resources
 ---------------
-
+![](http://ulord.one/images/ulordCnter.png)
 Resources may be helpful to know about Ulord.
 
 Basic usage resources:
@@ -14,7 +14,7 @@ Basic usage resources:
 * [Whitepaper](http://ulord.one/whitepaper/web/viewer.html?lang=zh)
 * [Downloads](http://ulord.one/download.html)
 
-General Info about Qtum:
+General Info about Ulord:
 
 * [Community](https://www.jianshu.com/c/a63d65402fd7)
 
@@ -24,7 +24,8 @@ What is UlordChain?
 UlordChain is the basic layer of Ulord, a decentralized featured blockchain based on Dash Core, which supports 
 intermediate layer and top application layer commands.
 
-Building UlordChain----------
+Building UlordChain
+-------------------
 
 ### Build on Ubuntu(16.04 LTS)
 
@@ -49,19 +50,19 @@ Configure and build
 
     ./autogen.sh
     ./configure
-    make -j(number of threads you want to use)
+    make -j(number of threads)
 
 ### Run
 
-        cd src && ./ulordd -daemon # use ./ulord-cli to make rpc call
+    cd src && ./ulordd -daemon # use ./ulord-cli to make rpc call
 
 Development Process
 -------------------
 
 The master branch is constantly updated and developed, while stable
-executables will be published once mainnet is published.
+and versionized executables will be published once mainnet is published.
 
-Welcome to commit changes or issues.
+Issues and commit changes are welcome.
 
 Testing
 -------
