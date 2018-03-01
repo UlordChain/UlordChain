@@ -46,7 +46,7 @@ typedef long long ll;
 static std::mutex mtx;
 
 // find a genesis in about 10-20 mins
-void _get(const ch * const pblock, const arith_uint256 hashTarget, uint256 nonce)
+void _get(const ch * const pblock, const arith_uint256 hashTarget)
 {
     uint256 hash;
     ch *pb = new ch(*pblock);
@@ -54,15 +54,6 @@ void _get(const ch * const pblock, const arith_uint256 hashTarget, uint256 nonce
     for (int cnt = 0; true; ++cnt)
     {
         uint256 hash = pb->GetHash();
-
-        // for debug purpose
-        mtx.lock();
-        std::cout << "========================================" << std::endl;
-        std::cout << "thread : " << std::this_thread::get_id() << std::endl;
-        std::cout << "\tgenesis finding using nonce = " << pb->nNonce.ToString() << ", hash = "
-                  << hash.ToString() << ", powLimit = " << hashTarget.ToString() << std::endl;
-        std::cout << "========================================" << std::endl;
-        mtx.unlock();
 
         if (UintToArith256(hash) <= hashTarget) break;
         pb->nNonce = ArithToUint256(UintToArith256(pb->nNonce) + 1);
@@ -93,7 +84,11 @@ static void findGenesis(CBlockHeader *pb, const std::string &net)
 
     for (int i = 0; i < std::min(GetNumCores(), 100); ++i)
     {
-        threads.push_back(std::thread(_get, pb, hashTarget, i ? uint256S(std::to_string(i)) : pb->nNonce));
+        if (i)
+        {
+            pb->nNonce = uint256S(std::to_string(i));
+        }
+        threads.push_back(std::thread(_get, pb, hashTarget));
     }
 
     for (auto &t : threads)
@@ -189,7 +184,7 @@ public:
         consensus.nMajorityRejectBlockOutdated = 950;
         consensus.nMajorityWindow = 1000;
         consensus.BIP34Height = 0; 
-        consensus.BIP34Hash = uint256S("00001bb0c5dbd1a010b20809985a1cfe701a43fdcce12b4400cdf30bee2a11b9");
+        consensus.BIP34Hash = uint256S("000000e32e974118821c865e0f79cd851edd96ccdf161de997ee85c438d0e7e3");
         consensus.powLimit = uint256S("0x00001d1459000000000000000000000000000000000000000000000000000000");
         consensus.nPowAveragingWindow = 17;
         consensus.nPowMaxAdjustDown = 32;                               // 32% adjustment down
@@ -206,8 +201,8 @@ public:
 
         // Deployment of BIP68, BIP112, and BIP113.
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1519648090;              // BeiJing 2018/2/24 9:48:15 
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1551184090;                // 2019/2/24 9:48:15
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1519894519;              // 2018/3/1 16:55:19
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1551430519;                // 2019/3/1 16:55:19
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -223,14 +218,14 @@ public:
         nMaxTipAge = 6 * 60 * 60; // ~144 blocks behind -> 2 x fork detection time, was 24 * 60 * 60 in bitcoin
         nPruneAfterHeight = 100000;
 
-        genesis = CreateGenesisBlock(1519648090, uint256S("0"), 0x1e1d1459, 1, consensus.genesisReward);
+        genesis = CreateGenesisBlock(1519894519, uint256S("00000000000000000000000000000000000000000000000000000000000020d0"), 0x1e1d1459, 1, consensus.genesisReward);
 #ifdef GENESIS_GENERATION
         arith_uint256 a("0x00001d1459000000000000000000000000000000000000000000000000000000");
         std::cout << "\tpow:\t" << a.GetCompact() << std::endl;
-        findGenesis(&genesis, "main");
+//        findGenesis(&genesis, "main");
 #endif
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x00001bb0c5dbd1a010b20809985a1cfe701a43fdcce12b4400cdf30bee2a11b9"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000000e32e974118821c865e0f79cd851edd96ccdf161de997ee85c438d0e7e3"));
         assert(genesis.hashMerkleRoot == uint256S("0x2b5ff31e4f2bccf51441d2f78849c2ca393daa187cede58373ccad8f1794b8d9"));
 
 
@@ -263,8 +258,8 @@ public:
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-            (0, uint256S("0x00001bb0c5dbd1a010b20809985a1cfe701a43fdcce12b4400cdf30bee2a11b9")),
-            1519648090,                       // * UNIX timestamp of last checkpoint block
+            (0, uint256S("0x000000e32e974118821c865e0f79cd851edd96ccdf161de997ee85c438d0e7e3")),
+            1519894519,                       // * UNIX timestamp of last checkpoint block
             0,                                // * total number of transactions between genesis and last checkpoint
                                               //   (the tx=... number in the SetBestChain debug.log lines)
             0                                 // * estimated number of transactions per day after checkpoint
