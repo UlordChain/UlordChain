@@ -5,7 +5,9 @@ Ulord is a decentralized content distribution platform that provides content dis
 
 UlordChain Documentation and Usage Resources
 ---------------
+
 ![](http://ulord.one/images/ulordCnter.png)
+
 Resources may be helpful to know about Ulord.
 
 Basic usage resources:
