@@ -163,7 +163,7 @@ public:
 
     static bool IsValidBlockHeight(int nBlockHeight);
     static CAmount GetPaymentsLimit(int nBlockHeight);
-
+	static bool IsFounderValid(const CTransaction& txNew, int nBlockHeight, CAmount blockReward);
     int GetStatus() { return nStatus; }
     void SetStatus(int nStatusIn) { nStatus = nStatusIn; }
 

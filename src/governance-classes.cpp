@@ -676,6 +676,49 @@ CAmount CSuperblock::GetPaymentsTotalAmount()
 
     return nPaymentsTotalAmount;
 }
+/**
+*   Is Transaction Valid
+*
+*   - Does this transaction match the superblock?
+*/
+bool CSuperblock::IsFounderValid(const CTransaction& txNew, int nBlockHeight, CAmount blockReward)
+{
+    // founder reward check
+    // it's ok to use founders address as budget address ?
+     LogPrint("gobject", "IsFounderValid nBlockHeight = %d \n",
+             nBlockHeight);
+    const Consensus::Params& cp = Params().GetConsensus();
+    CAmount foundersActual(0), foundersExpected(GetFoundersReward(nBlockHeight, cp));
+    CAmount nBlockValue = txNew.GetValueOut();
+    if (nBlockHeight > 1 && nBlockHeight < cp.endOfFoundersReward())
+    {
+        for (const CTxOut &out: txNew.vout)
+        {
+            if (out.scriptPubKey == Params().GetFoundersRewardScriptAtHeight(nBlockHeight))
+	        {
+	            foundersActual += out.nValue;
+            }
+        }
+        if (foundersActual < foundersExpected-1)
+        {
+    	    if (foundersActual == 0)
+	        {
+    	        LogPrintf("CSuperblock::IsValid -- ERROR: Block invalid, founders reward missing: block %lld, expected value  %lld\n", nBlockValue, foundersExpected);
+	            return false;
+	        }
+            LogPrintf("CSuperblock::IsValid -- ERROR: Block invalid, wrong founders reward: block %lld, actual value %lld, expected value  %lld\n", nBlockValue, foundersActual, foundersExpected);
+            return false;
+        }
+    }
+	CAmount budgetLimit = GetBudget(nBlockHeight, cp);
+	// miner should not get more than he would usually get
+    if(nBlockValue > blockReward + budgetLimit + foundersExpected)
+    {
+        LogPrintf("CSuperblock::IsValid -- ERROR: Block invalid, block value limit exceeded: block %lld, limit %lld\n", nBlockValue, blockReward + budgetLimit + foundersExpected);
+        return false;
+    }
+
+}
 
 /**
 *   Is Transaction Valid
@@ -730,26 +773,6 @@ bool CSuperblock::IsValid(const CTransaction& txNew, int nBlockHeight, CAmount b
     // it's ok to use founders address as budget address ?
     CAmount foundersActual(0), foundersExpected(GetFoundersReward(nBlockHeight, cp));
     CAmount nBlockValue = txNew.GetValueOut();
-    if (nBlockHeight > 1 && nBlockHeight < cp.endOfFoundersReward())
-    {
-        for (const CTxOut &out: txNew.vout)
-        {
-            if (out.scriptPubKey == Params().GetFoundersRewardScriptAtHeight(nBlockHeight))
-	    {
-	        foundersActual += out.nValue;
-            }
-        }
-        if (foundersActual < foundersExpected)
-        {
-    	    if (foundersActual == 0)
-	    {
-    	        LogPrintf("CSuperblock::IsValid -- ERROR: Block invalid, founders reward missing: block %lld, expected value  %lld\n", nBlockValue, foundersExpected);
-	        return false;
-	    }
-            LogPrintf("CSuperblock::IsValid -- ERROR: Block invalid, wrong founders reward: block %lld, actual value %lld, expected value  %lld\n", nBlockValue, foundersActual, foundersExpected);
-            return false;
-        }
-    }
 
     // miner should not get more than he would usually get
     if(nBlockValue > blockReward + budgetLimit + foundersExpected)
