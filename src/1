@@ -20,7 +20,7 @@
 #include "chainparamsseeds.h"
 
 typedef int64_t i64;
-//#define GENESIS_GENERATION
+#define GENESIS_GENERATION
 
 #ifdef GENESIS_GENERATION
 #include <cstdlib>
