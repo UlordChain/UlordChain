@@ -717,7 +717,7 @@ bool CSuperblock::IsFounderValid(const CTransaction& txNew, int nBlockHeight, CA
         LogPrintf("CSuperblock::IsValid -- ERROR: Block invalid, block value limit exceeded: block %lld, limit %lld\n", nBlockValue, blockReward + budgetLimit + foundersExpected);
         return false;
     }
-
+    return true;
 }
 
 /**
