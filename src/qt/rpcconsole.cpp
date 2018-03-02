@@ -632,7 +632,7 @@ void RPCConsole::setNumConnections(int count)
 void RPCConsole::setNumBlocks(int count, const QDateTime& blockDate, double nVerificationProgress)
 {
     ui->numberOfBlocks->setText(QString::number(count));
-    ui->lastBlockTime->setText(blockDate.toString());
+    ui->lastBlockTime->setText(blockDate.toString("yyyy-MM-dd hh:mm:ss"));
 }
 
 void RPCConsole::setMasternodeCount(const QString &strMasternodes)

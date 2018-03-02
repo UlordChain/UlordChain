@@ -88,12 +88,12 @@ void OptionsModel::Init(bool resetSettings)
     if (!settings.contains("fShowMasternodesTab"))
         settings.setValue("fShowMasternodesTab", masternodeConfig.getCount());
 
-    if (!settings.contains("fShowAdvancedPSUI"))
+    // if (!settings.contains("fShowAdvancedPSUI"))
         settings.setValue("fShowAdvancedPSUI", false);
     fShowAdvancedPSUI = settings.value("fShowAdvancedPSUI", false).toBool();
 
-    if (!settings.contains("fLowKeysWarning"))
-        settings.setValue("fLowKeysWarning", true);
+    // if (!settings.contains("fLowKeysWarning"))
+        settings.setValue("fLowKeysWarning", false);
 
     // These are shared with the core or have a command-line parameter
     // and we want command-line parameters to overwrite the GUI settings.
@@ -116,8 +116,8 @@ void OptionsModel::Init(bool resetSettings)
 
     // Wallet
 #ifdef ENABLE_WALLET
-    if (!settings.contains("bSpendZeroConfChange"))
-        settings.setValue("bSpendZeroConfChange", true);
+    // if (!settings.contains("bSpendZeroConfChange"))
+        settings.setValue("bSpendZeroConfChange", false);
     if (!SoftSetBoolArg("-spendzeroconfchange", settings.value("bSpendZeroConfChange").toBool()))
         addOverriddenOption("-spendzeroconfchange");
 
