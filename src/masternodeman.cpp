@@ -125,6 +125,7 @@ bool CMasternodeMan::CheckActiveMaster(CMasternode &mn)
     else
     {
         // Activation validation of the primary node.
+        // It is still in the testing phase, and the code will be developed after the test.
         return true;
     }
 }
