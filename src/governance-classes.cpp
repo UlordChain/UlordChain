@@ -692,15 +692,19 @@ bool CSuperblock::IsFounderValid(const CTransaction& txNew, int nBlockHeight, CA
     CAmount nBlockValue = txNew.GetValueOut();
     if (nBlockHeight > 1 && nBlockHeight < cp.endOfFoundersReward())
     {
-	CBitcoinAddress address(Params().GetFoundersRewardAddressAtHeight(nBlockHeight));     
+	CBitcoinAddress address(Params().GetFoundersRewardAddressAtHeight(nBlockHeight));    
+	   
         for (const CTxOut &out: txNew.vout)
         {
-	    CBitcoinAddress address2(CScriptID(out.scriptPubKey));
-            LogPrintf(" out.scriptPubKey [%s]  [%s] ",address2.ToString(), address.ToString()); 
-            //if (out.scriptPubKey == Params().GetFoundersRewardScriptAtHeight(nBlockHeight))                                                                                                                     
+            CTxDestination address1;
+            ExtractDestination(out.scriptPubKey, address1);
+            CBitcoinAddress address2(address1);
+            //CBitcoinAddress address2(CScriptID(out.scriptPubKey));                                                                                                                                              
+            LogPrintf(" out.scriptPubKey [%s]  [%s] \n",address2.ToString(), address.ToString());
+            //if (out.scriptPubKey == Params().GetFoundersRewardScriptAtHeight(nBlockHeight))
             if (address2 == address)
-            {	     
-	        foundersActual += out.nValue;
+            {
+                foundersActual += out.nValue;
             }
         }
         if (foundersActual != foundersExpected)
