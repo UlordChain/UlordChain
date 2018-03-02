@@ -116,19 +116,33 @@ CMasternodeMan::CMasternodeMan()
   nDsqCount(0)
 {}
 
+bool CMasternodeMan::CheckActiveMaster(CMasternode &mn)
+{
+    if (!sporkManager.IsSporkActive(SPORK_18_REQUIRE_MASTER_VERIFY_FLAG))
+    {
+        return false;
+    }
+    else
+    {
+        // Activation validation of the primary node.
+    }
+}
+
 bool CMasternodeMan::Add(CMasternode &mn)
 {
     LOCK(cs);
-
     CMasternode *pmn = Find(mn.vin);
     if (pmn == NULL) {
         LogPrint("masternode", "CMasternodeMan::Add -- Adding new Masternode: addr=%s, %i now\n", mn.addr.ToString(), size() + 1);
-        vMasternodes.push_back(mn);
-        indexMasternodes.AddMasternodeVIN(mn.vin);
-        fMasternodesAdded = true;
-        return true;
+        bool ret = CheckActiveMaster(CMasternode &mn);
+        if ( ret )
+        {
+            vMasternodes.push_back(mn);
+            indexMasternodes.AddMasternodeVIN(mn.vin);
+            fMasternodesAdded = true;
+            return true;
+        }
     }
-
     return false;
 }
 
