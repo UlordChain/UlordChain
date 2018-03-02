@@ -1155,7 +1155,7 @@ Address: %4
         <translation>此金额为关闭匿名发送的极限.</translation>
     </message>
     <message>
-        <source>F</source>
+        <source>Amount of Ulord to keep anonymized</source>
         <translation>保持匿名化的Ulord数</translation>
     </message>
     <message>
