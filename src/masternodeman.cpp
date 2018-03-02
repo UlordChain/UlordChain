@@ -125,6 +125,7 @@ bool CMasternodeMan::CheckActiveMaster(CMasternode &mn)
     else
     {
         // Activation validation of the primary node.
+        return true;
     }
 }
 
