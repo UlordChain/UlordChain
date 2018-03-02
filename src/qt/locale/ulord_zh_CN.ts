@@ -2501,6 +2501,10 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>错误： 钱包被锁定以用于匿名化您的Ulord。</translation>
     </message>
     <message>
+        <source>Pay only the minimum fee of %1</source>
+        <translation>只付最低手续费%1</translation>
+    </message>
+    <message>
         <source>Warning: Invalid Ulord address</source>
         <translation>警告：无效的Ulord地址</translation>
     </message>
