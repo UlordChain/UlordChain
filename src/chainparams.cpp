@@ -247,7 +247,7 @@ public:
         vSeeds.clear();		
         vSeeds.push_back(CDNSSeedData("ulord.one", "dnsseed1.ulord.one"));
 	vSeeds.push_back(CDNSSeedData("ulord.io", "dnsseed1.ulord.io"));  
-	vSeeds.push_back(CDNSSeedData("fcash.cc", "dnseed1.fcash.cc"));
+	vSeeds.push_back(CDNSSeedData("fcash.cc", "dnsseed1.fcash.cc"));
 	    
         fMiningRequiresPeers = true;
         fDefaultConsistencyChecks = false;
