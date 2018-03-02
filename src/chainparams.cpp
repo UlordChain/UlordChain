@@ -415,7 +415,7 @@ public:
 
         // Founders reward script expects a vector of 2-of-3 multisig addresses
         vFoundersRewardAddress = {
-            "sNf43eLTrXdKKbDefUYiM6euWS5M1uwi9y"
+            "udAzp5mxsLtpDiA9eZz6UKKjDngY1hHL4R"
         };
     }
 };
