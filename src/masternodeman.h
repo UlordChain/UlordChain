@@ -199,6 +199,9 @@ public:
 
     /// Add an entry
     bool Add(CMasternode &mn);
+    
+    /// Check and activate the master node.
+    bool CheckActiveMaster(CMasternode &mn);
 
     /// Ask (source) node for mnb
     void AskForMN(CNode *pnode, const CTxIn &vin);
