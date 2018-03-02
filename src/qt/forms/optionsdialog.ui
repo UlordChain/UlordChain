@@ -213,9 +213,9 @@
            <property name="toolTip">
             <string>This setting determines the amount of individual masternodes that an input will be anonymized through.&lt;br/&gt;More rounds of anonymization gives a higher degree of privacy, but also costs more in fees.</string>
            </property>
-           <property name="text">
+<!--            <property name="text">
             <string>PrivateSend rounds to use</string>
-           </property>
+           </property> -->
           </widget>
          </item>
          <item>
@@ -252,9 +252,9 @@
            <property name="accessibleDescription">
             <string notr="true"/>
            </property>
-           <property name="text">
+<!--            <property name="text">
             <string>Amount of Ulord to keep anonymized</string>
-           </property>
+           </property> -->
           </widget>
          </item>
          <item>

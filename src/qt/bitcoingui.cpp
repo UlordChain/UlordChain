@@ -532,7 +532,7 @@ void BitcoinGUI::createMenuBar()
 
     QMenu *help = appMenuBar->addMenu(tr("&Help"));
     help->addAction(showHelpMessageAction);
-    help->addAction(showPrivateSendHelpAction);
+    // help->addAction(showPrivateSendHelpAction);
     help->addSeparator();
     help->addAction(aboutAction);
     help->addAction(aboutQtAction);

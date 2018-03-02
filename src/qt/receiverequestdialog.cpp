@@ -100,7 +100,8 @@ ReceiveRequestDialog::ReceiveRequestDialog(QWidget *parent) :
     ui->btnSaveAs->setVisible(false);
     ui->lblQRCode->setVisible(false);
 #endif
-
+    // ui->buttonBox->setText(tr("Close"));
+    ui->buttonBox->button(QDialogButtonBox::Close)->setText(tr("Close"));
     connect(ui->btnSaveAs, SIGNAL(clicked()), ui->lblQRCode, SLOT(saveImage()));
 }
 
@@ -149,10 +150,10 @@ void ReceiveRequestDialog::update()
         html += "<b>"+tr("Label")+"</b>: " + GUIUtil::HtmlEscape(info.label) + "<br>";
     if(!info.message.isEmpty())
         html += "<b>"+tr("Message")+"</b>: " + GUIUtil::HtmlEscape(info.message) + "<br>";
-    if(info.fUseInstantSend)
-        html += "<b>"+tr("InstantSend")+"</b>: Yes<br>";
-    else
-        html += "<b>"+tr("InstantSend")+"</b>: No<br>";
+    // if(info.fUseInstantSend)
+    //     html += "<b>"+tr("InstantSend")+"</b>: Yes<br>";
+    // else
+    //     html += "<b>"+tr("InstantSend")+"</b>: No<br>";
     ui->outUri->setText(html);
 
 #ifdef USE_QRCODE

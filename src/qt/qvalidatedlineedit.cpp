@@ -24,7 +24,7 @@ void QValidatedLineEdit::setValid(bool valid)
 
     if(valid)
     {
-        setStyleSheet("");
+        setStyleSheet("font-size: 12px");
     }
     else
     {

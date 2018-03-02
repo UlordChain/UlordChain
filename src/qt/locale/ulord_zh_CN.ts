@@ -1668,7 +1668,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Enter a Ulord address (e.g. %1)</source>
-        <translation>输入Ulord地址(e.g. %1)</translation>
+        <translation>输入Ulord地址(比如： %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -2123,6 +2123,10 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>保存图片(&amp;S)...</translation>
     </message>
     <message>
+        <source>Close</source>
+        <translation>关闭</translation>
+    </message>
+    <message>
         <source>Request payment to %1</source>
         <translation>请求付款到 %1</translation>
     </message>
@@ -2195,6 +2199,18 @@ https://www.transifex.com/projects/p/ulord/</translation>
     <message>
         <source>Send Coins</source>
         <translation>发送货币</translation>
+    </message>
+    <message>
+        <source>Pay only the minimum fee of %1</source>
+        <translation>只付最低手续费%1</translation>
+    </message>
+    <message>
+        <source>Pay only the required fee of %1</source>
+        <translation>只支付%1的手续费</translation>
+    </message>
+    <message>
+        <source>Hide</source>
+        <translation>隐藏</translation>
     </message>
     <message>
         <source>Coin Control Features</source>
@@ -2302,7 +2318,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>(read the tooltip)</source>
-        <translation>(请看提示)</translation>
+        <translation>(鼠标停留有提示)</translation>
     </message>
     <message>
         <source>Recommended:</source>
@@ -2506,6 +2522,10 @@ https://www.transifex.com/projects/p/ulord/</translation>
     <message>
         <source>This is a normal payment.</source>
         <translation>这是笔正常的支付。</translation>
+    </message>
+    <message>
+        <source>Subtract fee from amount</source>
+        <translation>从金额中扣除费用</translation>
     </message>
     <message>
         <source>Pay &amp;To:</source>

@@ -42,6 +42,7 @@ ReceiveCoinsDialog::ReceiveCoinsDialog(const PlatformStyle *platformStyle, QWidg
         ui->showRequestButton->setIcon(QIcon(":/icons/" + theme + "/show"));
         ui->removeRequestButton->setIcon(QIcon(":/icons/" + theme + "/remove_one"));
     }
+    ui->checkUseInstantSend->setVisible(false);
 
     // context menu actions
     QAction *copyLabelAction = new QAction(tr("Copy label"), this);

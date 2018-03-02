@@ -200,12 +200,18 @@ void OptionsDialog::setMapper()
     /* Wallet */
     mapper->addMapping(ui->coinControlFeatures, OptionsModel::CoinControlFeatures);
     mapper->addMapping(ui->showMasternodesTab, OptionsModel::ShowMasternodesTab);
-    mapper->addMapping(ui->showAdvancedPSUI, OptionsModel::ShowAdvancedPSUI);
-    mapper->addMapping(ui->lowKeysWarning, OptionsModel::LowKeysWarning);
-    mapper->addMapping(ui->privateSendMultiSession, OptionsModel::PrivateSendMultiSession);
-    mapper->addMapping(ui->spendZeroConfChange, OptionsModel::SpendZeroConfChange);
-    mapper->addMapping(ui->privateSendRounds, OptionsModel::PrivateSendRounds);
-    mapper->addMapping(ui->privateSendAmount, OptionsModel::PrivateSendAmount);
+    ui->showAdvancedPSUI->hide();
+    ui->lowKeysWarning->hide();
+    ui->privateSendMultiSession->hide();
+    ui->spendZeroConfChange->hide();
+    ui->privateSendRounds->hide();
+    ui->privateSendAmount->hide();
+    // mapper->addMapping(ui->showAdvancedPSUI, OptionsModel::ShowAdvancedPSUI);
+    // mapper->addMapping(ui->lowKeysWarning, OptionsModel::LowKeysWarning);
+    // mapper->addMapping(ui->privateSendMultiSession, OptionsModel::PrivateSendMultiSession);
+    // mapper->addMapping(ui->spendZeroConfChange, OptionsModel::SpendZeroConfChange);
+    // mapper->addMapping(ui->privateSendRounds, OptionsModel::PrivateSendRounds);
+    // mapper->addMapping(ui->privateSendAmount, OptionsModel::PrivateSendAmount);
 
     /* Network */
     mapper->addMapping(ui->mapPortUpnp, OptionsModel::MapPortUPnP);

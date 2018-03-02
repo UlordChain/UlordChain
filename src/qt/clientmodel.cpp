@@ -238,7 +238,7 @@ QString ClientModel::clientName() const
 
 QString ClientModel::formatClientStartupTime() const
 {
-    return QDateTime::fromTime_t(nClientStartupTime).toString();
+    return QDateTime::fromTime_t(nClientStartupTime).toString("yyyy-MM-dd hh:mm:ss");
 }
 
 void ClientModel::updateBanlist()
