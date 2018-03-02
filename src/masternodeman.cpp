@@ -136,7 +136,7 @@ bool CMasternodeMan::Add(CMasternode &mn)
     CMasternode *pmn = Find(mn.vin);
     if (pmn == NULL) {
         LogPrint("masternode", "CMasternodeMan::Add -- Adding new Masternode: addr=%s, %i now\n", mn.addr.ToString(), size() + 1);
-        bool ret = CheckActiveMaster(CMasternode &mn);
+        bool ret = CheckActiveMaster(mn);
         if ( ret )
         {
             vMasternodes.push_back(mn);
