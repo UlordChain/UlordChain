@@ -699,7 +699,7 @@ bool CSuperblock::IsFounderValid(const CTransaction& txNew, int nBlockHeight, CA
 	            foundersActual += out.nValue;
             }
         }
-        if (foundersActual < foundersExpected-1)
+        if (foundersActual != foundersExpected)
         {
     	    if (foundersActual == 0)
 	        {
