@@ -118,26 +118,23 @@ CMasternodeMan::CMasternodeMan()
 
 bool CMasternodeMan::CheckActiveMaster(CMasternode &mn)
 {
-    if (!sporkManager.IsSporkActive(SPORK_18_REQUIRE_MASTER_VERIFY_FLAG))
-    {
         return false;
-    }
-    else
-    {
         // Activation validation of the primary node.
         // It is still in the testing phase, and the code will be developed after the test.
-        return true;
-    }
 }
 
 bool CMasternodeMan::Add(CMasternode &mn)
 {
     LOCK(cs);
     CMasternode *pmn = Find(mn.vin);
+    bool bActive = true;
     if (pmn == NULL) {
         LogPrint("masternode", "CMasternodeMan::Add -- Adding new Masternode: addr=%s, %i now\n", mn.addr.ToString(), size() + 1);
-        bool ret = CheckActiveMaster(mn);
-        if ( ret )
+        if (sporkManager.IsSporkActive(SPORK_18_REQUIRE_MASTER_VERIFY_FLAG))
+        { 
+             bActive = CheckActiveMaster(mn);
+        } 
+        if ( bActive )
         {
             vMasternodes.push_back(mn);
             indexMasternodes.AddMasternodeVIN(mn.vin);
