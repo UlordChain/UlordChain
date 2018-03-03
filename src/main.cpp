@@ -1494,7 +1494,7 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
         // Remove conflicting transactions from the mempool
         BOOST_FOREACH(const CTxMemPool::txiter it, allConflicting)
         {
-            LogPrint("mempool", "replacing tx %s with %s for %s UC additional fees, %d delta bytes\n",
+            LogPrint("mempool", "replacing tx %s with %s for %s UT additional fees, %d delta bytes\n",
                     it->GetTx().GetHash().ToString(),
                     hash.ToString(),
                     FormatMoney(nModifiedFees - nConflictingFees),
@@ -3137,7 +3137,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
     int64_t nTime3 = GetTimeMicros(); nTimeConnect += nTime3 - nTime2;
     LogPrint("bench", "      - Connect %u transactions: %.2fms (%.3fms/tx, %.3fms/txin) [%.2fs]\n", (unsigned)block.vtx.size(), 0.001 * (nTime3 - nTime2), 0.001 * (nTime3 - nTime2) / block.vtx.size(), nInputs <= 1 ? 0 : 0.001 * (nTime3 - nTime2) / (nInputs-1), nTimeConnect * 0.000001);
 
-    // UC : MODIFIED TO CHECK MASTERNODE PAYMENTS AND SUPERBLOCKS
+    // UT : MODIFIED TO CHECK MASTERNODE PAYMENTS AND SUPERBLOCKS
 
     // It's possible that we simply don't have enough data and this could fail
     // (i.e. block itself could be a correct one and we need to store it),
@@ -3148,15 +3148,15 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
     CAmount blockReward = nFees + GetBlockSubsidy(pindex->nHeight, chainparams.GetConsensus());
     std::string strError = "";
     if (!IsBlockValueValid(block, pindex->nHeight, blockReward, strError)) {
-        return state.DoS(0, error("ConnectBlock(UC): %s", strError), REJECT_INVALID, "bad-cb-amount");
+        return state.DoS(0, error("ConnectBlock(UT): %s", strError), REJECT_INVALID, "bad-cb-amount");
     }
 
     if (!IsBlockPayeeValid(block.vtx[0], pindex->nHeight, blockReward)) {
         mapRejectedBlocks.insert(make_pair(block.GetHash(), GetTime()));
-        return state.DoS(0, error("ConnectBlock(UC): couldn't find masternode or superblock payments"),
+        return state.DoS(0, error("ConnectBlock(UT): couldn't find masternode or superblock payments"),
                                 REJECT_INVALID, "bad-cb-payee");
     }
-    // END UC
+    // END UT
 
     if (!control.Wait())
         return state.DoS(100, false);
@@ -4104,7 +4104,7 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
                              REJECT_INVALID, "bad-cb-multiple");
 
 
-    // UC : CHECK TRANSACTIONS FOR INSTANTSEND
+    // UT : CHECK TRANSACTIONS FOR INSTANTSEND
 
     if(sporkManager.IsSporkActive(SPORK_3_INSTANTSEND_BLOCK_FILTERING)) {
         // We should never accept block which conflicts with completed transaction lock,
@@ -4124,17 +4124,17 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
                     instantsend.Relay(hashLocked);
                     LOCK(cs_main);
                     mapRejectedBlocks.insert(make_pair(block.GetHash(), GetTime()));
-                    return state.DoS(0, error("CheckBlock(UC): transaction %s conflicts with transaction lock %s",
+                    return state.DoS(0, error("CheckBlock(UT): transaction %s conflicts with transaction lock %s",
                                                 tx.GetHash().ToString(), hashLocked.ToString()),
                                      REJECT_INVALID, "conflict-tx-lock");
                 }
             }
         }
     } else {
-        LogPrintf("CheckBlock(UC): spork is off, skipping transaction locking checks\n");
+        LogPrintf("CheckBlock(UT): spork is off, skipping transaction locking checks\n");
     }
 
-    // END UC
+    // END UT
 
     // Check transactions
     BOOST_FOREACH(const CTransaction& tx, block.vtx)

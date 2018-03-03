@@ -368,7 +368,7 @@ void CBlockPolicyEstimator::processTransaction(const CTxMemPoolEntry& entry, boo
         return;
     }
 
-    // Fees are stored and reported as UC-per-kb:
+    // Fees are stored and reported as UT-per-kb:
     CFeeRate feeRate(entry.GetFee(), entry.GetTxSize());
 
     // Want the priority of the tx at confirmation. However we don't know
@@ -414,7 +414,7 @@ void CBlockPolicyEstimator::processBlockTx(unsigned int nBlockHeight, const CTxM
         return;
     }
 
-    // Fees are stored and reported as UC-per-kb:
+    // Fees are stored and reported as UT-per-kb:
     CFeeRate feeRate(entry.GetFee(), entry.GetTxSize());
 
     // Want the priority of the tx at confirmation.  The priority when it

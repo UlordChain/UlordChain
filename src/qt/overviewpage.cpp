@@ -38,7 +38,7 @@ class TxViewDelegate : public QAbstractItemDelegate
     Q_OBJECT
 public:
     TxViewDelegate(const PlatformStyle *platformStyle):
-        QAbstractItemDelegate(), unit(BitcoinUnits::UC),
+        QAbstractItemDelegate(), unit(BitcoinUnits::UT),
         platformStyle(platformStyle)
     {
 
@@ -291,7 +291,7 @@ void OverviewPage::setWalletModel(WalletModel *model)
         connect(model, SIGNAL(notifyWatchonlyChanged(bool)), this, SLOT(updateWatchOnlyLabels(bool)));
     }
 
-    // update the display unit, to not use the default ("UC")
+    // update the display unit, to not use the default ("UT")
     updateDisplayUnit();
 }
 

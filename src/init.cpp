@@ -574,7 +574,7 @@ std::string HelpMessage(HelpMessageMode mode)
     strUsage += HelpMessageOpt("-enableprivatesend=<n>", strprintf(_("Enable use of automated PrivateSend for funds stored in this wallet (0-1, default: %u)"), 0));
     strUsage += HelpMessageOpt("-privatesendmultisession=<n>", strprintf(_("Enable multiple PrivateSend mixing sessions per block, experimental (0-1, default: %u)"), DEFAULT_PRIVATESEND_MULTISESSION));
     strUsage += HelpMessageOpt("-privatesendrounds=<n>", strprintf(_("Use N separate masternodes for each denominated input to mix funds (2-16, default: %u)"), DEFAULT_PRIVATESEND_ROUNDS));
-    strUsage += HelpMessageOpt("-privatesendamount=<n>", strprintf(_("Keep N UC anonymized (default: %u)"), DEFAULT_PRIVATESEND_AMOUNT));
+    strUsage += HelpMessageOpt("-privatesendamount=<n>", strprintf(_("Keep N UT anonymized (default: %u)"), DEFAULT_PRIVATESEND_AMOUNT));
     strUsage += HelpMessageOpt("-liquidityprovider=<n>", strprintf(_("Provide liquidity to PrivateSend by infrequently mixing coins on a continual basis (0-100, default: %u, 1=very frequent, high fees, 100=very infrequent, low fees)"), DEFAULT_PRIVATESEND_LIQUIDITY));
 
     strUsage += HelpMessageGroup(_("InstantSend options:"));

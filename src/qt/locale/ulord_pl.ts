@@ -176,8 +176,8 @@
         <translation>Potwierdź szyfrowanie portfela</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR UC&lt;/b&gt;!</source>
-        <translation>Ostrzeżenie: Jeśli zaszyfrujesz swój portfel i zgubisz swoje hasło, &lt;b&gt;STRACISZ WSZYSTKIE MONETY UC&lt;/b&gt;</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR UT&lt;/b&gt;!</source>
+        <translation>Ostrzeżenie: Jeśli zaszyfrujesz swój portfel i zgubisz swoje hasło, &lt;b&gt;STRACISZ WSZYSTKIE MONETY UT&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -864,28 +864,28 @@ Adres: %4
         <translation>Proszę wybrać poziom bezpieczeństwa.</translation>
     </message>
     <message>
-        <source>Use 2 separate masternodes to mix funds up to 1000 UC</source>
-        <translation>Użyj 2 oddzielnych masternodów aby wymieszać środki max. do 1000 UC</translation>
+        <source>Use 2 separate masternodes to mix funds up to 1000 UT</source>
+        <translation>Użyj 2 oddzielnych masternodów aby wymieszać środki max. do 1000 UT</translation>
     </message>
     <message>
-        <source>Use 8 separate masternodes to mix funds up to 1000 UC</source>
-        <translation>Użyj 8 oddzielnych masternodów aby wymieszać środki max. do 1000 UC</translation>
+        <source>Use 8 separate masternodes to mix funds up to 1000 UT</source>
+        <translation>Użyj 8 oddzielnych masternodów aby wymieszać środki max. do 1000 UT</translation>
     </message>
     <message>
         <source>Use 16 separate masternodes</source>
         <translation>Użyj 16 oddzielnych masternodów</translation>
     </message>
     <message>
-        <source>This option is the quickest and will cost about ~0.025 UC to anonymize 1000 UC</source>
-        <translation>Ta opcja jest najszybsza i kosztuje około 0.025 UC za zanonimizowanie 1000 UC</translation>
+        <source>This option is the quickest and will cost about ~0.025 UT to anonymize 1000 UT</source>
+        <translation>Ta opcja jest najszybsza i kosztuje około 0.025 UT za zanonimizowanie 1000 UT</translation>
     </message>
     <message>
-        <source>This option is moderately fast and will cost about 0.05 UC to anonymize 1000 UC</source>
-        <translation>Ta opcja jest w miarę szybka i kosztuje około 0.05 UC za zanonimizowanie 1000 UC</translation>
+        <source>This option is moderately fast and will cost about 0.05 UT to anonymize 1000 UT</source>
+        <translation>Ta opcja jest w miarę szybka i kosztuje około 0.05 UT za zanonimizowanie 1000 UT</translation>
     </message>
     <message>
-        <source>0.1 UC per 1000 UC you anonymize.</source>
-        <translation>0.1 UC za każde 1000 UC które zanonimizujesz.</translation>
+        <source>0.1 UT per 1000 UT you anonymize.</source>
+        <translation>0.1 UT za każde 1000 UT które zanonimizujesz.</translation>
     </message>
     <message>
         <source>This is the slowest and most secure option. Using maximum anonymity will cost</source>
@@ -1431,8 +1431,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Ilość oraz Rundy:</translation>
     </message>
     <message>
-        <source>0 UC / 0 Rounds</source>
-        <translation>0 UC / 0 Rund</translation>
+        <source>0 UT / 0 Rounds</source>
+        <translation>0 UT / 0 Rund</translation>
     </message>
     <message>
         <source>Submitted Denom:</source>
@@ -3276,8 +3276,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Wyślij płatność</translation>
     </message>
     <message>
-        <source>InstantX doesn't support sending values that high yet. Transactions are currently limited to %1 UC.</source>
-        <translation>InstantX jescze nie może przesłać tak wysokich kwot. Obecnie transakcje są ograniczone tylko do %1 UC:</translation>
+        <source>InstantX doesn't support sending values that high yet. Transactions are currently limited to %1 UT.</source>
+        <translation>InstantX jescze nie może przesłać tak wysokich kwot. Obecnie transakcje są ograniczone tylko do %1 UT:</translation>
     </message>
 </context>
 <context>
@@ -3390,8 +3390,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Nie znaleziono wystarczających denominowanych środków Darksend do wykonania tej transakcji.</translation>
     </message>
     <message>
-        <source>Unable to locate enough Darksend non-denominated funds for this transaction that are not equal 1000 UC.</source>
-        <translation>Nie znaleziono wystarczającej ilości nie zdenominowanych środków Darksend dla tej transakcji, które nie równają się 1000 UC</translation>
+        <source>Unable to locate enough Darksend non-denominated funds for this transaction that are not equal 1000 UT.</source>
+        <translation>Nie znaleziono wystarczającej ilości nie zdenominowanych środków Darksend dla tej transakcji, które nie równają się 1000 UT</translation>
     </message>
     <message>
         <source>Warning: -paytxfee is set very high! This is the transaction fee you will pay if you send a transaction.</source>
@@ -3634,12 +3634,12 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Błąd: niewspierany argument, znaleziono -socks. Ustawienie wersji SOCKS nie jest już możliwa, wspierane są tylkobramki  proxy SOCKS5.</translation>
     </message>
     <message>
-        <source>Fees (in UC/Kb) smaller than this are considered zero fee for relaying (default: %s)</source>
-        <translation>Opłaty (UC/Kb) za retransmisje mniejsze niż ta, uważane są za równoznaczne z brakiem opłat (domyślnie: %s)</translation>
+        <source>Fees (in UT/Kb) smaller than this are considered zero fee for relaying (default: %s)</source>
+        <translation>Opłaty (UT/Kb) za retransmisje mniejsze niż ta, uważane są za równoznaczne z brakiem opłat (domyślnie: %s)</translation>
     </message>
     <message>
-        <source>Fees (in UC/Kb) smaller than this are considered zero fee for transaction creation (default: %s)</source>
-        <translation>Opłaty (UC/Kb) mniejsze niż ta, są uważane są za równoznaczne z brakiem opłat za stworzenie transakcji (domyślnie: %s)</translation>
+        <source>Fees (in UT/Kb) smaller than this are considered zero fee for transaction creation (default: %s)</source>
+        <translation>Opłaty (UT/Kb) mniejsze niż ta, są uważane są za równoznaczne z brakiem opłat za stworzenie transakcji (domyślnie: %s)</translation>
     </message>
     <message>
         <source>Flush database activity from memory pool to disk log every &lt;n&gt; megabytes (default: %u)</source>
@@ -3733,8 +3733,8 @@ Zaleca się również aby ustawić alarm powiadomień tzw. alertnotify, aby dać
 </translation>
     </message>
     <message>
-        <source>Unable to locate enough funds for this transaction that are not equal 1000 UC.</source>
-        <translation>Niemożliwe jest zlokalizowanie wystarczającej ilości środków dla tej transakcji, które nie są równe 1000 UC.</translation>
+        <source>Unable to locate enough funds for this transaction that are not equal 1000 UT.</source>
+        <translation>Niemożliwe jest zlokalizowanie wystarczającej ilości środków dla tej transakcji, które nie są równe 1000 UT.</translation>
     </message>
     <message>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: %s)</source>
@@ -3847,8 +3847,8 @@ Zaleca się również aby ustawić alarm powiadomień tzw. alertnotify, aby dać
         <translation>Błąd: Znaleziono niewspierany argument -tor, użyj -onion.</translation>
     </message>
     <message>
-        <source>Fee (in UC/kB) to add to transactions you send (default: %s)</source>
-        <translation>Opłata (UC/kB) do dodania do transakcji, którą chcesz wysłać (domyślnie: %s)</translation>
+        <source>Fee (in UT/kB) to add to transactions you send (default: %s)</source>
+        <translation>Opłata (UT/kB) do dodania do transakcji, którą chcesz wysłać (domyślnie: %s)</translation>
     </message>
     <message>
         <source>Finalizing transaction.</source>
@@ -4215,7 +4215,7 @@ Zaleca się również aby ustawić alarm powiadomień tzw. alertnotify, aby dać
         <translation>Klucz KeePassHttp dla zaszyfrowanego metodą AES połączenia z KeePass</translation>
     </message>
     <message>
-        <source>Keep N UC anonymized (default: %u)</source>
+        <source>Keep N UT anonymized (default: %u)</source>
         <translation>Utrzymuj N zanonimizowanych ulord (domyślnie: %u)</translation>
     </message>
     <message>
