@@ -383,7 +383,7 @@ bool CWallet::SetMinVersion(enum WalletFeature nVersion, CWalletDB* pwalletdbIn,
     if (fFileBacked)
     {
         CWalletDB* pwalletdb = pwalletdbIn ? pwalletdbIn : new CWalletDB(strWalletFile);
-        if (nWalletVersion > 40000)
+        if (nWalletVersion > 10000)
             pwalletdb->WriteMinVersion(nWalletVersion);
         if (!pwalletdbIn)
             delete pwalletdb;
