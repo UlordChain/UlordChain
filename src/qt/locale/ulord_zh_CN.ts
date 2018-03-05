@@ -2761,6 +2761,10 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Bitcoin Core 的开发者</translation>
     </message>
     <message>
+        <source>The Dash Core developers</source>
+        <translation>Dash的开发者</translation>
+    </message>
+    <message>
         <source>The Ulord Core developers</source>
         <translation>Ulord核心开发人员</translation>
     </message>

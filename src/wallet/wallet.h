@@ -83,17 +83,17 @@ class CWalletTx;
 /** (client) version numbers for particular wallet features */
 enum WalletFeature
 {
-    FEATURE_BASE = 10500, // the earliest version new wallets supports (only useful for getinfo's clientversion output)
+    FEATURE_BASE = 10001, // the earliest version new wallets supports (only useful for getinfo's clientversion output)
 
-    FEATURE_WALLETCRYPT = 40000, // wallet encryption
-    FEATURE_COMPRPUBKEY = 60000, // compressed public keys
+    FEATURE_WALLETCRYPT = 10002, // wallet encryption
+    FEATURE_COMPRPUBKEY = 10003, // compressed public keys
 
-    FEATURE_LATEST = 61000
+    FEATURE_LATEST = 10100
 };
 
 enum AvailableCoinsType
 {
-    ALL_COINS = 1,
+    ALL_COINS = 1,s
     ONLY_DENOMINATED = 2,
     ONLY_NOT1000IFMN = 3,
     ONLY_NONDENOMINATED_NOT1000IFMN = 4,
