@@ -341,10 +341,11 @@ public:
         consensus.nMajorityWindow = 100;
         consensus.BIP34Height = 0;
         consensus.BIP34Hash = uint256S("001cd3928acb4d9785b7975a0ec948653cc5e4d233cdd5e6eedae11af015a34a");
-        consensus.powLimit = uint256S("00ffffffff000000000000000000000000000000000000000000000000000000");
+        consensus.powLimit = uint256S("000fffffff000000000000000000000000000000000000000000000000000000");
         consensus.nPowAveragingWindow = 17;
         consensus.nPowMaxAdjustDown = 32;                               // 32% adjustment down
-        consensus.nPowMaxAdjustUp = 16;                                 // 16% adjustment up
+        //consensus.nPowMaxAdjustUp = 16;                                 // 16% adjustment up
+	consensus.nPowMaxAdjustUp = 48;                                 // 48% adjustment up
         consensus.nPowTargetTimespan = 24 * 60 * 60;                    // Ulord: 1 day
         consensus.nPowTargetSpacing = 2.5 * 60;                         // Ulord: 2.5 minutes
         consensus.fPowAllowMinDifficultyBlocks = true;
