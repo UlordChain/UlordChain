@@ -133,17 +133,17 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
  */
 static CBlock CreateGenesisBlock(uint32_t nTime, uint256 nNonce, uint32_t nBits, int32_t nVersion, const i64& genesisReward)
 {
-    const char* pszTimestamp = "Today, we have Ulord, making knowledge distribution a reality...Ulord——initiated a new era of digital resource value communication! We are committed to building a blockchain     digital resource distribution platform that is open, equal and respects creation.";
+    const char* pszTimestamp = "Today, we have Ulord, making knowledge distribution a reality...Ulord——initiated a new era of digital resource value communication! We are committed to building a blockchain digital resource distribution platform that is open, equal and respects creation.";
     const CScript genesisOutputScript = CScript() << ParseHex("041c508f27e982c369486c0f1a42779208b3f5dc96c21a2af6004cb18d1529f42182425db1e1632dc6e73ff687592e148569022cee52b4b4eb10e8bb11bd927ec0") << OP_CHECKSIG;
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
 
-static CBlock CreateGenesisBlock1(uint32_t nTime, uint256 nNonce, uint32_t nBits, int32_t nVersion, const i64& genesisReward)                                                                                                                    
+static CBlock CreateGenesisBlock1(uint32_t nTime, uint256 nNonce, uint32_t nBits, int32_t nVersion, const i64& genesisReward)                                                                                                                
 {
-     const char* pszTimestamp = "abracadabra";
-     const CScript genesisOutputScript = CScript() << ParseHex("041c508f27e982c369486c0f1a42779208b3f5dc96c21a2af6004cb18d1529f42182425db1e1632dc6e73ff687592e148569022cee52b4b4eb10e8bb11bd927ec0") << OP_CHECKSIG;
-     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
- }
+    const char* pszTimestamp = "abracadabra";
+    const CScript genesisOutputScript = CScript() << ParseHex("041c508f27e982c369486c0f1a42779208b3f5dc96c21a2af6004cb18d1529f42182425db1e1632dc6e73ff687592e148569022cee52b4b4eb10e8bb11bd927ec0") << OP_CHECKSIG;
+    return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
+}
 
 /**
  * Main network
@@ -225,7 +225,7 @@ public:
         nMaxTipAge = 6 * 60 * 60; // ~144 blocks behind -> 2 x fork detection time, was 24 * 60 * 60 in bitcoin
         nPruneAfterHeight = 100000;
 
-        genesis = CreateGenesisBlock(1519894519, uint256S("00000000000000000000000000000000000000000000000000000000000020d0"), 0x1e1d1459, 1, consensus.genesisReward);
+        genesis = CreateGenesisBlock1(1519894519, uint256S("00000000000000000000000000000000000000000000000000000000000020d0"), 0x1e1d1459, 1, consensus.genesisReward);
 #ifdef GENESIS_GENERATION
         arith_uint256 a("0x00001d1459000000000000000000000000000000000000000000000000000000");
         std::cout << "\tpow:\t" << a.GetCompact() << std::endl;
@@ -333,10 +333,10 @@ public:
         consensus.nBudgetPaymentsWindowBlocks = 10;
         consensus.nBudgetProposalEstablishingTime = 60*20;
         consensus.nSuperblockStartBlock = 60; 				 // NOTE: Should satisfy nSuperblockStartBlock > nBudgetPeymentsStartBlock
-        consensus.nSuperblockCycle = 24; 				 // Superblocks can be issued hourly on testnet
-        consensus.nGovernanceMinQuorum = 1;
+        consensus.nSuperblockCycle = 72; 				 // Superblocks can be issued hourly on testnet
+        consensus.nGovernanceMinQuorum = 2;
         consensus.nGovernanceFilterElements = 500;
-        consensus.nMasternodeMinimumConfirmations = 1;
+        consensus.nMasternodeMinimumConfirmations = 2;
         consensus.nMajorityEnforceBlockUpgrade = 51;
         consensus.nMajorityRejectBlockOutdated = 75;
         consensus.nMajorityWindow = 100;
@@ -375,7 +375,7 @@ public:
 #ifdef GENESIS_GENERATION
         arith_uint256 a("000fffffff000000000000000000000000000000000000000000000000000000");
         std::cout << "pow limit : " << a.GetCompact() << std::endl;
-//        findGenesis(&genesis, "testnet");
+        findGenesis(&genesis, "testnet");
 #endif
         consensus.hashGenesisBlock = genesis.GetHash();
         assert(consensus.hashGenesisBlock == uint256S("0x00070afef16a5dd59d9ecda598acf55c9903718cff3ea385eb657ed2ce6136a7"));
