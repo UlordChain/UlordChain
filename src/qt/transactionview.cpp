@@ -88,7 +88,7 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, QWidget *pa
     }
 
     typeWidget->addItem(tr("All"), TransactionFilterProxy::ALL_TYPES);
-    typeWidget->addItem(tr("Most Common"), TransactionFilterProxy::COMMON_TYPES);
+    // typeWidget->addItem(tr("Most Common"), TransactionFilterProxy::COMMON_TYPES);
     typeWidget->addItem(tr("Received with"), TransactionFilterProxy::TYPE(TransactionRecord::RecvWithAddress) |
                                         TransactionFilterProxy::TYPE(TransactionRecord::RecvFromOther));
     typeWidget->addItem(tr("Sent to"), TransactionFilterProxy::TYPE(TransactionRecord::SendToAddress) |
