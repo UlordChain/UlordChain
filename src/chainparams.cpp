@@ -133,16 +133,17 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
  */
 static CBlock CreateGenesisBlock(uint32_t nTime, uint256 nNonce, uint32_t nBits, int32_t nVersion, const i64& genesisReward)
 {
-    const char* pszTimestamp = "5000 years ago, humans invented characters and started the journey of civilization, hence started distributing knowledge and information;
-1000 years ago, human invented printing, discovering the importance of knowledge distribution;
-For nearly half a century, human invented the computer and the Internet and initiated the information superhighway.
-Today, we have Ulord, making knowledge distribution a reality...
-Ulord——initiated a new era of digital resource value communication! 
-We are committed to building a blockchain digital resource distribution platform that is open, equal and respects creation.
-";
+    const char* pszTimestamp = "Today, we have Ulord, making knowledge distribution a reality...Ulord——initiated a new era of digital resource value communication! We are committed to building a blockchain     digital resource distribution platform that is open, equal and respects creation.";
     const CScript genesisOutputScript = CScript() << ParseHex("041c508f27e982c369486c0f1a42779208b3f5dc96c21a2af6004cb18d1529f42182425db1e1632dc6e73ff687592e148569022cee52b4b4eb10e8bb11bd927ec0") << OP_CHECKSIG;
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
+
+static CBlock CreateGenesisBlock1(uint32_t nTime, uint256 nNonce, uint32_t nBits, int32_t nVersion, const i64& genesisReward)                                                                                                                    
+{
+     const char* pszTimestamp = "abracadabra";
+     const CScript genesisOutputScript = CScript() << ParseHex("041c508f27e982c369486c0f1a42779208b3f5dc96c21a2af6004cb18d1529f42182425db1e1632dc6e73ff687592e148569022cee52b4b4eb10e8bb11bd927ec0") << OP_CHECKSIG;
+     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
+ }
 
 /**
  * Main network
@@ -370,14 +371,14 @@ public:
         nMaxTipAge = 0x7fffffff; 		// allow mining on top of old blocks for testnet
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1520302039, uint256S("0000000000000000000000000000000000000000000000000000000000000445"), 0x2000ffff, 1,  1 * COIN);
+        genesis = CreateGenesisBlock(1520305035, uint256S("0000000000000000000000000000000000000000000000000000000000000521"), 521142271, 1,  1 * COIN);
 #ifdef GENESIS_GENERATION
-        arith_uint256 a("0x00001d1459000000000000000000000000000000000000000000000000000000");
+        arith_uint256 a("000fffffff000000000000000000000000000000000000000000000000000000");
         std::cout << "pow limit : " << a.GetCompact() << std::endl;
 //        findGenesis(&genesis, "testnet");
 #endif
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x00015f24ab771a3ce660fa4eda09c2331c84e882470fdb965dc05dab643cff74"));
+        assert(consensus.hashGenesisBlock == uint256S("0x00070afef16a5dd59d9ecda598acf55c9903718cff3ea385eb657ed2ce6136a7"));
         assert(genesis.hashMerkleRoot == uint256S("0xe690a48a229cb0ae5ce58f43d623e0eae6d2acbd57e0c2c5649ddd46d00f481e"));
 
         vFixedSeeds.clear();
@@ -413,8 +414,8 @@ public:
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-            (0, uint256S("001cd3928acb4d9785b7975a0ec948653cc5e4d233cdd5e6eedae11af015a34a")),
-            1519895157,     // * UNIX timestamp of last checkpoint block
+            (0, uint256S("00070afef16a5dd59d9ecda598acf55c9903718cff3ea385eb657ed2ce6136a7")),
+            1520305035,     // * UNIX timestamp of last checkpoint block
             0,              // * total number of transactions between genesis and last checkpoint
                             //   (the tx=... number in the SetBestChain debug.log lines)
             0               // * estimated number of transactions per day after checkpoint
@@ -492,7 +493,7 @@ public:
         nDefaultPort = 29888;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1519895551, uint256S("0000000000000000000000000000000000000000000000000000000000000006"), 0x200f0f0f, 1, 1 * COIN);
+        genesis = CreateGenesisBlock1(1519895551, uint256S("0000000000000000000000000000000000000000000000000000000000000006"), 0x200f0f0f, 1, 1 * COIN);
 #ifdef GENESIS_GENERATION
         findGenesis(&genesis, "regtest");
 #endif
