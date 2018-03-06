@@ -370,16 +370,17 @@ public:
         nDefaultPort = 19888;
         nMaxTipAge = 0x7fffffff; 		// allow mining on top of old blocks for testnet
         nPruneAfterHeight = 1000;
-
-        genesis = CreateGenesisBlock(1520305035, uint256S("0000000000000000000000000000000000000000000000000000000000000521"), 521142271, 1,  1 * COIN);
+	    
+	    
+	genesis = CreateGenesisBlock(1520308246, uint256S("0000000000000000000000000000000000000000000000000000000000000439"), 521142271, 1,  1 * COIN);
 #ifdef GENESIS_GENERATION
         arith_uint256 a("000fffffff000000000000000000000000000000000000000000000000000000");
         std::cout << "pow limit : " << a.GetCompact() << std::endl;
         findGenesis(&genesis, "testnet");
 #endif
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x00070afef16a5dd59d9ecda598acf55c9903718cff3ea385eb657ed2ce6136a7"));
-        assert(genesis.hashMerkleRoot == uint256S("0xe690a48a229cb0ae5ce58f43d623e0eae6d2acbd57e0c2c5649ddd46d00f481e"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000e0979b2a26db104fb4d8c2c8d572919a56662cecdcadc3d0583ac8d548e23"));
+        assert(genesis.hashMerkleRoot == uint256S("0xe48383d34d7d7e11e15eba4f534bd7ffaf77cfe0984fb0f769b212a692dc8f40"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
@@ -414,8 +415,8 @@ public:
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-            (0, uint256S("00070afef16a5dd59d9ecda598acf55c9903718cff3ea385eb657ed2ce6136a7")),
-            1520305035,     // * UNIX timestamp of last checkpoint block
+            (0, uint256S("0x000e0979b2a26db104fb4d8c2c8d572919a56662cecdcadc3d0583ac8d548e23")),
+            1520308246,     // * UNIX timestamp of last checkpoint block
             0,              // * total number of transactions between genesis and last checkpoint
                             //   (the tx=... number in the SetBestChain debug.log lines)
             0               // * estimated number of transactions per day after checkpoint
