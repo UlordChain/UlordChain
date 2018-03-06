@@ -372,7 +372,7 @@ public:
 
         genesis = CreateGenesisBlock(1520302039, uint256S("0000000000000000000000000000000000000000000000000000000000000445"), 0x2000ffff, 1,  1 * COIN);
 #ifdef GENESIS_GENERATION
-        arith_uint256 a("00ffffffff000000000000000000000000000000000000000000000000000000");
+        arith_uint256 a("0x00001d1459000000000000000000000000000000000000000000000000000000");
         std::cout << "pow limit : " << a.GetCompact() << std::endl;
 //        findGenesis(&genesis, "testnet");
 #endif
