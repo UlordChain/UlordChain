@@ -377,8 +377,8 @@ public:
 //        findGenesis(&genesis, "testnet");
 #endif
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x001cd3928acb4d9785b7975a0ec948653cc5e4d233cdd5e6eedae11af015a34a"));
-        assert(genesis.hashMerkleRoot == uint256S("0x2b5ff31e4f2bccf51441d2f78849c2ca393daa187cede58373ccad8f1794b8d9"));
+        assert(consensus.hashGenesisBlock == uint256S("0x00015f24ab771a3ce660fa4eda09c2331c84e882470fdb965dc05dab643cff74"));
+        assert(genesis.hashMerkleRoot == uint256S("0xe690a48a229cb0ae5ce58f43d623e0eae6d2acbd57e0c2c5649ddd46d00f481e"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
