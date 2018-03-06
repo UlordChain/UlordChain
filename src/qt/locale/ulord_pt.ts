@@ -176,8 +176,8 @@
         <translation>Confirme cifra da carteira</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR UT&lt;/b&gt;!</source>
-        <translation>Atenção: Se cifrar a carteira e perder a palavra-passe, irá &lt;b&gt;PERDER TODAS AS SUAS MOEDAS UT&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR ULD&lt;/b&gt;!</source>
+        <translation>Atenção: Se cifrar a carteira e perder a palavra-passe, irá &lt;b&gt;PERDER TODAS AS SUAS MOEDAS ULD&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -860,28 +860,28 @@ Endereço: %4
         <translation>Por favor seleccione um nível de privacidade.</translation>
     </message>
     <message>
-        <source>Use 2 separate masternodes to mix funds up to 1000 UT</source>
-        <translation>Usar 2 masternodes distintos para misturar os fundos até 1000 UT</translation>
+        <source>Use 2 separate masternodes to mix funds up to 1000 ULD</source>
+        <translation>Usar 2 masternodes distintos para misturar os fundos até 1000 ULD</translation>
     </message>
     <message>
-        <source>Use 8 separate masternodes to mix funds up to 1000 UT</source>
-        <translation>Usar 8 masternodes distintos para misturar os fundos até 1000 UT</translation>
+        <source>Use 8 separate masternodes to mix funds up to 1000 ULD</source>
+        <translation>Usar 8 masternodes distintos para misturar os fundos até 1000 ULD</translation>
     </message>
     <message>
         <source>Use 16 separate masternodes</source>
         <translation>Usar 16 masternodes</translation>
     </message>
     <message>
-        <source>This option is the quickest and will cost about ~0.025 UT to anonymize 1000 UT</source>
-        <translation>Esta opção é a mais rápida e irá custar cerca de ~0.025 UT para anonimizar 1000 UT</translation>
+        <source>This option is the quickest and will cost about ~0.025 ULD to anonymize 1000 ULD</source>
+        <translation>Esta opção é a mais rápida e irá custar cerca de ~0.025 ULD para anonimizar 1000 ULD</translation>
     </message>
     <message>
-        <source>This option is moderately fast and will cost about 0.05 UT to anonymize 1000 UT</source>
-        <translation>Esta opção é relativamente rápida e irá custar cerca de ~0.05 UT para anonimizar 1000 UT</translation>
+        <source>This option is moderately fast and will cost about 0.05 ULD to anonymize 1000 ULD</source>
+        <translation>Esta opção é relativamente rápida e irá custar cerca de ~0.05 ULD para anonimizar 1000 ULD</translation>
     </message>
     <message>
-        <source>0.1 UT per 1000 UT you anonymize.</source>
-        <translation>0.1 UT por cada 1000 UT a anonimizar.</translation>
+        <source>0.1 ULD per 1000 ULD you anonymize.</source>
+        <translation>0.1 ULD por cada 1000 ULD a anonimizar.</translation>
     </message>
     <message>
         <source>This is the slowest and most secure option. Using maximum anonymity will cost</source>
@@ -1427,8 +1427,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Quantia e Voltas:</translation>
     </message>
     <message>
-        <source>0 UT / 0 Rounds</source>
-        <translation>0 UT / 0 Voltas</translation>
+        <source>0 ULD / 0 Rounds</source>
+        <translation>0 ULD / 0 Voltas</translation>
     </message>
     <message>
         <source>Submitted Denom:</source>
@@ -3260,8 +3260,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Enviar Moedas</translation>
     </message>
     <message>
-        <source>InstantX doesn't support sending values that high yet. Transactions are currently limited to %1 UT.</source>
-        <translation>O InstantX não suporta valores tão elevados neste momento. As transacções estão limitadas a %1 UT.</translation>
+        <source>InstantX doesn't support sending values that high yet. Transactions are currently limited to %1 ULD.</source>
+        <translation>O InstantX não suporta valores tão elevados neste momento. As transacções estão limitadas a %1 ULD.</translation>
     </message>
 </context>
 <context>
@@ -3374,8 +3374,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Não foi possível localizar fundos Darksend denominados suficientes para esta transacção.</translation>
     </message>
     <message>
-        <source>Unable to locate enough Darksend non-denominated funds for this transaction that are not equal 1000 UT.</source>
-        <translation>Não foi possível localizar fundos Darksend não denominados suficientes para esta transacção que não sejam igual a 1000 UT.</translation>
+        <source>Unable to locate enough Darksend non-denominated funds for this transaction that are not equal 1000 ULD.</source>
+        <translation>Não foi possível localizar fundos Darksend não denominados suficientes para esta transacção que não sejam igual a 1000 ULD.</translation>
     </message>
     <message>
         <source>Warning: -paytxfee is set very high! This is the transaction fee you will pay if you send a transaction.</source>
@@ -3590,8 +3590,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Activar o uso de darksend automatizado para os fundos guardados nesta carteira (0-1, default: %u)</translation>
     </message>
     <message>
-        <source>Fees (in UT/Kb) smaller than this are considered zero fee for relaying (default: %s)</source>
-        <translation>Taxas (em UT/Kb) inferiores a esta serão consideradas zero para retransmissão (default: %s)</translation>
+        <source>Fees (in ULD/Kb) smaller than this are considered zero fee for relaying (default: %s)</source>
+        <translation>Taxas (em ULD/Kb) inferiores a esta serão consideradas zero para retransmissão (default: %s)</translation>
     </message>
     <message>
         <source>Flush database activity from memory pool to disk log every &lt;n&gt; megabytes (default: %u)</source>
@@ -3638,8 +3638,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Este produto inclui software desenvolvido pelo Projecto OpenSSL para uso no OpenSSL Toolkit &lt;https://www.openssl.org/&gt;, software criptográfico escrito por Eric Young e software UPnP escrito por Thomas Bernard.</translation>
     </message>
     <message>
-        <source>Unable to locate enough funds for this transaction that are not equal 1000 UT.</source>
-        <translation>Não foi possível localizar fundos suficientes para esta transacção que não sejam igual a 1000 UT.</translation>
+        <source>Unable to locate enough funds for this transaction that are not equal 1000 ULD.</source>
+        <translation>Não foi possível localizar fundos suficientes para esta transacção que não sejam igual a 1000 ULD.</translation>
     </message>
     <message>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: %s)</source>
@@ -3744,8 +3744,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Erro: Argument não suportado -tor encontrado, utilize -onion</translation>
     </message>
     <message>
-        <source>Fee (in UT/kB) to add to transactions you send (default: %s)</source>
-        <translation>Taxas (em UT/Kb) a adicionar às transacções que envia (omissão: %s)</translation>
+        <source>Fee (in ULD/kB) to add to transactions you send (default: %s)</source>
+        <translation>Taxas (em ULD/Kb) a adicionar às transacções que envia (omissão: %s)</translation>
     </message>
     <message>
         <source>Finalizing transaction.</source>
@@ -4104,8 +4104,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Chave KeePassHttp para usar na comunicação cifrada AES com o KeePass</translation>
     </message>
     <message>
-        <source>Keep N UT anonymized (default: %u)</source>
-        <translation>Manter N UT anonimizados (default: %u)</translation>
+        <source>Keep N ULD anonymized (default: %u)</source>
+        <translation>Manter N ULD anonimizados (default: %u)</translation>
     </message>
     <message>
         <source>Keep at most &lt;n&gt; unconnectable transactions in memory (default: %u)</source>

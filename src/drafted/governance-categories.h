@@ -4,7 +4,7 @@
 
 	* means the category has an associated class
 	
-	CUlordNetwork: UT NETWORK (ROOT)
+	CUlordNetwork: ULD NETWORK (ROOT)
 	has:
 		vector<CNetworkVariable> vecNetworkVariables;
 		vector<CUlordProject> vecProjects;
@@ -19,7 +19,7 @@
 
 */
 
-	// UT NETWORK (ROOT)
+	// ULD NETWORK (ROOT)
 	// 	-> NETWORK VARIABLE
 	// 		-> switch, setting
 	// 	-> CATEGORIES
