@@ -370,7 +370,7 @@ public:
         nMaxTipAge = 0x7fffffff; 		// allow mining on top of old blocks for testnet
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1519895157, uint256S("0000000000000000000000000000000000000000000000000000000000000445"), 0x2000ffff, 1,  1 * COIN);
+        genesis = CreateGenesisBlock(1520302039, uint256S("0000000000000000000000000000000000000000000000000000000000000445"), 0x2000ffff, 1,  1 * COIN);
 #ifdef GENESIS_GENERATION
         arith_uint256 a("00ffffffff000000000000000000000000000000000000000000000000000000");
         std::cout << "pow limit : " << a.GetCompact() << std::endl;
