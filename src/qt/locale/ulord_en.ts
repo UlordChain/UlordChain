@@ -3514,7 +3514,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     <message>
         <location line="+1"/>
         <source>The Ulord Core developers</source>
-        <translation>The Ulord Core developers</translation>
+        <translation>The Ulord Foundation</translation>
     </message>
     <message>
         <location filename="../networkstyle.cpp" line="+19"/>
