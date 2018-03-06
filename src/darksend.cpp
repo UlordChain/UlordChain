@@ -434,8 +434,8 @@ void CDarksendPool::InitDenominations()
         is convertable to another.
 
         For example:
-        1UT+1000 == (.1UT+100)*10
-        10UT+10000 == (1UT+1000)*10
+        1ULD+1000 == (.1ULD+100)*10
+        10ULD+10000 == (1ULD+1000)*10
     */
     /* Disabled
     vecPrivateSendDenominations.push_back( (100      * COIN)+100000 );
@@ -750,7 +750,7 @@ void CDarksendPool::ChargeFees()
     with using it to stop abuse. Otherwise it could serve as an attack vector and
     allow endless transaction that would bloat Ulord and make it unusable. To
     stop these kinds of attacks 1 in 10 successful transactions are charged. This
-    adds up to a cost of 0.001UT per transaction on average.
+    adds up to a cost of 0.001ULD per transaction on average.
 */
 void CDarksendPool::ChargeRandomFees()
 {
@@ -2181,10 +2181,10 @@ int CDarksendPool::GetDenominations(const std::vector<CTxOut>& vecTxOut, bool fS
 bool CDarksendPool::GetDenominationsBits(int nDenom, std::vector<int> &vecBitsRet)
 {
     // ( bit on if present, 4 denominations example )
-    // bit 0 - 100UT+1
-    // bit 1 - 10UT+1
-    // bit 2 - 1UT+1
-    // bit 3 - .1UT+1
+    // bit 0 - 100ULD+1
+    // bit 1 - 10ULD+1
+    // bit 2 - 1ULD+1
+    // bit 3 - .1ULD+1
 
     int nMaxDenoms = vecPrivateSendDenominations.size();
 

@@ -176,7 +176,7 @@
         <translation>確認錢包加密</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR UT&lt;/b&gt;!</source>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR ULD&lt;/b&gt;!</source>
         <translation>警告: 如果把錢包加密後又忘記密碼，你就會從此&lt;b&gt;失去其中所有的Ulord了&lt;/b&gt;！</translation>
     </message>
     <message>
@@ -860,11 +860,11 @@ Address: %4
         <translation>請選擇穩私級別。</translation>
     </message>
     <message>
-        <source>Use 2 separate masternodes to mix funds up to 1000 UT</source>
+        <source>Use 2 separate masternodes to mix funds up to 1000 ULD</source>
         <translation>使用2個獨立的主節點來混合最高達1000Ulord的資金</translation>
     </message>
     <message>
-        <source>Use 8 separate masternodes to mix funds up to 1000 UT</source>
+        <source>Use 8 separate masternodes to mix funds up to 1000 ULD</source>
         <translation>使用8個獨立的主節點來混合最高達1000Ulord的資金</translation>
     </message>
     <message>
@@ -872,15 +872,15 @@ Address: %4
         <translation>使用16個獨立的主節點</translation>
     </message>
     <message>
-        <source>This option is the quickest and will cost about ~0.025 UT to anonymize 1000 UT</source>
+        <source>This option is the quickest and will cost about ~0.025 ULD to anonymize 1000 ULD</source>
         <translation>這個是最快的選項，將耗費約~0.025Ulord作為匿名處理1000Ulord的費用</translation>
     </message>
     <message>
-        <source>This option is moderately fast and will cost about 0.05 UT to anonymize 1000 UT</source>
+        <source>This option is moderately fast and will cost about 0.05 ULD to anonymize 1000 ULD</source>
         <translation>這個是一般的選項，將耗費約0.05Ulord作為匿名處理1000Ulord的費用</translation>
     </message>
     <message>
-        <source>0.1 UT per 1000 UT you anonymize.</source>
+        <source>0.1 ULD per 1000 ULD you anonymize.</source>
         <translation>每1000Ulord耗費0.1Ulord作為匿名處理費用</translation>
     </message>
     <message>
@@ -1427,7 +1427,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>金額和循環次數:</translation>
     </message>
     <message>
-        <source>0 UT / 0 Rounds</source>
+        <source>0 ULD / 0 Rounds</source>
         <translation>0 Ulord / 0 循環次數</translation>
     </message>
     <message>
@@ -3180,8 +3180,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>付款</translation>
     </message>
     <message>
-        <source>InstantX doesn't support sending values that high yet. Transactions are currently limited to %1 UT.</source>
-        <translation>即時到帳系統暫時並不支援這麼高的交易金額。目前的金額僅限於%1 UT。</translation>
+        <source>InstantX doesn't support sending values that high yet. Transactions are currently limited to %1 ULD.</source>
+        <translation>即時到帳系統暫時並不支援這麼高的交易金額。目前的金額僅限於%1 ULD。</translation>
     </message>
 </context>
 <context>
@@ -3438,11 +3438,11 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>錯誤: 找到不再支援的 -socks 參數。現在只支援 SOCKS5 協定的代理伺服器了，因為不再能夠指定 SOCKS 協定版本。</translation>
     </message>
     <message>
-        <source>Fees (in UT/Kb) smaller than this are considered zero fee for relaying (default: %s)</source>
+        <source>Fees (in ULD/Kb) smaller than this are considered zero fee for relaying (default: %s)</source>
         <translation>當處理轉發的交易時，如果每千位元組(Kb)的手續費比這個值低，就視為沒付手續費 (預設值: %s)</translation>
     </message>
     <message>
-        <source>Fees (in UT/Kb) smaller than this are considered zero fee for transaction creation (default: %s)</source>
+        <source>Fees (in ULD/Kb) smaller than this are considered zero fee for transaction creation (default: %s)</source>
         <translation>當建立交易時，如果每千位元組(Kb)的手續費比這個值低，就視為沒付手續費 (預設值: %s)</translation>
     </message>
     <message>

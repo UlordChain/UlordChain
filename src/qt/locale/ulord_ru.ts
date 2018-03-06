@@ -176,8 +176,8 @@
         <translation>Подтвердите шифрование кошелька</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR UT&lt;/b&gt;!</source>
-        <translation>Внимание: если Вы зашифруете кошелёк и потеряете пароль, вы &lt;b&gt;ПОТЕРЯЕТЕ ВСЕ ВАШИ UT&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR ULD&lt;/b&gt;!</source>
+        <translation>Внимание: если Вы зашифруете кошелёк и потеряете пароль, вы &lt;b&gt;ПОТЕРЯЕТЕ ВСЕ ВАШИ ULD&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -864,28 +864,28 @@ Address: %4
         <translation>Пожалуйста, выберите уровень приватности.</translation>
     </message>
     <message>
-        <source>Use 2 separate masternodes to mix funds up to 1000 UT</source>
-        <translation>Использовать 2 отдельные мастерноды для перемешивания до 1000 UT</translation>
+        <source>Use 2 separate masternodes to mix funds up to 1000 ULD</source>
+        <translation>Использовать 2 отдельные мастерноды для перемешивания до 1000 ULD</translation>
     </message>
     <message>
-        <source>Use 8 separate masternodes to mix funds up to 1000 UT</source>
-        <translation>Использовать 8 отдельных мастернод для перемешивания до 1000 UT</translation>
+        <source>Use 8 separate masternodes to mix funds up to 1000 ULD</source>
+        <translation>Использовать 8 отдельных мастернод для перемешивания до 1000 ULD</translation>
     </message>
     <message>
         <source>Use 16 separate masternodes</source>
         <translation>Использовать 16 отдельных мастернод</translation>
     </message>
     <message>
-        <source>This option is the quickest and will cost about ~0.025 UT to anonymize 1000 UT</source>
-        <translation>Это самый быстрый вариант, анонимизация 1000 UT будет стоить вам примерно 0.025 UT</translation>
+        <source>This option is the quickest and will cost about ~0.025 ULD to anonymize 1000 ULD</source>
+        <translation>Это самый быстрый вариант, анонимизация 1000 ULD будет стоить вам примерно 0.025 ULD</translation>
     </message>
     <message>
-        <source>This option is moderately fast and will cost about 0.05 UT to anonymize 1000 UT</source>
-        <translation>Это относительно быстрый вариант, анонимизация 1000 UT будет стоить вам примерно 0.05 UT</translation>
+        <source>This option is moderately fast and will cost about 0.05 ULD to anonymize 1000 ULD</source>
+        <translation>Это относительно быстрый вариант, анонимизация 1000 ULD будет стоить вам примерно 0.05 ULD</translation>
     </message>
     <message>
-        <source>0.1 UT per 1000 UT you anonymize.</source>
-        <translation>0.1 UT за каждые анонимизированные 1000 UT.</translation>
+        <source>0.1 ULD per 1000 ULD you anonymize.</source>
+        <translation>0.1 ULD за каждые анонимизированные 1000 ULD.</translation>
     </message>
     <message>
         <source>This is the slowest and most secure option. Using maximum anonymity will cost</source>
@@ -1431,8 +1431,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Сумма и раунды:</translation>
     </message>
     <message>
-        <source>0 UT / 0 Rounds</source>
-        <translation>0 UT / 0 раундов</translation>
+        <source>0 ULD / 0 Rounds</source>
+        <translation>0 ULD / 0 раундов</translation>
     </message>
     <message>
         <source>Submitted Denom:</source>
@@ -3276,8 +3276,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Отправка</translation>
     </message>
     <message>
-        <source>InstantX doesn't support sending values that high yet. Transactions are currently limited to %1 UT.</source>
-        <translation>InstantX пока что не поддерживает такие большие суммы. На данный момент транзакции ограничены суммами до %1 UT.</translation>
+        <source>InstantX doesn't support sending values that high yet. Transactions are currently limited to %1 ULD.</source>
+        <translation>InstantX пока что не поддерживает такие большие суммы. На данный момент транзакции ограничены суммами до %1 ULD.</translation>
     </message>
 </context>
 <context>
@@ -3390,8 +3390,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Не удалось обнаружить достаточных для выполнения этой транзакции номиналов Darksend.</translation>
     </message>
     <message>
-        <source>Unable to locate enough Darksend non-denominated funds for this transaction that are not equal 1000 UT.</source>
-        <translation>Не удалось обнаружить достаточных для выполнения этой транзакции неденоминированных средств, отличающихся от 1000UT.</translation>
+        <source>Unable to locate enough Darksend non-denominated funds for this transaction that are not equal 1000 ULD.</source>
+        <translation>Не удалось обнаружить достаточных для выполнения этой транзакции неденоминированных средств, отличающихся от 1000ULD.</translation>
     </message>
     <message>
         <source>Warning: -paytxfee is set very high! This is the transaction fee you will pay if you send a transaction.</source>
@@ -3634,12 +3634,12 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Ошибка: Обнаружен неподдерживаемый аргумент -socks. Выбор версии SOCKS больше невозможен, поддерживаются только прокси версии SOCKS5.</translation>
     </message>
     <message>
-        <source>Fees (in UT/Kb) smaller than this are considered zero fee for relaying (default: %s)</source>
-        <translation>Комиссии (в UT/Kb) меньше этого значения считаются нулевой для ретранслирования транзакции (по умолчанию: %s)</translation>
+        <source>Fees (in ULD/Kb) smaller than this are considered zero fee for relaying (default: %s)</source>
+        <translation>Комиссии (в ULD/Kb) меньше этого значения считаются нулевой для ретранслирования транзакции (по умолчанию: %s)</translation>
     </message>
     <message>
-        <source>Fees (in UT/Kb) smaller than this are considered zero fee for transaction creation (default: %s)</source>
-        <translation>Комиссии (в UT/Kb) меньше этого значения считаются нулевой (для создания транзакции) (по умолчанию: %s)</translation>
+        <source>Fees (in ULD/Kb) smaller than this are considered zero fee for transaction creation (default: %s)</source>
+        <translation>Комиссии (в ULD/Kb) меньше этого значения считаются нулевой (для создания транзакции) (по умолчанию: %s)</translation>
     </message>
     <message>
         <source>Flush database activity from memory pool to disk log every &lt;n&gt; megabytes (default: %u)</source>
@@ -3734,8 +3734,8 @@ rpcpassword=%s
 </translation>
     </message>
     <message>
-        <source>Unable to locate enough funds for this transaction that are not equal 1000 UT.</source>
-        <translation>Не удалось обнаружить достаточных для выполнения этой транзакции средств, отличающихся от 1000UT.</translation>
+        <source>Unable to locate enough funds for this transaction that are not equal 1000 ULD.</source>
+        <translation>Не удалось обнаружить достаточных для выполнения этой транзакции средств, отличающихся от 1000ULD.</translation>
     </message>
     <message>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: %s)</source>
@@ -3848,8 +3848,8 @@ rpcpassword=%s
         <translation>Ошибка: Обнаружен неподдерживаемый параметр -tor, используйте -onion вместо него.</translation>
     </message>
     <message>
-        <source>Fee (in UT/kB) to add to transactions you send (default: %s)</source>
-        <translation>Комиссии (в UT/kB), добавляемая к отправляемым Вами транзакциям (по умолчанию: %s)</translation>
+        <source>Fee (in ULD/kB) to add to transactions you send (default: %s)</source>
+        <translation>Комиссии (в ULD/kB), добавляемая к отправляемым Вами транзакциям (по умолчанию: %s)</translation>
     </message>
     <message>
         <source>Finalizing transaction.</source>
@@ -4216,8 +4216,8 @@ rpcpassword=%s
         <translation>Ключ KeePassHttp для зашифрованной коммуникации с KeePass</translation>
     </message>
     <message>
-        <source>Keep N UT anonymized (default: %u)</source>
-        <translation>Держать N UT анонимизированными (по умолчанию: %u)</translation>
+        <source>Keep N ULD anonymized (default: %u)</source>
+        <translation>Держать N ULD анонимизированными (по умолчанию: %u)</translation>
     </message>
     <message>
         <source>Keep at most &lt;n&gt; unconnectable transactions in memory (default: %u)</source>
