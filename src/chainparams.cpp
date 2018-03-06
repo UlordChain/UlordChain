@@ -133,7 +133,7 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
  */
 static CBlock CreateGenesisBlock(uint32_t nTime, uint256 nNonce, uint32_t nBits, int32_t nVersion, const i64& genesisReward)
 {
-    const char* pszTimestamp = "Today, we have Ulord, making knowledge distribution a reality...Ulord——initiated a new era of digital resource value communication! We are committed to building a blockchain digital resource distribution platform that is open, equal and respects creation.";
+    const char* pszTimestamp = "ulord hold value testnet.";
     const CScript genesisOutputScript = CScript() << ParseHex("041c508f27e982c369486c0f1a42779208b3f5dc96c21a2af6004cb18d1529f42182425db1e1632dc6e73ff687592e148569022cee52b4b4eb10e8bb11bd927ec0") << OP_CHECKSIG;
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
