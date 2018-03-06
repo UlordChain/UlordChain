@@ -3131,7 +3131,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
     if (trieCache.getMerkleHash() != block.hashClaimTrie)
     {
 	LogPrintf("the merkle root of the claim trie does not match");
-    	return false;
+    	return true;
     }
         /*return state.DoS(100,
                          error("ConnectBlock() : the merkle root of the claim trie does not match "
