@@ -42,12 +42,12 @@ const std::string CLIENT_NAME("Ulord Core");
 #include "build.h"
 #endif
 
-//! git will put "#define GIT_ARCHIVE 1" on the next line inside archives. 
-#define GIT_ARCHIVE 1
+//! git will put "#define GIT_ARCHIVE 1" on the next line inside archives. $Format:%n#define GIT_ARCHIVE 1$
 #ifdef GIT_ARCHIVE
-#define GIT_COMMIT_ID "de9d14b"
-#define GIT_COMMIT_DATE "Tue, 6 Mar 2018 14:27:50 +0800"
+#define GIT_COMMIT_ID "$Format:%h$"
+#define GIT_COMMIT_DATE "$Format:%cD$"
 #endif
+
 
 #define BUILD_DESC_WITH_SUFFIX(maj, min, rev, build, suffix) \
     "v" DO_STRINGIZE(maj) "." DO_STRINGIZE(min) "." DO_STRINGIZE(rev)
