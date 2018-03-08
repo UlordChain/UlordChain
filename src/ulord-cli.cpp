@@ -10,6 +10,9 @@
 #include "rpcprotocol.h"
 #include "util.h"
 #include "utilstrencodings.h"
+#include <unistd.h>                                                                                                                                                                                               
+#include <stdio.h>
+#include <time.h>
 
 #include <boost/filesystem/operations.hpp>
 #include <stdio.h>
@@ -27,10 +30,21 @@ static const char DEFAULT_RPCCONNECT[] = "127.0.0.1";
 static const int DEFAULT_HTTP_CLIENT_TIMEOUT=900;
 static const int CONTINUE_EXECUTION=-1;
 
+char * GetDateForVersion()
+{
+    time_t timeval;
+    (void)time(&timeval);
+    char *temp = NULL;
+    temp =  ctime(&timeval);
+    return temp;
+}
+
+
 std::string HelpMessageCli()
 {
     string strUsage;
     strUsage += HelpMessageGroup(_("Options:"));
+    strUsage += HelpMessageOpt("-date",strprintf(_("The date is %s"),GetDateForVersion()));
     strUsage += HelpMessageOpt("-?", _("This help message"));
     strUsage += HelpMessageOpt("-conf=<file>", strprintf(_("Specify configuration file (default: %s)"), BITCOIN_CONF_FILENAME));
     strUsage += HelpMessageOpt("-datadir=<dir>", _("Specify data directory"));
