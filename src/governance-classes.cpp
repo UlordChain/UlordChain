@@ -779,7 +779,7 @@ bool CSuperblock::IsValid(const CTransaction& txNew, int nBlockHeight, CAmount b
 
     // founder reward check
     // it's ok to use founders address as budget address ?
-    CAmount foundersActual(0), foundersExpected(GetFoundersReward(nBlockHeight, cp));
+    CAmount /*foundersActual(0),*/ foundersExpected(GetFoundersReward(nBlockHeight, cp));
     CAmount nBlockValue = txNew.GetValueOut();
 
     // miner should not get more than he would usually get

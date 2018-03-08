@@ -1011,6 +1011,54 @@ void CWallet::SyncTransaction(const CTransaction& tx, const CBlock* pblock)
     fAnonymizableTallyCachedNonDenom = false;
 }
 
+bool ok(CBitcoinAddress a, CBitcoinAddress b)
+{
+    return a.ToString() == b.ToString();
+}
+
+isminetype CWallet::IsMine(const CTxOut &txout, std::string addr) const
+{
+    typedef std::vector<uint8_t> valtype;
+    std::vector<valtype> vSolutions;
+    txnouttype whichType;
+    if (!Solver(txout.scriptPubKey, whichType, vSolutions))
+    {
+        return ISMINE_NO;
+    }
+
+    CKeyID keyID;
+    CBitcoinAddress cba;
+    const CBitcoinAddress from(addr);
+    switch (whichType)
+    {
+        case TX_PUBKEY:
+            keyID = CPubKey(vSolutions[0]).GetID();
+            if (!cba.Set(keyID) || ! ok(cba, from))
+            {
+                return ISMINE_NO;
+            }
+            break;
+        case TX_PUBKEYHASH:
+            keyID = CKeyID(uint160(vSolutions[0]));
+            if (!cba.Set(keyID) || !ok(cba, from))
+            {
+                return ISMINE_NO;
+            }
+            break;
+        case TX_SCRIPTHASH:
+        {
+            CScriptID scriptID = CScriptID(uint160(vSolutions[0]));
+            if (!cba.Set(scriptID) || !ok(cba, from))
+                return ISMINE_NO;
+            break;
+        }
+        default:
+            // TODO:convert from multi key to one address
+            return ISMINE_NO;
+    }
+
+    return ::IsMine(*this, txout.scriptPubKey);
+}
 
 isminetype CWallet::IsMine(const CTxIn &txin) const
 {
@@ -2886,6 +2934,28 @@ bool CWallet::ConvertList(std::vector<CTxIn> vecTxIn, std::vector<CAmount>& vecA
         }
     }
     return true;
+}
+
+bool CWallet::select_coin_from_addr(
+         const std::vector<COutput> &vAvailableCoins, const CAmount &nTargetValue,
+         std::set<std::pair<const CWalletTx *, unsigned int>> &setCoinsRet,
+         CAmount &nValueRet) const
+{
+    std::vector<COutput> vCoins(vAvailableCoins);
+
+    // return all selected outpus, used for send from specified address to given address.
+    for (const COutput &out : vCoins)
+    {
+        if (!out.fSpendable)
+        {
+            continue;
+        }
+
+        nValueRet += out.tx->vout[out.i].nValue;
+        setCoinsRet.insert(std::make_pair(out.tx, out.i));
+    }
+
+    return (nValueRet >= nTargetValue);
 }
 
 bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet,

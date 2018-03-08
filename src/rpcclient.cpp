@@ -37,6 +37,8 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "sendtoaddress", 4 },
     { "sendtoaddress", 5 },
     { "sendtoaddress", 6 },
+    { "sendfromAtoB", 2 },
+    { "sendfromAtoB", 5 },
     { "instantsendtoaddress", 1 },
     { "settxfee", 0 },
     { "getreceivedbyaddress", 1 },

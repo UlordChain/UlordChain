@@ -522,6 +522,16 @@ private:
      */
     bool SelectCoins(const CAmount& nTargetValue, std::set<std::pair<const CWalletTx*,unsigned int> >& setCoinsRet, CAmount& nValueRet, const CCoinControl *coinControl = NULL, AvailableCoinsType nCoinType=ALL_COINS, bool fUseInstantSend = true) const;
 
+    /**
+     * Select a set of coins from specified address a,
+     * to a given address b
+     */
+    bool select_coin_from_addr(
+            const std::vector<COutput> &vAvailableCoins,
+            const CAmount &nTargetValue,
+            std::set<std::pair<const CWalletTx *, unsigned int>> &setCoinsRet,
+            CAmount &nValueRet) const;
+
     CWalletDB *pwalletdbEncryption;
 
     //! the current wallet version: clients below this version are not able to load the wallet
@@ -635,6 +645,10 @@ public:
     //! check whether we are allowed to upgrade (or already support) to the named feature
     bool CanSupportFeature(enum WalletFeature wf) { AssertLockHeld(cs_wallet); return nWalletMaxVersion >= wf; }
 
+
+    void  AvailableCoins(std::vector<COutput> &vCoins, bool fOnlyConfirmed ,
+            std::string addr,
+            bool fIncludeZeroValue = false) const;
     /**
      * populate vCoins with vector of available COutputs.
      */
@@ -766,6 +780,13 @@ public:
      */
     bool CreateTransaction(const std::vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, int& nChangePosRet,
                            std::string& strFailReason, const CCoinControl *coinControl = NULL, bool sign = true, AvailableCoinsType nCoinType=ALL_COINS, bool fUseInstantSend=false);
+    bool  CreateTheAddrTrans(const std::vector<CRecipient> &vecSend,
+            CWalletTx &wtxNew, CReserveKey &reservekey,
+            CAmount &nFeeRet, int &nChangePosInOut,
+            std::string &strFailReason, std::string &fromaddr,
+            const CCoinControl *coinControl = nullptr,
+            bool sign = true);
+
     bool CommitTransaction(CWalletTx& wtxNew, CReserveKey& reservekey, std::string strCommand="tx");
 
     bool CreateCollateralTransaction(CMutableTransaction& txCollateral, std::string& strReason);
@@ -800,6 +821,7 @@ public:
 
     std::set<CTxDestination> GetAccountAddresses(const std::string& strAccount) const;
 
+    isminetype IsMine(const CTxOut &txout,std::string addr) const;
     isminetype IsMine(const CTxIn& txin) const;
     CAmount GetDebit(const CTxIn& txin, const isminefilter& filter) const;
     isminetype IsMine(const CTxOut& txout) const;
