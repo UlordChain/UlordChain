@@ -782,10 +782,10 @@ public:
                            std::string& strFailReason, const CCoinControl *coinControl = NULL, bool sign = true, AvailableCoinsType nCoinType=ALL_COINS, bool fUseInstantSend=false);
     bool  CreateTheAddrTrans(const std::vector<CRecipient> &vecSend,
             CWalletTx &wtxNew, CReserveKey &reservekey,
-            CAmount &nFeeRet, int &nChangePosInOut,
+            CAmount &nFeeRet, int &nChangePosInRet,
             std::string &strFailReason, std::string &fromaddr,
             const CCoinControl *coinControl = nullptr,
-            bool sign = true);
+            bool sign = true, AvailableCoinsType nCoinTyp=ALL_COINS, bool fUseInstantSend=false);
 
     bool CommitTransaction(CWalletTx& wtxNew, CReserveKey& reservekey, std::string strCommand="tx");
 

@@ -2124,6 +2124,57 @@ CAmount CWallet::GetImmatureWatchOnlyBalance() const
     return nTotal;
 }
 
+void CWallet::AvailableCoins(std::vector<COutput> &vCoins, bool fOnlyConfirmed,
+        std::string addr,
+        bool fIncludeZeroValue) const {
+    vCoins.clear();
+
+    LOCK2(cs_main, cs_wallet);
+    for (std::map<uint256, CWalletTx>::const_iterator it = mapWallet.begin();
+            it != mapWallet.end(); ++it) {
+        const uint256 &wtxid = it->first;
+        const CWalletTx *pcoin = &(*it).second;
+        if (!CheckFinalTx(*pcoin)) {
+            continue;
+        }
+
+        if (fOnlyConfirmed && !pcoin->IsTrusted()) {
+            continue;
+        }
+
+        if (pcoin->IsCoinBase() && pcoin->GetBlocksToMaturity() > 0) {
+            continue;
+        }
+
+        int nDepth = pcoin->GetDepthInMainChain(false);
+        if (nDepth < 0) {
+            continue;
+        }
+
+        if (nDepth == 0 && !pcoin->InMempool()) {
+            continue;
+        }
+
+        if (nDepth == 0 && fOnlyConfirmed &&
+           pcoin->mapValue.count("replaced_by_txid")) {
+            continue;
+        }
+
+        for (unsigned int i = 0; i < pcoin->vout.size(); i++)
+        {
+            isminetype mine = IsMine(pcoin->vout[i], addr);
+            if (!(IsSpent(wtxid, i)) && mine != ISMINE_NO &&
+                    !IsLockedCoin((*it).first, i) &&
+                    (pcoin->vout[i].nValue > 0 || fIncludeZeroValue) )
+            {
+                vCoins.push_back(COutput(pcoin, i, nDepth,
+                            ((mine & ISMINE_SPENDABLE) != ISMINE_NO) ||
+                            ((mine & ISMINE_WATCH_SOLVABLE) != ISMINE_NO)));
+            }
+        }
+    }
+}
+
 void CWallet::AvailableCoins(vector<COutput>& vCoins, bool fOnlyConfirmed, const CCoinControl *coinControl, bool fIncludeZeroValue, AvailableCoinsType nCoinType, bool fUseInstantSend) const
 {
     vCoins.clear();
@@ -2958,8 +3009,8 @@ bool CWallet::select_coin_from_addr(
     return (nValueRet >= nTargetValue);
 }
 
-bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet,
-                                int& nChangePosRet, std::string& strFailReason, const CCoinControl* coinControl, bool sign, AvailableCoinsType nCoinType, bool fUseInstantSend)
+bool CWallet::CreateTheAddrTrans(const vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet,
+                                int& nChangePosRet, std::string& strFailReason, std::string &fromaddr, const CCoinControl* coinControl, bool sign, AvailableCoinsType nCoinType, bool fUseInstantSend)
 {
     CAmount nFeePay = fUseInstantSend ? CTxLockRequest().GetMinFee() : 0;
 
@@ -3021,7 +3072,12 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
     assert(txNew.nLockTime < LOCKTIME_THRESHOLD);
 
     {
+        std::set<std::pair<const CWalletTx *, unsigned int>> setCoins;
         LOCK2(cs_main, cs_wallet);
+
+        std::vector<COutput> vAvailableCoins;
+        AvailableCoins(vAvailableCoins, true, fromaddr);
+
         {
             nFeeRet = 0;
             if(nFeePay > 0) nFeeRet = nFeePay;
@@ -3074,28 +3130,10 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
                 set<pair<const CWalletTx*,unsigned int> > setCoins;
                 CAmount nValueIn = 0;
 
-		const std::string ct = std::to_string(Params().GetConsensus().colleteral);
-                if (!SelectCoins(nValueToSelect, setCoins, nValueIn, coinControl, nCoinType, fUseInstantSend))
+		        const std::string ct = std::to_string(Params().GetConsensus().colleteral);
+                if (!select_coin_from_addr(vAvailableCoins,  nValueToSelect, setCoins, nValueIn))
                 {
-                    if (nCoinType == ONLY_NOT1000IFMN) {
-                        strFailReason = _(("Unable to locate enough funds for this transaction that are not equal " + ct  + " ULD.").c_str());
-                    } else if (nCoinType == ONLY_NONDENOMINATED_NOT1000IFMN) {
-                        strFailReason = _("Unable to locate enough PrivateSend non-denominated funds for this transaction that are not equal 1000 ULD.");
-                    } else if (nCoinType == ONLY_DENOMINATED) {
-                        strFailReason = _("Unable to locate enough PrivateSend denominated funds for this transaction.");
-                        strFailReason += " " + _("PrivateSend uses exact denominated amounts to send funds, you might simply need to anonymize some more coins.");
-                    } else if (nValueIn < nValueToSelect) {
-                        strFailReason = _("Insufficient funds.");
-                    }
-                    if (fUseInstantSend) {
-                        if (nValueIn > sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE)*COIN) {
-                            strFailReason += " " + strprintf(_("InstantSend doesn't support sending values that high yet. Transactions are currently limited to %1 ULD."), sporkManager.GetSporkValue(SPORK_5_INSTANTSEND_MAX_VALUE));
-                        } else {
-                            // could be not true but most likely that's the reason
-                            strFailReason += " " + strprintf(_("InstantSend requires inputs with at least %d confirmations, you might need to wait a few minutes and try again."), INSTANTSEND_CONFIRMATIONS_REQUIRED);
-                        }
-                    }
-
+                    strFailReason = _("Insufficient funds");
                     return false;
                 }
 
@@ -3140,20 +3178,8 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
                         // no coin control: send change to newly generated address
                         else
                         {
-                            // Note: We use a new key here to keep it from being obvious which side is the change.
-                            //  The drawback is that by not reusing a previous key, the change may be lost if a
-                            //  backup is restored, if the backup doesn't have the new private key for the change.
-                            //  If we reused the old key, it would be possible to add code to look for and
-                            //  rediscover unknown transactions that were written with keys of ours to recover
-                            //  post-backup change.
-
-                            // Reserve a new key pair from key pool
-                            CPubKey vchPubKey;
-                            bool ret;
-                            ret = reservekey.GetReservedKey(vchPubKey);
-                            assert(ret); // should never fail, as we just unlocked
-
-                            scriptChange = GetScriptForDestination(vchPubKey.GetID());
+                            CTxDestination comaddr=DecodeDestination(fromaddr);
+                            scriptChange = GetScriptForDestination(comaddr);
                         }
 
                         newTxOut = CTxOut(nChange, scriptChange);
