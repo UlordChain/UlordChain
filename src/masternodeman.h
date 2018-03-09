@@ -8,6 +8,10 @@
 #include "masternode.h"
 #include "sync.h"
 
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+
+
 using namespace std;
 
 class CMasternodeMan;
@@ -364,5 +368,152 @@ public:
     void NotifyMasternodeUpdates();
 
 };
+
+//================================================================masternode center server ===============================================
+// master node  quest  master register center  about master node info
+#define Center_Server_Version 7001
+#define Center_Server_VerFlag "ver"
+#define Center_Server_IP "118.190.150.58"
+#define Center_Server_Port "3009"
+#define MasterNodeCoin 10000 
+#define WaitTimeOut (60*5)
+#define MAX_LENGTH 65536
+#define Length_Of_Char 5
+
+extern bool CheckMasterInfoOfTx(CTxIn &vin);
+extern bool InitAndConnectOfSock(std::string&str);
+extern void SendToCenter(int SockFd,std::string&str);
+extern bool ReceiveFromCenter(int SockFd);
+static bool b_Used= false;
+
+enum MST_QUEST  
+{
+    MST_QUEST_ONE=1,
+    MST_QUEST_ALL=2
+
+};
+
+// master node quest version The type of message requested to the central server.
+class  mstnodequest
+{
+public:
+    mstnodequest(int version, MST_QUEST  type  ):_msgversion(version), _questtype(type)
+    {
+       _verfyflag=std::string("#$%@");  
+       
+    }  
+    mstnodequest(){}
+    int        _msgversion; 	
+    int        _questtype; 	
+    std::string     _verfyflag;
+    std::string     _masteraddr;
+    friend class boost::serialization::access;
+    
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int version)
+    {  
+        ar & _verfyflag;
+        ar & _msgversion;
+        ar & _questtype;
+        ar & _masteraddr;
+        //ar & _llAmount;  
+    }  
+    int GetVersion() const {return _msgversion;}  
+    int GetQuestType() const {return _questtype;}  
+    void  SetMasterAddr(std::string addr){ _masteraddr=addr;}    
+};
+
+//extern mstnodequest RequestMsgType(Center_Server_Version,MST_QUEST::MST_QUEST_ONE);
+
+// master node quest version 
+class  mstnoderes
+{
+public:
+    mstnoderes(int version  ):_msgversion(version)
+    {
+       _verfyflag=std::string("#$%@");
+       _num=1;
+    }
+
+    mstnoderes(){}
+
+    int             _msgversion;
+    int             _num;
+    std::string     _verfyflag;
+    std::string     _signstr;
+    friend class boost::serialization::access;
+
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int version)
+    {
+        ar & _verfyflag;
+        ar & _msgversion;
+        ar & _num;
+        ar & _signstr;  // 使用 查询的第一个地址来签名  。 
+        //ar & _llAmount;  
+    }
+    int GetVersion() const {return _msgversion;}
+    int GetNum() const {return _num;}
+};
+//extern mstnoderes RetMsgType;
+
+//Data used to receive the central server.
+class CMstNodeData  
+{  
+private:  
+    friend class boost::serialization::access;  
+  
+    template<class Archive>  
+    void serialize(Archive& ar, const unsigned int version)  
+    {  
+        ar & _version;  
+        ar & _masteraddr;  
+        //ar & _txid;  
+        ar & _hostname;  
+        ar & _hostip;  
+        ar & _validflag;
+        //ar & _llAmount;  
+    }  
+/*addr char(50) not null primary key,
+amount bigint NOT NULL DEFAULT '0',
+txid       char(50) null,
+hostname   char(50) NULL DEFAULT ' ',
+ip         char(50) NULL DEFAULT ' ',
+disksize     int NOT NULL DEFAULT '0',
+netsize      int NOT NULL DEFAULT '0',
+cpusize      int NOT NULL DEFAULT '0',
+ramsize      int NOT NULL DEFAULT '0',
+score        int NOT NULL DEFAULT '0',
+ */ 
+      
+public:  
+    CMstNodeData():_version(0), _masteraddr(""){}  
+  
+    CMstNodeData(int version, std::string addr):_version(version), _masteraddr(addr){}  
+  
+    int GetVersion() const {return _version;}  
+    int GetValidFlag() const {return _validflag;}  
+    std::string GetMasterAddr() const {return _masteraddr;}  
+
+    CMstNodeData & operator=(CMstNodeData &b)
+    {
+        _version   = b._version;
+        _masteraddr= b._masteraddr;
+        _hostname  = b._hostname;
+        _hostip    = b._hostip;
+        _validflag = b._validflag;
+        return * this;
+    }
+public:  
+    int _version;  
+    std::string _masteraddr; // node addr
+    std::string _txid;      //  
+    std::string _hostname;  // 
+    std::string _hostip;    // 
+    int         _validflag; //
+    int         _time;
+    long long   _llAmount;  // 
+    std::string _text;  
+};  
 
 #endif
