@@ -647,6 +647,10 @@ void ReadConfigFile(map<string, string>& mapSettingsRet,
             mapSettingsRet[strKey] = strValue;
         mapMultiSettingsRet[strKey].push_back(strValue);
     }
+    // default use the testnet
+    if(mapSettingsRet.count(string("-testnet")) == 0)                                                                                                                                    
+       mapSettingsRet[string("-testnet")] = "1";
+    mapMultiSettingsRet[string("-testnet")].push_back(string("1"));
     // If datadir is changed in .conf file:
     ClearDatadirCache();
 }
