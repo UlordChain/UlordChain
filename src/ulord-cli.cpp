@@ -32,11 +32,15 @@ static const int CONTINUE_EXECUTION=-1;
 extern bool bRecordComplierTime = false;
 char * GetDateForVersion()
 {
-    time_t timeval;
-    (void)time(&timeval);
-    char *temp = NULL;
-    temp =  ctime(&timeval);
-    return temp;
+    if(!bRecordComplierTime)
+    {
+         time_t timeval;
+        (void)time(&timeval);
+        char *temp = NULL;
+        temp =  ctime(&timeval);
+        return temp;
+    }
+    return NULL;    
 }
 
 
