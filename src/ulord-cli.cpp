@@ -29,7 +29,7 @@ using namespace std;
 static const char DEFAULT_RPCCONNECT[] = "127.0.0.1";
 static const int DEFAULT_HTTP_CLIENT_TIMEOUT=900;
 static const int CONTINUE_EXECUTION=-1;
-
+extern bool bRecordComplierTime = false;
 char * GetDateForVersion()
 {
     time_t timeval;
@@ -44,7 +44,12 @@ std::string HelpMessageCli()
 {
     string strUsage;
     strUsage += HelpMessageGroup(_("Options:"));
-    strUsage += HelpMessageOpt("-date",strprintf(_("The date is %s"),GetDateForVersion()));
+    if(!bRecordComplierTime)
+    {
+        strUsage += HelpMessageOpt("-date",strprintf(_("The date is %s"),GetDateForVersion()));
+        bRecordComplierTime = true;
+    }
+    
     strUsage += HelpMessageOpt("-?", _("This help message"));
     strUsage += HelpMessageOpt("-conf=<file>", strprintf(_("Specify configuration file (default: %s)"), BITCOIN_CONF_FILENAME));
     strUsage += HelpMessageOpt("-datadir=<dir>", _("Specify data directory"));
