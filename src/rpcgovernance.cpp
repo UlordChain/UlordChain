@@ -18,7 +18,6 @@
 #include "rpcserver.h"
 #include "util.h"
 #include "utilmoneystr.h"
-
 #include <boost/lexical_cast.hpp>
 
 UniValue gobject(const UniValue& params, bool fHelp)
@@ -29,7 +28,7 @@ UniValue gobject(const UniValue& params, bool fHelp)
 
     if (fHelp  ||
         (strCommand != "vote-many" && strCommand != "vote-conf" && strCommand != "vote-alias" && strCommand != "prepare" && strCommand != "submit" && strCommand != "count" &&
-         strCommand != "deserialize" && strCommand != "get" && strCommand != "getvotes" && strCommand != "getcurrentvotes" && strCommand != "list" && strCommand != "diff"))
+         strCommand != "deserialize" &&  strCommand != "serialize" && strCommand != "get" && strCommand != "getvotes" && strCommand != "getcurrentvotes" && strCommand != "list" && strCommand != "diff"))
         throw std::runtime_error(
                 "gobject \"command\"...\n"
                 "Manage governance objects\n"
@@ -37,6 +36,7 @@ UniValue gobject(const UniValue& params, bool fHelp)
                 "  prepare            - Prepare governance object by signing and creating tx\n"
                 "  submit             - Submit governance object to network\n"
                 "  deserialize        - Deserialize governance object from hex string to JSON\n"
+                "  serialize          - Serialize governance object from JSON to hex string\n"
                 "  count              - Count governance objects and votes\n"
                 "  get                - Get governance object by hash\n"
                 "  getvotes           - Get all votes for a governance object hash (including old votes)\n"
@@ -73,6 +73,28 @@ UniValue gobject(const UniValue& params, bool fHelp)
         u.read(s);
 
         return u.write().c_str();
+    }
+    if(strCommand == "serialize")
+    {
+        if (params.size() != 2) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Correct usage is 'gobject serialize <data-string>'");
+        }
+        std::string str_json = params[1].get_str();
+        const char* psz = str_json.c_str();
+        const signed char p_util_chardigit[16] = {'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'};
+        std::vector<signed char> vch;
+        while (true)
+        {
+            if ('\0' == *psz)
+                break;
+            while (isspace(*psz))
+                psz++;
+            unsigned char temp_c = *psz++;
+            vch.push_back(p_util_chardigit[temp_c>>4]);
+            vch.push_back(p_util_chardigit[temp_c&0xf]);
+        }
+        std::string hex_str(vch.begin(), vch.end());
+        return hex_str;
     }
 
     // PREPARE THE GOVERNANCE OBJECT BY CREATING A COLLATERAL TRANSACTION
