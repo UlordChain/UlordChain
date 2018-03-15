@@ -2948,7 +2948,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
                         if (itSpent != spentClaims.end())
                         {
                             spentClaims.erase(itSpent);
-                            if (!trieCache.addClaim(name, COutPoint(tx.GetHash(), i), claimId, txout.nValue, pindex->nHeight))
+                            if (!trieCache.addClaim(name, COutPoint(tx.GetHash(), l), claimId, txout.nValue, pindex->nHeight))
                             {
                                 LogPrintf("%s: Something went wrong updating the claim\n", __func__);
                             }
