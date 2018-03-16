@@ -160,7 +160,8 @@ class CMainParams : public CChainParams {
 public:
     CMainParams() {
         strNetworkID = "main";
-         // reward setting
+
+        // reward setting
         consensus.premine = i64(1e8 * COIN);                            // premine
         consensus.genesisReward = i64(1 * COIN);                        // genesis
         consensus.minerReward4 = i64(112.966 * COIN);                   // miners
@@ -253,9 +254,10 @@ public:
         vFixedSeeds.clear();
         vSeeds.clear();		
         vSeeds.push_back(CDNSSeedData("ulord.one", "dnsseed1.ulord.one"));
-	vSeeds.push_back(CDNSSeedData("ulord.io", "dnsseed1.ulord.io"));  
-	vSeeds.push_back(CDNSSeedData("fcash.cc", "dnsseed1.fcash.cc"));
-	    
+	    vSeeds.push_back(CDNSSeedData("ulord.io", "dnsseed1.ulord.io"));  
+	    vSeeds.push_back(CDNSSeedData("fcash.cc", "dnsseed1.fcash.cc"));
+	    uCenter = "ulord.fcash.cc";                           // for masternode verify
+
         fMiningRequiresPeers = true;
         fDefaultConsistencyChecks = false;
         fRequireStandard = true;
@@ -310,6 +312,7 @@ class CTestNetParams : public CChainParams {
 public:
     CTestNetParams() {
         strNetworkID = "test";
+
         // reward setting
         consensus.premine = i64(1e8 * COIN);                            // premine
         consensus.genesisReward = i64(1 * COIN);                        // genesis                                                           
@@ -346,7 +349,7 @@ public:
         consensus.nPowAveragingWindow = 17;
         consensus.nPowMaxAdjustDown = 32;                               // 32% adjustment down
         //consensus.nPowMaxAdjustUp = 16;                                 // 16% adjustment up
-	consensus.nPowMaxAdjustUp = 48;                                 // 48% adjustment up
+	    consensus.nPowMaxAdjustUp = 48;                                 // 48% adjustment up
         consensus.nPowTargetTimespan = 24 * 60 * 60;                    // Ulord: 1 day
         consensus.nPowTargetSpacing = 2.5 * 60;                         // Ulord: 2.5 minutes
         consensus.fPowAllowMinDifficultyBlocks = true;
@@ -372,7 +375,7 @@ public:
         nPruneAfterHeight = 1000;
 	    
 	    
-	genesis = CreateGenesisBlock(1520308246, uint256S("0000000000000000000000000000000000000000000000000000000000000439"), 521142271, 1,  1 * COIN);
+    	genesis = CreateGenesisBlock(1520308246, uint256S("0000000000000000000000000000000000000000000000000000000000000439"), 521142271, 1,  1 * COIN);
 #ifdef GENESIS_GENERATION
         arith_uint256 a("000fffffff000000000000000000000000000000000000000000000000000000");
         std::cout << "pow limit : " << a.GetCompact() << std::endl;
@@ -385,8 +388,9 @@ public:
         vFixedSeeds.clear();
         vSeeds.clear();
         vSeeds.push_back(CDNSSeedData("ulord.one","testnet-seed1.ulord.one"));  
-	vSeeds.push_back(CDNSSeedData("ulord.io","testnet-seed1.ulord.io"));
-	vSeeds.push_back(CDNSSeedData("fcash.cc","testnet-seed1.fcash.cc"));
+	    vSeeds.push_back(CDNSSeedData("ulord.io","testnet-seed1.ulord.io"));
+	    vSeeds.push_back(CDNSSeedData("fcash.cc","testnet-seed1.fcash.cc"));
+        uCenter = "ulord.fcash.cc";                           // currently ignored
 
         // Testnet Ulord addresses start with 'u'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,130);

@@ -1803,6 +1803,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     }
 
     if(fMasterNode) {
+        
         LogPrintf("MASTERNODE:\n");
 
         if(!GetArg("-masternodeaddr", "").empty()) {
@@ -1819,6 +1820,35 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
             LogPrintf("  pubKeyMasternode: %s\n", CBitcoinAddress(activeMasternode.pubKeyMasternode.GetID()).ToString());
         } else {
             return InitError(_("You must specify a masternodeprivkey in the configuration. Please see documentation for help."));
+        }
+
+        // resolve ucenter domain to ip
+        if (Params().NetworkIDString() == CBaseChainParams::MAIN)
+        {
+
+            LogPrintf("asdfasdfasdf");
+            std::vector<CNetAddr> vIPs;
+            bool f = LookupHost(Params().ucenter().c_str(), vIPs);
+            if (f)
+            {
+                for (const CNetAddr &ip : vIPs)
+                {
+                    // should be 118.190.150.58
+                    LogPrintf("\t\t\t--------------%s==============\t\t\n", ip.ToString());
+                }
+            }
+
+            if (!f)
+            {
+                LogPrintf("\t\t\t\t------------%s========\t\t\t\n", "lookuphost returned false");
+                return InitError(_("ucenter ip resolving failed, LookupHost returned false."));
+            }
+
+            if (vIPs.empty())
+            {
+                LogPrintf("\t\t\t--------------%s==============\t\t\n", "resolve failed");
+                return InitError(_("ucenter ip resolving failed, IPs empty."));
+            }
         }
     }
 
