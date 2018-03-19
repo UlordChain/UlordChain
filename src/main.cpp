@@ -3017,13 +3017,10 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
 
     if (trieCache.getMerkleHash() != block.hashClaimTrie)
     {
-	LogPrintf("the merkle root of the claim trie does not match");
-    	return true;
-    }
-        /*return state.DoS(100,
-                         error("ConnectBlock() : the merkle root of the claim trie does not match "
+        return state.DoS(100,error("ConnectBlock() : the merkle root of the claim trie does not match "
                                "(actual=%s vs block=%s)", trieCache.getMerkleHash().GetHex(),
-                               block.hashClaimTrie.GetHex()), REJECT_INVALID, "bad-claim-merkle-hash");*/
+                              block.hashClaimTrie.GetHex()), REJECT_INVALID, "bad-claim-merkle-hash");
+    }
 
     int64_t nTime3 = GetTimeMicros(); nTimeConnect += nTime3 - nTime2;
     LogPrint("bench", "      - Connect %u transactions: %.2fms (%.3fms/tx, %.3fms/txin) [%.2fs]\n", (unsigned)block.vtx.size(), 0.001 * (nTime3 - nTime2), 0.001 * (nTime3 - nTime2) / block.vtx.size(), nInputs <= 1 ? 0 : 0.001 * (nTime3 - nTime2) / (nInputs-1), nTimeConnect * 0.000001);
