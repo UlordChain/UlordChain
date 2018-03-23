@@ -4166,6 +4166,23 @@ static bool AcceptBlockHeader(const CBlockHeader& block, CValidationState& state
             return state.DoS(100, error("%s: prev block invalid", __func__), REJECT_INVALID, "bad-prevblk");
 
         assert(pindexPrev);
+        if (fCheckpointsEnabled)
+        {
+            uint256 lastCheckpoint_t = Checkpoints::GetHeightCheckpoint(pindexPrev->nHeight+1 ,chainparams.Checkpoints());
+            if(lastCheckpoint_t != uint256())
+            {
+                 if (hash != lastCheckpoint_t)
+                 {
+                    LogPrintf("synchronous chain height=%d hash = [%s][%s]\n",pindexPrev->nHeight+1,hash.ToString(),lastCheckpoint_t.ToString() );
+                    return state.DoS(100, error("%s: checkpoint block invalid", __func__), REJECT_INVALID, "bad-prevblk");                                                                                        
+                 }
+                 else
+                 {
+                    LogPrintf("checkpoint verify correct.\n");
+                 }
+            }
+        }
+	    	    
         if (fCheckpointsEnabled && !CheckIndexAgainstCheckpoint(pindexPrev, state, chainparams, hash))
             return error("%s: CheckIndexAgainstCheckpoint(): %s", __func__, state.GetRejectReason().c_str());
 
