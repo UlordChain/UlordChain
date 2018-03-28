@@ -1,7 +1,7 @@
 What is Ulord ?
 -------------
 
-Ulord is a decentralized content distribution platform that provides content distribution in public chain based on blockchain technology, creates a complete ecosystem for content distribution by creative work, where people can create a wide variety of content-based decentralized applications, such as video, music, pictures, text, code, animation material, etc., and thus by taking advantage of the smart contract it ensures content creators and communicators get the corresponding benefits.
+Ulord is a P2P value delivery public chain. Through building its blockchain underlying architecture and digital resource distribution protocols, it enables third-party developers to explore their own applications over open-source agreements to form a complete ecology of blockchain technology and applications. Based on various rules and protocols created by Ulord, it loads various types of digital resource application scenarios including text, pictures, music, video and software, providing a direct docking platform for information creators and consumers.
 
 UlordChain Documentation and Usage Resources
 ---------------
