@@ -115,7 +115,7 @@ bool CreateBlock(CBlockTemplate* pblocktemplate)
         }
     }
     CValidationState state;
-    bool success = (ProcessNewBlock(state, Params(), NULL, pblock, true, NULL); && state.IsValid() && pblock->GetHash() == chainActive.Tip()->GetBlockHash());
+    bool success = (ProcessNewBlock(state, Params(), NULL, pblock, true, NULL) && state.IsValid() && pblock->GetHash() == chainActive.Tip()->GetBlockHash());
 	
     pblock->hashPrevBlock = pblock->GetHash();
     return success;
