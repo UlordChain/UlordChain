@@ -2327,7 +2327,7 @@ static bool ApplyTxInUndo(const CTxInUndo& undo, CCoinsViewCache& view, CClaimTr
 bool DisconnectBlock(const CBlock& block, CValidationState& state, const CBlockIndex* pindex, CCoinsViewCache& view, CClaimTrieCache& trieCache, bool* pfClean)
 {
     assert(pindex->GetBlockHash() == view.GetBestBlock());
-    assert(pindex->GetBlockHash() == trieCache.getBestBlock());
+    //assert(pindex->GetBlockHash() == trieCache.getBestBlock());
 
     if (pfClean)
         *pfClean = false;
@@ -2480,8 +2480,8 @@ outs->nVersion = outsBlock.nVersion;
     // move best block pointer to prevout block
     view.SetBestBlock(pindex->pprev->GetBlockHash());
     assert(trieCache.finalizeDecrement());
-    trieCache.setBestBlock(pindex->pprev->GetBlockHash());
-    assert(trieCache.getMerkleHash() == pindex->pprev->hashClaimTrie);
+    //trieCache.setBestBlock(pindex->pprev->GetBlockHash());
+    //assert(trieCache.getMerkleHash() == pindex->pprev->hashClaimTrie);
 
     if (pfClean) {
         *pfClean = fClean;
@@ -2674,7 +2674,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
     assert(hashPrevBlock == view.GetBestBlock());
 
     // also verify that the trie cache's current state corresponds to the previous block
-    assert(hashPrevBlock == trieCache.getBestBlock());
+    //assert(hashPrevBlock == trieCache.getBestBlock());
 
     // Special case for the genesis block, skipping connection of its transactions
     // (its coinbase is unspendable)
@@ -3015,12 +3015,12 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
 
     assert(trieCache.incrementBlock(blockundo.insertUndo, blockundo.expireUndo, blockundo.insertSupportUndo, blockundo.expireSupportUndo, blockundo.takeoverHeightUndo));
 
-    if (trieCache.getMerkleHash() != block.hashClaimTrie)
+    /*if (trieCache.getMerkleHash() != block.hashClaimTrie)
     {
         return state.DoS(100,error("ConnectBlock() : the merkle root of the claim trie does not match "
                                "(actual=%s vs block=%s)", trieCache.getMerkleHash().GetHex(),
                               block.hashClaimTrie.GetHex()), REJECT_INVALID, "bad-claim-merkle-hash");
-    }
+    }*/
 
     int64_t nTime3 = GetTimeMicros(); nTimeConnect += nTime3 - nTime2;
     LogPrint("bench", "      - Connect %u transactions: %.2fms (%.3fms/tx, %.3fms/txin) [%.2fs]\n", (unsigned)block.vtx.size(), 0.001 * (nTime3 - nTime2), 0.001 * (nTime3 - nTime2) / block.vtx.size(), nInputs <= 1 ? 0 : 0.001 * (nTime3 - nTime2) / (nInputs-1), nTimeConnect * 0.000001);
@@ -3312,7 +3312,7 @@ bool static DisconnectTip(CValidationState& state, const Consensus::Params& cons
             return error("DisconnectTip(): DisconnectBlock %s failed", pindexDelete->GetBlockHash().ToString());
         assert(view.Flush());
         assert(trieCache.flush());
-        assert(pindexDelete->pprev->hashClaimTrie == trieCache.getMerkleHash());
+        //assert(pindexDelete->pprev->hashClaimTrie == trieCache.getMerkleHash());
     }
     LogPrint("bench", "- Disconnect block: %.2fms\n", (GetTimeMicros() - nStart) * 0.001);
     // Write the chain state to disk, if necessary.
