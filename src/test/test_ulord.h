@@ -58,6 +58,10 @@ struct TestChain100Setup : public TestingSetup {
 class CTxMemPoolEntry;
 class CTxMemPool;
 
+struct RegTestingSetup: public TestingSetup {
+    RegTestingSetup();
+    ~RegTestingSetup();
+};
 struct TestMemPoolEntryHelper
 {
     // Default values
