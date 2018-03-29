@@ -17,6 +17,7 @@
 #include "txdb.h"
 #include "txmempool.h"
 #include "ui_interface.h"
+#include "rpcserver.h"
 #include "util.h"
 #ifdef ENABLE_WALLET
 #include "wallet/db.h"
@@ -62,6 +63,7 @@ TestingSetup::TestingSetup(const std::string& chainName) : BasicTestingSetup(cha
         pblocktree = new CBlockTreeDB(1 << 20, true);
         pcoinsdbview = new CCoinsViewDB(1 << 23, true);
         pcoinsTip = new CCoinsViewCache(pcoinsdbview);
+        pclaimTrie = new CClaimTrie(true, false, 1);
         InitBlockIndex(chainparams);
 #ifdef ENABLE_WALLET
         bool fFirstRun;
@@ -86,6 +88,7 @@ TestingSetup::~TestingSetup()
         pwalletMain = NULL;
 #endif
         UnloadBlockIndex();
+        delete pclaimTrie;
         delete pcoinsTip;
         delete pcoinsdbview;
         delete pblocktree;
@@ -127,8 +130,12 @@ TestChain100Setup::CreateAndProcessBlock(const std::vector<CMutableTransaction>&
     // IncrementExtraNonce creates a valid coinbase and merkleRoot
     unsigned int extraNonce = 0;
     IncrementExtraNonce(&block, chainActive.Tip(), extraNonce);
-
-    //while (!CheckProofOfWork(block.GetHash(), block.nBits, chainparams.GetConsensus())) ++block.nNonce;
+    arith_uint256 i = 0;
+    arith_uint256 temp = 0;
+    while (!CheckProofOfWork(block.GetHash(), block.nBits, chainparams.GetConsensus()))
+    {
+        ++block.nNonce;
+    } 
 
     CValidationState state;
     ProcessNewBlock(state, chainparams, NULL, &block, true, NULL);
@@ -142,6 +149,15 @@ TestChain100Setup::~TestChain100Setup()
 {
 }
 
+RegTestingSetup::RegTestingSetup() : TestingSetup(CBaseChainParams::REGTEST)
+{
+    minRelayTxFee = CFeeRate(0);
+}
+
+RegTestingSetup::~RegTestingSetup()
+{
+    minRelayTxFee = CFeeRate(DEFAULT_MIN_RELAY_TX_FEE);
+}
 
 CTxMemPoolEntry TestMemPoolEntryHelper::FromTx(CMutableTransaction &tx, CTxMemPool *pool) {
     CTransaction txn(tx);
