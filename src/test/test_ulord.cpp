@@ -134,9 +134,10 @@ TestChain100Setup::CreateAndProcessBlock(const std::vector<CMutableTransaction>&
     arith_uint256 temp = 0;
     while (!CheckProofOfWork(block.GetHash(), block.nBits, chainparams.GetConsensus()))
     {
-        ++block.nNonce;
+        i++;
+        temp = UintToArith256(block.nNonce) + i;
     } 
-
+    block.nNonce = ArithToUint256(temp);
     CValidationState state;
     ProcessNewBlock(state, chainparams, NULL, &block, true, NULL);
 
