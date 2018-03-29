@@ -297,7 +297,6 @@ BOOST_AUTO_TEST_CASE(claimtrie_insert_update_claim)
     
     fRequireStandard = false;
     BOOST_CHECK(pclaimTrie->nCurrentHeight == chainActive.Height() + 1);
-	cout << "pclaimTrie->nCurrentHeight is \t" << pclaimTrie->nCurrentHeight << "chainActive.Height() is \t" << chainActive.Height() <<endl;
     LOCK(cs_main);
 
     std::string sName1("atest");
