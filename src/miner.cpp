@@ -470,7 +470,7 @@ CBlockTemplate* CreateNewBlock(const CChainParams& chainparams, const CScript& s
         supportQueueRowType dummyExpireSupportUndo;
         std::vector<std::pair<std::string, int> > dummyTakeoverHeightUndo;
         trieCache.incrementBlock(dummyInsertUndo, dummyExpireUndo, dummyInsertSupportUndo, dummyExpireSupportUndo, dummyTakeoverHeightUndo);                                                                                                                                  
-        pblock->hashClaimTrie = trieCache.getMerkleHash();
+        //pblock->hashClaimTrie = trieCache.getMerkleHash();
         CValidationState state;
         if (!TestBlockValidity(state, chainparams, *pblock, pindexPrev, false, false)) {
             throw std::runtime_error(strprintf("%s: TestBlockValidity failed: %s", __func__, FormatStateMessage(state)));
