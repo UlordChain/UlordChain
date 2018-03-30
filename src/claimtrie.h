@@ -288,7 +288,7 @@ public:
                : db(GetDataDir() / "claimtrie", 100, fMemory, fWipe, false)
                , nCurrentHeight(1), nExpirationTime(262974)
                , nProportionalDelayFactor(nProportionalDelayFactor)
-               , root(uint256S("0000000000000000000000000000000000000000000000000000000000000001"))
+               , root(uint256S("0000000000000000000000000000000000000000000000000000000000000000"))
     {}
     
     uint256 getMerkleHash();
