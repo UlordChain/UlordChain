@@ -26,6 +26,7 @@ CMasternode::CMasternode() :
     sigTime(GetAdjustedTime()),
     nLastDsq(0),
     nTimeLastChecked(0),
+    nTimeLastCheckedRegistered(0),
     nTimeLastPaid(0),
     nTimeLastWatchdogVote(0),
     nActiveState(MASTERNODE_ENABLED),
@@ -48,6 +49,7 @@ CMasternode::CMasternode(CService addrNew, CTxIn vinNew, CPubKey pubKeyCollatera
     sigTime(GetAdjustedTime()),
     nLastDsq(0),
     nTimeLastChecked(0),
+    nTimeLastCheckedRegistered(0),
     nTimeLastPaid(0),
     nTimeLastWatchdogVote(0),
     nActiveState(MASTERNODE_ENABLED),
@@ -70,6 +72,7 @@ CMasternode::CMasternode(const CMasternode& other) :
     sigTime(other.sigTime),
     nLastDsq(other.nLastDsq),
     nTimeLastChecked(other.nTimeLastChecked),
+    nTimeLastCheckedRegistered(other.nTimeLastCheckedRegistered),
     nTimeLastPaid(other.nTimeLastPaid),
     nTimeLastWatchdogVote(other.nTimeLastWatchdogVote),
     nActiveState(other.nActiveState),
@@ -92,6 +95,7 @@ CMasternode::CMasternode(const CMasternodeBroadcast& mnb) :
     sigTime(mnb.sigTime),
     nLastDsq(0),
     nTimeLastChecked(0),
+    nTimeLastCheckedRegistered(0),
     nTimeLastPaid(0),
     nTimeLastWatchdogVote(mnb.sigTime),
     nActiveState(mnb.nActiveState),
@@ -119,6 +123,7 @@ bool CMasternode::UpdateFromNewBroadcast(CMasternodeBroadcast& mnb)
     nPoSeBanScore = 0;
     nPoSeBanHeight = 0;
     nTimeLastChecked = 0;
+	nTimeLastCheckedRegistered = 0;
     int nDos = 0;
     if(mnb.lastPing == CMasternodePing() || (mnb.lastPing != CMasternodePing() && mnb.lastPing.CheckAndUpdate(this, true, nDos))) {
         lastPing = mnb.lastPing;
@@ -173,7 +178,7 @@ void CMasternode::Check(bool fForce)
     LogPrint("masternode", "CMasternode::Check -- Masternode %s is in %s state\n", vin.prevout.ToStringShort(), GetStateString());
 
     //once spent, stop doing the checks
-    if(IsOutpointSpent()) return;
+    if(IsOutpointSpent() || IsRegistered()) return;
 
     int nHeight = 0;
     if(!fUnitTest) {
@@ -188,8 +193,8 @@ void CMasternode::Check(bool fForce)
             LogPrint("masternode", "CMasternode::Check -- Failed to find Masternode UTXO, masternode=%s\n", vin.prevout.ToStringShort());
             return;
         }
-
-        nHeight = chainActive.Height();
+		
+		nHeight = chainActive.Height();
     }
 
     if(IsPoSeBanned()) {
@@ -292,6 +297,18 @@ void CMasternode::Check(bool fForce)
         return;
     }
 
+	if(GetTime() - nTimeLastCheckedRegistered > MNM_REGISTERED_CHECK_SECONDS)
+	{
+		nTimeLastCheckedRegistered = GetTime();
+		//CMasternode mn(*this);
+		if(!mnodeman.CheckActiveMaster(*this))
+		{
+			nActiveState = MASTERNODE_NO_REGISTERED;
+			LogPrint("masternode", "CMasternode::Check -- Masternode %s is in %s state now\n", vin.prevout.ToStringShort(), GetStateString());
+			return;
+		}
+	}
+
     nActiveState = MASTERNODE_ENABLED; // OK
     if(nActiveStatePrev != nActiveState) {
         LogPrint("masternode", "CMasternode::Check -- Masternode %s is in %s state now\n", vin.prevout.ToStringShort(), GetStateString());
@@ -341,6 +358,7 @@ std::string CMasternode::StateToString(int nStateIn)
         case MASTERNODE_WATCHDOG_EXPIRED:       return "WATCHDOG_EXPIRED";
         case MASTERNODE_NEW_START_REQUIRED:     return "NEW_START_REQUIRED";
         case MASTERNODE_POSE_BAN:               return "POSE_BAN";
+		case MASTERNODE_NO_REGISTERED:          return "NO_REGISTERED";
         default:                                return "UNKNOWN";
     }
 }
@@ -682,6 +700,14 @@ bool CMasternodeBroadcast::CheckOutpoint(int& nDos)
             }
         }
     }
+
+	// check if it is registered on the Ulord center server
+	CMasternode mn(*this);
+	if(!mnodeman.CheckActiveMaster(mn))
+	{
+		LogPrintf("CMasternodeBroadcast::CheckOutpoint -- Failed to find Masternode in the UlordCenter's masternode list, masternode=%s\n", mn.vin.prevout.ToStringShort());
+		return false;
+	}
 
     return true;
 }

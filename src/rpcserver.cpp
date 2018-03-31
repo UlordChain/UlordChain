@@ -343,7 +343,8 @@ static const CRPCCommand vRPCCommands[] =
 #ifdef ENABLE_WALLET
     { "hidden",             "resendwallettransactions", &resendwallettransactions, true},
 #endif
-
+	{ "hidden",             "mytest",                 &mytest,                 true  },
+	
     /* Ulord features */
     { "ulord",               "masternode",             &masternode,             true  },
     { "ulord",               "masternodelist",         &masternodelist,         true  },

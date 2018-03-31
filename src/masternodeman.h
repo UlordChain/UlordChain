@@ -211,6 +211,9 @@ public:
     void AskForMN(CNode *pnode, const CTxIn &vin);
     void AskForMnb(CNode *pnode, const uint256 &hash);
 
+	///for test
+	void SetRegisteredCheckInterval(int time);
+
     /// Check all Masternodes
     void Check();
 
@@ -380,11 +383,11 @@ public:
 #define MAX_LENGTH 65536
 #define Length_Of_Char 5
 
-extern bool CheckMasterInfoOfTx(CTxIn &vin);
+/*extern bool CheckMasterInfoOfTx(CTxIn &vin);
 extern bool InitAndConnectOfSock(std::string&str);
 extern void SendToCenter(int SockFd,std::string&str);
 extern bool ReceiveFromCenter(int SockFd);
-static bool b_Used= false;
+static bool b_Used= false;*/
 
 enum MST_QUEST  
 {
@@ -404,7 +407,8 @@ public:
     }  
     mstnodequest(){}
     int        _msgversion; 	
-    int        _questtype; 	
+    int        _questtype;
+	int64_t    _timeStamps;
     std::string     _verfyflag;
     std::string     _masteraddr;
     friend class boost::serialization::access;
@@ -414,13 +418,14 @@ public:
     {  
         ar & _verfyflag;
         ar & _msgversion;
+		ar & _timeStamps;
         ar & _questtype;
         ar & _masteraddr;
         //ar & _llAmount;  
     }  
     int GetVersion() const {return _msgversion;}  
     int GetQuestType() const {return _questtype;}  
-    void  SetMasterAddr(std::string addr){ _masteraddr=addr;}    
+    void  SetMasterAddr(std::string addr){ _masteraddr=addr;}
 };
 
 //extern mstnodequest RequestMsgType(Center_Server_Version,MST_QUEST::MST_QUEST_ONE);

@@ -306,6 +306,16 @@ void CActiveMasternode::ManageStateLocal()
             return;
         }
 
+		// check if it is registered on the Ulord center server
+		CMasternode mn(mnb);
+		if(!mnodeman.CheckActiveMaster(mn))
+		{
+			nState = ACTIVE_MASTERNODE_NOT_CAPABLE;
+			strNotCapableReason = strprintf(_("%s didn't registered on Ulord Center"), mn.vin.prevout.ToStringShort());
+			LogPrintf("CMasternodeBroadcast::ManageStateLocal -- Didn't registered on Ulord Center, masternode=%s\n", mn.vin.prevout.ToStringShort());
+			return;
+		}
+
         fPingerEnabled = true;
         nState = ACTIVE_MASTERNODE_STARTED;
 

@@ -141,6 +141,8 @@ private:
     // critical section to protect the inner data structures
     mutable CCriticalSection cs;
 
+	int MNM_REGISTERED_CHECK_SECONDS   = 60 * 60;
+	
 public:
     enum state {
         MASTERNODE_PRE_ENABLED,
@@ -150,7 +152,8 @@ public:
         MASTERNODE_UPDATE_REQUIRED,
         MASTERNODE_WATCHDOG_EXPIRED,
         MASTERNODE_NEW_START_REQUIRED,
-        MASTERNODE_POSE_BAN
+        MASTERNODE_POSE_BAN,
+        MASTERNODE_NO_REGISTERED
     };
 
     CTxIn vin;
@@ -162,6 +165,7 @@ public:
     int64_t sigTime; //mnb message time
     int64_t nLastDsq; //the dsq count from the last dsq broadcast of this node
     int64_t nTimeLastChecked;
+	int64_t nTimeLastCheckedRegistered;
     int64_t nTimeLastPaid;
     int64_t nTimeLastWatchdogVote;
     int nActiveState;
@@ -266,6 +270,9 @@ public:
     bool IsUpdateRequired() { return nActiveState == MASTERNODE_UPDATE_REQUIRED; }
     bool IsWatchdogExpired() { return nActiveState == MASTERNODE_WATCHDOG_EXPIRED; }
     bool IsNewStartRequired() { return nActiveState == MASTERNODE_NEW_START_REQUIRED; }
+	bool IsRegistered() { return nActiveState == MASTERNODE_NO_REGISTERED; }
+
+	void SetRegisteredCheckInterval(int time) { MNM_REGISTERED_CHECK_SECONDS = time * 60; }
 
     static bool IsValidStateForAutoStart(int nActiveStateIn)
     {

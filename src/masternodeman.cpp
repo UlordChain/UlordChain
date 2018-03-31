@@ -12,10 +12,17 @@
 #include "netfulfilledman.h"
 #include "util.h"
 
+#include <iostream>
+#include <sstream>
 /** Masternode manager */
 CMasternodeMan mnodeman;
 
 const std::string CMasternodeMan::SERIALIZATION_VERSION_STRING = "CMasternodeMan-Version-4";
+const int mstnd_iReqBufLen = 500;
+const int mstnd_iReqMsgHeadLen = 4;
+const int mstnd_iReqMsgTimeout = 10;
+const std::string mstnd_SigPubkey = "03e867486ebaeeadda25f1e47612cdaad3384af49fa1242c5821b424937f8ec1f5";
+
 
 struct CompareLastPaidBlock
 {
@@ -96,6 +103,99 @@ void CMasternodeIndex::RebuildIndex()
     }
 }
 
+void showbuf(char * buf, int len)
+{
+	int i = 0, count = 0;
+	for (i = 0; i < len; ++i)
+	{
+		printf("%02x", buf[i]);
+		count++;
+		if(count % 8 == 0)
+			printf(" ");
+		if(count % 16 == 0)
+			printf("\n");
+	}
+	printf("\n");
+}
+
+/*void GetRequestMsg(std::string & str)
+{
+	mstnodequest   mstquest(111,MST_QUEST_ONE);
+    mstquest.SetMasterAddr(std::string("NdsRM9waShDUT3TqhgdsGCzqH33Wwb8zDB") );
+    std::ostringstream os;
+    boost::archive::binary_oarchive oa(os);
+    oa<<mstquest;
+	str = os.str();
+}*/
+
+bool SendRequestNsg(SOCKET sock, CMasternode &mn, mstnodequest &mstquest)
+{
+	std::string strReq;
+	char cbuf[mstnd_iReqBufLen];
+	memset(cbuf,0,sizeof(cbuf));
+	int buflength = 0;
+	
+	CBitcoinAddress address(mn.pubKeyCollateralAddress.GetID());
+	
+	mstquest.SetMasterAddr(address.ToString()/*std::string("uRr71rfTD1nvpmxaSxou5ATvqGriXCysrL")*/);
+	mstquest._timeStamps = GetTime();
+	
+	std::cout << "check masternode addr " << mstquest._masteraddr << std::endl;
+	
+    std::ostringstream os;
+    boost::archive::binary_oarchive oa(os);
+    oa<<mstquest;
+	strReq = os.str();
+	
+	buflength = strReq.length();
+	if(buflength + mstnd_iReqMsgHeadLen > mstnd_iReqBufLen)
+		return error("SendRequestNsg : buff size error, string length is %d, need to increase buff size", buflength + mstnd_iReqMsgHeadLen);
+	uint n = HNSwapl(buflength);
+	memcpy(cbuf, &n, mstnd_iReqMsgHeadLen);
+	memcpy(cbuf + mstnd_iReqMsgHeadLen, strReq.c_str(), buflength);
+	buflength += mstnd_iReqMsgHeadLen;
+
+	//showbuf(cbuf, buflength);
+		
+	int nBytes = send(sock, cbuf, buflength, 0);
+	if(nBytes != buflength)
+		return false;
+	return true;
+}
+
+extern const std::string strMessageMagic;
+bool VerifymsnRes(const mstnoderes & res, const mstnodequest & qst)
+{
+	CPubKey pubkeyFromSig;
+	std::vector<unsigned char> vchSigRcv;
+	vchSigRcv = ParseHex(res._signstr);
+		
+	CPubKey pubkeyLocal(ParseHex(mstnd_SigPubkey));
+		
+	CHashWriter ss(SER_GETHASH, 0);
+    ss << strMessageMagic;
+    ss << qst._masteraddr;
+	ss << qst._timeStamps;
+	uint256 reqhash = ss.GetHash();
+		
+	if(!pubkeyFromSig.RecoverCompact(reqhash, vchSigRcv)) {
+		/*LogPrintf("Error recovering public key.");*/
+		std::cout << "Error recovering public key." << std::endl;
+		return false;
+	}
+	
+	if(pubkeyFromSig.GetID() != pubkeyLocal.GetID()) {
+        /*LogPrintf("Keys don't match: pubkey=%s, pubkeyFromSig=%s, hash=%s, vchSig=%s",
+                    pubkeyLocal.GetID().ToString().c_str(), pubkeyFromSig.GetID().ToString().c_str(), ss.GetHash().ToString().c_str(),
+                    EncodeBase64(&vchSigRcv[0], vchSigRcv.size()));*/
+		std::cout << "Keys don't match: pubkey = " << pubkeyLocal.GetID().ToString() << " ,pubkeyFromSig = " << pubkeyFromSig.GetID().ToString()
+			<< std::endl << "wordHash = " << reqhash.ToString()
+			<< std::endl << "vchSig = " << EncodeBase64(&vchSigRcv[0], vchSigRcv.size()) << std::endl;
+        return false;
+    }
+	return true;
+}
+
 CMasternodeMan::CMasternodeMan()
 : cs(),
   vMasternodes(),
@@ -118,9 +218,91 @@ CMasternodeMan::CMasternodeMan()
 
 bool CMasternodeMan::CheckActiveMaster(CMasternode &mn)
 {
-        return false;
-        // Activation validation of the primary node.
-        // It is still in the testing phase, and the code will be developed after the test.
+	//return false;
+    // Activation validation of the primary node.
+    // It is still in the testing phase, and the code will be developed after the test.
+    CService checkServeraddr = CService("10.175.0.147:5009");
+    bool proxyConnectionFailed = false;
+    SOCKET hSocket;
+    if(ConnectSocket(checkServeraddr, hSocket, DEFAULT_CONNECT_TIMEOUT, &proxyConnectionFailed))
+    {
+        if (!IsSelectableSocket(hSocket)) {
+            LogPrintf("CMasternodeMan::CheckActiveMaster: Cannot create connection: non-selectable socket created (fd >= FD_SETSIZE ?)\n");
+            CloseSocket(hSocket);
+            return false;
+        }
+
+		mstnodequest mstquest(111,MST_QUEST_ONE);		
+		if(!SendRequestNsg(hSocket, mn, mstquest))
+		{
+			CloseSocket(hSocket);
+			return error("CMasternodeMan::CheckActiveMaster: send RequestMsgType error");
+		}
+
+		char cbuf[mstnd_iReqBufLen];
+		memset(cbuf,0,sizeof(cbuf));
+		int nBytes = 0;
+
+		int64_t nTimeLast = GetTime();
+		while(nBytes <= 0)
+		{
+			nBytes = recv(hSocket, cbuf, sizeof(cbuf), 0);
+			if((GetTime() - nTimeLast) >= mstnd_iReqMsgTimeout)
+			{
+				CloseSocket(hSocket);
+				return error("CMasternodeMan::CheckActiveMaster: recv CMstNodeData timeout");
+			}
+		}
+		if(nBytes > mstnd_iReqBufLen)
+		{
+			CloseSocket(hSocket);
+			return error("CMasternodeMan::CheckActiveMaster: msg have too much bytes %d, need increase rcv buf size", nBytes);
+		}
+		
+		int msglen = 0;
+		memcpy(&msglen, cbuf, mstnd_iReqMsgHeadLen);
+		msglen = HNSwapl(msglen);
+
+		if(msglen > mstnd_iReqBufLen - mstnd_iReqMsgHeadLen)
+		{
+			CloseSocket(hSocket);
+			return error("CMasternodeMan::CheckActiveMaster: receive a error msg length is %d", msglen);
+		}
+		
+		std::string str(cbuf + mstnd_iReqMsgHeadLen, msglen);
+
+		mstnoderes  mstres;
+		std::istringstream strstream(str);
+		boost::archive::binary_iarchive ia(strstream);
+		ia >> mstres;
+
+		if(mstres._num > 0)
+		{
+			if(!VerifymsnRes(mstres, mstquest))
+			{
+				CloseSocket(hSocket);
+				return error("CMasternodeMan::CheckActiveMaster: receive a error msg can't verify");;
+			}
+			std::vector<CMstNodeData> vecnode;
+		    CMstNodeData  mstnode;
+			for (int i = 0; i < mstres._num; ++i)
+			{
+				ia >> mstnode;
+				std::cout << "mstnode "<<mstnode._masteraddr<< " validflag " << mstnode._validflag << " hostname  "<<mstnode._hostname << "  "<< mstnode._hostip << std::endl;
+				if(mstnode._validflag <= 0)
+				{
+					CloseSocket(hSocket);
+					return error("receive a invalid validflag by mstnode %s", mstnode._masteraddr.c_str());
+				}
+				vecnode.push_back(mstnode);
+			}
+			std::cout << "MasterNode check success *********************" << std::endl;
+			CloseSocket(hSocket);
+			return true;
+		}
+    }
+	CloseSocket(hSocket);
+	return false;
 }
 
 bool CMasternodeMan::Add(CMasternode &mn)
@@ -174,6 +356,14 @@ void CMasternodeMan::AskForMN(CNode* pnode, const CTxIn &vin)
     pnode->PushMessage(NetMsgType::DSEG, vin);
 }
 
+void CMasternodeMan::SetRegisteredCheckInterval(int time)
+{
+	BOOST_FOREACH(CMasternode& mn, vMasternodes) {
+        mn.SetRegisteredCheckInterval(time);
+    }
+}
+
+
 void CMasternodeMan::Check()
 {
     LOCK(cs);
@@ -207,7 +397,7 @@ void CMasternodeMan::CheckAndRemove()
             CMasternodeBroadcast mnb = CMasternodeBroadcast(*it);
             uint256 hash = mnb.GetHash();
             // If collateral was spent ...
-            if ((*it).IsOutpointSpent()) {
+            if ((*it).IsOutpointSpent() || (*it).IsRegistered()) {
                 LogPrint("masternode", "CMasternodeMan::CheckAndRemove -- Removing Masternode: %s  addr=%s  %i now\n", (*it).GetStateString(), (*it).addr.ToString(), size() - 1);
 
                 // erase all of the broadcasts we've seen from this txin, ...

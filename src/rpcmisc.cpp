@@ -21,6 +21,7 @@
 #include "wallet/wallet.h"
 #include "wallet/walletdb.h"
 #endif
+#include "masternodeman.h"
 
 #include <stdint.h>
 
@@ -980,3 +981,45 @@ UniValue getspentinfo(const UniValue& params, bool fHelp)
 
     return obj;
 }
+
+void testMstNode()
+{
+	//CMasternodeMan mstNodeManage = CMasternodeMan();
+	std::string addr = "uRr71rfTD1nvpmxaSxou5ATvqGriXCysrL";
+	CMasternode mstnode = CMasternode();
+	mstnode.addr = CService("10.175.0.211:5009");
+	//CTxOut cOut;
+	//CTxDestination dest = DecodeDestination(std::string("NdsRM9waShDUT3TqhgdsGCzqH33Wwb8zDB"));
+	//cOut.scriptPubKey = GetScriptForDestination(dest);
+	mnodeman.CheckActiveMaster(mstnode);
+}
+
+UniValue mytest(const UniValue& params, bool fHelp)
+{
+
+    if (fHelp || params.size() != 1)
+        throw runtime_error(
+            "mytest\n"
+            "\nReturns *******test done*******.\n"
+            "\nArguments:\n"
+            "1. interval         (minutes) The Registered check interval\n"
+            "\nResult:\n"
+            "{\n"
+            "}\n"
+            "\nExamples:\n"
+            + HelpExampleCli("mytest", "10")
+            + HelpExampleRpc("mytest", "10")
+        );
+
+	int nInterval = params[0].get_int();
+
+	mnodeman.SetRegisteredCheckInterval(nInterval);
+
+    //testMstNode();
+
+    UniValue obj(UniValue::VOBJ);
+    obj.push_back("*******test done*******");
+    return obj;
+}
+
+

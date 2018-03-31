@@ -627,6 +627,29 @@ bool ConnectSocketByName(CService &addr, SOCKET& hSocketRet, const char *pszDest
     return ConnectThroughProxy(nameProxy, strDest, port, hSocketRet, nTimeout, outProxyConnectionFailed);
 }
 
+// big return true，litte return false
+bool checkCPUendian()
+{
+	union{
+		unsigned long int i;
+		unsigned char s[4];
+		}c;
+	c.i = 0x12345678;
+	return (0x12 == c.s[0]);
+}
+
+#define BigLittleSwap32(A)  ((((uint)(A) & 0xff000000) >> 24) | \
+                            (((uint)(A) & 0x00ff0000) >> 8) | \
+                            (((uint)(A) & 0x0000ff00) << 8) | \
+                            (((uint)(A) & 0x000000ff) << 24))
+
+unsigned long int HNSwapl(uint h)
+{
+	// if host big，return direct
+	// if host little，swap to big
+	return checkCPUendian() ? h : BigLittleSwap32(h);
+}
+
 void CNetAddr::Init()
 {
     memset(ip, 0, sizeof(ip));
