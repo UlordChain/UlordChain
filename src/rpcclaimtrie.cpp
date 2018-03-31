@@ -82,7 +82,7 @@ UniValue getclaimsintrie(const UniValue& params, bool fHelp)
                         LogPrintf("%s: the specified txout of %s does not have an claim command\n", __func__, itClaims->outPoint.hash.GetHex());
                     }
                     //std::string sValue(vvchParams[1].begin(), vvchParams[1].end());
-					std::string sValue = encodeBase58Check(vvchParams[1]);
+					std::string sValue = EncodeBase58Check(vvchParams[1]);
                     claim.push_back(Pair("value", sValue));
                 }
                 claims.push_back(claim);
