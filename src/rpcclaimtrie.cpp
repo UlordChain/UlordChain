@@ -9,6 +9,7 @@
 #include "univalue.h"
 #include "txmempool.h"
 #include "rpcserver.h"
+#include "base58.h"
 
 // Maximum block decrement that is allowed from rpc calls
 const int MAX_RPC_BLOCK_DECREMENTS = 50;
