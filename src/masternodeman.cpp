@@ -150,7 +150,7 @@ bool SendRequestNsg(SOCKET sock, CMasternode &mn, mstnodequest &mstquest)
 	buflength = strReq.length();
 	if(buflength + mstnd_iReqMsgHeadLen > mstnd_iReqBufLen)
 		return error("SendRequestNsg : buff size error, string length is %d, need to increase buff size", buflength + mstnd_iReqMsgHeadLen);
-	uint n = HNSwapl(buflength);
+	unsigned int n = HNSwapl(buflength);
 	memcpy(cbuf, &n, mstnd_iReqMsgHeadLen);
 	memcpy(cbuf + mstnd_iReqMsgHeadLen, strReq.c_str(), buflength);
 	buflength += mstnd_iReqMsgHeadLen;
