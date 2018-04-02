@@ -222,6 +222,6 @@ bool SetSocketNonBlocking(SOCKET& hSocket, bool fNonBlocking);
  */
 struct timeval MillisToTimeval(int64_t nTimeout);
 
-unsigned long int HNSwapl(uint h);
+unsigned long int HNSwapl(uint32_t  h);
 
 #endif // BITCOIN_NETBASE_H
