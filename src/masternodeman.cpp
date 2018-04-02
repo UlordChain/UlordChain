@@ -229,7 +229,7 @@ bool CMasternodeMan::CheckActiveMaster(CMasternode &mn)
         if (!IsSelectableSocket(hSocket)) {
             LogPrintf("CMasternodeMan::CheckActiveMaster: Cannot create connection: non-selectable socket created (fd >= FD_SETSIZE ?)\n");
             CloseSocket(hSocket);
-            return false;
+            return /*false*/true;
         }
 
 		mstnodequest mstquest(111,MST_QUEST_ONE);		
@@ -250,7 +250,7 @@ bool CMasternodeMan::CheckActiveMaster(CMasternode &mn)
 			if((GetTime() - nTimeLast) >= mstnd_iReqMsgTimeout)
 			{
 				CloseSocket(hSocket);
-				return error("CMasternodeMan::CheckActiveMaster: recv CMstNodeData timeout");
+				return /*error("CMasternodeMan::CheckActiveMaster: recv CMstNodeData timeout")*/true;
 			}
 		}
 		if(nBytes > mstnd_iReqBufLen)

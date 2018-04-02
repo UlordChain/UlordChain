@@ -199,6 +199,7 @@ public:
         READWRITE(sigTime);
         READWRITE(nLastDsq);
         READWRITE(nTimeLastChecked);
+		READWRITE(nTimeLastCheckedRegistered);
         READWRITE(nTimeLastPaid);
         READWRITE(nTimeLastWatchdogVote);
         READWRITE(nActiveState);
@@ -228,6 +229,7 @@ public:
         swap(first.sigTime, second.sigTime);
         swap(first.nLastDsq, second.nLastDsq);
         swap(first.nTimeLastChecked, second.nTimeLastChecked);
+		swap(first.nTimeLastCheckedRegistered, second.nTimeLastCheckedRegistered);
         swap(first.nTimeLastPaid, second.nTimeLastPaid);
         swap(first.nTimeLastWatchdogVote, second.nTimeLastWatchdogVote);
         swap(first.nActiveState, second.nActiveState);
