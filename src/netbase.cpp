@@ -638,12 +638,12 @@ bool checkCPUendian()
 	return (0x12 == c.s[0]);
 }
 
-#define BigLittleSwap32(A)  ((((uint)(A) & 0xff000000) >> 24) | \
-                            (((uint)(A) & 0x00ff0000) >> 8) | \
-                            (((uint)(A) & 0x0000ff00) << 8) | \
-                            (((uint)(A) & 0x000000ff) << 24))
+#define BigLittleSwap32(A)  ((((uint32_t)(A) & 0xff000000) >> 24) | \
+                            (((uint32_t)(A) & 0x00ff0000) >> 8) | \
+                            (((uint32_t)(A) & 0x0000ff00) << 8) | \
+                            (((uint32_t)(A) & 0x000000ff) << 24))
 
-unsigned long int HNSwapl(uint h)
+unsigned long int HNSwapl(uint32_t h)
 {
 	// if host big，return direct
 	// if host little，swap to big
