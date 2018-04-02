@@ -6265,24 +6265,24 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, 
 
         CBlockIndex *pindexLast = NULL;
 	    
-	//prevent chain sync.    
-	PairCheckpoints lastCheckpoint_t;
-        const CChainParams& chainparams_t = Params();
+	    //prevent chain sync.    
+	    /*PairCheckpoints lastCheckpoint_t;
+         const CChainParams& chainparams_t = Params();
         if (fCheckpointsEnabled) {
             lastCheckpoint_t = Checkpoints::ForceGetLastCheckpoint(chainparams_t.Checkpoints());
-        }
+        }*/
 	    
         BOOST_FOREACH(const CBlockHeader& header, headers) {
             CValidationState state;
 		
-	if (pindexLast !=NULL && pindexLast->nHeight == lastCheckpoint_t.first && lastCheckpoint_t.first != 0){
-		if (header.hashPrevBlock != lastCheckpoint_t.second){
+	     /*if (pindexLast !=NULL && pindexLast->nHeight == lastCheckpoint_t.first && lastCheckpoint_t.first != 0){
+	         if (header.hashPrevBlock != lastCheckpoint_t.second){
                 	LogPrintf("synchronous chain hash = %s\n",header.hashPrevBlock.ToString());
                     	LogPrintf("lastCheckpoint height = %d, lastCheckpoint hash = %s\n",lastCheckpoint_t.first,lastCheckpoint_t.second.ToString());
                     	return error("prevent chain synchronization.\n");
                 }
                 else LogPrintf("checkpoint verify correct.\n");
-            }
+            }*/
 		
             if (pindexLast != NULL && header.hashPrevBlock != pindexLast->GetBlockHash()) {
                 Misbehaving(pfrom->GetId(), 20);
