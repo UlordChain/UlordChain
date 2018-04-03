@@ -85,9 +85,8 @@ void AddToMempool(CMutableTransaction& tx)
     //BOOST_CHECK(CheckSequenceLocks(tx, STANDARD_LOCKTIME_VERIFY_FLAGS, &lp));
     //mempool.addUnchecked(tx.GetHash(), CTxMemPoolEntry(tx, 0, GetTime(), 111.1, chainActive.Height(), mempool.HasNoInputsOf(tx), 10000000000, false, nSigOps, lp));
     CValidationState state;
-    bool *fMissingInputs;
-    CFeeRate txFeeRate = CFeeRate(0);
-    BOOST_CHECK(AcceptToMemoryPool(mempool, state, tx, false, fMissingInputs, &txFeeRate));
+    
+    BOOST_CHECK(AcceptToMemoryPool(mempool, state, tx, false, NULL));
     //TestMemPoolEntryHelper entry;
     //entry.nFee = 11;
     //entry.dPriority = 111.0;
@@ -98,24 +97,26 @@ void AddToMempool(CMutableTransaction& tx)
 bool CreateBlock(CBlockTemplate* pblocktemplate)
 {
     static int unique_block_counter = 0;
+    const CChainParams& chainparams = Params(CBaseChainParams::REGTEST);
     CBlock* pblock = &pblocktemplate->block;
     pblock->nVersion = 1;
     pblock->nTime = chainActive.Tip()->GetBlockTime()+Params().GetConsensus().nPowTargetSpacing;
     CMutableTransaction txCoinbase(pblock->vtx[0]);
     txCoinbase.vin[0].scriptSig = CScript() << CScriptNum(unique_block_counter++) << CScriptNum(chainActive.Height());
-    txCoinbase.vout[0].nValue = GetBlockSubsidy(chainActive.Height() + 1, Params().GetConsensus());
+    txCoinbase.vout[0].nValue = GetBlockSubsidy(chainActive.Height() + 1, chainparams.GetConsensus());
     pblock->vtx[0] = CTransaction(txCoinbase);
     pblock->hashMerkleRoot = BlockMerkleRoot(*pblock);
+    pblock->nBits=GetNextWorkRequired(chainActive.Tip(),pblock,chainparams.GetConsensus());
     for (arith_uint256 i = 0; ; ++i)
     {
 		pblock->nNonce = ArithToUint256(i);
-        if (CheckProofOfWork(pblock->GetHash(), pblock->nBits, Params().GetConsensus()))
+        if (CheckProofOfWork(pblock->GetHash(), pblock->nBits, chainparams.GetConsensus()))
         {
             break;
         }
     }
     CValidationState state;
-    bool success = (ProcessNewBlock(state, Params(), NULL, pblock, true, NULL) && state.IsValid() && pblock->GetHash() == chainActive.Tip()->GetBlockHash());
+    bool success = (ProcessNewBlock(state, chainparams, NULL, pblock, true, NULL) && state.IsValid() && pblock->GetHash() == chainActive.Tip()->GetBlockHash());
 	
     pblock->hashPrevBlock = pblock->GetHash();
     return success;
@@ -160,7 +161,7 @@ bool CreateBlocks(unsigned int num_blocks, unsigned int num_txs)
     BOOST_CHECK(pblocktemplate = CreateNewBlock(Params(), scriptPubKey));
     BOOST_CHECK(pblocktemplate->block.vtx.size() == num_txs);
     pblocktemplate->block.hashPrevBlock = chainActive.Tip()->GetBlockHash();
-    for (unsigned int i = 0; i < num_blocks; ++i)
+    for (unsigned int i = 0; i <100 + num_blocks; ++i)
     {
         BOOST_CHECK(CreateBlock(pblocktemplate));
     }
@@ -320,7 +321,7 @@ BOOST_AUTO_TEST_CASE(claimtrie_insert_update_claim)
     uint256 hash0(uint256S("0000000000000000000000000000000000000000000000000000000000000001"));
     BOOST_CHECK(pclaimTrie->getMerkleHash() == hash0);
     
-    CMutableTransaction tx1 = BuildTransaction(coinbases[0]);
+    CMutableTransaction tx1 = BuildTransaction(coinbases[1]);
     tx1.vout[0].scriptPubKey = CScript() << OP_CLAIM_NAME << vchName1 << vchValue1 << OP_2DROP << OP_DROP << OP_TRUE;
     uint160 tx1ClaimId = ClaimIdHash(tx1.GetHash(), 0);
     std::vector<unsigned char> vchTx1ClaimId(tx1ClaimId.begin(), tx1ClaimId.end());
