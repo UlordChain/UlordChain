@@ -140,7 +140,8 @@ bool SendRequestNsg(SOCKET sock, CMasternode &mn, mstnodequest &mstquest)
 	mstquest.SetMasterAddr(address.ToString()/*std::string("uRr71rfTD1nvpmxaSxou5ATvqGriXCysrL")*/);
 	mstquest._timeStamps = GetTime();
 	
-	std::cout << "check masternode addr " << mstquest._masteraddr << std::endl;
+	//std::cout << "check masternode addr " << mstquest._masteraddr << std::endl;
+	LogPrintf("CheckActiveMaster: start check masternode %s\n", mstquest._masteraddr);
 	
     std::ostringstream os;
     boost::archive::binary_oarchive oa(os);
@@ -179,18 +180,17 @@ bool VerifymsnRes(const mstnoderes & res, const mstnodequest & qst)
 	uint256 reqhash = ss.GetHash();
 		
 	if(!pubkeyFromSig.RecoverCompact(reqhash, vchSigRcv)) {
-		/*LogPrintf("Error recovering public key.");*/
-		std::cout << "Error recovering public key." << std::endl;
+		LogPrintf("VerifymsnRes:Error recovering public key.");
 		return false;
 	}
 	
 	if(pubkeyFromSig.GetID() != pubkeyLocal.GetID()) {
-        /*LogPrintf("Keys don't match: pubkey=%s, pubkeyFromSig=%s, hash=%s, vchSig=%s",
+        LogPrintf("Keys don't match: pubkey=%s, pubkeyFromSig=%s, hash=%s, vchSig=%s",
                     pubkeyLocal.GetID().ToString().c_str(), pubkeyFromSig.GetID().ToString().c_str(), ss.GetHash().ToString().c_str(),
-                    EncodeBase64(&vchSigRcv[0], vchSigRcv.size()));*/
-		std::cout << "Keys don't match: pubkey = " << pubkeyLocal.GetID().ToString() << " ,pubkeyFromSig = " << pubkeyFromSig.GetID().ToString()
+                    EncodeBase64(&vchSigRcv[0], vchSigRcv.size()));
+		/*std::cout << "Keys don't match: pubkey = " << pubkeyLocal.GetID().ToString() << " ,pubkeyFromSig = " << pubkeyFromSig.GetID().ToString()
 			<< std::endl << "wordHash = " << reqhash.ToString()
-			<< std::endl << "vchSig = " << EncodeBase64(&vchSigRcv[0], vchSigRcv.size()) << std::endl;
+			<< std::endl << "vchSig = " << EncodeBase64(&vchSigRcv[0], vchSigRcv.size()) << std::endl;*/
         return false;
     }
 	return true;
@@ -221,6 +221,11 @@ bool CMasternodeMan::CheckActiveMaster(CMasternode &mn)
 	//return false;
     // Activation validation of the primary node.
     // It is still in the testing phase, and the code will be developed after the test.
+
+	if (!sporkManager.IsSporkActive(SPORK_18_REQUIRE_MASTER_VERIFY_FLAG))
+	{
+		return true;
+	}
     CService checkServeraddr = CService("10.175.0.147:5009");
     bool proxyConnectionFailed = false;
     SOCKET hSocket;
@@ -263,10 +268,10 @@ bool CMasternodeMan::CheckActiveMaster(CMasternode &mn)
 		memcpy(&msglen, cbuf, mstnd_iReqMsgHeadLen);
 		msglen = HNSwapl(msglen);
 
-		if(msglen > mstnd_iReqBufLen - mstnd_iReqMsgHeadLen)
+		if(msglen != nBytes - mstnd_iReqMsgHeadLen)
 		{
 			CloseSocket(hSocket);
-			return error("CMasternodeMan::CheckActiveMaster: receive a error msg length is %d", msglen);
+			return error("CMasternodeMan::CheckActiveMaster: receive a error msg length is %d, recv bytes is %d", msglen, nBytes);
 		}
 		
 		std::string str(cbuf + mstnd_iReqMsgHeadLen, msglen);
@@ -297,6 +302,7 @@ bool CMasternodeMan::CheckActiveMaster(CMasternode &mn)
 				vecnode.push_back(mstnode);
 			}
 			std::cout << "MasterNode check success *********************" << std::endl;
+			LogPrintf("CMasternodeMan::CheckActiveMaster: MasterNode %s check success\n", mstquest._masteraddr);
 			CloseSocket(hSocket);
 			return true;
 		}
@@ -312,7 +318,7 @@ bool CMasternodeMan::Add(CMasternode &mn)
     bool bActive = true;
     if (pmn == NULL) {
         LogPrint("masternode", "CMasternodeMan::Add -- Adding new Masternode: addr=%s, %i now\n", mn.addr.ToString(), size() + 1);
-        if (sporkManager.IsSporkActive(SPORK_18_REQUIRE_MASTER_VERIFY_FLAG))
+        /*if (sporkManager.IsSporkActive(SPORK_18_REQUIRE_MASTER_VERIFY_FLAG))
         { 
              bActive = CheckActiveMaster(mn);
         } 
@@ -322,7 +328,11 @@ bool CMasternodeMan::Add(CMasternode &mn)
             indexMasternodes.AddMasternodeVIN(mn.vin);
             fMasternodesAdded = true;
             return true;
-        }
+        }*/
+        vMasternodes.push_back(mn);
+        indexMasternodes.AddMasternodeVIN(mn.vin);
+        fMasternodesAdded = true;
+        return true;
     }
     return false;
 }
