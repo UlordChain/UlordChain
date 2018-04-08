@@ -19,7 +19,6 @@
 #include "arith_uint256.h"
 #include "chainparamsseeds.h"
 
-typedef int64_t i64;
 //#define GENESIS_GENERATION
 
 #ifdef GENESIS_GENERATION
@@ -131,14 +130,14 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
  *     CTxOut(nValue=50.00000000, scriptPubKey=0xA9037BAC7050C479B121CF)
  *   vMerkleTree: e0028e
  */
-static CBlock CreateGenesisBlock(uint32_t nTime, uint256 nNonce, uint32_t nBits, int32_t nVersion, const i64& genesisReward)
+static CBlock CreateGenesisBlock(uint32_t nTime, uint256 nNonce, uint32_t nBits, int32_t nVersion, const int64_t& genesisReward)
 {
     const char* pszTimestamp = "ulord hold value testnet.";
     const CScript genesisOutputScript = CScript() << ParseHex("041c508f27e982c369486c0f1a42779208b3f5dc96c21a2af6004cb18d1529f42182425db1e1632dc6e73ff687592e148569022cee52b4b4eb10e8bb11bd927ec0") << OP_CHECKSIG;
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
 
-static CBlock CreateGenesisBlock1(uint32_t nTime, uint256 nNonce, uint32_t nBits, int32_t nVersion, const i64& genesisReward)                                                                                                                
+static CBlock CreateGenesisBlock1(uint32_t nTime, uint256 nNonce, uint32_t nBits, int32_t nVersion, const int64_t& genesisReward)                                                                                                                
 {
     const char* pszTimestamp = "abracadabra";
     const CScript genesisOutputScript = CScript() << ParseHex("041c508f27e982c369486c0f1a42779208b3f5dc96c21a2af6004cb18d1529f42182425db1e1632dc6e73ff687592e148569022cee52b4b4eb10e8bb11bd927ec0") << OP_CHECKSIG;
@@ -162,17 +161,17 @@ public:
         strNetworkID = "main";
 
         // reward setting
-        consensus.premine = i64(1e8 * COIN);                            // premine
-        consensus.genesisReward = i64(1 * COIN);                        // genesis
-        consensus.minerReward4 = i64(112.966 * COIN);                   // miners
-        consensus.minerReward5 = i64(535.103 * COIN);
-        consensus.mnReward1 = i64(52.411 * COIN);                       // masternodes
-        consensus.mnReward2 = i64(76.104 * COIN);					
-        consensus.mnReward5 = i64(535.103 * COIN);
-        consensus.foundersReward = i64(4166666.667 * COIN);             // founders
-        consensus.bdgetReward4 = i64(520833.333 * COIN);                // budget
-        consensus.bdgetReward5 = i64(2083333.333 * COIN);
-        consensus.colleteral = i64(1e4 * COIN);                         // masternode colleteral
+        consensus.premine = int64_t(1e8 * COIN);                            // premine
+        consensus.genesisReward = int64_t(1 * COIN);                        // genesis
+        consensus.minerReward4 = int64_t(112.966 * COIN);                   // miners
+        consensus.minerReward5 = int64_t(535.103 * COIN);
+        consensus.mnReward1 = int64_t(52.411 * COIN);                       // masternodes
+        consensus.mnReward2 = int64_t(76.104 * COIN);					
+        consensus.mnReward5 = int64_t(535.103 * COIN);
+        consensus.foundersReward = int64_t(4166666.667 * COIN);             // founders
+        consensus.bdgetReward4 = int64_t(520833.333 * COIN);                // budget
+        consensus.bdgetReward5 = int64_t(2083333.333 * COIN);
+        consensus.colleteral = int64_t(1e4 * COIN);                         // masternode colleteral
 
         consensus.nSubsidyHalvingInterval = 840960;                     // 4 years, 24 * 60 / 2.5 * 365 * 4 
         consensus.nMasternodePaymentsStartBlock = 57600;                // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
@@ -314,17 +313,17 @@ public:
         strNetworkID = "test";
 
         // reward setting
-        consensus.premine = i64(1e8 * COIN);                            // premine
-        consensus.genesisReward = i64(1 * COIN);                        // genesis                                                           
-        consensus.minerReward4 = i64(112.966 * COIN);                   // miners
-        consensus.minerReward5 = i64(535.103 * COIN);
-        consensus.mnReward1 = i64(52.411 * COIN);                       // masternodes
-        consensus.mnReward2 = i64(76.104 * COIN);
-        consensus.mnReward5 = i64(535.103 * COIN);
-        consensus.foundersReward = i64(4166666.667 * COIN);             // founders
-        consensus.bdgetReward4 = i64(520833.333 * COIN);                // budget
-        consensus.bdgetReward5 = i64(2083333.333 * COIN);
-        consensus.colleteral = i64(1e4 * COIN);                         // masternode colleteral
+        consensus.premine = int64_t(1e8 * COIN);                            // premine
+        consensus.genesisReward = int64_t(1 * COIN);                        // genesis                                                           
+        consensus.minerReward4 = int64_t(112.966 * COIN);                   // miners
+        consensus.minerReward5 = int64_t(535.103 * COIN);
+        consensus.mnReward1 = int64_t(52.411 * COIN);                       // masternodes
+        consensus.mnReward2 = int64_t(76.104 * COIN);
+        consensus.mnReward5 = int64_t(535.103 * COIN);
+        consensus.foundersReward = int64_t(4166666.667 * COIN);             // founders
+        consensus.bdgetReward4 = int64_t(520833.333 * COIN);                // budget
+        consensus.bdgetReward5 = int64_t(2083333.333 * COIN);
+        consensus.colleteral = int64_t(1e4 * COIN);                         // masternode colleteral
 
         consensus.nSubsidyHalvingInterval = 840960;
         consensus.nMasternodePaymentsStartBlock = 100; 		        // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
@@ -445,17 +444,17 @@ public:
     CRegTestParams() {
         strNetworkID = "regtest";
         // reward setting
-        consensus.premine = i64(1e8 * COIN);                            // premine    
-        consensus.genesisReward = i64(1 * COIN);                        // genesis
-        consensus.minerReward4 = i64(112.966 * COIN);                   // miners
-        consensus.minerReward5 = i64(535.103 * COIN);
-        consensus.mnReward1 = i64(52.411 * COIN);                       // masternodes
-        consensus.mnReward2 = i64(76.104 * COIN);
-        consensus.mnReward5 = i64(535.103 * COIN);
-        consensus.foundersReward = i64(4166666.667 * COIN);             // founders
-        consensus.bdgetReward4 = i64(520833.333 * COIN);                // budget
-        consensus.bdgetReward5 = i64(2083333.333 * COIN);
-        consensus.colleteral = i64(1e4 * COIN);                         // masternode colleteral
+        consensus.premine = int64_t(1e8 * COIN);                            // premine    
+        consensus.genesisReward = int64_t(1 * COIN);                        // genesis
+        consensus.minerReward4 = int64_t(112.966 * COIN);                   // miners
+        consensus.minerReward5 = int64_t(535.103 * COIN);
+        consensus.mnReward1 = int64_t(52.411 * COIN);                       // masternodes
+        consensus.mnReward2 = int64_t(76.104 * COIN);
+        consensus.mnReward5 = int64_t(535.103 * COIN);
+        consensus.foundersReward = int64_t(4166666.667 * COIN);             // founders
+        consensus.bdgetReward4 = int64_t(520833.333 * COIN);                // budget
+        consensus.bdgetReward5 = int64_t(2083333.333 * COIN);
+        consensus.colleteral = int64_t(1e4 * COIN);                         // masternode colleteral
         consensus.nSubsidyHalvingInterval = 150;
         consensus.nMasternodePaymentsStartBlock = 240;
         consensus.nMasternodePaymentsIncreaseBlock = 350;
