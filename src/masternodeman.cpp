@@ -293,22 +293,23 @@ bool CMasternodeMan::CheckActiveMaster(CMasternode &mn)
 			for (int i = 0; i < mstres._num; ++i)
 			{
 				ia >> mstnode;
-				std::cout << "mstnode "<<mstnode._masteraddr<< " validflag " << mstnode._validflag << " hostname  "<<mstnode._hostname << "  "<< mstnode._hostip << std::endl;
+				//std::cout << "mstnode "<<mstnode._masteraddr<< " validflag " << mstnode._validflag << " hostname  "<<mstnode._hostname << "  "<< mstnode._hostip << std::endl;
 				if(mstnode._validflag <= 0)
 				{
 					CloseSocket(hSocket);
-					return error("receive a invalid validflag by mstnode %s", mstnode._masteraddr.c_str());
+					return error("receive a invalid validflag by mstnode %s, validflag %d", mstnode._masteraddr.c_str(), mstnode._validflag);
 				}
 				vecnode.push_back(mstnode);
 			}
-			std::cout << "MasterNode check success *********************" << std::endl;
+			//std::cout << "MasterNode check success *********************" << std::endl;
 			LogPrintf("CMasternodeMan::CheckActiveMaster: MasterNode %s check success\n", mstquest._masteraddr);
 			CloseSocket(hSocket);
 			return true;
 		}
     }
 	CloseSocket(hSocket);
-	return false;
+	LogPrintf("CMasternodeMan::CheckActiveMaster: Passed because could't connect to center server\n");
+	return /*false*/true;
 }
 
 bool CMasternodeMan::Add(CMasternode &mn)
