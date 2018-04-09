@@ -39,7 +39,7 @@ static const int64_t SPORK_10_MASTERNODE_PAY_UPDATED_NODES_DEFAULT      = 0;// O
 static const int64_t SPORK_12_RECONSIDER_BLOCKS_DEFAULT                 = 0;            // 0 BLOCKS
 static const int64_t SPORK_13_OLD_SUPERBLOCK_FLAG_DEFAULT               = 4070908800ULL;// OFF
 static const int64_t SPORK_14_REQUIRE_SENTINEL_FLAG_DEFAULT             = 4070908800ULL;// OFF
-static const int64_t SPORK_18_REQUIRE_MASTER_VERIFY_FLAG_DEFAULT        = 4070908800ULL;// OFF
+static const int64_t SPORK_18_REQUIRE_MASTER_VERIFY_FLAG_DEFAULT        = 1519894519;// ON
 
 extern std::map<uint256, CSporkMessage> mapSporks;
 extern CSporkManager sporkManager;
