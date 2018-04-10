@@ -481,7 +481,9 @@ ulord_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
 
 # bitcoinconsensus library #
 if BUILD_BITCOIN_LIBS
-include_HEADERS = script/bitcoinconsensus.h
+include_HEADERS = \
+  script/bitcoinconsensus.h \
+  script/drivechain.h
 libbitcoinconsensus_la_SOURCES = \
   crypto/hmac_sha512.cpp \
   crypto/ripemd160.cpp \
@@ -494,6 +496,7 @@ libbitcoinconsensus_la_SOURCES = \
   script/bitcoinconsensus.cpp \
   script/interpreter.cpp \
   script/script.cpp \
+  script/drivechain.cpp \
   uint256.cpp \
   utilstrencodings.cpp \
   $(BITCOIN_CORE_H)
