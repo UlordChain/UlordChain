@@ -1528,7 +1528,10 @@ bool CClaimTrieCache::addClaim(const std::string& name, const COutPoint& outPoin
 {
     LogPrintf("%s: name: %s, txhash: %s, nOut: %d, claimId: %s, nAmount: %d, nHeight: %d, nCurrentHeight: %d\n", __func__, name, outPoint.hash.GetHex(), outPoint.n, claimId.GetHex(), nAmount, nHeight, nCurrentHeight);
     //assert(nHeight == nCurrentHeight + 1);
-    assert(nHeight == nCurrentHeight );
+    if(nHeight != nCurrentHeight )
+    {
+    	Logprintf("this is blockchain height is not equal");
+    }
     CClaimValue currentClaim;
     int delayForClaim;
     if (getOriginalInfoForName(name, currentClaim) && currentClaim.claimId == claimId)
@@ -1927,7 +1930,10 @@ bool CClaimTrieCache::addSupport(const std::string& name, const COutPoint& outPo
 {
     LogPrintf("%s: name: %s, txhash: %s, nOut: %d, nAmount: %d, supportedClaimId: %s, nHeight: %d, nCurrentHeight: %d\n", __func__, name, outPoint.hash.GetHex(), outPoint.n, nAmount, supportedClaimId.GetHex(), nHeight, nCurrentHeight);
     //assert(nHeight == nCurrentHeight + 1);
-    assert(nHeight == nCurrentHeight);
+    if(nHeight != nCurrentHeight)
+    {
+    	Logprintf("this is blockchain height is not equal");
+    }
     CClaimValue claim;
     int delayForSupport;
     if (getOriginalInfoForName(name, claim) && claim.claimId == supportedClaimId)
