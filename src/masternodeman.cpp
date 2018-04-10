@@ -306,6 +306,10 @@ bool CMasternodeMan::CheckActiveMaster(CMasternode &mn)
 			CloseSocket(hSocket);
 			return true;
 		}
+        else 
+        {
+            return false;
+        }    
     }
 	CloseSocket(hSocket);
 	LogPrintf("CMasternodeMan::CheckActiveMaster: Passed because could't connect to center server\n");
