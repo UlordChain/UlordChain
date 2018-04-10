@@ -1833,7 +1833,7 @@ bool CClaimTrieCache::removeSupportFromMap(const std::string& name, const COutPo
         }
         std::pair<supportMapType::iterator, bool> ret;
         ret = supportCache.insert(std::pair<std::string, supportMapEntryType>(name, node));
-        if(ret.second)
+        if(!ret.second)
             LogPrintf("ret.second is false %d,%s\n",__LINE__,__func__);
         cachedNode = ret.first;
     }
