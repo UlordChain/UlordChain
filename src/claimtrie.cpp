@@ -1431,7 +1431,7 @@ bool CClaimTrieCache::removeClaimFromTrie(const std::string& name, const COutPoi
 	{
             LogPrintf("cachedNode->second != currentNode is error %d,%s\n",__LINE__,__func__);
 		return false;
-	{
+	}
     }
     else
     {
