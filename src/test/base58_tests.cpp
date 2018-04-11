@@ -17,6 +17,9 @@
 
 #include <boost/foreach.hpp>
 #include <boost/test/unit_test.hpp>
+#include <string.h> 
+#include <iostream>
+#include <fstream>
 
 #include <univalue.h>
 
@@ -117,10 +120,40 @@ public:
     }
 };
 
+int   readfiletohex(std::vector<char> & readbuf )
+{
+   char buffer[500]="";  
+   int readlen=0;
+
+   std::ifstream in("base58_keys_valid.json");  
+   if (! in.is_open())  
+   {    
+       std::cout << "Error opening file"; exit (1); 
+   }  
+
+   while (!in.eof() )  
+   {  
+       in.getline(buffer,500);  
+       readlen= strlen(buffer);      
+       
+       readbuf.insert(readbuf.end(), &buffer[0],&(buffer[0])+readlen);
+       readbuf.push_back(0x0a);
+       //readbuf.push_back( std::vector<char>(&buffer[0],&(buffer[0])+readlen));       
+      
+   }
+   readbuf.pop_back();
+   in.close();
+}
+
 // Goal: check that parsed keys match test payload
 BOOST_AUTO_TEST_CASE(base58_keys_valid_parse)
 {
+    std::vector<char > srcdata ;
+    //readfiletohex(srcdata);   
+
     UniValue tests = read_json(std::string(json_tests::base58_keys_valid, json_tests::base58_keys_valid + sizeof(json_tests::base58_keys_valid)));
+    //UniValue tests = read_json(std::string(srcdata.begin(),srcdata.end()));
+
     std::vector<unsigned char> result;
     CBitcoinSecret secret;
     CBitcoinAddress addr;
@@ -178,6 +211,11 @@ BOOST_AUTO_TEST_CASE(base58_keys_valid_parse)
 // Goal: check that generated keys match test vectors
 BOOST_AUTO_TEST_CASE(base58_keys_valid_gen)
 {
+    std::vector<char > srcdata ;
+
+    //readfiletohex(srcdata);   
+    //UniValue tests = read_json(std::string(srcdata.begin(),srcdata.end()));
+
     UniValue tests = read_json(std::string(json_tests::base58_keys_valid, json_tests::base58_keys_valid + sizeof(json_tests::base58_keys_valid)));
     std::vector<unsigned char> result;
 
