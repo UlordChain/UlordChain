@@ -28,6 +28,7 @@
 //
 // alertTests contains 7 alerts, generated with this code:
 //(SignAndSave code not shown, alert signing key is secret)
+#if 0
 void GenerateAlertTests()
 {
     CAlert alert;
@@ -79,7 +80,7 @@ void GenerateAlertTests()
     alert.setSubVer.clear();
     SignAndSave(alert);
 }
-
+#endif
 struct ReadAlerts : public TestingSetup
 {
     ReadAlerts()
