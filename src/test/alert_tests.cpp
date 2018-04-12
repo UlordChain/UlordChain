@@ -26,31 +26,6 @@
 //
 // Sign a CAlert and serialize it
 //
-bool SignAndSave(CAlert &alert)
-{
-    // Sign
-    if(!alert.Sign())
-    {
-        printf("SignAndSave() : could not sign alert:\n%s", alert.ToString().c_str());
-        return false;
-    }
-
-    std::string strFilePath = "./data/alertTests.raw";
-    // open output file and associate it with CAutoFile
-    FILE *file = fopen(strFilePath.c_str(), "ab+");
-    CAutoFile fileout(file, SER_DISK, CLIENT_VERSION);
-    if (fileout.IsNull())
-        return error("%s: Failed to open file %s", __func__, strFilePath);
-
-    try {
-        fileout << alert;
-    }
-    catch (std::exception &e) {
-        return error("%s: Serialize or I/O error - %s", __func__, e.what());
-    }
-    fileout.fclose();
-    return true;
-}
 // alertTests contains 7 alerts, generated with this code:
 //(SignAndSave code not shown, alert signing key is secret)
 void GenerateAlertTests()
@@ -139,14 +114,6 @@ struct ReadAlerts : public TestingSetup
 };
 
 BOOST_FIXTURE_TEST_SUITE(Alert_tests, ReadAlerts)
-
-#if 0
-BOOST_AUTO_TEST_CASE(GenerateAlerts)
-{
-    SoftSetArg("-alertkey", "cPu3SSXjZMzhnqq6mVpNmskdLAFwdcQW3JHgqU6M2s1beTAQWNdW");
-    GenerateAlertTests();
-}
-#endif
 
 BOOST_AUTO_TEST_CASE(AlertApplies)
 {
