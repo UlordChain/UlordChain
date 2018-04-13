@@ -12,7 +12,6 @@
 #include "script/standard.h"
 #include "test/test_ulord.h"
 #include "utiltime.h"
-
 #include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_SUITE(tx_validationcache_tests)
@@ -23,7 +22,7 @@ ToMemPool(CMutableTransaction& tx)
     LOCK(cs_main);
 
     CValidationState state;
-    return AcceptToMemoryPool(mempool, state, tx, false, NULL, true, false);
+    return AcceptToMemoryPool(mempool, state, tx, false,NULL);
 }
 
 BOOST_FIXTURE_TEST_CASE(tx_mempool_block_doublespend, TestChain100Setup)
