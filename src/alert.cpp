@@ -139,6 +139,7 @@ bool CAlert::RelayTo(CNode* pnode) const
             GetAdjustedTime() < nRelayUntil)
         {
             pnode->PushMessage(NetMsgType::ALERT, *this);
+			LogPrint("alert", "alert %d send to Node %s\n", nID, pnode->addr.ToString());
             return true;
         }
     }
@@ -226,7 +227,7 @@ bool CAlert::ProcessAlert(const std::vector<unsigned char>& alertKey, bool fThre
             const CAlert& alert = item.second;
             if (alert.Cancels(*this))
             {
-                LogPrint("alert", "alert already cancelled by %d\n", alert.nID);
+                LogPrint("alert", "alert %d already cancelled by %d\n",nID, alert.nID);
                 return false;
             }
         }
