@@ -139,6 +139,7 @@ bool CAlert::RelayTo(CNode* pnode) const
             GetAdjustedTime() < nRelayUntil)
         {
             pnode->PushMessage(NetMsgType::ALERT, *this);
+			LogPrint("alert", "alert %d send to Node %s\n", nID, pnode->addr.ToString());
             return true;
         }
     }
