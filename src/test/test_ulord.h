@@ -16,7 +16,7 @@
 struct BasicTestingSetup {
     ECCVerifyHandle globalVerifyHandle;
 
-    BasicTestingSetup(const std::string& chainName = CBaseChainParams::MAIN);
+    BasicTestingSetup(const std::string& chainName = CBaseChainParams::TESTNET);
     ~BasicTestingSetup();
 };
 
@@ -29,7 +29,7 @@ struct TestingSetup: public BasicTestingSetup {
     boost::filesystem::path pathTemp;
     boost::thread_group threadGroup;
 
-    TestingSetup(const std::string& chainName = CBaseChainParams::MAIN);
+    TestingSetup(const std::string& chainName = CBaseChainParams::TESTNET);
     ~TestingSetup();
 };
 
