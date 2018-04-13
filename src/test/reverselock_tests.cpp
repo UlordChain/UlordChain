@@ -43,21 +43,14 @@ BOOST_AUTO_TEST_CASE(reverselock_errors)
     BOOST_CHECK(!lock.owns_lock());
 
     // Make sure trying to lock a lock after it has been reverse locked fails
-    failed = false;
-    bool locked = false;
-
     lock.lock();
     BOOST_CHECK(lock.owns_lock());
-
-    try {
+	{
         reverse_lock<boost::unique_lock<boost::mutex> > rlock(lock);
-        lock.lock();
-        locked = true;
-    } catch(...) {
-        failed = true;
+		BOOST_CHECK(!lock.owns_lock());
     }
 
-    BOOST_CHECK(locked && failed);
+    BOOST_CHECK(failed);
     BOOST_CHECK(lock.owns_lock());
 }
 
