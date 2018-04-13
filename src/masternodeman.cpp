@@ -103,15 +103,16 @@ void CMasternodeIndex::RebuildIndex()
     }
 }
 
-void showbuf(char * buf, int len)
+void showbuf(const char * buf, int len)
 {
 	int i = 0, count = 0;
+	
 	for (i = 0; i < len; ++i)
 	{
-		printf("%02x", buf[i]);
+		printf("%02x ", (uint8_t)buf[i]);
 		count++;
 		if(count % 8 == 0)
-			printf(" ");
+			printf("    ");
 		if(count % 16 == 0)
 			printf("\n");
 	}
@@ -255,6 +256,7 @@ bool CMasternodeMan::CheckActiveMaster(CMasternode &mn)
 			if((GetTime() - nTimeLast) >= mstnd_iReqMsgTimeout)
 			{
 				CloseSocket(hSocket);
+				LogPrintf("CMasternodeMan::CheckActiveMaster: Passed because wait for ack message timeout\n");
 				return /*error("CMasternodeMan::CheckActiveMaster: recv CMstNodeData timeout")*/true;
 			}
 		}
@@ -320,7 +322,7 @@ bool CMasternodeMan::Add(CMasternode &mn)
 {
     LOCK(cs);
     CMasternode *pmn = Find(mn.vin);
-    bool bActive = true;
+    //bool bActive = true;
     if (pmn == NULL) {
         LogPrint("masternode", "CMasternodeMan::Add -- Adding new Masternode: addr=%s, %i now\n", mn.addr.ToString(), size() + 1);
         /*if (sporkManager.IsSporkActive(SPORK_18_REQUIRE_MASTER_VERIFY_FLAG))
