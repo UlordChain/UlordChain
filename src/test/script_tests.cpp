@@ -31,7 +31,7 @@
 using namespace std;
 
 // Uncomment if you want to output updated JSON tests.
-// #define UPDATE_JSON_TESTS
+//#define UPDATE_JSON_TESTS
 
 static const unsigned int flags = SCRIPT_VERIFY_P2SH | SCRIPT_VERIFY_STRICTENC;
 
@@ -626,18 +626,6 @@ BOOST_AUTO_TEST_CASE(script_build)
     tests.push_back(TestBuilder(CScript() << OP_2 << ToByteVector(keys.pubkey1C) << ToByteVector(keys.pubkey1C) << OP_2 << OP_CHECKMULTISIG,
                                 "2-of-2 with two identical keys and sigs pushed using OP_DUP", SCRIPT_VERIFY_SIGPUSHONLY
                                ).Num(0).PushSig(keys.key1).Add(CScript() << OP_DUP).ScriptError(SCRIPT_ERR_SIG_PUSHONLY));
-    tests.push_back(TestBuilder(CScript() << ToByteVector(keys.pubkey2C) << OP_CHECKSIG,
-                                "P2SH(P2PK) with non-push scriptSig but no P2SH or SIGPUSHONLY", 0, true
-                               ).PushSig(keys.key2).Add(CScript() << OP_NOP8).PushRedeem());
-    tests.push_back(TestBuilder(CScript() << ToByteVector(keys.pubkey2C) << OP_CHECKSIG,
-                                "P2PK with non-push scriptSig but with P2SH validation", 0
-                               ).PushSig(keys.key2).Add(CScript() << OP_NOP8));
-    tests.push_back(TestBuilder(CScript() << ToByteVector(keys.pubkey2C) << OP_CHECKSIG,
-                                "P2SH(P2PK) with non-push scriptSig but no SIGPUSHONLY", SCRIPT_VERIFY_P2SH, true
-                               ).PushSig(keys.key2).Add(CScript() << OP_NOP8).PushRedeem().ScriptError(SCRIPT_ERR_SIG_PUSHONLY));
-    tests.push_back(TestBuilder(CScript() << ToByteVector(keys.pubkey2C) << OP_CHECKSIG,
-                                "P2SH(P2PK) with non-push scriptSig but not P2SH", SCRIPT_VERIFY_SIGPUSHONLY, true
-                               ).PushSig(keys.key2).Add(CScript() << OP_NOP8).PushRedeem().ScriptError(SCRIPT_ERR_SIG_PUSHONLY));
     tests.push_back(TestBuilder(CScript() << OP_2 << ToByteVector(keys.pubkey1C) << ToByteVector(keys.pubkey1C) << OP_2 << OP_CHECKMULTISIG,
                                 "2-of-2 with two identical keys and sigs pushed", SCRIPT_VERIFY_SIGPUSHONLY
                                ).Num(0).PushSig(keys.key1).PushSig(keys.key1));
@@ -683,7 +671,7 @@ BOOST_AUTO_TEST_CASE(script_build)
     }
 
 #ifdef UPDATE_JSON_TESTS
-    FILE* file = fopen("script_tests.json.gen", "w");
+    FILE* file = fopen("./data/script_tests.json", "w");
     fputs(strGen.c_str(), file);
     fclose(file);
 #endif
@@ -707,6 +695,7 @@ BOOST_AUTO_TEST_CASE(script_json_test)
                 BOOST_ERROR("Bad test: " << strTest);
             }
             continue;
+			
         }
         string scriptSigString = test[0].get_str();
         CScript scriptSig = ParseScript(scriptSigString);
