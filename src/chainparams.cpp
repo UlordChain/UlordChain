@@ -368,7 +368,7 @@ public:
         pchMessageStart[1] = 0xe6;
         pchMessageStart[2] = 0xce;
         pchMessageStart[3] = 0xf3;
-        vAlertPubKey = ParseHex("0444a0bb22e931bf59cc8a434d9d22bd2fa493f579bd2659bc9188361d78bdc45fde7d95273d57e2a9194a4ef41e4103805c04bc8110644c443d5249f6b343b28e");
+        vAlertPubKey = ParseHex("02232a9477536e96bede5e649accfe53c24fda7094594259df2b2253897fba3eb4");
         nDefaultPort = 19888;
         nMaxTipAge = 0x7fffffff; 		// allow mining on top of old blocks for testnet
         nPruneAfterHeight = 1000;
