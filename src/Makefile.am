@@ -189,36 +189,7 @@ BITCOIN_CORE_H = \
   zmq/zmqabstractnotifier.h \
   zmq/zmqconfig.h\
   zmq/zmqnotificationinterface.h \
-  zmq/zmqpublishnotifier.h
-  hello/aes128.h  \
-    hello/blake2s256.h \
-    hello/camellia128.h \
-    hello/crc32.h \
-    hello/gost.h \
-    hello/hmac_md5.h \
-    hello/jtr_gost.h \
-    hello/jtr_sph_skein.h   \
-    hello/keccak1600.h    \
-    hello/my_time.h          \
-    hello/PoW.h   \
-    hello/ripemd160.h   \
-    hello/sha256.h     \
-    hello/sha512.h         \
-    hello/whirlpool.h \
-    hello/blake2_impl.h   \
-    hello/blake2s.h      \
-    hello/common.h        \
-    hello/des.h     \
-    hello/haval5_256.h   \
-    hello/jtr_crc32.h   \
-    hello/jtr_sph_haval.h   \
-    hello/jtr_sph_types.h   \
-    hello/my_rand48_r.h   \
-    hello/oneWayFunction.h   \
-    hello/rc4.h   \
-    hello/sha1.h   \
-    hello/sha3_256.h   \
-    hello/skein512_256.h 
+  zmq/zmqpublishnotifier.h 
 
 obj/build.h: FORCE
 	@$(MKDIR_P) $(builddir)/obj
@@ -315,8 +286,8 @@ libbitcoin_wallet_a_SOURCES = \
 hello_libbitcoin_hello_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_CONFIG_INCLUDES) $(PIC_FLAGS)
 hello_libbitcoin_hello_a_CFLAGS = $(AM_CFLAGS)
 hello_libbitcoin_hello_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS) $(PIC_FLAGS)
-hello_libbitcoin_hello_a_SOURCES = 
-    hello/PoW.c \
+hello_libbitcoin_hello_a_SOURCES = \
+ 	hello/PoW.c \
     hello/hmac_md5.c \
     hello/aes128.c \
     hello/camellia128.c  \
@@ -343,7 +314,7 @@ hello_libbitcoin_hello_a_SOURCES =
     hello/common.c \
     hello/PoW.c \
     hello/oneWayFunction.c 
-  
+
 # crypto primitives library
 crypto_libbitcoin_crypto_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_CONFIG_INCLUDES) $(PIC_FLAGS)
 crypto_libbitcoin_crypto_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS) $(PIC_FLAGS)
