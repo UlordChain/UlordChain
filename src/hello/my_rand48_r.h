@@ -1,4 +1,4 @@
-﻿#ifndef MY_RAND48_R_H
+#ifndef MY_RAND48_R_H
 #define MY_RAND48_R_H
 
 #include <stdlib.h>
@@ -94,35 +94,11 @@ do {                                                                           \
 	*result = X;                                                               \
 } while(0)
 
-inline int my_seed48_r (uint64_t seedval, struct my_rand48_data *buffer) {
-	buffer->__x = seedval & 0xffffffffffffULL;
+int my_seed48_r (uint64_t seedval, struct my_rand48_data *buffer);
 
-	buffer->__a = 0x5deece66dULL;
-	buffer->__c = 0xb;
+int my_rand48_r (struct my_rand48_data *buffer, uint64_t *result);
 
-	return 0;
-}
-
-inline int my_rand48_r (struct my_rand48_data *buffer, uint64_t *result) {
-	*result = (buffer->__x * buffer->__a + buffer->__c) & 0xffffffffffffULL;
-	buffer->__x = *result;
-	
-	return 0;
-}
-
-inline int my_rand64_r (struct my_rand48_data *buffer, uint64_t *result) {
-	uint64_t X = buffer->__x;
-
-	X = (X * buffer->__a + buffer->__c) & 0xffffffffffffULL;
-	buffer->__x = X;
-	
-	buffer->__x = (X * buffer->__a + buffer->__c) & 0xffffffffffffULL;
-	X ^= buffer->__x << 16;
-	
-	*result = X;
-	
-	return 0;
-}
+int my_rand64_r (struct my_rand48_data *buffer, uint64_t *result);
 
 	
 #endif
