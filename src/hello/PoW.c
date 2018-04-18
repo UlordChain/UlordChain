@@ -357,27 +357,68 @@ void helloHash(uint8_t *mess, uint32_t messLen, uint8_t output[OUTPUT_LEN]) {
     uint8_t input[INPUT_LEN];
     memset(input, 0, INPUT_LEN*sizeof(uint8_t));
     memcpy(input, mess, inputLen*sizeof(char));      //operation: input
-    //memcpy(input, mess, 140);
 
-    // uint8_t Maddr[WORK_MEMORY_SIZE];
     uint8_t *Maddr = (uint8_t *)malloc(WORK_MEMORY_SIZE*sizeof(uint8_t));  //1024*1024*1
     assert(NULL != Maddr);
     memset(Maddr, 0, WORK_MEMORY_SIZE*sizeof(uint8_t));
 
-
-    //printf("****************************** Correctness test (PoW function) ******************************\n");
     //printf("Test message: %s\n", mess);
     powFunction(input, inputLen,Maddr, output);
     //view_data_u8("PoW", output, OUTPUT_LEN);        //output
-	//output = poutput;
-	//memset(output, 0, OUTPUT_LEN*sizeof(uint8_t));
-    //memcpy(output, poutput, OUTPUT_LEN*sizeof(char));
-	
-    //printf("*********************************************************************************************\n");
     
     if (NULL != Maddr) {
         free(Maddr);
         Maddr = NULL;
     }
+}
+
+int my_rand64_r (struct my_rand48_data *buffer, uint64_t *result)
+ {
+    uint64_t X = buffer->__x;
+
+    X = (X * buffer->__a + buffer->__c) & 0xffffffffffffULL;
+    buffer->__x = X;
+    
+    buffer->__x = (X * buffer->__a + buffer->__c) & 0xffffffffffffULL;
+    X ^= buffer->__x << 16;
+    
+    *result = X;
+    
+    return 0;
+}
+
+int my_seed48_r (uint64_t seedval, struct my_rand48_data *buffer)
+ {                                                                                                                                                                                                                
+    buffer->__x = seedval & 0xffffffffffffULL;
+
+    buffer->__a = 0x5deece66dULL;
+    buffer->__c = 0xb;
+
+    return 0;
+}
+
+void powFunction(uint8_t *input, uint32_t inputLen, uint8_t *Maddr, uint8_t *output)
+ {                                                                                                                                                                                                                
+    uint8_t c[OUTPUT_LEN];
+    
+    // Step 1: Initialize working memory.
+    initWorkMemory(input, inputLen, Maddr, 128);
+    // view_data_u8("Maddr", Maddr, OUTPUT_LEN);
+    
+    // Step 2: Modify the working memory contents.
+    modifyWorkMemory(Maddr, 4, WORK_MEMORY_SIZE >> 11, c);
+    // view_data_u8("c", c, OUTPUT_LEN);
+    
+    // Step 3: Calculate the final result.
+    calculateFinalResult(Maddr, c, 8, output);
+    // view_data_u8("output", output, OUTPUT_LEN);
+}
+
+int my_rand48_r (struct my_rand48_data *buffer, uint64_t *result) 
+{
+    *result = (buffer->__x * buffer->__a + buffer->__c) & 0xffffffffffffULL;
+    buffer->__x = *result;
+    
+    return 0;
 }
 
