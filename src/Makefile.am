@@ -287,9 +287,8 @@ libbitcoin_wallet_a_SOURCES = \
 hello_libbitcoin_hello_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_CONFIG_INCLUDES) $(PIC_FLAGS)
 hello_libbitcoin_hello_a_CFLAGS = $(AM_CFLAGS)
 hello_libbitcoin_hello_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS) $(PIC_FLAGS)
-hello_libbitcoin_hello_a_SOURCES = \
+hello_libbitcoin_hello_a_SOURCES = 
   
-
 # crypto primitives library
 crypto_libbitcoin_crypto_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_CONFIG_INCLUDES) $(PIC_FLAGS)
 crypto_libbitcoin_crypto_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS) $(PIC_FLAGS)
