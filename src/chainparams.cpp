@@ -75,7 +75,7 @@ void _get(const ch * const pblock, const arith_uint256 hashTarget)
         }
 		if (tcnt !=0 and tcnt % 1000 == 0)
         {
-            std::cout<<"cryptohello tcnt = "<<tcnt<<" times = "<<getCurrentTime()<<" ms"<<std::endl;       
+            std::cout<<"cryptohello tcnt = "<<tcnt<<" time = "<<getCurrentTime()<<" ms"<<std::endl;       
         }
 
     }
@@ -216,7 +216,7 @@ public:
         consensus.nMajorityWindow = 1000;
         consensus.BIP34Height = 0; 
         consensus.BIP34Hash = uint256S("0x01");
-        consensus.powLimit = uint256S("0x00001d1459000000000000000000000000000000000000000000000000000000");
+        consensus.powLimit = uint256S("0x000009b173000000000000000000000000000000000000000000000000000000");
         consensus.nPowAveragingWindow = 17;
         consensus.nPowMaxAdjustDown = 32;                               // 32% adjustment down
         consensus.nPowMaxAdjustUp = 48;                                 // 48% adjustment up
@@ -249,9 +249,9 @@ public:
         nMaxTipAge = 6 * 60 * 60; // ~144 blocks behind -> 2 x fork detection time, was 24 * 60 * 60 in bitcoin
         nPruneAfterHeight = 100000;
 
-        genesis = CreateGenesisBlock1(1523954871, uint256S("0x01"), 0x1e1d1459, 1, consensus.genesisReward);
+        genesis = CreateGenesisBlock1(1523954871, uint256S("0x01"), 0x01, 1, consensus.genesisReward);
 #ifdef GENESIS_GENERATION
-        arith_uint256 a("0x00001d1459000000000000000000000000000000000000000000000000000000");
+        arith_uint256 a("0x000009b173000000000000000000000000000000000000000000000000000000");
         std::cout << "\tpow:\t" << a.GetCompact() << std::endl;
         findGenesis(&genesis, "main");
 #endif
@@ -367,8 +367,8 @@ public:
         consensus.nMajorityRejectBlockOutdated = 75;
         consensus.nMajorityWindow = 100;
         consensus.BIP34Height = 0;
-        consensus.BIP34Hash = uint256S("0x000171bf9e4e42e855602154fb1a6f9110f41c09e70faa986a33694b9e40fc17");
-        consensus.powLimit = uint256S("000fffffff000000000000000000000000000000000000000000000000000000");
+        consensus.BIP34Hash = uint256S("0x01");
+        consensus.powLimit = uint256S("0005555555000000000000000000000000000000000000000000000000000000");
         consensus.nPowAveragingWindow = 17;
         consensus.nPowMaxAdjustDown = 32;                               // 32% adjustment down
         //consensus.nPowMaxAdjustUp = 16;                                 // 16% adjustment up
@@ -398,15 +398,15 @@ public:
         nPruneAfterHeight = 1000;
 	    
 	    
-    	genesis = CreateGenesisBlock(1523861527, uint256S("0000489f65be2dee5cda59d0edca0fb6acc6852c27de42ab99da0c0636320023"), 0x1f0fffff, 1,  1 * COIN);
+    	genesis = CreateGenesisBlock(1523861527, uint256S("0x01"), 0x1f0fffff, 1,  1 * COIN);
 #ifdef GENESIS_GENERATION
-        arith_uint256 a("000fffffff000000000000000000000000000000000000000000000000000000");
+        arith_uint256 a("0005555555000000000000000000000000000000000000000000000000000000");
         std::cout << "pow limit : " << a.GetCompact() << std::endl;
         //findGenesis(&genesis, "testnet");
 #endif
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x000171bf9e4e42e855602154fb1a6f9110f41c09e70faa986a33694b9e40fc17"));
-        assert(genesis.hashMerkleRoot == uint256S("0xa12949fc4a1735c8cbd6444bf9b4aea61300bc7aee9fec741af5a8c2fe386216"));
+        assert(consensus.hashGenesisBlock == uint256S("0x01"));
+        assert(genesis.hashMerkleRoot == uint256S("0x01"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
@@ -442,7 +442,7 @@ public:
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-            (0, uint256S("0x000171bf9e4e42e855602154fb1a6f9110f41c09e70faa986a33694b9e40fc17")),
+            (0, uint256S("0x01")),
             1523861527,     // * UNIX timestamp of last checkpoint block
             0,              // * total number of transactions between genesis and last checkpoint
                             //   (the tx=... number in the SetBestChain debug.log lines)
@@ -521,13 +521,13 @@ public:
         nDefaultPort = 29888;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock1(1519895551, uint256S("0x00004f3faa6374e927aff06603afc5cef5cafee86fa97ec95ee9b57b55f60000"), 0x200f0f0f, 1, 1 * COIN);
+        genesis = CreateGenesisBlock1(1519895551, uint256S("0x01"), 0x200f0f0f, 1, 1 * COIN);
 #ifdef GENESIS_GENERATION
         //findGenesis(&genesis, "regtest");
 #endif
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0390d37743086ed7b2ed6f8e61b4925e89e808c3521c89103ddc756031a33339"));
-        assert(genesis.hashMerkleRoot == uint256S("2b5ff31e4f2bccf51441d2f78849c2ca393daa187cede58373ccad8f1794b8d9"));
+        assert(consensus.hashGenesisBlock == uint256S("0x01"));
+        assert(genesis.hashMerkleRoot == uint256S("0x01"));
 
         vFixedSeeds.clear();                                             //! Regtest mode doesn't have any fixed seeds.
         vSeeds.clear();                                                  //! Regtest mode doesn't have any DNS seeds.
@@ -542,7 +542,7 @@ public:
 
         checkpointData = (CCheckpointData){
             boost::assign::map_list_of
-            (0, uint256S("0390d37743086ed7b2ed6f8e61b4925e89e808c3521c89103ddc756031a33339")),
+            (0, uint256S("0x01")),
             0,
             0,
             0
