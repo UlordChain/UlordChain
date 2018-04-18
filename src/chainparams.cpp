@@ -276,10 +276,10 @@ public:
         //vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
         vFixedSeeds.clear();
         vSeeds.clear();		
-        vSeeds.push_back(CDNSSeedData("ulord.one", "dnsseed1.ulord.one"));
-	    vSeeds.push_back(CDNSSeedData("ulord.io", "dnsseed1.ulord.io"));  
-	    vSeeds.push_back(CDNSSeedData("fcash.cc", "dnsseed1.fcash.cc"));
-	    uCenter = "ulord.fcash.cc";                           // for masternode verify
+        //vSeeds.push_back(CDNSSeedData("ulord.one", "dnsseed1.ulord.one"));
+	    //vSeeds.push_back(CDNSSeedData("ulord.io", "dnsseed1.ulord.io"));  
+	    //vSeeds.push_back(CDNSSeedData("fcash.cc", "dnsseed1.fcash.cc"));
+	    //uCenter = "ulord.fcash.cc";                           // for masternode verify
 
         fMiningRequiresPeers = true;
         fDefaultConsistencyChecks = false;
@@ -367,8 +367,8 @@ public:
         consensus.nMajorityRejectBlockOutdated = 75;
         consensus.nMajorityWindow = 100;
         consensus.BIP34Height = 0;
-        consensus.BIP34Hash = uint256S("0x000e010a3086951cb4d0b5ebb6986c9e3b4139e08ebb826d17bfb1afe1f04686");
-        consensus.powLimit = uint256S("0x0005555555000000000000000000000000000000000000000000000000000000");
+        consensus.BIP34Hash = uint256S("0x000f378be841f44e75346eebd931b13041f0dee561af6a80cfea6669c1bfec03");
+        consensus.powLimit = uint256S("0x000fffffff000000000000000000000000000000000000000000000000000000");
         consensus.nPowAveragingWindow = 17;
         consensus.nPowMaxAdjustDown = 32;                               // 32% adjustment down
         //consensus.nPowMaxAdjustUp = 16;                                 // 16% adjustment up
@@ -381,12 +381,12 @@ public:
         consensus.nMinerConfirmationWindow = 2016; 			// nPowTargetTimespan / nPowTargetSpacing
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601;                // January 1, 2008
-        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999;                  // December 31, 2008
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 123076799;                  // December 31, 2008
 
         // Deployment of BIP68, BIP112, and BIP113.
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1524056236;               // 2018/4/18 20:57:16
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout =   1524056236;               // 2019/4/18 20:57:16
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1524057440;               // 2018/4/18 20:57:16
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout =   1555592236;               // 2019/4/18 20:57:16
 
         pchMessageStart[0] = 0xc2;
         pchMessageStart[1] = 0xe6;
@@ -398,22 +398,22 @@ public:
         nPruneAfterHeight = 1000;
 	    
 	    
-    	genesis = CreateGenesisBlock(1524056236, uint256S("0x0000959d8408d76ebab3f780b1a21f3b2566213e3c1f2d6b66f679661b7400bd"), 0x1f0fffff, 1,  1 * COIN);
+    	genesis = CreateGenesisBlock(1524057440, uint256S("0x000020f00dd1af082323e02e1f5b1d866d777abbcf63ba720d35dcf585840073"), 521142271, 1,  1 * COIN);
 #ifdef GENESIS_GENERATION
-        arith_uint256 a("0x0005555555000000000000000000000000000000000000000000000000000000");
+        arith_uint256 a("0x000fffffff000000000000000000000000000000000000000000000000000000");
         std::cout << "pow limit : " << a.GetCompact() << std::endl;
-        findGenesis(&genesis, "testnet");
+        //findGenesis(&genesis, "testnet");
 #endif
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x000e010a3086951cb4d0b5ebb6986c9e3b4139e08ebb826d17bfb1afe1f04686"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000f378be841f44e75346eebd931b13041f0dee561af6a80cfea6669c1bfec03"));
         assert(genesis.hashMerkleRoot == uint256S("0xa12949fc4a1735c8cbd6444bf9b4aea61300bc7aee9fec741af5a8c2fe386216"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
-        vSeeds.push_back(CDNSSeedData("ulord.one","testnet-seed1.ulord.one"));  
-	    vSeeds.push_back(CDNSSeedData("ulord.io","testnet-seed1.ulord.io"));
-	    vSeeds.push_back(CDNSSeedData("fcash.cc","testnet-seed1.fcash.cc"));
-        uCenter = "ulord.fcash.cc";                           // currently ignored
+        //vSeeds.push_back(CDNSSeedData("ulord.one","testnet-seed1.ulord.one"));  
+	    //vSeeds.push_back(CDNSSeedData("ulord.io","testnet-seed1.ulord.io"));
+	    //vSeeds.push_back(CDNSSeedData("fcash.cc","testnet-seed1.fcash.cc"));
+        //uCenter = "ulord.fcash.cc";                           // currently ignored
 
         // Testnet Ulord addresses start with 'u'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,130);
@@ -442,8 +442,8 @@ public:
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-            (0, uint256S("0x000e010a3086951cb4d0b5ebb6986c9e3b4139e08ebb826d17bfb1afe1f04686")),
-            1524056236,     // * UNIX timestamp of last checkpoint block
+            (0, uint256S("0x000f378be841f44e75346eebd931b13041f0dee561af6a80cfea6669c1bfec03")),
+            1524057440,     // * UNIX timestamp of last checkpoint block
             0,              // * total number of transactions between genesis and last checkpoint
                             //   (the tx=... number in the SetBestChain debug.log lines)
             0               // * estimated number of transactions per day after checkpoint
