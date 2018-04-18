@@ -16,8 +16,9 @@
 #include "version.h"
 
 // cryptohello
-//#include "hello/hash-ops.h"
-#include "hello/hash.h"
+#include "hello/PoW.h"
+#include "hello/common.h"
+#include "hello/oneWayFunction.h"
 #include "streams.h"
 #include "primitives/block.h"
 #include <string>
@@ -41,7 +42,7 @@ class CHash256 {
 private:
     CSHA256 sha;
 public:
-    static const size_t OUTPUT_SIZE = CSHA256::OUTPUT_SIZE;
+    static const size_t OUTPUT_SIZE = OUTPUT_LEN;
 
     void Finalize(unsigned char hash[OUTPUT_SIZE]) {
         unsigned char buf[sha.OUTPUT_SIZE];
@@ -79,6 +80,8 @@ public:
 		ss << *pblock;
 		assert(ss.size() == 140);
 		write((uchar *)&ss[0], 140).finalize(hash);
+		
+		//view_data_u8("PoW 2", hash, OUTPUT_LEN);
 	}
 
 	CryptoHello& write(uchar *data, size_t len)
@@ -92,9 +95,14 @@ LogPrintf("serialized:\t%s\n", HexStr(in).c_str());
 
 	void finalize(uchar hash[OUTPUT_SIZE])
 	{
-		crypto::hash tmp;
-		crypto::cn_slow_hash(in.data(), in.size(), tmp);
-		memcpy(hash, &tmp, crypto::HASH_SIZE);
+		//in = "hashcat";
+		initOneWayFunction();	
+        	const char* tmp = in.c_str();
+        	uint32_t tmpLen = (uint32_t)in.size();
+        	uint8_t input[INPUT_LEN];
+        	memset(input, 0, INPUT_LEN*sizeof(uint8_t));
+        	memcpy(input, tmp, tmpLen*sizeof(char));
+        	helloHash(input, tmpLen,hash);
 	}
 };
 

@@ -288,41 +288,7 @@ hello_libbitcoin_hello_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_CONFIG_INCLUDES) $(
 hello_libbitcoin_hello_a_CFLAGS = $(AM_CFLAGS)
 hello_libbitcoin_hello_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS) $(PIC_FLAGS)
 hello_libbitcoin_hello_a_SOURCES = \
-  hello/blake256.h \
-  hello/chacha8.h \
-  hello/crypto-ops.h \
-  hello/crypto.h \
-  hello/generic-ops.h \
-  hello/groestl.h \
-  hello/groestl_tables.h \
-  hello/hash-ops.h \
-  hello/hash.h \
-  hello/initializer.h \
-  hello/jh.h \
-  hello/keccak.h \
-  hello/oaes_config.h \
-  hello/oaes_lib.h \
-  hello/random.h \
-  hello/skein.h \
-  hello/skein_port.h \
-  hello/aesb.c \
-  hello/blake256.c \
-  hello/chacha8.c \
-  hello/crypto-ops-data.c \
-  hello/crypto-ops.c \
-  hello/groestl.c \
-  hello/hash-extra-blake.c \
-  hello/hash-extra-groestl.c \
-  hello/hash-extra-jh.c \
-  hello/hash-extra-skein.c \
-  hello/hash.c \
-  hello/jh.c \
-  hello/keccak.c \
-  hello/oaes_lib.c \
-  hello/random.c \
-  hello/skein.c \
-  hello/slow-hash.c \
-  hello/tree-hash.c
+  
 
 # crypto primitives library
 crypto_libbitcoin_crypto_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_CONFIG_INCLUDES) $(PIC_FLAGS)
