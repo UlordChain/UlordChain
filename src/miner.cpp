@@ -36,8 +36,6 @@
 #include <boost/tuple/tuple.hpp>
 #include <queue>
 
-#include "hello/hash-ops.h"
-
 //#define KDEBUG
 
 using namespace std;
