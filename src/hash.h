@@ -68,7 +68,7 @@ class CryptoHello {
 private:
 	std::string in;
 public:
-	static const size_t OUTPUT_SIZE = crypto::HASH_SIZE;	
+	static const size_t OUTPUT_SIZE = OUTPUT_LEN;
 	CryptoHello()
 	{
 
