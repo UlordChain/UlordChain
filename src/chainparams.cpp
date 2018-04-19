@@ -248,11 +248,11 @@ public:
         nDefaultPort = 9888;
         nMaxTipAge = 6 * 60 * 60; // ~144 blocks behind -> 2 x fork detection time, was 24 * 60 * 60 in bitcoin
         nPruneAfterHeight = 100000;
-
-        genesis = CreateGenesisBlock1(1524045652, uint256S("0x0000be7245a98c700f01293501a062837cb465afd70da22ee812b69a0c131f8c"), 0x1e09b173, 1, consensus.genesisReward);
+        arith_uint256 nTempBit =  UintToArith256( consensus.powLimit);
+        genesis = CreateGenesisBlock1(1524045652, uint256S("0x0000be7245a98c700f01293501a062837cb465afd70da22ee812b69a0c131f8c"), nTempBit.GetCompact(), 1, consensus.genesisReward);
 #ifdef GENESIS_GENERATION
         arith_uint256 a("0x000009b173000000000000000000000000000000000000000000000000000000");
-        std::cout << "\tpow:\t" << a.GetCompact() << std::endl;
+        std::cout << "\tpow:\t" << a.GetCompact()  << " "<< nTempBit.GetCompact() << std::endl;
         //findGenesis(&genesis, "main");
 #endif
         consensus.hashGenesisBlock = genesis.GetHash();
@@ -397,11 +397,11 @@ public:
         nMaxTipAge = 0x7fffffff; 		// allow mining on top of old blocks for testnet
         nPruneAfterHeight = 1000;
 	    
-	    
-    	genesis = CreateGenesisBlock(1524057440, uint256S("0x000020f00dd1af082323e02e1f5b1d866d777abbcf63ba720d35dcf585840073"), 521142271, 1,  1 * COIN);
+   		arith_uint256 nTempBit =  UintToArith256( consensus.powLimit); 
+    	genesis = CreateGenesisBlock(1524057440, uint256S("0x000020f00dd1af082323e02e1f5b1d866d777abbcf63ba720d35dcf585840073"), nTempBit.GetCompact(), 1,  1 * COIN);
 #ifdef GENESIS_GENERATION
         arith_uint256 a("0x000fffffff000000000000000000000000000000000000000000000000000000");
-        std::cout << "pow limit : " << a.GetCompact() << std::endl;
+        std::cout << "pow limit : " << a.GetCompact()<< " "<< nTempBit.GetCompact() << std::endl;
         //findGenesis(&genesis, "testnet");
 #endif
         consensus.hashGenesisBlock = genesis.GetHash();
