@@ -138,11 +138,11 @@ BOOST_AUTO_TEST_CASE(addrman_new_collisions)
     //Test 12: new table collision!
     CService addr1 = CService("250.1.1.4");
     addrman.Add(CAddress(addr1), source);
-    BOOST_CHECK(addrman.size() == 3);
+    BOOST_CHECK(addrman.size() == 4);
 
     CService addr2 = CService("250.1.1.5");
     addrman.Add(CAddress(addr2), source);
-    BOOST_CHECK(addrman.size() == 4);
+    BOOST_CHECK(addrman.size() == 5);
 }
 
 BOOST_AUTO_TEST_CASE(addrman_tried_collisions)
@@ -169,11 +169,11 @@ BOOST_AUTO_TEST_CASE(addrman_tried_collisions)
     //Test 14: tried table collision!
     CService addr1 = CService("250.1.1.76");
     addrman.Add(CAddress(addr1), source);
-    BOOST_CHECK(addrman.size() == 74);
+    BOOST_CHECK(addrman.size() == 75);
 
     CService addr2 = CService("250.1.1.77");
     addrman.Add(CAddress(addr2), source);
-    BOOST_CHECK(addrman.size() == 75);
+    BOOST_CHECK(addrman.size() == 76);
 }
 
 
