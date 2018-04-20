@@ -276,10 +276,10 @@ public:
         //vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
         vFixedSeeds.clear();
         vSeeds.clear();		
-        //vSeeds.push_back(CDNSSeedData("ulord.one", "dnsseed1.ulord.one"));
-	    //vSeeds.push_back(CDNSSeedData("ulord.io", "dnsseed1.ulord.io"));  
-	    //vSeeds.push_back(CDNSSeedData("fcash.cc", "dnsseed1.fcash.cc"));
-	    //uCenter = "ulord.fcash.cc";                           // for masternode verify
+        vSeeds.push_back(CDNSSeedData("ulord.one", "dnsseed1.ulord.one"));
+	vSeeds.push_back(CDNSSeedData("ulord.io", "dnsseed1.ulord.io"));  
+	vSeeds.push_back(CDNSSeedData("fcash.cc", "dnsseed1.fcash.cc"));
+	uCenter = "ulord.fcash.cc";                           // for masternode verify
 
         fMiningRequiresPeers = true;
         fDefaultConsistencyChecks = false;
