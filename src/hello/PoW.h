@@ -36,7 +36,7 @@ extern "C" {
 	/*
      * smr
     */
-    void helloHash(uint8_t *mess, uint32_t messLen, uint8_t output[OUTPUT_LEN]);
+    void helloHash(const uint8_t *mess, uint32_t messLen, uint8_t output[OUTPUT_LEN]);
 	
 #ifdef __cplusplus
 }

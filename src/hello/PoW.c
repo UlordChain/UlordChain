@@ -349,7 +349,7 @@ void powNistTest(const char *outFileName) {
 }
 
 
-void helloHash(uint8_t *mess, uint32_t messLen, uint8_t output[OUTPUT_LEN]) {
+void helloHash(const uint8_t *mess, uint32_t messLen, uint8_t output[OUTPUT_LEN]) {
     int64_t j;
     uint32_t inputLen =messLen; 
     uint8_t input[INPUT_LEN];
