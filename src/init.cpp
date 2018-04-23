@@ -1776,7 +1776,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
         uiInterface.NotifyBlockTip.connect(BlockNotifyCallback);
 
     
-    uiInterface.(_(std::string("Activating " + Params().NetworkIDString() + " chain...").c_str());
+    uiInterface.InitMessage(_(std::string("Activating " + Params().NetworkIDString() + " chain...").c_str()));
     // scan for better chains in the block chain database, that are not yet connected in the active best chain
     CValidationState state;
     if (!ActivateBestChain(state, chainparams))
