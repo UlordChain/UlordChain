@@ -10,15 +10,15 @@
 
 #include <boost/assign/list_of.hpp>
 #include <boost/test/unit_test.hpp>
+#include <vector>
 
 using namespace std;
-
 BOOST_FIXTURE_TEST_SUITE(netbase_tests, BasicTestingSetup)
 
 BOOST_AUTO_TEST_CASE(netbase_networks)
 {
-    BOOST_CHECK(CNetAddr("127.0.0.1").GetNetwork()                              == NET_UNROUTABLE);
-    BOOST_CHECK(CNetAddr("::1").GetNetwork()                                    == NET_UNROUTABLE);
+    BOOST_CHECK(CNetAddr("127.0.0.1").GetNetwork()                              == NET_IPV4);
+    BOOST_CHECK(CNetAddr("::1").GetNetwork()                                    == NET_IPV6);
     BOOST_CHECK(CNetAddr("8.8.8.8").GetNetwork()                                == NET_IPV4);
     BOOST_CHECK(CNetAddr("2001::8888").GetNetwork()                             == NET_IPV6);
     BOOST_CHECK(CNetAddr("FD87:D87E:EB43:edb1:8e4:3588:e546:35ca").GetNetwork() == NET_TOR);
@@ -238,10 +238,10 @@ BOOST_AUTO_TEST_CASE(suulord_test)
 
 BOOST_AUTO_TEST_CASE(netbase_getgroup)
 {
-    BOOST_CHECK(CNetAddr("127.0.0.1").GetGroup() == boost::assign::list_of(0)); // Local -> !Routable()
-    BOOST_CHECK(CNetAddr("257.0.0.1").GetGroup() == boost::assign::list_of(0)); // !Valid -> !Routable()
-    BOOST_CHECK(CNetAddr("10.0.0.1").GetGroup() == boost::assign::list_of(0)); // RFC1918 -> !Routable()
-    BOOST_CHECK(CNetAddr("169.254.1.1").GetGroup() == boost::assign::list_of(0)); // RFC3927 -> !Routable()
+    BOOST_CHECK(CNetAddr("127.0.0.1").GetGroup() == boost::assign::list_of(0x01)); // Local -> !Routable()
+    BOOST_CHECK(CNetAddr("257.0.0.1").GetGroup() == boost::assign::list_of(0x02)(0x00)(0x00)(0x00)(0x00)); // !Valid -> !Routable()
+    BOOST_CHECK(CNetAddr("10.0.0.1").GetGroup() == boost::assign::list_of(0x01)(0x0a)(0x00)); // RFC1918 -> !Routable()
+    BOOST_CHECK(CNetAddr("169.254.1.1").GetGroup() == boost::assign::list_of(0x01)(0xa9)(0xfe)); // RFC3927 -> !Routable()
     BOOST_CHECK(CNetAddr("1.2.3.4").GetGroup() == boost::assign::list_of((unsigned char)NET_IPV4)(1)(2)); // IPv4
     BOOST_CHECK(CNetAddr("::FFFF:0:102:304").GetGroup() == boost::assign::list_of((unsigned char)NET_IPV4)(1)(2)); // RFC6145
     BOOST_CHECK(CNetAddr("64:FF9B::102:304").GetGroup() == boost::assign::list_of((unsigned char)NET_IPV4)(1)(2)); // RFC6052
