@@ -287,23 +287,23 @@ hello_libbitcoin_hello_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_CONFIG_INCLUDES) $(
 hello_libbitcoin_hello_a_CFLAGS = $(AM_CFLAGS)
 hello_libbitcoin_hello_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS) $(PIC_FLAGS)
 hello_libbitcoin_hello_a_SOURCES = \
- 	hello/PoW.c \
-    hello/hmac_md5.c \
-    hello/aes128.c \
-    hello/camellia128.c  \
-    hello/crc32.c \
-    hello/gost.c \
-    hello/ripemd160.c \
-    hello/sha1.c \
-    hello/sha3_256.c \
-    hello/skein512_256.c \
-    hello/blake2s256.c \
-    hello/des.c \
-    hello/haval5_256.c \
-    hello/rc4.c \
-    hello/sha256.c \
-    hello/sha512.c \
-    hello/whirlpool.c \
+    hello/PoW.c \
+    hello/c_hmac_md5.c \
+    hello/c_aes128.c \
+    hello/c_camellia128.c  \
+    hello/c_crc32.c \
+    hello/c_gost.c \
+    hello/c_ripemd160.c \
+    hello/c_sha1.c \
+    hello/c_sha3_256.c \
+    hello/c_skein512_256.c \
+    hello/c_blake2s256.c \
+    hello/c_des.c \
+    hello/c_haval5_256.c \
+    hello/c_rc4.c \
+    hello/c_sha256.c \
+    hello/c_sha512.c \
+    hello/c_whirlpool.c \
     hello/jtr_gost.c \
     hello/jtr_skein.c \
     hello/jtr_crc32.c \

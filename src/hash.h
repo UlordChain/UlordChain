@@ -96,13 +96,9 @@ LogPrintf("serialized:\t%s\n", HexStr(in).c_str());
 	void finalize(uchar hash[OUTPUT_SIZE])
 	{
 		//in = "hashcat";
-		initOneWayFunction();	
-        	const char* tmp = in.c_str();
-        	uint32_t tmpLen = (uint32_t)in.size();
-        	uint8_t input[INPUT_LEN];
-        	memset(input, 0, INPUT_LEN*sizeof(uint8_t));
-        	memcpy(input, tmp, tmpLen*sizeof(char));
-        	helloHash(input, tmpLen,hash);
+	    initOneWayFunction();	
+      	uint32_t tmpLen = (uint32_t)in.size();
+       	helloHash((const uint8_t * )in.data(), tmpLen,hash);
 	}
 };
 
