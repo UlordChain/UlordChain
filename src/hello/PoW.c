@@ -213,7 +213,7 @@ void testPowFunction(uint8_t *mess, uint32_t messLen, const int64_t iterNum) {
 	printf("****************************** Correctness test (PoW function) ******************************\n");
 	printf("Test message: %s\n", mess);
 	powFunction(input, inputLen, Maddr, output);
-	//view_data_u8("PoW", output, OUTPUT_LEN);
+	view_data_u8("PoW", output, OUTPUT_LEN);
 	printf("*********************************************************************************************\n");
 
 	/*	
@@ -349,7 +349,7 @@ void powNistTest(const char *outFileName) {
 }
 
 
-void helloHash(uint8_t *mess, uint32_t messLen, uint8_t output[OUTPUT_LEN]) {
+void helloHash(const uint8_t *mess, uint32_t messLen, uint8_t output[OUTPUT_LEN]) {
     int64_t j;
     uint32_t inputLen =messLen; 
     uint8_t input[INPUT_LEN];

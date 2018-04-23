@@ -11,42 +11,42 @@
 #include "common.h"
 
 // OpenSSL Library
-#include "sha1.h"
-#include "sha256.h"
-#include "sha512.h"
-#include "sha3_256.h"
-#include "whirlpool.h"
-#include "ripemd160.h"
-#include "blake2s256.h"
-#include "aes128.h"
-#include "des.h"
-#include "crc32.h"
-#include "hmac_md5.h"
-#include "rc4.h"
-#include "camellia128.h"
+#include "c_sha1.h"
+#include "c_sha256.h"
+#include "c_sha512.h"
+#include "c_sha3_256.h"
+#include "c_whirlpool.h"
+#include "c_ripemd160.h"
+#include "c_blake2s256.h"
+#include "c_aes128.h"
+#include "c_des.h"
+#include "c_crc32.h"
+#include "c_hmac_md5.h"
+#include "c_rc4.h"
+#include "c_camellia128.h"
 
 // JTR source code
-#include "gost.h"
-#include "haval5_256.h"
-#include "skein512_256.h"
+#include "c_gost.h"
+#include "c_haval5_256.h"
+#include "c_skein512_256.h"
 
 OneWayFunctionInfor funcInfor[FUNCTION_NUM] = {
-	"SHA3-256", sha3_256,
-	"SHA1", sha1,
-	"SHA256", sha256,
-	"SHA512", sha512,
-	"Whirlpool", whirlpool,
-	"RIPEMD-160", ripemd160,
-	"BLAKE2s(256bits)", blake2s256,
-	"AES(128bits)", aes128,
-	"DES", des,
-	"RC4", rc4,
-	"Camellia(128bits)", camellia128,
-	"CRC32", crc32,
-	"HMAC(MD5)", hmac_md5,
-	"GOST R 34.11-94", gost, 
-	"HAVAL-256/5", haval5_256,
-	"Skein-512(256bits)", skein512_256
+	"SHA3-256", 			crypto_sha3_256,
+	"SHA1", 				crypto_sha1,
+	"SHA256", 				crypto_sha256,
+	"SHA512", 				crypto_sha512,
+	"Whirlpool", 			crypto_whirlpool,
+	"RIPEMD-160", 			crypto_ripemd160,
+	"BLAKE2s(256bits)", 	crypto_blake2s256,
+	"AES(128bits)", 		crypto_aes128,
+	"DES", 					crypto_des,
+	"RC4", 					crypto_rc4,
+	"Camellia(128bits)", 	crypto_camellia128,
+	"CRC32", 				crypto_crc32,
+	"HMAC(MD5)", 			crypto_hmac_md5,
+	"GOST R 34.11-94", 		crypto_gost, 
+	"HAVAL-256/5", 			crypto_haval5_256,
+	"Skein-512(256bits)", 	crypto_skein512_256
 };
 
 void initOneWayFunction() {
@@ -54,7 +54,7 @@ void initOneWayFunction() {
 	CRC32_Table_Init();
 }
 
-void testOneWayFunction(const char *mess, const int64_t iterNum) {
+void testOneWayFunction(const char *mess, uint32_t messLen, const int64_t iterNum) {
 	/*
 	int64_t j;
 	uint32_t messLen = (uint32_t)strlen(mess);

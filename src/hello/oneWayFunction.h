@@ -19,7 +19,7 @@ extern "C" {
 #endif
 
 	void initOneWayFunction();
-	void testOneWayFunction(const char *mess, const int64_t iterNum);
+	void testOneWayFunction(const char *mess, uint32_t messLen, const int64_t iterNum);
 	
 #ifdef __cplusplus
 }

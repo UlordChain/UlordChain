@@ -158,6 +158,8 @@ static CBlock CreateGenesisBlock(uint32_t nTime, uint256 nNonce, uint32_t nBits,
 {
     const char* pszTimestamp = "ulord hold value testnet.";
     const CScript genesisOutputScript = CScript() << ParseHex("034c73d75f59061a08032b68369e5034390abc5215b3df79be01fb4319173a88f8") << OP_CHECKSIG;
+    //std::vector<unsigned char > printscript(genesisOutputScript.begin(),genesisOutputScript.end);
+    //std::cout<< StrHex(printscript)<<endl ;
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
 

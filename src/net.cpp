@@ -63,7 +63,10 @@
 #endif
 
 using namespace std;
-
+/*When the network was first implemented, there was a severe shortage of servers that could reliably accept inbound connections.
+  Many people started running the client behind NAT and they could not accept any inbound connections.
+   Meanwhile, they were consuming the available inbound connection capacity of the more limited number of machines that could accept them.
+   The client now enables uPNP traversal by default.*/
 namespace {
     const int MAX_OUTBOUND_CONNECTIONS = 8;
     const int MAX_OUTBOUND_MASTERNODE_CONNECTIONS = 20;

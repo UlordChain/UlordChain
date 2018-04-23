@@ -1,6 +1,6 @@
 //  Windows
-#ifdef _WIN32__USE
- 
+#ifdef _WIN32
+
 #include <Windows.h>
 
 double get_wall_time() {
