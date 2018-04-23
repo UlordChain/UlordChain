@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_CASE(get_next_work)
     pindexLast.nBits = 0x1b1418d4;
     CBlockHeader pblock;
     pblock.nTime = 1408732505; // Block #123457
-    BOOST_CHECK_EQUAL(GetNextWorkRequired(&pindexLast, &pblock, params), 0x1b06b2f1); // Block #123457 has 0x1d00d86a
+    BOOST_CHECK_EQUAL(GetNextWorkRequired(&pindexLast, &pblock, params), 0x1e09b173); // Block #123457 has 0x1d00d86a
 }
 
 /* Test the constraint on the upper bound for next work */
