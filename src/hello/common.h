@@ -34,7 +34,7 @@ inline void reduce_bit_2(uint8_t *input, uint32_t inputLen,
 void reduce_bit(uint8_t *input, uint32_t inputLen, 
 		uint8_t *output, uint32_t bits);
 
-inline void rrs(uint8_t *input, uint32_t inputLen, 
+void rrs(uint8_t *input, uint32_t inputLen, 
 		uint8_t *output, uint32_t bits);
 
 #ifdef __cplusplus
