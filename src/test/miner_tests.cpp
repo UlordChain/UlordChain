@@ -22,7 +22,7 @@
 #include <boost/test/unit_test.hpp>
 
 BOOST_FIXTURE_TEST_SUITE(miner_tests, TestingSetup)
-
+#if 0
 static
 struct {
     unsigned char extranonce;
@@ -60,7 +60,7 @@ struct {
     {1, 0x0700d639}, {1, 0x07083d86}, {1, 0x071cc39d}, {1, 0x072c3cb8},
     {1, 0x07665a0f}, {1, 0x07741214},
 };
-
+#
 CBlockIndex CreateBlockIndex(int nHeight)
 {
     CBlockIndex index;
