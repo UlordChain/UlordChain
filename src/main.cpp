@@ -1570,15 +1570,13 @@ bool GetAddressIndex(uint160 addressHash, int type,
                      std::vector<std::pair<CAddressIndexKey, CAmount> > &addressIndex, int start, int end)
 {
     if (!fAddressIndex)
-{
-printf("GetAddressIndex: fAddressIndex = false\n");
+	{
         return error("address index not enabled");
-}
+	}
     if (!pblocktree->ReadAddressIndex(addressHash, type, addressIndex, start, end))
-{
-printf("GetAddressIndex: ReadAddressIndex = false\n");
+	{
         return error("unable to get txids for address");
-}
+	}
 
     return true;
 }
