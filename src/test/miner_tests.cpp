@@ -118,7 +118,6 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
         //BOOST_CHECK(ProcessNewBlock(state, chainparams, NULL, pblock, true, NULL));
         //BOOST_CHECK(state.IsValid());
         ProcessNewBlock(state, chainparams, NULL, pblock, true, NULL);
-		cout << state.IsValid() << endl;
         pblock->hashPrevBlock = pblock->GetHash();
     }
     delete pblocktemplate;
