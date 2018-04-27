@@ -780,6 +780,8 @@ public:
      */
     bool CreateTransaction(const std::vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, int& nChangePosRet,
                            std::string& strFailReason, const CCoinControl *coinControl = NULL, bool sign = true, AvailableCoinsType nCoinType=ALL_COINS, bool fUseInstantSend=false);
+    
+    // create from a to b tranaction.  change will return to a
     bool  CreateTheAddrTrans(const std::vector<CRecipient> &vecSend,
             CWalletTx &wtxNew, CReserveKey &reservekey,
             CAmount &nFeeRet, int &nChangePosInRet,
