@@ -137,7 +137,7 @@ public:
 
 //
 // Governance Manager : Contains all proposals for the budget
-//
+// second stage we will upgrate centoaize vote and send vote node,node send money to address
 class CGovernanceManager
 {
     friend class CGovernanceObject;

@@ -177,7 +177,7 @@ void ImportAddress(const CBitcoinAddress& address, const string& strLabel)
     if (address.IsValid())
         pwalletMain->SetAddressBook(address.Get(), strLabel, "receive");
 }
-
+// import address will find private key if have import if not not import
 UniValue importaddress(const UniValue& params, bool fHelp)
 {
     if (!EnsureWalletIsAvailable(fHelp))

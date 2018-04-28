@@ -112,7 +112,7 @@ string AccountFromValue(const UniValue& value)
         throw JSONRPCError(RPC_WALLET_INVALID_ACCOUNT_NAME, "Invalid account name");
     return strAccount;
 }
-
+/* produce new address if have account  bind  accout  */
 UniValue getnewaddress(const UniValue& params, bool fHelp)
 {
     if (!EnsureWalletIsAvailable(fHelp))

@@ -36,7 +36,7 @@ std::vector<std::string> SplitBy(std::string strCommand, std::string strDelimit)
 *   - Track governance objects which are triggers
 *   - After triggers are activated and executed, they can be removed
 */
-
+// second stage upgrade ,trigger manager will modify, replace on time trigger
 class CGovernanceTriggerManager
 {
     friend class CSuperblockManager;

@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
 
     // We can't make transactions until we have inputs
     // Therefore, load 100 blocks :)
-    int baseheight = 0;
+    //int baseheight = 0;
     std::vector<CTransaction*>txFirst;
     for (unsigned int i = 0; i < sizeof(blockinfo)/sizeof(*blockinfo); ++i)
     {
@@ -102,8 +102,8 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
         txCoinbase.vin[0].scriptSig.push_back(chainActive.Height());
         txCoinbase.vout[0].scriptPubKey = CScript();
         pblock->vtx[0] = CTransaction(txCoinbase);
-        if (txFirst.size() == 0)
-            baseheight = chainActive.Height();
+        //if (txFirst.size() == 0)
+            //baseheight = chainActive.Height();
         if (txFirst.size() < 4)
             txFirst.push_back(new CTransaction(pblock->vtx[0]));
     //    pblock->hashMerkleRoot = BlockMerkleRoot(*pblock);
@@ -118,7 +118,6 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
         //BOOST_CHECK(ProcessNewBlock(state, chainparams, NULL, pblock, true, NULL));
         //BOOST_CHECK(state.IsValid());
         ProcessNewBlock(state, chainparams, NULL, pblock, true, NULL);
-		cout << state.IsValid() << endl;
         pblock->hashPrevBlock = pblock->GetHash();
     }
     delete pblocktemplate;
