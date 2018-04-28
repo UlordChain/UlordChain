@@ -168,7 +168,6 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     //BOOST_CHECK(pblocktemplate = CreateNewBlock(chainparams, scriptPubKey));
     //delete pblocktemplate;
     mempool.clear();
-#if 0
 
     // coinbase in mempool, template creation fails
     tx.vin.resize(1);
@@ -180,6 +179,7 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     mempool.addUnchecked(hash, entry.Fee(100000).Time(GetTime()).SpendsCoinbase(false).FromTx(tx));
     //BOOST_CHECK_THROW(CreateNewBlock(chainparams, scriptPubKey), std::runtime_error);
     mempool.clear();
+#if 0
 
     // invalid (pre-p2sh) txn in mempool, template creation fails
     tx.vin[0].prevout.hash = txFirst[0]->GetHash();
