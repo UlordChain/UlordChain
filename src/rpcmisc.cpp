@@ -513,6 +513,7 @@ UniValue setmocktime(const UniValue& params, bool fHelp)
 }
 
 /*this func need to update to get all kinds of address*/
+/*have to use dest class*/
 bool getAddressFromIndex(const int &type, const uint160 &hash, std::string &address)
 {
     if (type == 2) {
