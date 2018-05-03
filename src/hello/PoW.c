@@ -1,4 +1,6 @@
-﻿#include "PoW.h"
+// Copyright (c) 2016-2018 The Ulord Core developers
+
+#include "PoW.h"
 
 #include <stdio.h>
 #include <stdint.h>
