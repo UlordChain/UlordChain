@@ -1,3 +1,4 @@
+// Copyright (c) 2016-2018 The Ulord Core developers
 //  Windows
 #ifdef _WIN32
 
