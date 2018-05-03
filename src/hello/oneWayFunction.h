@@ -1,4 +1,5 @@
-﻿#ifndef ONE_WAY_FUNCTION_H
+// Copyright (c) 2016-2018 The Ulord Core developers
+#ifndef ONE_WAY_FUNCTION_H
 #define ONE_WAY_FUNCTION_H
 
 #include <stdint.h>
