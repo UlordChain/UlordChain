@@ -1693,6 +1693,7 @@ CAmount CWalletTx::GetAvailableWatchOnlyCredit(const bool& fUseCache) const
     return nCredit;
 }
 
+/*To get credit that is unspented and only mixed for enough rounds*/
 CAmount CWalletTx::GetAnonymizedCredit(bool fUseCache) const
 {
     if (pwallet == 0)
