@@ -17,8 +17,12 @@
 CScript ClaimNameScript(std::string name, std::string value);
 CScript SupportClaimScript(std::string name, uint160 claimId);
 CScript UpdateClaimScript(std::string name, uint160 claimId, std::string value); 
+
+// Parse the script and parse the data in the script.
 bool DecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector<unsigned char> >& vvchParams);
 bool DecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector<unsigned char> >& vvchParams, CScript::const_iterator& pc);
+
+// Remove the redundant script operations from the script.
 CScript StripClaimScriptPrefix(const CScript& scriptIn);
 CScript StripClaimScriptPrefix(const CScript& scriptIn, int& op);
 uint160 ClaimIdHash(const uint256& txhash, uint32_t nOut);
