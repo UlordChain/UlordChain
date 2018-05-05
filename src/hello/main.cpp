@@ -1,4 +1,5 @@
-﻿#include <stdio.h>
+// Copyright (c) 2016-2018 The Ulord Core developers
+#include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>

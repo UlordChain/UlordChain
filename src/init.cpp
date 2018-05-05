@@ -619,13 +619,7 @@ std::string HelpMessage(HelpMessageMode mode)
 
 std::string LicenseInfo()
 {
-    return FormatParagraph(strprintf(_("Copyright (C) 2017-%i The Ulord Core Developers"), COPYRIGHT_YEAR)) + "\n" +
-           "\n" +
-           FormatParagraph(_("This is experimental software.")) + "\n" +
-           "\n" +
-           FormatParagraph(_("Distributed under the MIT software license, see the accompanying file COPYING.")) + "\n" +
-           "\n" +
-           FormatParagraph(_("This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit and cryptographic software written by Eric Young and UPnP software written by Thomas Bernard.")) +
+    return FormatParagraph(strprintf(_("Copyright (C) 2017-%i The Ulord Core Foundation"), COPYRIGHT_YEAR)) + "\n" +
            "\n";
 }
 

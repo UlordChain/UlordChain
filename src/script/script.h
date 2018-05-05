@@ -38,6 +38,7 @@ std::vector<unsigned char> ToByteVector(const T& in)
 }
 
 /** Script opcodes */
+/*To support the claim operation, three script operators were added. OP_CLAIM_NAME OP_UPDATE_CLAIM OP_SUPPORT_CLAIM */
 enum opcodetype
 {
     // push value

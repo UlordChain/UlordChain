@@ -1,3 +1,4 @@
+// Copyright (c) 2016-2018 The Ulord Core developers
 #ifndef MY_RAND48_R_H
 #define MY_RAND48_R_H
 

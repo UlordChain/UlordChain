@@ -317,6 +317,7 @@ bool CClaimTrie::haveSupportInQueue(const std::string& name, const COutPoint& ou
     {
         if (itNameRow->outPoint == outPoint)
         {
+	    // Height assignment
             nValidAtHeight = itNameRow->nHeight;
             break;
         }

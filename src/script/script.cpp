@@ -8,7 +8,7 @@
 #include "utilstrencodings.h"
 
 using namespace std;
-
+/* The new addition of three script operators for the corresponding operation processing. */
 const char* GetOpName(opcodetype opcode)
 {
     switch (opcode)

@@ -1,7 +1,8 @@
+// Copyright (c) 2016-2018 The Ulord Core developers
 //  Windows
 #ifdef _WIN32
 
-#include <Windows.h>
+#include <windows.h>
 
 double get_wall_time() {
     LARGE_INTEGER time, freq;
