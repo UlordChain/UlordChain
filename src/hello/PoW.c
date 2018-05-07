@@ -352,7 +352,7 @@ void powNistTest(const char *outFileName) {
 
 
 void helloHash(const uint8_t *mess, uint32_t messLen, uint8_t output[OUTPUT_LEN]) {
-    if(messLen > INPUT_LEN)
+    if(messLen != INPUT_LEN)
     {
 	//won't get in
 	printf("helloHash:Invalid message length %d\n", messLen);
