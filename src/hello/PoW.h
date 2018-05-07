@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2018 The Ulord Core developers
+// Copyright (c) 2016-2018 The Ulord Core Foundation
 #ifndef POW_H
 #define POW_H
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2018 The Ulord Core developers
+// Copyright (c) 2016-2018 The Ulord Core Foundation
 #ifndef ONE_WAY_FUNCTION_H
 #define ONE_WAY_FUNCTION_H
 

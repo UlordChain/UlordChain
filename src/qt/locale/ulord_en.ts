@@ -3513,7 +3513,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>The Ulord Core developers</source>
+        <source>The Ulord Core Foundation</source>
         <translation>The Ulord Foundation</translation>
     </message>
     <message>

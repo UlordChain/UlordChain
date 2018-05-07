@@ -2696,7 +2696,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>位元幣核心開發人員</translation>
     </message>
     <message>
-        <source>The Ulord Core developers</source>
+        <source>The Ulord Core Foundation</source>
         <translation>Ulord核心開發人員</translation>
     </message>
     <message>
