@@ -2590,7 +2590,7 @@ Più URL vengono separati da una barra verticale |.</translation>
         <translation>Gli sviluppatori di Bitcoin Core</translation>
     </message>
     <message>
-        <source>The Ulord Core developers</source>
+        <source>The Ulord Core Foundation</source>
         <translation>Gli sviluppatori di Ulord Core</translation>
     </message>
     <message>

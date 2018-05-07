@@ -2748,7 +2748,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Nhóm phát triển Bitcoin Core</translation>
     </message>
     <message>
-        <source>The Ulord Core developers</source>
+        <source>The Ulord Core Foundation</source>
         <translation>Nhóm phát triển Ulord Core</translation>
     </message>
     <message>

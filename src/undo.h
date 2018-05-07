@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2013 The Bitcoin Core developers
-// Copyright (c) 2016-2018 The Ulord Core developers                                                                                                                                                                                                                          
+// Copyright (c) 2016-2018 The Ulord Core Foundation                                                                                                                                                                                                                          
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 

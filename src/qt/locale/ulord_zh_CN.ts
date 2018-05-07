@@ -2765,7 +2765,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Dash的开发者</translation>
     </message>
     <message>
-        <source>The Ulord Core developers</source>
+        <source>The Ulord Core Foundation</source>
         <translation>Ulord基金会</translation>
     </message>
     <message>
