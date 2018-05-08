@@ -7,11 +7,122 @@
     <x>0</x>
     <y>0</y>
     <width>576</width>
-    <height>402</height>
+    <height>480</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Options</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton:focus {
+border:none;
+outline:none;
+}
+
+QPushButton{
+border:1px solid #515B78;
+background-color:#fff;
+color:#515B78;
+text-align: center;
+}
+
+QLineEdit:focus{
+border:none;
+outline:none;
+border:1px solid #515B78;
+}
+QTabWidget::pane {
+    border:none;
+    background: white;
+}
+
+QTabWidget::tab-bar:top {
+    top: 0px;
+}
+
+QTabWidget::tab-bar:bottom {
+    bottom: 0px;
+}
+
+QTabWidget::tab-bar:left {
+    right: 1px;
+}
+
+QTabWidget::tab-bar:right {
+    left: 1px;
+}
+
+QTabBar::tab {
+	border-top: 1px solid white;
+    border-left: 1px solid white;
+	 border-right: 1px solid white;
+}
+
+QTabBar::tab:selected {
+    background: white;
+}
+
+QTabBar::tab:!selected {
+    background: rgba(81,91,120,0.20);
+}
+
+QTabBar::tab:!selected:hover {
+    background: #999;
+}
+
+QTabBar::tab:top:!selected {
+    margin-top: 0px;
+}
+
+QTabBar::tab:bottom:!selected {
+    margin-bottom: 0px;
+}
+
+QTabBar::tab:top, QTabBar::tab:bottom {
+    min-width: 8ex;
+    margin-right: -1px;
+    padding: 5px 10px 5px 10px;
+}
+
+QTabBar::tab:top:selected {
+    border-bottom-color: none;
+}
+
+QTabBar::tab:bottom:selected {
+    border-top-color: none;
+}
+
+QTabBar::tab:top:last, QTabBar::tab:bottom:last,
+QTabBar::tab:top:only-one, QTabBar::tab:bottom:only-one {
+    margin-right: 0;
+}
+
+QTabBar::tab:left:!selected {
+    margin-right: 3px;
+}
+
+QTabBar::tab:right:!selected {
+    margin-left: 3px;
+}
+
+QTabBar::tab:left, QTabBar::tab:right {
+    min-height: 8ex;
+    margin-bottom: -1px;
+    padding: 10px 5px 10px 5px;
+}
+
+QTabBar::tab:left:selected {
+    border-left-color: none;
+}
+
+QTabBar::tab:right:selected {
+    border-right-color: none;
+}
+
+QTabBar::tab:left:last, QTabBar::tab:right:last,
+QTabBar::tab:left:only-one, QTabBar::tab:right:only-one {
+    margin-bottom: 0;
+}</string>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -19,8 +130,11 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QTabWidget" name="tabWidget">
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tabMain">
       <attribute name="title">
@@ -213,9 +327,6 @@
            <property name="toolTip">
             <string>This setting determines the amount of individual masternodes that an input will be anonymized through.&lt;br/&gt;More rounds of anonymization gives a higher degree of privacy, but also costs more in fees.</string>
            </property>
-<!--            <property name="text">
-            <string>PrivateSend rounds to use</string>
-           </property> -->
           </widget>
          </item>
          <item>
@@ -252,9 +363,6 @@
            <property name="accessibleDescription">
             <string notr="true"/>
            </property>
-<!--            <property name="text">
-            <string>Amount of Ulord to keep anonymized</string>
-           </property> -->
           </widget>
          </item>
          <item>
@@ -678,35 +786,6 @@
         </layout>
        </item>
        <item>
-        <widget class="QLabel" name="label_3">
-         <property name="toolTip">
-          <string notr="true"/>
-         </property>
-         <property name="statusTip">
-          <string notr="true"/>
-         </property>
-         <property name="whatsThis">
-          <string notr="true"/>
-         </property>
-         <property name="accessibleName">
-          <string notr="true"/>
-         </property>
-         <property name="text">
-          <string>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/projects/p/ulord/</string>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
-         <property name="openExternalLinks">
-          <bool>true</bool>
-         </property>
-         <property name="textInteractionFlags">
-          <set>Qt::TextBrowserInteraction</set>
-         </property>
-        </widget>
-       </item>
-       <item>
         <layout class="QHBoxLayout" name="horizontalLayout_4_Display" stretch="0,0">
          <item>
           <widget class="QLabel" name="themeLabel">
@@ -856,8 +935,18 @@ https://www.transifex.com/projects/p/ulord/</string>
     <layout class="QHBoxLayout" name="horizontalLayout_Buttons">
      <item>
       <widget class="QPushButton" name="resetButton">
+       <property name="minimumSize">
+        <size>
+         <width>160</width>
+         <height>32</height>
+        </size>
+       </property>
        <property name="toolTip">
         <string>Reset all client options to default.</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:#515B78;
+color:#fff;</string>
        </property>
        <property name="text">
         <string>&amp;Reset Options</string>
@@ -920,6 +1009,16 @@ https://www.transifex.com/projects/p/ulord/</string>
      </item>
      <item>
       <widget class="QPushButton" name="okButton">
+       <property name="minimumSize">
+        <size>
+         <width>120</width>
+         <height>32</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:#515B78;
+color:#fff;</string>
+       </property>
        <property name="text">
         <string>&amp;OK</string>
        </property>
@@ -933,6 +1032,12 @@ https://www.transifex.com/projects/p/ulord/</string>
      </item>
      <item>
       <widget class="QPushButton" name="cancelButton">
+       <property name="minimumSize">
+        <size>
+         <width>120</width>
+         <height>32</height>
+        </size>
+       </property>
        <property name="text">
         <string>&amp;Cancel</string>
        </property>

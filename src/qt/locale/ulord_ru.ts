@@ -4400,7 +4400,7 @@ rpcpassword=%s
         <translation>Эта справка</translation>
     </message>
     <message>
-        <source>This is experimental software.</source>
+        <source>This is Ulord full node software.</source>
         <translation>Это экспериментальное ПО.</translation>
     </message>
     <message>

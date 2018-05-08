@@ -37,10 +37,10 @@ ReceiveCoinsDialog::ReceiveCoinsDialog(const PlatformStyle *platformStyle, QWidg
         ui->showRequestButton->setIcon(QIcon());
         ui->removeRequestButton->setIcon(QIcon());
     } else {
-        ui->clearButton->setIcon(QIcon(":/icons/" + theme + "/remove"));
-        ui->receiveButton->setIcon(QIcon(":/icons/" + theme + "/req_receiving_addresses"));
-        ui->showRequestButton->setIcon(QIcon(":/icons/" + theme + "/show"));
-        ui->removeRequestButton->setIcon(QIcon(":/icons/" + theme + "/remove_one"));
+//        ui->clearButton->setIcon(QIcon(":/icons/" + theme + "/remove"));
+//        ui->receiveButton->setIcon(QIcon(":/icons/" + theme + "/req_receiving_addresses"));
+//        ui->showRequestButton->setIcon(QIcon(":/icons/" + theme + "/show"));
+//        ui->removeRequestButton->setIcon(QIcon(":/icons/" + theme + "/remove_one"));
     }
     ui->checkUseInstantSend->setVisible(false);
 

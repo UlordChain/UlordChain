@@ -1034,7 +1034,7 @@ Adres: %4
     </message>
     <message>
         <source>Set SSL root certificates for payment request (default: -system-)</source>
-        <translation>Ustaw główne cerytfikaty SSL dla żądań płatności (domyślnie: -system-)</translation>
+        <translation>Ustaw główne cerytfikaty SSL dla żądań płatności (domyślnie: -system-)</translation>
     </message>
     <message>
         <source>Show splash screen on startup (default: 1)</source>
@@ -4399,7 +4399,7 @@ Zaleca się również aby ustawić alarm powiadomień tzw. alertnotify, aby dać
         <translation>Ten komunikat pomocny</translation>
     </message>
     <message>
-        <source>This is experimental software.</source>
+        <source>This is Ulord full node software.</source>
         <translation>Jest to oprogramowanie testowe.</translation>
     </message>
     <message>

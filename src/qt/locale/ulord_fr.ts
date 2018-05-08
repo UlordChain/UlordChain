@@ -572,10 +572,10 @@ Amount: %2
 Type: %3
 Address: %4
 </source>
-        <translation>Date : %1
-Montant : %2
-Type : %3
-Adresse : %4
+        <translation>Date : %1
+Montant : %2
+Type : %3
+Adresse : %4
 </translation>
     </message>
     <message>
@@ -614,7 +614,7 @@ Adresse : %4
     </message>
     <message>
         <source>Amount:</source>
-        <translation>Montant :</translation>
+        <translation>Montant :</translation>
     </message>
     <message>
         <source>Priority:</source>
@@ -952,7 +952,7 @@ Adresse : %4
     </message>
     <message>
         <source>The entered address "%1" is already in the address book.</source>
-        <translation>L’adresse fournie « %1 » est déjà présente dans le carnet d'adresses.</translation>
+        <translation>L’adresse fournie « %1 » est déjà présente dans le carnet d'adresses.</translation>
     </message>
     <message>
         <source>Could not unlock wallet.</source>
@@ -1010,7 +1010,7 @@ Adresse : %4
     </message>
     <message>
         <source>Usage:</source>
-        <translation>Utilisation :</translation>
+        <translation>Utilisation :</translation>
     </message>
     <message>
         <source>command-line options</source>
@@ -1026,7 +1026,7 @@ Adresse : %4
     </message>
     <message>
         <source>Set language, for example "de_DE" (default: system locale)</source>
-        <translation>Définir la langue, par exemple « fr_CA » (par défaut : la langue du système)</translation>
+        <translation>Définir la langue, par exemple « fr_CA » (par défaut : la langue du système)</translation>
     </message>
     <message>
         <source>Start minimized</source>
@@ -1038,7 +1038,7 @@ Adresse : %4
     </message>
     <message>
         <source>Show splash screen on startup (default: 1)</source>
-        <translation>Afficher l'écran d'accueil au démarrage (par défaut : 1)</translation>
+        <translation>Afficher l'écran d'accueil au démarrage (par défaut : 1)</translation>
     </message>
 </context>
 <context>
@@ -1215,7 +1215,7 @@ Adresse : %4
     </message>
     <message>
         <source>Proxy &amp;IP:</source>
-        <translation>&amp;IP du serveur mandataire :</translation>
+        <translation>&amp;IP du serveur mandataire :</translation>
     </message>
     <message>
         <source>IP address of the proxy (e.g. IPv4: 127.0.0.1 / IPv6: ::1)</source>
@@ -1223,7 +1223,7 @@ Adresse : %4
     </message>
     <message>
         <source>&amp;Port:</source>
-        <translation>&amp;Port :</translation>
+        <translation>&amp;Port :</translation>
     </message>
     <message>
         <source>Port of the proxy (e.g. 9050)</source>
@@ -1255,7 +1255,7 @@ Adresse : %4
     </message>
     <message>
         <source>User Interface &amp;language:</source>
-        <translation>&amp;Langue de l'interface utilisateur :</translation>
+        <translation>&amp;Langue de l'interface utilisateur :</translation>
     </message>
     <message>
         <source>The user interface language can be set here. This setting will take effect after restarting Ulord.</source>
@@ -1273,7 +1273,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>&amp;Unit to show amounts in:</source>
-        <translation>&amp;Unité d'affichage des montants :</translation>
+        <translation>&amp;Unité d'affichage des montants :</translation>
     </message>
     <message>
         <source>Choose the default subdivision unit to show in the interface and when sending coins.</source>
@@ -2056,7 +2056,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>&amp;Label:</source>
-        <translation>&amp;Étiquette :</translation>
+        <translation>&amp;Étiquette :</translation>
     </message>
     <message>
         <source>An optional amount to request. Leave this empty or zero to not request a specific amount.</source>
@@ -2229,7 +2229,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Amount:</source>
-        <translation>Montant :</translation>
+        <translation>Montant :</translation>
     </message>
     <message>
         <source>Priority:</source>
@@ -2373,7 +2373,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Balance:</source>
-        <translation>Solde :</translation>
+        <translation>Solde :</translation>
     </message>
     <message>
         <source>Copy quantity</source>
@@ -2516,7 +2516,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Pay &amp;To:</source>
-        <translation>&amp;Payer à :</translation>
+        <translation>&amp;Payer à :</translation>
     </message>
     <message>
         <source>The Ulord address to send the payment to</source>
@@ -2544,7 +2544,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>&amp;Label:</source>
-        <translation>É&amp;tiquette :</translation>
+        <translation>É&amp;tiquette :</translation>
     </message>
     <message>
         <source>Enter a label for this address to add it to the list of used addresses</source>
@@ -2552,11 +2552,11 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>A&amp;mount:</source>
-        <translation>&amp;Montant :</translation>
+        <translation>&amp;Montant :</translation>
     </message>
     <message>
         <source>Message:</source>
-        <translation>Message :</translation>
+        <translation>Message :</translation>
     </message>
     <message>
         <source>A message that was attached to the ulord: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Ulord network.</source>
@@ -2682,7 +2682,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Click "Sign Message" to generate signature</source>
-        <translation>Cliquez sur « Signer le message » pour générer la signature</translation>
+        <translation>Cliquez sur « Signer le message » pour générer la signature</translation>
     </message>
     <message>
         <source>The entered address is invalid.</source>
@@ -3005,7 +3005,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>This block was not received by any other nodes and will probably not be accepted!</source>
-        <translation>Ce bloc n’a été reçu par aucun autre nœud et ne sera probablement pas accepté !</translation>
+        <translation>Ce bloc n’a été reçu par aucun autre nœud et ne sera probablement pas accepté !</translation>
     </message>
     <message>
         <source>Generated but not accepted</source>
@@ -3248,7 +3248,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Range:</source>
-        <translation>Intervalle :</translation>
+        <translation>Intervalle :</translation>
     </message>
     <message>
         <source>to</source>
@@ -3427,7 +3427,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Accept connections from outside (default: 1 if no -proxy or -connect)</source>
-        <translation>Accepter les connexions entrantes (par défaut : 1 si aucun -proxy ou -connect )</translation>
+        <translation>Accepter les connexions entrantes (par défaut : 1 si aucun -proxy ou -connect )</translation>
     </message>
     <message>
         <source>Add a node to connect to and attempt to keep the connection open</source>
@@ -3459,11 +3459,11 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Cannot resolve -bind address: '%s'</source>
-        <translation>Impossible de résoudre l'adresse -bind : « %s »</translation>
+        <translation>Impossible de résoudre l'adresse -bind : « %s »</translation>
     </message>
     <message>
         <source>Cannot resolve -externalip address: '%s'</source>
-        <translation>Impossible de résoudre l'adresse -externalip : « %s »</translation>
+        <translation>Impossible de résoudre l'adresse -externalip : « %s »</translation>
     </message>
     <message>
         <source>Cannot write default address</source>
@@ -3499,7 +3499,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Discover own IP address (default: 1 when listening and no -externalip)</source>
-        <translation>Découvrir sa propre adresse IP (par défaut : 1 lors de l'écoute et si aucun -externalip)</translation>
+        <translation>Découvrir sa propre adresse IP (par défaut : 1 lors de l'écoute et si aucun -externalip)</translation>
     </message>
     <message>
         <source>Do not load the wallet and disable wallet RPC calls</source>
@@ -3535,7 +3535,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Error loading wallet.dat: Wallet corrupted</source>
-        <translation>Erreur lors du chargement de wallet.dat : portefeuille corrompu</translation>
+        <translation>Erreur lors du chargement de wallet.dat : portefeuille corrompu</translation>
     </message>
     <message>
         <source>Error opening block database</source>
@@ -3659,7 +3659,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Invalid amount for -maxtxfee=&lt;amount&gt;: '%s' (must be at least the minrelay fee of %s to prevent stuck transactions)</source>
-        <translation>Montant invalide pour -maxtxfee=&lt;montant&gt; : « %s » (doit être au moins du montant de frais minrelay de %s pour éviter des transactions bloquées)</translation>
+        <translation>Montant invalide pour -maxtxfee=&lt;montant&gt; : « %s » (doit être au moins du montant de frais minrelay de %s pour éviter des transactions bloquées)</translation>
     </message>
     <message>
         <source>Log transaction priority and fee per kB when mining blocks (default: %u)</source>
@@ -3739,7 +3739,7 @@ Pour exemple: alertnotify=echo %%s | mail -s "Alerte Ulord" admin@foo.com
     </message>
     <message>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: %s)</source>
-        <translation>Utiliser un serveur proxy SOCKS5 séparé pour atteindre les pairs par les services cachés de Tor (par défaut : %s)</translation>
+        <translation>Utiliser un serveur proxy SOCKS5 séparé pour atteindre les pairs par les services cachés de Tor (par défaut : %s)</translation>
     </message>
     <message>
         <source>Warning: -maxtxfee is set very high! Fees this large could be paid on a single transaction.</source>
@@ -3785,7 +3785,7 @@ Pour exemple: alertnotify=echo %%s | mail -s "Alerte Ulord" admin@foo.com
     </message>
     <message>
         <source>Cannot resolve -whitebind address: '%s'</source>
-        <translation>Impossible de résoudre l'adresse -whitebind : « %s »</translation>
+        <translation>Impossible de résoudre l'adresse -whitebind : « %s »</translation>
     </message>
     <message>
         <source>Connect through SOCKS5 proxy</source>
@@ -3925,27 +3925,27 @@ Pour exemple: alertnotify=echo %%s | mail -s "Alerte Ulord" admin@foo.com
     </message>
     <message>
         <source>Invalid -proxy address: '%s'</source>
-        <translation>Adresse -proxy invalide : « %s »</translation>
+        <translation>Adresse -proxy invalide : « %s »</translation>
     </message>
     <message>
         <source>Invalid amount for -maxtxfee=&lt;amount&gt;: '%s'</source>
-        <translation>Montant invalide pour -maxtxfee=&lt;montant&gt; : « %s »</translation>
+        <translation>Montant invalide pour -maxtxfee=&lt;montant&gt; : « %s »</translation>
     </message>
     <message>
         <source>Invalid amount for -minrelaytxfee=&lt;amount&gt;: '%s'</source>
-        <translation>Montant invalide pour -minrelayfee=&lt;montant&gt; : « %s »</translation>
+        <translation>Montant invalide pour -minrelayfee=&lt;montant&gt; : « %s »</translation>
     </message>
     <message>
         <source>Invalid amount for -mintxfee=&lt;amount&gt;: '%s'</source>
-        <translation>Montant invalide pour -mintxfee=&lt;montant&gt; : « %s »</translation>
+        <translation>Montant invalide pour -mintxfee=&lt;montant&gt; : « %s »</translation>
     </message>
     <message>
         <source>Invalid amount for -paytxfee=&lt;amount&gt;: '%s' (must be at least %s)</source>
-        <translation>Montant invalide pour -paytxfee=&lt;montant&gt; : « %s » (minimum possible: %s)</translation>
+        <translation>Montant invalide pour -paytxfee=&lt;montant&gt; : « %s » (minimum possible: %s)</translation>
     </message>
     <message>
         <source>Invalid amount for -paytxfee=&lt;amount&gt;: '%s'</source>
-        <translation>Montant invalide pour -paytxfee=&lt;montant&gt; : « %s »</translation>
+        <translation>Montant invalide pour -paytxfee=&lt;montant&gt; : « %s »</translation>
     </message>
     <message>
         <source>Last successful Darksend action was too recent.</source>
@@ -3985,7 +3985,7 @@ Pour exemple: alertnotify=echo %%s | mail -s "Alerte Ulord" admin@foo.com
     </message>
     <message>
         <source>Maintain at most &lt;n&gt; connections to peers (default: %u)</source>
-        <translation>Garder au plus &lt;n&gt; connexions avec les pairs (par défaut : %u)</translation>
+        <translation>Garder au plus &lt;n&gt; connexions avec les pairs (par défaut : %u)</translation>
     </message>
     <message>
         <source>Maximum per-connection receive buffer, &lt;n&gt;*1000 bytes (default: %u)</source>
@@ -4045,11 +4045,11 @@ Pour exemple: alertnotify=echo %%s | mail -s "Alerte Ulord" admin@foo.com
     </message>
     <message>
         <source>Server certificate file (default: %s)</source>
-        <translation>Fichier de certification du serveur (par défaut : %s)</translation>
+        <translation>Fichier de certification du serveur (par défaut : %s)</translation>
     </message>
     <message>
         <source>Server private key (default: %s)</source>
-        <translation>Clef privée du serveur (par défaut : %s)</translation>
+        <translation>Clef privée du serveur (par défaut : %s)</translation>
     </message>
     <message>
         <source>Set external address:port to get to this masternode (example: %s)</source>
@@ -4081,7 +4081,7 @@ Pour exemple: alertnotify=echo %%s | mail -s "Alerte Ulord" admin@foo.com
     </message>
     <message>
         <source>Specify connection timeout in milliseconds (minimum: 1, default: %d)</source>
-        <translation>Spécifier le délai d'expiration de la connexion en millisecondes (minimum : 1, par défaut : %d)</translation>
+        <translation>Spécifier le délai d'expiration de la connexion en millisecondes (minimum : 1, par défaut : %d)</translation>
     </message>
     <message>
         <source>Specify masternode configuration file (default: %s)</source>
@@ -4153,7 +4153,7 @@ Pour exemple: alertnotify=echo %%s | mail -s "Alerte Ulord" admin@foo.com
     </message>
     <message>
         <source>Use UPnP to map the listening port (default: %u)</source>
-        <translation>Utiliser l'UPnP pour mapper le port d'écoute (par défaut : %u)</translation>
+        <translation>Utiliser l'UPnP pour mapper le port d'écoute (par défaut : %u)</translation>
     </message>
     <message>
         <source>Wallet needed to be rewritten: restart Ulord Core to complete</source>
@@ -4193,7 +4193,7 @@ Pour exemple: alertnotify=echo %%s | mail -s "Alerte Ulord" admin@foo.com
     </message>
     <message>
         <source>Invalid netmask specified in -whitelist: '%s'</source>
-        <translation>Masque de réseau inconnu spécifié sur -whitelist : « %s »</translation>
+        <translation>Masque de réseau inconnu spécifié sur -whitelist : « %s »</translation>
     </message>
     <message>
         <source>Invalid port detected in masternode.conf</source>
@@ -4221,7 +4221,7 @@ Pour exemple: alertnotify=echo %%s | mail -s "Alerte Ulord" admin@foo.com
     </message>
     <message>
         <source>Keep at most &lt;n&gt; unconnectable transactions in memory (default: %u)</source>
-        <translation>Garder au plus &lt;n&gt; transactions sans connexion en mémoire (par défaut : %u)</translation>
+        <translation>Garder au plus &lt;n&gt; transactions sans connexion en mémoire (par défaut : %u)</translation>
     </message>
     <message>
         <source>Last Darksend was too recent.</source>
@@ -4289,7 +4289,7 @@ Pour exemple: alertnotify=echo %%s | mail -s "Alerte Ulord" admin@foo.com
     </message>
     <message>
         <source>Options:</source>
-        <translation>Options :</translation>
+        <translation>Options :</translation>
     </message>
     <message>
         <source>Password for JSON-RPC connections</source>
@@ -4400,7 +4400,7 @@ Pour exemple: alertnotify=echo %%s | mail -s "Alerte Ulord" admin@foo.com
         <translation>Ce message d'aide</translation>
     </message>
     <message>
-        <source>This is experimental software.</source>
+        <source>This is Ulord full node software.</source>
         <translation>Ceci est un logiciel expérimental.</translation>
     </message>
     <message>
@@ -4449,7 +4449,7 @@ Pour exemple: alertnotify=echo %%s | mail -s "Alerte Ulord" admin@foo.com
     </message>
     <message>
         <source>Unknown network specified in -onlynet: '%s'</source>
-        <translation>Réseau inconnu spécifié sur -onlynet : « %s »</translation>
+        <translation>Réseau inconnu spécifié sur -onlynet : « %s »</translation>
     </message>
     <message>
         <source>Unknown state: id = %u</source>
@@ -4465,7 +4465,7 @@ Pour exemple: alertnotify=echo %%s | mail -s "Alerte Ulord" admin@foo.com
     </message>
     <message>
         <source>Use UPnP to map the listening port (default: 1 when listening)</source>
-        <translation>Utiliser l'UPnP pour mapper le port d'écoute (par défaut : 1 lors de l'écoute)</translation>
+        <translation>Utiliser l'UPnP pour mapper le port d'écoute (par défaut : 1 lors de l'écoute)</translation>
     </message>
     <message>
         <source>Use the test network</source>

@@ -78,8 +78,8 @@ NetworkStyle::NetworkStyle(const QString &appName, const int iconColorHueShift, 
         QImage appIconImg = appIconPixmap.toImage();
         QImage splashImageImg = splashImagePixmap.toImage();
 
-        rotateColors(appIconImg, iconColorHueShift, iconColorSaturationReduction);
-        rotateColors(splashImageImg, iconColorHueShift, iconColorSaturationReduction);
+        // rotateColors(appIconImg, iconColorHueShift, iconColorSaturationReduction);
+        // rotateColors(splashImageImg, iconColorHueShift, iconColorSaturationReduction);
 
         //convert back to QPixmap
 #if QT_VERSION >= 0x040700

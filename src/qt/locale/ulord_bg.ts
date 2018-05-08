@@ -4391,7 +4391,7 @@ for example: alertnotify=echo %%s | mail -s "Ulord Alert" admin@foo.com
         <translation>Това помощно съобщение</translation>
     </message>
     <message>
-        <source>This is experimental software.</source>
+        <source>This is Ulord full node software.</source>
         <translation>Това е експериментален софтуер.</translation>
     </message>
     <message>
