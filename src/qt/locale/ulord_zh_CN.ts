@@ -2533,7 +2533,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Pay &amp;To:</source>
-        <translation>付给：&amp;</translation>
+        <translation>收款人：&amp;</translation>
     </message>
     <message>
         <source>The Ulord address to send the payment to</source>
@@ -2561,7 +2561,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>&amp;Label:</source>
-        <translation>标签：&amp;</translation>
+        <translation>标     签：&amp;</translation>
     </message>
     <message>
         <source>Enter a label for this address to add it to the list of used addresses</source>
@@ -2569,7 +2569,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>A&amp;mount:</source>
-        <translation>金额：&amp;</translation>
+        <translation>金     额：&amp;</translation>
     </message>
     <message>
         <source>Message:</source>
@@ -2985,6 +2985,10 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>类型</translation>
     </message>
     <message>
+        <source>Address / Label</source>
+        <translation>地址 / 标签</translation>
+    </message>
+    <message>
         <source>Address</source>
         <translation>地址</translation>
     </message>
@@ -3030,7 +3034,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Received with</source>
-        <translation>接收于</translation>
+        <translation>收款</translation>
     </message>
     <message>
         <source>Received from</source>
@@ -3042,7 +3046,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Sent to</source>
-        <translation>发送给</translation>
+        <translation>付款</translation>
     </message>
     <message>
         <source>Payment to yourself</source>
@@ -3137,11 +3141,11 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Received with</source>
-        <translation>接收于</translation>
+        <translation>收款</translation>
     </message>
     <message>
         <source>Sent to</source>
-        <translation>发送给</translation>
+        <translation>付款</translation>
     </message>
     <message>
         <source>Darksent</source>

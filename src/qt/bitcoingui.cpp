@@ -205,6 +205,8 @@ BitcoinGUI::BitcoinGUI(const PlatformStyle *platformStyle, const NetworkStyle *n
     labelConnectionsIcon->setFlat(true); // Make the button look like a label, but clickable
     labelConnectionsIcon->setStyleSheet(".QPushButton { background-color: rgba(255, 255, 255, 0);}");
     labelConnectionsIcon->setMaximumSize(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE);
+    labelSpace =  new QLabel();
+    labelSpace->setText(" ");
     // Jump to peers tab by clicking on connections icon
     connect(labelConnectionsIcon, SIGNAL(clicked()), this, SLOT(showPeers()));
 
@@ -221,6 +223,8 @@ BitcoinGUI::BitcoinGUI(const PlatformStyle *platformStyle, const NetworkStyle *n
     frameBlocksLayout->addStretch();
     frameBlocksLayout->addWidget(labelBlocksIcon);
     frameBlocksLayout->addStretch();
+    frameBlocksLayout->addWidget(labelSpace);
+    frameBlocksLayout->addStretch();
 
     // Progress bar and label for blocks download
     progressBarLabel = new QLabel();
@@ -236,7 +240,7 @@ BitcoinGUI::BitcoinGUI(const PlatformStyle *platformStyle, const NetworkStyle *n
     // QString curStyle = QApplication::style()->metaObject()->className();
     // if(curStyle == "QWindowsStyle" || curStyle == "QWindowsXPStyle")
     // {
-        progressBar->setStyleSheet("QProgressBar { background-color: #515b78; border: 0px solid white; border-radius: 12px; padding: 1px; color:#ffffff; text-align: center; } QProgressBar::chunk { background: QLinearGradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #515B78, stop: 1 #515B78); border-radius: 10px; margin: 0px; }");
+        progressBar->setStyleSheet("QProgressBar { margin-left: 10px; background-color: #515b78; border: 0px solid white; border-radius: 12px; padding: 1px; color:#ffffff; text-align: center; } QProgressBar::chunk { background: QLinearGradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #515B78, stop: 1 #515B78); border-radius: 10px; margin: 0px; }");
     // }
 
     statusBar()->addWidget(progressBarLabel);

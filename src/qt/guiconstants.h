@@ -13,7 +13,7 @@ static const int MODEL_UPDATE_DELAY = 250;
 static const int MAX_PASSPHRASE_SIZE = 1024;
 
 /* UlordGUI -- Size of icons in status bar */
-static const int STATUSBAR_ICONSIZE = 24;
+static const int STATUSBAR_ICONSIZE = 28;
 
 static const bool DEFAULT_SPLASHSCREEN = true;
 
