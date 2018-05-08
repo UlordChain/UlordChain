@@ -17,7 +17,11 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="styleSheet">
-      <string notr="true">QPushButton:focus {
+      <string notr="true">QTabWidget::focus{
+border:none;
+outline:none;
+}
+QPushButton:focus {
 border:none;
 outline:none;
 }
@@ -120,7 +124,7 @@ QTabBar::tab:left:only-one, QTabBar::tab:right:only-one {
 }</string>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_info">
       <attribute name="title">
@@ -550,7 +554,7 @@ text-align: center;</string>
           </size>
          </property>
          <property name="text">
-          <string> </string>
+          <string/>
          </property>
         </widget>
        </item>
@@ -762,7 +766,7 @@ color:#515B78;</string>
                  <string notr="true">background-color:green;</string>
                 </property>
                 <property name="text">
-                 <string>   </string>
+                 <string/>
                 </property>
                </widget>
               </item>
@@ -808,7 +812,7 @@ color:#515B78;</string>
                  <string notr="true">background-color:red;</string>
                 </property>
                 <property name="text">
-                 <string>  </string>
+                 <string/>
                 </property>
                </widget>
               </item>

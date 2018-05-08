@@ -61,8 +61,8 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, QWidget *pa
     watchOnlyWidget = new QComboBox(this);
     watchOnlyWidget->setFixedWidth(64);
 //    watchOnlyWidget->addItem(QIcon(":/icons/" + theme + "/eye"), " ", TransactionFilterProxy::WatchOnlyFilter_All);
-    watchOnlyWidget->addItem(QIcon(":/icons/" + theme + "/eye_plus"), " ", TransactionFilterProxy::WatchOnlyFilter_Yes);
-    watchOnlyWidget->addItem(QIcon(":/icons/" + theme + "/eye_minus"), " ", TransactionFilterProxy::WatchOnlyFilter_No);
+    watchOnlyWidget->addItem(QIcon(":/icons/" + theme + "/eye_plus"), " ", TransactionFilterProxy::WatchOnlyFilter_No);
+    watchOnlyWidget->addItem(QIcon(":/icons/" + theme + "/eye_minus"), " ", TransactionFilterProxy::WatchOnlyFilter_Yes);
     hlayout->addWidget(watchOnlyWidget);
 
     dateWidget = new QComboBox(this);

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>576</width>
+    <width>650</width>
     <height>480</height>
    </rect>
   </property>
@@ -134,7 +134,7 @@ QTabBar::tab:left:only-one, QTabBar::tab:right:only-one {
       <string notr="true"/>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabMain">
       <attribute name="title">
