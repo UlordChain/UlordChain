@@ -4400,7 +4400,7 @@ Ulord Core wird heruntergefahren.</translation>
         <translation>Dieser Hilfetext</translation>
     </message>
     <message>
-        <source>This is experimental software.</source>
+        <source>This is Ulord full node software.</source>
         <translation>Dies ist experimentelle Software.</translation>
     </message>
     <message>

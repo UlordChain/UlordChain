@@ -4399,7 +4399,7 @@ napríklad: alertnotify=echo %%s | mail -s "Ulord Upozornenie" admin@foo.com
         <translation>Táto pomocná správa</translation>
     </message>
     <message>
-        <source>This is experimental software.</source>
+        <source>This is Ulord full node software.</source>
         <translation>Toto je experimentálny softvér. </translation>
     </message>
     <message>

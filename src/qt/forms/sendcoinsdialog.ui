@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>850</width>
-    <height>526</height>
+    <height>555</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -617,7 +617,7 @@
         <x>0</x>
         <y>0</y>
         <width>830</width>
-        <height>69</height>
+        <height>68</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,1">
@@ -766,6 +766,16 @@
               </item>
               <item>
                <widget class="QPushButton" name="buttonChooseFee">
+                <property name="minimumSize">
+                 <size>
+                  <width>120</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">
+</string>
+                </property>
                 <property name="text">
                  <string>Choose...</string>
                 </property>
@@ -803,8 +813,17 @@
           </item>
           <item>
            <widget class="QPushButton" name="buttonMinimizeFee">
+            <property name="minimumSize">
+             <size>
+              <width>120</width>
+              <height>0</height>
+             </size>
+            </property>
             <property name="toolTip">
              <string>collapse fee-settings</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
             <property name="text">
              <string>Hide</string>
@@ -1247,7 +1266,7 @@
       <widget class="QPushButton" name="sendButton">
        <property name="minimumSize">
         <size>
-         <width>150</width>
+         <width>120</width>
          <height>0</height>
         </size>
        </property>
@@ -1273,6 +1292,12 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="minimumSize">
+        <size>
+         <width>120</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="toolTip">
         <string>Clear all fields of the form.</string>
        </property>
@@ -1286,6 +1311,12 @@
      </item>
      <item>
       <widget class="QPushButton" name="addButton">
+       <property name="minimumSize">
+        <size>
+         <width>120</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="toolTip">
         <string>Send to multiple recipients at once</string>
        </property>
@@ -1392,12 +1423,10 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="../ulord.qrc"/>
- </resources>
+ <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="groupCustomFee"/>
   <buttongroup name="groupFee"/>
+  <buttongroup name="groupCustomFee"/>
  </buttongroups>
 </ui>

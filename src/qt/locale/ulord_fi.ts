@@ -4407,7 +4407,7 @@ esimerkiksi: alertnotify=echo %%s | mail -s "Ulord Hälytys" admin@foo.com
         <translation>Tämä ohjeviesti</translation>
     </message>
     <message>
-        <source>This is experimental software.</source>
+        <source>This is Ulord full node software.</source>
         <translation>Tämä on kokeellinen ohjelmisto.</translation>
     </message>
     <message>

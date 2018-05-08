@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>769</width>
-    <height>485</height>
+    <height>516</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,14 +16,117 @@
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <widget class="QTabWidget" name="tabWidget">
+     <property name="styleSheet">
+      <string notr="true">QPushButton:focus {
+border:none;
+outline:none;
+}
+QLineEdit:focus{
+border:none;
+outline:none;
+border:1px solid #515B78;
+}
+QTabWidget::pane {
+    border:none;
+    background: white;
+}
+
+QTabWidget::tab-bar:top {
+    top: 0px;
+}
+
+QTabWidget::tab-bar:bottom {
+    bottom: 0px;
+}
+
+QTabWidget::tab-bar:left {
+    right: 1px;
+}
+
+QTabWidget::tab-bar:right {
+    left: 1px;
+}
+
+QTabBar::tab {
+	border-top: 1px solid white;
+    border-left: 1px solid white;
+	 border-right: 1px solid white;
+}
+
+QTabBar::tab:selected {
+    background: white;
+}
+
+QTabBar::tab:!selected {
+    background: rgba(81,91,120,0.20);
+}
+
+QTabBar::tab:!selected:hover {
+    background: #999;
+}
+
+QTabBar::tab:top:!selected {
+    margin-top: 0px;
+}
+
+QTabBar::tab:bottom:!selected {
+    margin-bottom: 0px;
+}
+
+QTabBar::tab:top, QTabBar::tab:bottom {
+    min-width: 8ex;
+    margin-right: -1px;
+    padding: 5px 10px 5px 10px;
+}
+
+QTabBar::tab:top:selected {
+    border-bottom-color: none;
+}
+
+QTabBar::tab:bottom:selected {
+    border-top-color: none;
+}
+
+QTabBar::tab:top:last, QTabBar::tab:bottom:last,
+QTabBar::tab:top:only-one, QTabBar::tab:bottom:only-one {
+    margin-right: 0;
+}
+
+QTabBar::tab:left:!selected {
+    margin-right: 3px;
+}
+
+QTabBar::tab:right:!selected {
+    margin-left: 3px;
+}
+
+QTabBar::tab:left, QTabBar::tab:right {
+    min-height: 8ex;
+    margin-bottom: -1px;
+    padding: 10px 5px 10px 5px;
+}
+
+QTabBar::tab:left:selected {
+    border-left-color: none;
+}
+
+QTabBar::tab:right:selected {
+    border-right-color: none;
+}
+
+QTabBar::tab:left:last, QTabBar::tab:right:last,
+QTabBar::tab:left:only-one, QTabBar::tab:right:only-one {
+    margin-bottom: 0;
+}</string>
+     </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="tab_info">
       <attribute name="title">
        <string>&amp;Information</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout" columnstretch="0,1,0">
+      <layout class="QGridLayout" name="gridLayout" columnstretch="0,0,0,0">
        <property name="horizontalSpacing">
         <number>12</number>
        </property>
@@ -185,17 +288,17 @@
         </widget>
        </item>
        <item row="7" column="0">
-           <widget class="QLabel" name="labelNetwork">
-               <property name="font">
-                   <font>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                   </font>
-               </property>
-               <property name="text">
-                   <string>Network</string>
-               </property>
-           </widget>
+        <widget class="QLabel" name="labelNetwork">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Network</string>
+         </property>
+        </widget>
        </item>
        <item row="8" column="0">
         <widget class="QLabel" name="label_8">
@@ -394,16 +497,20 @@
           </spacer>
          </item>
          <item>
-          <widget class="QLabel" name="labelDebugLogfile">
-           <property name="text">
-            <string>Debug log file</string>
-           </property>
-          </widget>
-         </item>
-         <item>
           <widget class="QPushButton" name="openDebugLogfileButton">
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="toolTip">
             <string>Open the Ulord Core debug log file from the current data directory. This can take a few seconds for large log files.</string>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border:1px solid #515B78;
+color:#515B78;
+text-align: center;</string>
            </property>
            <property name="text">
             <string>&amp;Open</string>
@@ -427,6 +534,25 @@
           </size>
          </property>
         </spacer>
+       </item>
+       <item row="14" column="3">
+        <widget class="QLabel" name="label_14">
+         <property name="minimumSize">
+          <size>
+           <width>10</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>10</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string> </string>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -523,6 +649,37 @@
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
             <widget class="QSlider" name="sldGraphRange">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>6</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QSlider::groove:horizontal {
+          height: 6px;
+          background:#333;
+ }
+QSlider::handle:horizontal {
+          width: 6px;
+          background: #515b78;
+          margin: -6px 0px -6px 0px;
+}
+
+QSlider::sub-page:horizontal {
+background: qlineargradient(x1: 0, y1: 0,    x2: 0, y2: 1,
+    stop: 0 #ccc, stop: 1 #ccc);
+background: qlineargradient(x1: 0, y1: 0.2, x2: 1, y2: 1,
+    stop: 0 #ccc, stop: 1 #ccc);
+height: 6px;
+}
+
+QSlider::add-page:horizontal {
+background: #f0f0f0;
+height: 6px;
+}
+</string>
+             </property>
              <property name="minimum">
               <number>1</number>
              </property>
@@ -555,6 +712,16 @@
            </item>
            <item>
             <widget class="QPushButton" name="btnClearTrafficGraph">
+             <property name="minimumSize">
+              <size>
+               <width>80</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">border:1px solid #515B78;
+color:#515B78;</string>
+             </property>
              <property name="text">
               <string>&amp;Clear</string>
              </property>
@@ -578,58 +745,24 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_4">
               <item>
-               <widget class="Line" name="line">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
+               <widget class="QLabel" name="label_2">
                 <property name="minimumSize">
                  <size>
-                  <width>10</width>
-                  <height>0</height>
+                  <width>0</width>
+                  <height>10</height>
                  </size>
                 </property>
-                <property name="palette">
-                 <palette>
-                  <active>
-                   <colorrole role="Light">
-                    <brush brushstyle="SolidPattern">
-                     <color alpha="255">
-                      <red>0</red>
-                      <green>255</green>
-                      <blue>0</blue>
-                     </color>
-                    </brush>
-                   </colorrole>
-                  </active>
-                  <inactive>
-                   <colorrole role="Light">
-                    <brush brushstyle="SolidPattern">
-                     <color alpha="255">
-                      <red>0</red>
-                      <green>255</green>
-                      <blue>0</blue>
-                     </color>
-                    </brush>
-                   </colorrole>
-                  </inactive>
-                  <disabled>
-                   <colorrole role="Light">
-                    <brush brushstyle="SolidPattern">
-                     <color alpha="255">
-                      <red>0</red>
-                      <green>255</green>
-                      <blue>0</blue>
-                     </color>
-                    </brush>
-                   </colorrole>
-                  </disabled>
-                 </palette>
+                <property name="maximumSize">
+                 <size>
+                  <width>10</width>
+                  <height>10</height>
+                 </size>
                 </property>
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
+                <property name="styleSheet">
+                 <string notr="true">background-color:green;</string>
+                </property>
+                <property name="text">
+                 <string>   </string>
                 </property>
                </widget>
               </item>
@@ -658,58 +791,24 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_5">
               <item>
-               <widget class="Line" name="line_2">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
+               <widget class="QLabel" name="label_11">
                 <property name="minimumSize">
                  <size>
                   <width>10</width>
                   <height>0</height>
                  </size>
                 </property>
-                <property name="palette">
-                 <palette>
-                  <active>
-                   <colorrole role="Light">
-                    <brush brushstyle="SolidPattern">
-                     <color alpha="255">
-                      <red>255</red>
-                      <green>0</green>
-                      <blue>0</blue>
-                     </color>
-                    </brush>
-                   </colorrole>
-                  </active>
-                  <inactive>
-                   <colorrole role="Light">
-                    <brush brushstyle="SolidPattern">
-                     <color alpha="255">
-                      <red>255</red>
-                      <green>0</green>
-                      <blue>0</blue>
-                     </color>
-                    </brush>
-                   </colorrole>
-                  </inactive>
-                  <disabled>
-                   <colorrole role="Light">
-                    <brush brushstyle="SolidPattern">
-                     <color alpha="255">
-                      <red>255</red>
-                      <green>0</green>
-                      <blue>0</blue>
-                     </color>
-                    </brush>
-                   </colorrole>
-                  </disabled>
-                 </palette>
+                <property name="maximumSize">
+                 <size>
+                  <width>10</width>
+                  <height>10</height>
+                 </size>
                 </property>
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
+                <property name="styleSheet">
+                 <string notr="true">background-color:red;</string>
+                </property>
+                <property name="text">
+                 <string>  </string>
                 </property>
                </widget>
               </item>
@@ -1310,14 +1409,18 @@
          <x>10</x>
          <y>100</y>
          <width>301</width>
-         <height>23</height>
+         <height>32</height>
         </rect>
        </property>
        <property name="minimumSize">
         <size>
-         <width>180</width>
-         <height>23</height>
+         <width>220</width>
+         <height>32</height>
         </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border:1px solid #515B78;
+color:#515B78;</string>
        </property>
        <property name="text">
         <string>Salvage wallet</string>
@@ -1329,14 +1432,18 @@
          <x>10</x>
          <y>150</y>
          <width>301</width>
-         <height>23</height>
+         <height>32</height>
         </rect>
        </property>
        <property name="minimumSize">
         <size>
-         <width>180</width>
-         <height>23</height>
+         <width>220</width>
+         <height>32</height>
         </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border:1px solid #515B78;
+color:#515B78;</string>
        </property>
        <property name="text">
         <string>Rescan blockchain files</string>
@@ -1348,14 +1455,18 @@
          <x>10</x>
          <y>200</y>
          <width>301</width>
-         <height>23</height>
+         <height>32</height>
         </rect>
        </property>
        <property name="minimumSize">
         <size>
-         <width>180</width>
-         <height>23</height>
+         <width>220</width>
+         <height>32</height>
         </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border:1px solid #515B78;
+color:#515B78;</string>
        </property>
        <property name="text">
         <string>Recover transactions 1</string>
@@ -1367,14 +1478,18 @@
          <x>10</x>
          <y>250</y>
          <width>301</width>
-         <height>23</height>
+         <height>32</height>
         </rect>
        </property>
        <property name="minimumSize">
         <size>
-         <width>180</width>
-         <height>23</height>
+         <width>220</width>
+         <height>32</height>
         </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border:1px solid #515B78;
+color:#515B78;</string>
        </property>
        <property name="text">
         <string>Recover transactions 2</string>
@@ -1386,14 +1501,18 @@
          <x>10</x>
          <y>300</y>
          <width>301</width>
-         <height>23</height>
+         <height>32</height>
         </rect>
        </property>
        <property name="minimumSize">
         <size>
-         <width>180</width>
-         <height>23</height>
+         <width>220</width>
+         <height>32</height>
         </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border:1px solid #515B78;
+color:#515B78;</string>
        </property>
        <property name="text">
         <string>Upgrade wallet format</string>
@@ -1530,8 +1649,18 @@
          <x>10</x>
          <y>350</y>
          <width>301</width>
-         <height>23</height>
+         <height>32</height>
         </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>220</width>
+         <height>32</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border:1px solid #515B78;
+color:#515B78;</string>
        </property>
        <property name="text">
         <string>Rebuild index</string>

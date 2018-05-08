@@ -4284,7 +4284,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Esta mensagem de ajuda</translation>
     </message>
     <message>
-        <source>This is experimental software.</source>
+        <source>This is Ulord full node software.</source>
         <translation>Este é um software experimental.</translation>
     </message>
     <message>

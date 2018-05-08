@@ -232,7 +232,7 @@
     <name>BitcoinGUI</name>
     <message>
         <source>Ulord Core</source>
-        <translation>Ulord核心</translation>
+        <translation>Ulord全节点</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -244,7 +244,7 @@
     </message>
     <message>
         <source>&amp;Overview</source>
-        <translation>概况(&amp;O)</translation>
+        <translation>概况&amp;</translation>
     </message>
     <message>
         <source>Show general overview of wallet</source>
@@ -252,7 +252,7 @@
     </message>
     <message>
         <source>&amp;Send</source>
-        <translation>发送(&amp;S)</translation>
+        <translation>发送&amp;</translation>
     </message>
     <message>
         <source>Send coins to a Ulord address</source>
@@ -260,7 +260,7 @@
     </message>
     <message>
         <source>&amp;Receive</source>
-        <translation>接收(&amp;R)</translation>
+        <translation>接收&amp;</translation>
     </message>
     <message>
         <source>Request payments (generates QR codes and ulord: URIs)</source>
@@ -268,7 +268,7 @@
     </message>
     <message>
         <source>&amp;Transactions</source>
-        <translation>交易记录(&amp;T)</translation>
+        <translation>交易记录&amp;</translation>
     </message>
     <message>
         <source>Browse transaction history</source>
@@ -283,16 +283,20 @@
         <translation>退出程序</translation>
     </message>
     <message>
+        <source>&amp;Masternodes</source>
+        <translation>主节点&amp;</translation>
+    </message>
+    <message>
         <source>&amp;About Ulord Core</source>
-        <translation>&amp;关于Ulord核心</translation>
+        <translation>关于Ulord全节点&amp;</translation>
     </message>
     <message>
         <source>Show information about Ulord Core</source>
-        <translation>显示关于Ulord核心信息</translation>
+        <translation>显示关于Ulord全节点信息</translation>
     </message>
     <message>
         <source>About &amp;Qt</source>
-        <translation>关于 &amp;Qt</translation>
+        <translation>关于Qt&amp;</translation>
     </message>
     <message>
         <source>Show information about Qt</source>
@@ -424,7 +428,7 @@
     </message>
     <message>
         <source>&amp;Sending addresses...</source>
-        <translation>&amp;付款地址 </translation>
+        <translation>付款地址&amp;</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -432,7 +436,7 @@
     </message>
     <message>
         <source>&amp;Receiving addresses...</source>
-        <translation>&amp;收款地址</translation>
+        <translation>收款地址&amp;</translation>
     </message>
     <message>
         <source>Show the list of used receiving addresses and labels</source>
@@ -448,11 +452,11 @@
     </message>
     <message>
         <source>&amp;Command-line options</source>
-        <translation>&amp;命令行 选项</translation>
+        <translation>命令行选项&amp;</translation>
     </message>
     <message>
         <source>Ulord Core client</source>
-        <translation>Ulord核心客户端</translation>
+        <translation>Ulord全节点客户端</translation>
     </message>
     <message numerus="yes">
         <source>Processed %n blocks of transaction history.</source>
@@ -464,7 +468,7 @@
     </message>
     <message>
         <source>Show the Ulord Core help message to get a list with possible Ulord command-line options</source>
-        <translation>打开Ulord核心帮助信息取得可使用的命令行列表</translation>
+        <translation>打开Ulord全节点帮助信息取得可使用的命令行列表</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -990,7 +994,7 @@ Address: %4
     <name>HelpMessageDialog</name>
     <message>
         <source>Ulord Core</source>
-        <translation>Ulord核心</translation>
+        <translation>Ulord全节点</translation>
     </message>
     <message>
         <source>version</source>
@@ -1002,7 +1006,7 @@ Address: %4
     </message>
     <message>
         <source>About Ulord Core</source>
-        <translation>关于 Ulord核心</translation>
+        <translation>关于 Ulord全节点</translation>
     </message>
     <message>
         <source>Command-line options</source>
@@ -1050,15 +1054,15 @@ Address: %4
     </message>
     <message>
         <source>Welcome to Ulord Core.</source>
-        <translation>欢迎来到Ulord核心。</translation>
+        <translation>欢迎来到Ulord全节点。</translation>
     </message>
     <message>
         <source>As this is the first time the program is launched, you can choose where Ulord Core will store its data.</source>
-        <translation>此次为第一次程序启动，你可以选择储存Ulord核心数据的路径。</translation>
+        <translation>此次为第一次程序启动，你可以选择储存Ulord全节点数据的路径。</translation>
     </message>
     <message>
         <source>Ulord Core will download and store a copy of the Ulord block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
-        <translation>Ulord核心将会下载并存储Ulord数据链。至少有%1GB的数据会保存到此路径下，并且随着时间增长。钱包文件也将存储到此路径下。</translation>
+        <translation>Ulord全节点将会下载并存储Ulord数据链。至少有%1GB的数据会保存到此路径下，并且随着时间增长。钱包文件也将存储到此路径下。</translation>
     </message>
     <message>
         <source>Use the default data directory</source>
@@ -1070,7 +1074,7 @@ Address: %4
     </message>
     <message>
         <source>Ulord Core</source>
-        <translation>Ulord核心</translation>
+        <translation>Ulord全节点</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" cannot be created.</source>
@@ -1762,7 +1766,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>&amp;Open</source>
-        <translation>打开(&amp;O)</translation>
+        <translation>打开调式日志&amp;</translation>
     </message>
     <message>
         <source>Startup time</source>
@@ -1838,7 +1842,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>&amp;Peers</source>
-        <translation>&amp;节点</translation>
+        <translation>节点&amp;</translation>
     </message>
     <message>
         <source>Select a peer to view detailed information.</source>
@@ -1898,7 +1902,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>&amp;Wallet Repair</source>
-        <translation>&amp;钱包修复</translation>
+        <translation>钱包修复&amp;</translation>
     </message>
     <message>
         <source>Salvage wallet</source>
@@ -2033,7 +2037,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>&amp;Message:</source>
-        <translation>消息(&amp;M)：</translation>
+        <translation>消息：&amp;</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -2049,7 +2053,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>&amp;Label:</source>
-        <translation>标签(&amp;L)：</translation>
+        <translation>标签：&amp;</translation>
     </message>
     <message>
         <source>An optional amount to request. Leave this empty or zero to not request a specific amount.</source>
@@ -2057,11 +2061,11 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>&amp;Amount:</source>
-        <translation>总额(&amp;A)：</translation>
+        <translation>总额：&amp;</translation>
     </message>
     <message>
         <source>&amp;Request payment</source>
-        <translation>请求付款(&amp;R)</translation>
+        <translation>请求付款&amp;</translation>
     </message>
     <message>
         <source>Clear all fields of the form.</source>
@@ -2282,7 +2286,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Choose...</source>
-        <translation>选择...</translation>
+        <translation>展开选项</translation>
     </message>
     <message>
         <source>collapse fee-settings</source>
@@ -2358,7 +2362,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>S&amp;end</source>
-        <translation>发送(&amp;E)</translation>
+        <translation>发送&amp;</translation>
     </message>
     <message>
         <source>Clear all fields of the form.</source>
@@ -2366,7 +2370,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Clear &amp;All</source>
-        <translation>清除所有(&amp;A)</translation>
+        <translation>清除所有&amp;</translation>
     </message>
     <message>
         <source>Send to multiple recipients at once</source>
@@ -2374,7 +2378,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Add &amp;Recipient</source>
-        <translation>添加收款人(&amp;R)</translation>
+        <translation>添加收款人&amp;</translation>
     </message>
     <message>
         <source>Darksend</source>
@@ -2529,7 +2533,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Pay &amp;To:</source>
-        <translation>付给(&amp;T)：</translation>
+        <translation>付给：&amp;</translation>
     </message>
     <message>
         <source>The Ulord address to send the payment to</source>
@@ -2557,7 +2561,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>&amp;Label:</source>
-        <translation>标签(&amp;L)：</translation>
+        <translation>标签：&amp;</translation>
     </message>
     <message>
         <source>Enter a label for this address to add it to the list of used addresses</source>
@@ -2565,7 +2569,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>A&amp;mount:</source>
-        <translation>金额(&amp;M)：</translation>
+        <translation>金额：&amp;</translation>
     </message>
     <message>
         <source>Message:</source>
@@ -2600,7 +2604,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     <name>ShutdownWindow</name>
     <message>
         <source>Ulord Core is shutting down...</source>
-        <translation>Ulord核心正在关闭...</translation>
+        <translation>Ulord全节点正在关闭...</translation>
     </message>
     <message>
         <source>Do not shut down the computer until this window disappears.</source>
@@ -2750,7 +2754,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     <name>SplashScreen</name>
     <message>
         <source>Ulord Core</source>
-        <translation>Ulord核心</translation>
+        <translation>Ulord全节点</translation>
     </message>
     <message>
         <source>Version %1</source>
@@ -3332,7 +3336,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Cannot obtain a lock on data directory %s. Ulord Core is probably already running.</source>
-        <translation>不能获得锁定的数据目录 %s. Ulord核心可能已经在运行。</translation>
+        <translation>不能获得锁定的数据目录 %s. Ulord全节点可能已经在运行。</translation>
     </message>
     <message>
         <source>Darksend uses exact denominated amounts to send funds, you might simply need to anonymize some more coins.</source>
@@ -3364,7 +3368,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Unable to bind to %s on this computer. Ulord Core is probably already running.</source>
-        <translation>无法绑定%s此计算机. Ulord核心应该已经在运行中了.</translation>
+        <translation>无法绑定%s此计算机. Ulord全节点应该已经在运行中了.</translation>
     </message>
     <message>
         <source>Unable to locate enough Darksend denominated funds for this transaction.</source>
@@ -3628,7 +3632,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong Ulord Core will not work properly.</source>
-        <translation>警告: 请检查电脑日期和时间是否正确！Ulord核心没办法在时钟不准的情况下正常运作。</translation>
+        <translation>警告: 请检查电脑日期和时间是否正确！Ulord全节点没办法在时钟不准的情况下正常运作。</translation>
     </message>
     <message>
         <source>Whitelist peers connecting from the given netmask or IP address. Can be specified multiple times.</source>
@@ -3678,7 +3682,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Copyright (C) 2014-%i The Dash Core Developers</source>
-        <translation>版权 (C) 2017-%i The Ulord Core Developers</translation>
+        <translation>版权 (C) 2017-%i The Ulord Core Foundation</translation>
     </message>
     <message>
         <source>Could not parse -rpcbind value %s as network address</source>
@@ -3710,7 +3714,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Error loading wallet.dat: Wallet requires newer version of Ulord Core</source>
-        <translation>读取钱包文件错误: 需要较为新版本的Ulord核心来读取钱包</translation>
+        <translation>读取钱包文件错误: 需要较为新版本的Ulord全节点来读取钱包</translation>
     </message>
     <message>
         <source>Error: A fatal internal error occured, see debug.log for details</source>
@@ -3767,7 +3771,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Initialization sanity check failed. Ulord Core is shutting down.</source>
-        <translation>初始化检查失败。Ulord核心正在关闭。</translation>
+        <translation>初始化检查失败。Ulord全节点正在关闭。</translation>
     </message>
     <message>
         <source>Input is not valid.</source>
@@ -3963,8 +3967,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Wallet needed to be rewritten: restart Ulord Core to complete</source>
-        <translation>錢包需要重寫: 請重新啓動Ulord核心來完成
-钱包需要重写: 请重新启动Ulord核心来完成</translation>
+        <translation>錢包需要重寫: 請重新啓動Ulord全节点來完成
+钱包需要重写: 请重新启动Ulord全节点来完成</translation>
     </message>
     <message>
         <source>Warning: Unsupported argument -benchmark ignored, use -debug=bench.</source>
@@ -4167,8 +4171,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>此帮助信息</translation>
     </message>
     <message>
-        <source>This is experimental software.</source>
-        <translation>这是一款实验软件.</translation>
+        <source>This is Ulord full node software.</source>
+        <translation>这是Ulord全节点钱包.</translation>
     </message>
     <message>
         <source>This is intended for regression testing tools and app development.</source>

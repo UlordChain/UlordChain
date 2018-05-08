@@ -5587,8 +5587,8 @@ for example: alertnotify=echo %%s | mail -s &quot;Ulord Alert&quot; admin@foo.co
     </message>
     <message>
         <location line="+1"/>
-        <source>This is experimental software.</source>
-        <translation>This is experimental software.</translation>
+        <source>This is Ulord full node software.</source>
+        <translation>This is Ulord full node software.</translation>
     </message>
     <message>
         <location line="+1"/>

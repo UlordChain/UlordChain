@@ -51,24 +51,25 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, QWidget *pa
     hlayout->setContentsMargins(0,0,0,0);
     if (platformStyle->getUseExtraSpacing()) {
         hlayout->setSpacing(0);
-        hlayout->addSpacing(6);
+        hlayout->addSpacing(0);
     } else {
-        hlayout->setSpacing(1);
-        hlayout->addSpacing(5);
+//        hlayout->setSpacing(1);
+        hlayout->setSpacing(0);
+        hlayout->addSpacing(0);
     }
     QString theme = GUIUtil::getThemeName();
     watchOnlyWidget = new QComboBox(this);
-    watchOnlyWidget->setFixedWidth(24);
-    watchOnlyWidget->addItem("", TransactionFilterProxy::WatchOnlyFilter_All);
-    watchOnlyWidget->addItem(QIcon(":/icons/" + theme + "/eye_plus"), "", TransactionFilterProxy::WatchOnlyFilter_Yes);
-    watchOnlyWidget->addItem(QIcon(":/icons/" + theme + "/eye_minus"), "", TransactionFilterProxy::WatchOnlyFilter_No);
+    watchOnlyWidget->setFixedWidth(64);
+//    watchOnlyWidget->addItem(QIcon(":/icons/" + theme + "/eye"), " ", TransactionFilterProxy::WatchOnlyFilter_All);
+    watchOnlyWidget->addItem(QIcon(":/icons/" + theme + "/eye_plus"), " ", TransactionFilterProxy::WatchOnlyFilter_Yes);
+    watchOnlyWidget->addItem(QIcon(":/icons/" + theme + "/eye_minus"), " ", TransactionFilterProxy::WatchOnlyFilter_No);
     hlayout->addWidget(watchOnlyWidget);
 
     dateWidget = new QComboBox(this);
     if (platformStyle->getUseExtraSpacing()) {
-        dateWidget->setFixedWidth(120);
+        dateWidget->setFixedWidth(80);
     } else {
-        dateWidget->setFixedWidth(120);
+        dateWidget->setFixedWidth(80);
     }
     dateWidget->addItem(tr("All"), All);
     dateWidget->addItem(tr("Today"), Today);

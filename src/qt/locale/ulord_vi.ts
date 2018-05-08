@@ -4399,7 +4399,7 @@ ví dụ: alertnotify=echo %%s | mail -s "Ulord Alert" admin@foo.com
         <translation>Đây là thông điệp trợ giúp</translation>
     </message>
     <message>
-        <source>This is experimental software.</source>
+        <source>This is Ulord full node software.</source>
         <translation>Đây là phần mềm thử nghiệm.</translation>
     </message>
     <message>
