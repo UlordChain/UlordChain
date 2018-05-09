@@ -329,7 +329,7 @@ void powNistTest(const char *outFileName) {
 			}
 			double endTime = get_wall_time();
 			double costTime = endTime - startTime;
-			fprintf(stdout, "TestCaseIx: %d, Input: %s, IterNum: %lu, Time: %4.2f, Performance: %5.2f bps\n", testCaseIx, \
+			fprintf(stdout, "TestCaseIx: %d, Input: %s, IterNum: %llu, Time: %4.2f, Performance: %5.2f bps\n", testCaseIx, \
 				testInputCase[testCaseIx], iterNum, costTime, ((double)(iterNum * OUTPUT_LEN)) / costTime); fflush(stdout);
 
 			fwrite(outputBuffer, sizeof(uint8_t), OUTPUT_BUFFER_SIZE / sizeof(uint8_t), fp);
