@@ -219,8 +219,8 @@
     </message>
     <message>
         <location line="+1"/>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR ULD&lt;/b&gt;!</source>
-        <translation>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR ULD&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR UT&lt;/b&gt;!</source>
+        <translation>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR UT&lt;/b&gt;!</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -1090,13 +1090,13 @@ Address: %4
     </message>
     <message>
         <location line="+13"/>
-        <source>Use 2 separate masternodes to mix funds up to 1000 ULD</source>
-        <translation>Use 2 separate masternodes to mix funds up to 1000 ULD</translation>
+        <source>Use 2 separate masternodes to mix funds up to 1000 UT</source>
+        <translation>Use 2 separate masternodes to mix funds up to 1000 UT</translation>
     </message>
     <message>
         <location line="+13"/>
-        <source>Use 8 separate masternodes to mix funds up to 1000 ULD</source>
-        <translation>Use 8 separate masternodes to mix funds up to 1000 ULD</translation>
+        <source>Use 8 separate masternodes to mix funds up to 1000 UT</source>
+        <translation>Use 8 separate masternodes to mix funds up to 1000 UT</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1105,18 +1105,18 @@ Address: %4
     </message>
     <message>
         <location line="+13"/>
-        <source>This option is the quickest and will cost about ~0.025 ULD to anonymize 1000 ULD</source>
-        <translation>This option is the quickest and will cost about ~0.025 ULD to anonymize 1000 ULD</translation>
+        <source>This option is the quickest and will cost about ~0.025 UT to anonymize 1000 UT</source>
+        <translation>This option is the quickest and will cost about ~0.025 UT to anonymize 1000 UT</translation>
     </message>
     <message>
         <location line="+13"/>
-        <source>This option is moderately fast and will cost about 0.05 ULD to anonymize 1000 ULD</source>
-        <translation>This option is moderately fast and will cost about 0.05 ULD to anonymize 1000 ULD</translation>
+        <source>This option is moderately fast and will cost about 0.05 UT to anonymize 1000 UT</source>
+        <translation>This option is moderately fast and will cost about 0.05 UT to anonymize 1000 UT</translation>
     </message>
     <message>
         <location line="+26"/>
-        <source>0.1 ULD per 1000 ULD you anonymize.</source>
-        <translation>0.1 ULD per 1000 ULD you anonymize.</translation>
+        <source>0.1 UT per 1000 UT you anonymize.</source>
+        <translation>0.1 UT per 1000 UT you anonymize.</translation>
     </message>
     <message>
         <location line="-13"/>
@@ -1800,8 +1800,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <location line="+7"/>
-        <source>0 ULD / 0 Rounds</source>
-        <translation>0 ULD / 0 Rounds</translation>
+        <source>0 UT / 0 Rounds</source>
+        <translation>0 UT / 0 Rounds</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -4189,8 +4189,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
     <message>
         <location line="-20"/>
         <location line="+9"/>
-        <source>InstantX doesn&apos;t support sending values that high yet. Transactions are currently limited to %1 ULD.</source>
-        <translation>InstantX doesn&apos;t support sending values that high yet. Transactions are currently limited to %1 ULD.</translation>
+        <source>InstantX doesn&apos;t support sending values that high yet. Transactions are currently limited to %1 UT.</source>
+        <translation>InstantX doesn&apos;t support sending values that high yet. Transactions are currently limited to %1 UT.</translation>
     </message>
 </context>
 <context>
@@ -4330,8 +4330,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Unable to locate enough Darksend non-denominated funds for this transaction that are not equal 1000 ULD.</source>
-        <translation>Unable to locate enough Darksend non-denominated funds for this transaction that are not equal 1000 ULD.</translation>
+        <source>Unable to locate enough Darksend non-denominated funds for this transaction that are not equal 1000 UT.</source>
+        <translation>Unable to locate enough Darksend non-denominated funds for this transaction that are not equal 1000 UT.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -4635,13 +4635,13 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <location line="+12"/>
-        <source>Fees (in ULD/Kb) smaller than this are considered zero fee for relaying (default: %s)</source>
-        <translation>Fees (in ULD/Kb) smaller than this are considered zero fee for relaying (default: %s)</translation>
+        <source>Fees (in UT/Kb) smaller than this are considered zero fee for relaying (default: %s)</source>
+        <translation>Fees (in UT/Kb) smaller than this are considered zero fee for relaying (default: %s)</translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>Fees (in ULD/Kb) smaller than this are considered zero fee for transaction creation (default: %s)</source>
-        <translation>Fees (in ULD/Kb) smaller than this are considered zero fee for transaction creation (default: %s)</translation>
+        <source>Fees (in UT/Kb) smaller than this are considered zero fee for transaction creation (default: %s)</source>
+        <translation>Fees (in UT/Kb) smaller than this are considered zero fee for transaction creation (default: %s)</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4755,8 +4755,8 @@ for example: alertnotify=echo %%s | mail -s &quot;Ulord Alert&quot; admin@foo.co
     </message>
     <message>
         <location line="+20"/>
-        <source>Unable to locate enough funds for this transaction that are not equal 1000 ULD.</source>
-        <translation>Unable to locate enough funds for this transaction that are not equal 1000 ULD.</translation>
+        <source>Unable to locate enough funds for this transaction that are not equal 1000 UT.</source>
+        <translation>Unable to locate enough funds for this transaction that are not equal 1000 UT.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4897,8 +4897,8 @@ for example: alertnotify=echo %%s | mail -s &quot;Ulord Alert&quot; admin@foo.co
     </message>
     <message>
         <location line="+5"/>
-        <source>Fee (in ULD/kB) to add to transactions you send (default: %s)</source>
-        <translation>Fee (in ULD/kB) to add to transactions you send (default: %s)</translation>
+        <source>Fee (in UT/kB) to add to transactions you send (default: %s)</source>
+        <translation>Fee (in UT/kB) to add to transactions you send (default: %s)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5357,8 +5357,8 @@ for example: alertnotify=echo %%s | mail -s &quot;Ulord Alert&quot; admin@foo.co
     </message>
     <message>
         <location line="+1"/>
-        <source>Keep N ULD anonymized (default: %u)</source>
-        <translation>Keep N ULD anonymized (default: %u)</translation>
+        <source>Keep N UT anonymized (default: %u)</source>
+        <translation>Keep N UT anonymized (default: %u)</translation>
     </message>
     <message>
         <location line="+1"/>
