@@ -23,7 +23,8 @@ General Info about Ulord:
 What is UlordChain?
 ------------------
 
-UlordChain is a infrastructure chain layer and adopts the mixed consensus mechanism of POW and POS. It's the infrastructure and supports the intermediate layer and top application layer of the Ulord.
+UlordChain is a infrastructure chain layer and adopts the mixed consensus mechanism of POW and POS.It supports the intermediate layer and top application layer of the Ulord.
+UlordChain is the infrastructure of the whole ecosystem.
 
 Building UlordChain
 -------------------
