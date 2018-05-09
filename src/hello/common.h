@@ -4,7 +4,11 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
+#ifdef MAC_OSX
+#include <sys/malloc.h>
+#else
 #include <malloc.h>
+#endif
 
 #define INPUT_LEN	140
 #define OUTPUT_LEN	32

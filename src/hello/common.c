@@ -4,7 +4,11 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
+#ifdef MAC_OSX
+#include <sys/malloc.h>
+#else
 #include <malloc.h>
+#endif
 
 void view_data_u8(const char *mess, 
 		uint8_t *data, uint32_t len) {

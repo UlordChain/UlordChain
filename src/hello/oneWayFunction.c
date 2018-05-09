@@ -6,7 +6,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#ifndef MAC_OSX
 #include <omp.h>
+#endif
 
 #include "my_time.h"
 #include "common.h"
