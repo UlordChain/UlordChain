@@ -414,7 +414,7 @@ void CSuperblockManager::AppendFoundersReward(CMutableTransaction& txNewRet, int
     ExtractDestination(foundersScript, address1);
     CBitcoinAddress address2(address1);
 
-    // TODO: PRINT NICE N.N ULD OUTPUT
+    // TODO: PRINT NICE N.N UT OUTPUT
 
     DBG( cout << "CSuperblockManager::AppendFoundersReward Before LogPrintf call, nAmount = " << foundersReward << endl; );
     LogPrintf("NEW Superblock : output to founders (addr %s, amount %d)\n", address2.ToString(), foundersReward);
@@ -484,7 +484,7 @@ void CSuperblockManager::CreateSuperblock(CMutableTransaction& txNewRet, int nBl
             ExtractDestination(payment.script, address1);
             CBitcoinAddress address2(address1);
 
-            // TODO: PRINT NICE N.N ULD OUTPUT
+            // TODO: PRINT NICE N.N UT OUTPUT
 
             DBG( cout << "CSuperblockManager::CreateSuperblock Before LogPrintf call, nAmount = " << payment.nAmount << endl; );
             LogPrintf("NEW Superblock : output %d (addr %s, amount %d)\n", i, address2.ToString(), payment.nAmount);

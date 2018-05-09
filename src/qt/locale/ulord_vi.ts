@@ -176,8 +176,8 @@
         <translation>Xác nhận mã hoá ví</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR ULD&lt;/b&gt;!</source>
-        <translation>Chú ý: Nếu bạn mã hoá ví và mất mật khẩu, bạn sẽ &lt;b&gt;MẤT TẤT CẢ ULD CỦA BẠN&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR UT&lt;/b&gt;!</source>
+        <translation>Chú ý: Nếu bạn mã hoá ví và mất mật khẩu, bạn sẽ &lt;b&gt;MẤT TẤT CẢ UT CỦA BẠN&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -864,28 +864,28 @@ Kiểu: %3
         <translation>Hãy chọn mức độ riêng tư.</translation>
     </message>
     <message>
-        <source>Use 2 separate masternodes to mix funds up to 1000 ULD</source>
-        <translation>Sử dụng 2 masternode khác nhau để trộn số tiền lên đến 1000 ULD</translation>
+        <source>Use 2 separate masternodes to mix funds up to 1000 UT</source>
+        <translation>Sử dụng 2 masternode khác nhau để trộn số tiền lên đến 1000 UT</translation>
     </message>
     <message>
-        <source>Use 8 separate masternodes to mix funds up to 1000 ULD</source>
-        <translation>Sử dụng 8 masternode khác nhau để trộn số tiền lên đến 1000 ULD</translation>
+        <source>Use 8 separate masternodes to mix funds up to 1000 UT</source>
+        <translation>Sử dụng 8 masternode khác nhau để trộn số tiền lên đến 1000 UT</translation>
     </message>
     <message>
         <source>Use 16 separate masternodes</source>
         <translation>Sử dụng 16 masternode khác nhau</translation>
     </message>
     <message>
-        <source>This option is the quickest and will cost about ~0.025 ULD to anonymize 1000 ULD</source>
-        <translation>Tuỳ chọn này là nhanh nhất và sẽ mất chi phí khoảng ~0.025 ULD để ẩn danh 1000 ULD</translation>
+        <source>This option is the quickest and will cost about ~0.025 UT to anonymize 1000 UT</source>
+        <translation>Tuỳ chọn này là nhanh nhất và sẽ mất chi phí khoảng ~0.025 UT để ẩn danh 1000 UT</translation>
     </message>
     <message>
-        <source>This option is moderately fast and will cost about 0.05 ULD to anonymize 1000 ULD</source>
-        <translation>Tuỳ chọn này là tương đối nhanh và sẽ mất chi phí khoảng ~0.05 ULD để ẩn danh 1000 ULD</translation>
+        <source>This option is moderately fast and will cost about 0.05 UT to anonymize 1000 UT</source>
+        <translation>Tuỳ chọn này là tương đối nhanh và sẽ mất chi phí khoảng ~0.05 UT để ẩn danh 1000 UT</translation>
     </message>
     <message>
-        <source>0.1 ULD per 1000 ULD you anonymize.</source>
-        <translation>0.1 ULD cho mỗi 1000 ULD bạn muốn ẩn danh.</translation>
+        <source>0.1 UT per 1000 UT you anonymize.</source>
+        <translation>0.1 UT cho mỗi 1000 UT bạn muốn ẩn danh.</translation>
     </message>
     <message>
         <source>This is the slowest and most secure option. Using maximum anonymity will cost</source>
@@ -1431,8 +1431,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Số tiền và số vòng:</translation>
     </message>
     <message>
-        <source>0 ULD / 0 Rounds</source>
-        <translation>0 ULD / 0 Vòng</translation>
+        <source>0 UT / 0 Rounds</source>
+        <translation>0 UT / 0 Vòng</translation>
     </message>
     <message>
         <source>Submitted Denom:</source>
@@ -3276,8 +3276,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Gửi tiền</translation>
     </message>
     <message>
-        <source>InstantX doesn't support sending values that high yet. Transactions are currently limited to %1 ULD.</source>
-        <translation>InstantX không hỗ trợ để gửi giá trị lớn đến như vậy. Giới hạn giao dịch hiện tại đến %1 ULD.</translation>
+        <source>InstantX doesn't support sending values that high yet. Transactions are currently limited to %1 UT.</source>
+        <translation>InstantX không hỗ trợ để gửi giá trị lớn đến như vậy. Giới hạn giao dịch hiện tại đến %1 UT.</translation>
     </message>
 </context>
 <context>
@@ -3390,8 +3390,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Không tìm đủ ngân sách Darksend denominated cho giao dịch này.</translation>
     </message>
     <message>
-        <source>Unable to locate enough Darksend non-denominated funds for this transaction that are not equal 1000 ULD.</source>
-        <translation>Không tìm đủ ngân sách Darksend denominated cho giao dịch mà nó không bằng 1000 ULD</translation>
+        <source>Unable to locate enough Darksend non-denominated funds for this transaction that are not equal 1000 UT.</source>
+        <translation>Không tìm đủ ngân sách Darksend denominated cho giao dịch mà nó không bằng 1000 UT</translation>
     </message>
     <message>
         <source>Warning: -paytxfee is set very high! This is the transaction fee you will pay if you send a transaction.</source>
@@ -3634,12 +3634,12 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Lỗi: Thấy tham số không được hỗ trợ -socks. Thiết lập phiên bản SOCKS là không thể được nữa, chỉ hỗ trợ proxy SOCKS5.</translation>
     </message>
     <message>
-        <source>Fees (in ULD/Kb) smaller than this are considered zero fee for relaying (default: %s)</source>
-        <translation>Phí (tính theo ULD/Kb) nhỏ hơn số này được coi là không mất phí cho việc chuyển tiền (ngầm định: %s)</translation>
+        <source>Fees (in UT/Kb) smaller than this are considered zero fee for relaying (default: %s)</source>
+        <translation>Phí (tính theo UT/Kb) nhỏ hơn số này được coi là không mất phí cho việc chuyển tiền (ngầm định: %s)</translation>
     </message>
     <message>
-        <source>Fees (in ULD/Kb) smaller than this are considered zero fee for transaction creation (default: %s)</source>
-        <translation>Phí (theo ULD/Kb) nhỏ hơn số này được coi không mất phí cho việc khởi tạo giao dịch (ngầm định: %s)</translation>
+        <source>Fees (in UT/Kb) smaller than this are considered zero fee for transaction creation (default: %s)</source>
+        <translation>Phí (theo UT/Kb) nhỏ hơn số này được coi không mất phí cho việc khởi tạo giao dịch (ngầm định: %s)</translation>
     </message>
     <message>
         <source>Flush database activity from memory pool to disk log every &lt;n&gt; megabytes (default: %u)</source>
@@ -3734,8 +3734,8 @@ ví dụ: alertnotify=echo %%s | mail -s "Ulord Alert" admin@foo.com
 </translation>
     </message>
     <message>
-        <source>Unable to locate enough funds for this transaction that are not equal 1000 ULD.</source>
-        <translation>Không tìm được đủ ngân sách cho giao dịch mà nó không đủ 1000 ULD.</translation>
+        <source>Unable to locate enough funds for this transaction that are not equal 1000 UT.</source>
+        <translation>Không tìm được đủ ngân sách cho giao dịch mà nó không đủ 1000 UT.</translation>
     </message>
     <message>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: %s)</source>
@@ -3847,8 +3847,8 @@ ví dụ: alertnotify=echo %%s | mail -s "Ulord Alert" admin@foo.com
         <translation>Lỗi: Tìm thấy tham số không được hỗ trợ -tor, thay vào đó hãy sử dụng -onion</translation>
     </message>
     <message>
-        <source>Fee (in ULD/kB) to add to transactions you send (default: %s)</source>
-        <translation>Phí (theo ULD/Kb) sẽ thêm vào các giao dịch mà bạn gửi (ngầm định: %s)</translation>
+        <source>Fee (in UT/kB) to add to transactions you send (default: %s)</source>
+        <translation>Phí (theo UT/Kb) sẽ thêm vào các giao dịch mà bạn gửi (ngầm định: %s)</translation>
     </message>
     <message>
         <source>Finalizing transaction.</source>
@@ -4215,8 +4215,8 @@ ví dụ: alertnotify=echo %%s | mail -s "Ulord Alert" admin@foo.com
         <translation>Khoá KeePassHttp cho liên lạc mã hoá AES với KeePass</translation>
     </message>
     <message>
-        <source>Keep N ULD anonymized (default: %u)</source>
-        <translation>Giữ N ULD đã được ẩn danh (ngầm định: %u)</translation>
+        <source>Keep N UT anonymized (default: %u)</source>
+        <translation>Giữ N UT đã được ẩn danh (ngầm định: %u)</translation>
     </message>
     <message>
         <source>Keep at most &lt;n&gt; unconnectable transactions in memory (default: %u)</source>

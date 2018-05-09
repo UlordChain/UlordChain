@@ -57,9 +57,9 @@ public:
      */
     enum Unit
     {
-        ULD,
-        mULD,
-        uULD,
+        UT,
+        mUT,
+        uUT,
         duffs
     };
 

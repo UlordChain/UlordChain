@@ -176,8 +176,8 @@
         <translation>Potvrďte šifrovanie peňaženky</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR ULD&lt;/b&gt;!</source>
-        <translation>Upozornenie: Ak zašifrujete vašu peňaženku a stratíte prístupové heslo, potom &lt;b&gt;prídete o všetky svoje ULD-y&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR UT&lt;/b&gt;!</source>
+        <translation>Upozornenie: Ak zašifrujete vašu peňaženku a stratíte prístupové heslo, potom &lt;b&gt;prídete o všetky svoje UT-y&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -863,28 +863,28 @@ Adresa: %4</translation>
         <translation>Prosím vyberte úroveň súkromia.</translation>
     </message>
     <message>
-        <source>Use 2 separate masternodes to mix funds up to 1000 ULD</source>
-        <translation>Použiť 2 rozdielne masternode pre fixovanie prostriedkov až do 1000 ULD</translation>
+        <source>Use 2 separate masternodes to mix funds up to 1000 UT</source>
+        <translation>Použiť 2 rozdielne masternode pre fixovanie prostriedkov až do 1000 UT</translation>
     </message>
     <message>
-        <source>Use 8 separate masternodes to mix funds up to 1000 ULD</source>
-        <translation>Použiť 8 rozdielnych masternode pre fixovanie prostriedkov až do 1000 ULD</translation>
+        <source>Use 8 separate masternodes to mix funds up to 1000 UT</source>
+        <translation>Použiť 8 rozdielnych masternode pre fixovanie prostriedkov až do 1000 UT</translation>
     </message>
     <message>
         <source>Use 16 separate masternodes</source>
         <translation>Použiť 16 rozdielnych masternode</translation>
     </message>
     <message>
-        <source>This option is the quickest and will cost about ~0.025 ULD to anonymize 1000 ULD</source>
-        <translation>Táto možnosť je najrýchlejšia a bude stáť približne 0.025 ULD pre anonimizáciu 1000 ULD</translation>
+        <source>This option is the quickest and will cost about ~0.025 UT to anonymize 1000 UT</source>
+        <translation>Táto možnosť je najrýchlejšia a bude stáť približne 0.025 UT pre anonimizáciu 1000 UT</translation>
     </message>
     <message>
-        <source>This option is moderately fast and will cost about 0.05 ULD to anonymize 1000 ULD</source>
-        <translation>Táto možnosť je stredne rýchla bude stáť približne 0.05 ULD pre anonimizáciu 1000 ULD</translation>
+        <source>This option is moderately fast and will cost about 0.05 UT to anonymize 1000 UT</source>
+        <translation>Táto možnosť je stredne rýchla bude stáť približne 0.05 UT pre anonimizáciu 1000 UT</translation>
     </message>
     <message>
-        <source>0.1 ULD per 1000 ULD you anonymize.</source>
-        <translation>0.1 ULD za 1000 ULD ktoré spravíte anonymnými.</translation>
+        <source>0.1 UT per 1000 UT you anonymize.</source>
+        <translation>0.1 UT za 1000 UT ktoré spravíte anonymnými.</translation>
     </message>
     <message>
         <source>This is the slowest and most secure option. Using maximum anonymity will cost</source>
@@ -1430,8 +1430,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Čiastka a kolá:</translation>
     </message>
     <message>
-        <source>0 ULD / 0 Rounds</source>
-        <translation>0 ULD / 0 Kôl</translation>
+        <source>0 UT / 0 Rounds</source>
+        <translation>0 UT / 0 Kôl</translation>
     </message>
     <message>
         <source>Submitted Denom:</source>
@@ -3275,8 +3275,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Poslať Bitcoins</translation>
     </message>
     <message>
-        <source>InstantX doesn't support sending values that high yet. Transactions are currently limited to %1 ULD.</source>
-        <translation>InstantX zatiaľ nepodporuje posielanie takto vysokých čiastok. Transakcie sú limitované na %1 ULD.</translation>
+        <source>InstantX doesn't support sending values that high yet. Transactions are currently limited to %1 UT.</source>
+        <translation>InstantX zatiaľ nepodporuje posielanie takto vysokých čiastok. Transakcie sú limitované na %1 UT.</translation>
     </message>
 </context>
 <context>
@@ -3389,8 +3389,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Nedá sa nájsť dostatok denominácií Darksend pre túto transakciu. </translation>
     </message>
     <message>
-        <source>Unable to locate enough Darksend non-denominated funds for this transaction that are not equal 1000 ULD.</source>
-        <translation>Nedá sa nájsť dostatok ne-denominovaných Darksend zdrojov pre túto transakciu, ktoré nie sú rovné 1000 ULD.</translation>
+        <source>Unable to locate enough Darksend non-denominated funds for this transaction that are not equal 1000 UT.</source>
+        <translation>Nedá sa nájsť dostatok ne-denominovaných Darksend zdrojov pre túto transakciu, ktoré nie sú rovné 1000 UT.</translation>
     </message>
     <message>
         <source>Warning: -paytxfee is set very high! This is the transaction fee you will pay if you send a transaction.</source>
@@ -3633,12 +3633,12 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Chyba: Nájdený nepodporovaný argument -socks. Nastavenie SOCKS verzie nie je už možné, podporované sú už iba proxy SOCKS5.</translation>
     </message>
     <message>
-        <source>Fees (in ULD/Kb) smaller than this are considered zero fee for relaying (default: %s)</source>
-        <translation>Poplatky (v ULD za Kb) menšie ako toto, sú považované za nulový poplatok pre prenos (predvolené: %s)</translation>
+        <source>Fees (in UT/Kb) smaller than this are considered zero fee for relaying (default: %s)</source>
+        <translation>Poplatky (v UT za Kb) menšie ako toto, sú považované za nulový poplatok pre prenos (predvolené: %s)</translation>
     </message>
     <message>
-        <source>Fees (in ULD/Kb) smaller than this are considered zero fee for transaction creation (default: %s)</source>
-        <translation>Poplatky (v ULD za Kb) menšie ako toto, sú považované za nulový transakčný poplatok (predvolené: %s)</translation>
+        <source>Fees (in UT/Kb) smaller than this are considered zero fee for transaction creation (default: %s)</source>
+        <translation>Poplatky (v UT za Kb) menšie ako toto, sú považované za nulový transakčný poplatok (predvolené: %s)</translation>
     </message>
     <message>
         <source>Flush database activity from memory pool to disk log every &lt;n&gt; megabytes (default: %u)</source>
@@ -3733,8 +3733,8 @@ napríklad: alertnotify=echo %%s | mail -s "Ulord Upozornenie" admin@foo.com
 </translation>
     </message>
     <message>
-        <source>Unable to locate enough funds for this transaction that are not equal 1000 ULD.</source>
-        <translation>Nenašiel sa dostatok prostriedkov pre túto transakciu, ktorú nie sú rovné 1000 ULD.</translation>
+        <source>Unable to locate enough funds for this transaction that are not equal 1000 UT.</source>
+        <translation>Nenašiel sa dostatok prostriedkov pre túto transakciu, ktorú nie sú rovné 1000 UT.</translation>
     </message>
     <message>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: %s)</source>
@@ -3847,8 +3847,8 @@ napríklad: alertnotify=echo %%s | mail -s "Ulord Upozornenie" admin@foo.com
         <translation>Chyba: nájdený nepodporovaný argument -tor, použite -onion.</translation>
     </message>
     <message>
-        <source>Fee (in ULD/kB) to add to transactions you send (default: %s)</source>
-        <translation>Pridať poplatok (v ULD za kB) do transakcií ktoré posielate (predvolené: %s)</translation>
+        <source>Fee (in UT/kB) to add to transactions you send (default: %s)</source>
+        <translation>Pridať poplatok (v UT za kB) do transakcií ktoré posielate (predvolené: %s)</translation>
     </message>
     <message>
         <source>Finalizing transaction.</source>
@@ -4215,8 +4215,8 @@ napríklad: alertnotify=echo %%s | mail -s "Ulord Upozornenie" admin@foo.com
         <translation>Kľúč KeePassHttp pre šifrovanú AES komunikáciu s KeePass</translation>
     </message>
     <message>
-        <source>Keep N ULD anonymized (default: %u)</source>
-        <translation>Udržiavať N ULD anonymizovaných (predvolené: %u)</translation>
+        <source>Keep N UT anonymized (default: %u)</source>
+        <translation>Udržiavať N UT anonymizovaných (predvolené: %u)</translation>
     </message>
     <message>
         <source>Keep at most &lt;n&gt; unconnectable transactions in memory (default: %u)</source>
