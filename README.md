@@ -23,8 +23,7 @@ General Info about Ulord:
 What is UlordChain?
 ------------------
 
-UlordChain is the basic layer of Ulord, a decentralized featured blockchain based on Dash Core, which supports 
-intermediate layer and top application layer commands.
+UlordChain is a infrastructure chain layer and adopts the mixed consensus mechanism of POW and POS. It's the infrastructure and supports the intermediate layer and top application layer of the Ulord.
 
 Building UlordChain
 -------------------
