@@ -421,6 +421,13 @@ static const CRPCCommand vRPCCommands[] =
     { "Claimtrie",          "getclaimsfortx",         &getclaimsfortx,         true  },  
     { "Claimtrie",          "getnameproof",           &getnameproof,           true  },  
     { "Claimtrie",          "getclaimbyid",           &getclaimbyid,           true  },
+    /*CrossChain*/
+    { "CrossChain",         "crosschaininitial",      &crosschaininitial,      true  },
+    { "CrossChain",         "crosschainparticipate",  &crosschainparticipate,  true  },
+    { "CrossChain",         "crosschainredeem",       &crosschainredeem,       true  },
+    { "CrossChain",         "crosschainrefund",       &crosschainrefund,       true  },
+    { "CrossChain",         "crosschainextractsecret",&crosschainextractsecret,true  },
+    { "CrossChain",         "crosschainauditcontract",&crosschainauditcontract,true  },
 #endif // ENABLE_WALLET
 };
 
