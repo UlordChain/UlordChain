@@ -883,7 +883,7 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 {
     if (fHelp || params.size() !=2)
         throw runtime_error(
-            "params.size error )\n"
+            "params.size error\n"
         );
     UniValue result(UniValue::VOBJ);
     return result;
@@ -894,7 +894,7 @@ UniValue crosschainparticipate(const UniValue &params, bool fHelp)
 {
     if (fHelp || params.size() !=3)
         throw runtime_error(
-            "params.size error )\n"
+            "params.size error\n"
         );
     UniValue result(UniValue::VOBJ);
     return result;
@@ -904,7 +904,7 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 {
     if (fHelp || params.size() !=3)
         throw runtime_error(
-            "params.size error )\n"
+            "params.size error\n"
         );
     UniValue result(UniValue::VOBJ);
     return result;
@@ -913,7 +913,7 @@ UniValue crosschainrefund(const UniValue &params, bool fHelp)
 {
     if (fHelp || params.size() !=2)
         throw runtime_error(
-            "params.size error )\n"
+            "params.size error\n"
         );
     UniValue result(UniValue::VOBJ);
     return result;
@@ -922,7 +922,7 @@ UniValue crosschainextractsecret(const UniValue &params, bool fHelp)
 {
     if (fHelp || params.size() !=2)
         throw runtime_error(
-            "params.size error )\n"
+            "params.size error\n"
         );
     UniValue result(UniValue::VOBJ);
     return result;
@@ -933,7 +933,7 @@ UniValue crosschainauditcontract(const UniValue &params, bool fHelp)
 {
     if (fHelp || params.size() !=2)
         throw runtime_error(
-            "params.size error )\n"
+            "params.size error\n"
         );
     UniValue result(UniValue::VOBJ);
     return result;
