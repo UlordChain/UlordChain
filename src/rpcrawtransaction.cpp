@@ -907,7 +907,8 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 	// Gets the current Unix timestamp.(hex)
 	struct timeval tm;
 	gettimeofday(&tm,NULL);
-	long long l_time = tm.tv_sec + 172800;
+    // 172800 is 48hour to second
+	uint64_t l_time = tm.tv_sec + 172800;
 	
     return true;
 }
