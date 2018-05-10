@@ -905,11 +905,9 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 	std::string tem = u_hash.GetHex();
 	
 	// Gets the current Unix timestamp.(hex)
-	struct timeval tm; 
+	struct timeval tm;
 	gettimeofday(&tm,NULL);
-	printf("mictime second: %ld",tm.tv_sec);
-
-
+	long long l_time = tm.tv_sec + 172800;
 	
     return true;
 }
