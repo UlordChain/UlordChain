@@ -3,7 +3,8 @@
 // Copyright (c) 2014-2017 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-
+#include "utilstrencodings.h"
+#include "crypto/sha256.h"
 #include "base58.h"
 #include "chain.h"
 #include "coins.h"
@@ -28,7 +29,14 @@
 #ifdef ENABLE_WALLET
 #include "wallet/wallet.h"
 #endif
+///////////////////////////////////////////////////////////
+#include "arith_uint256.h"
+#include <secp256k1.h>
+#include <secp256k1_recovery.h>
 
+
+
+//////////////////////////////////////////////////////////
 #include <stdint.h>
 
 #include <boost/assign/list_of.hpp>
@@ -879,14 +887,23 @@ UniValue sendrawtransaction(const UniValue& params, bool fHelp)
     return hashTx.GetHex();
 }
 
+
 UniValue crosschaininitial(const UniValue &params, bool fHelp)
 {
     if (fHelp || params.size() !=2)
         throw runtime_error(
             "params.size error\n"
         );
-    UniValue result(UniValue::VOBJ);
-    return result;
+	// First, a random value is generated and sha256 hash algorithm is used.
+	unsigned char vch[32];
+	RandAddSeedPerfmon();
+    GetRandBytes(vch, sizeof(vch));
+	cout << vch << endl;
+  	unsigned char buf[33]={0}; 
+	std::vector<unsigned char> temp;
+	uint256 u_hash = Hash(vch,vch+sizeof(vch));
+	std::string tem = u_hash.GetHex();
+    return true;
 }
 
 
