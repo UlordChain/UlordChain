@@ -2561,7 +2561,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>&amp;Label:</source>
-        <translation>标     签：&amp;</translation>
+        <translation>标   签：&amp;</translation>
     </message>
     <message>
         <source>Enter a label for this address to add it to the list of used addresses</source>
@@ -2569,7 +2569,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>A&amp;mount:</source>
-        <translation>金     额：&amp;</translation>
+        <translation>金   额：&amp;</translation>
     </message>
     <message>
         <source>Message:</source>
