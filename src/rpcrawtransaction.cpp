@@ -3,6 +3,8 @@
 // Copyright (c) 2014-2017 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+#include <sys/time.h>
 #include "utilstrencodings.h"
 #include "crypto/sha256.h"
 #include "base58.h"
@@ -898,11 +900,17 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 	unsigned char vch[32];
 	RandAddSeedPerfmon();
     GetRandBytes(vch, sizeof(vch));
-	cout << vch << endl;
-  	unsigned char buf[33]={0}; 
 	std::vector<unsigned char> temp;
 	uint256 u_hash = Hash(vch,vch+sizeof(vch));
 	std::string tem = u_hash.GetHex();
+	
+	// Gets the current Unix timestamp.(hex)
+	struct timeval tm; 
+	gettimeofday(&tm,NULL);
+	printf("mictime second: %ld",tm.tv_sec);
+
+
+	
     return true;
 }
 
