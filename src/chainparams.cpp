@@ -190,18 +190,18 @@ public:
         consensus.premine = int64_t(1e8 * COIN);                            // premine
         consensus.genesisReward = int64_t(1 * COIN);                        // genesis
         consensus.minerReward4 = int64_t(112.966 * COIN);                   // miners
-        consensus.minerReward5 = int64_t(535.103 * COIN);
+        consensus.minerReward5 = int64_t(133.775 * COIN);
         consensus.mnReward1 = int64_t(52.411 * COIN);                       // masternodes
         consensus.mnReward2 = int64_t(76.104 * COIN);					
-        consensus.mnReward5 = int64_t(535.103 * COIN);
+        consensus.mnReward5 = int64_t(133.775 * COIN);
         consensus.foundersReward = int64_t(4166666.667 * COIN);             // founders
         consensus.bdgetReward4 = int64_t(520833.333 * COIN);                // budget
-        consensus.bdgetReward5 = int64_t(2083333.333 * COIN);
+        consensus.bdgetReward5 = int64_t(520833.333 * COIN);
         consensus.colleteral = int64_t(1e4 * COIN);                         // masternode colleteral
 
         consensus.nSubsidyHalvingInterval = 840960;                     // 4 years, 24 * 60 / 2.5 * 365 * 4 
         consensus.nMasternodePaymentsStartBlock = 57600;                // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
-        consensus.nMasternodePaymentsIncreaseBlock = 576 * 365;         //576 * 365
+        //consensus.nMasternodePaymentsIncreaseBlock = 576 * 365;         //576 * 365
         consensus.nMasternodePaymentsIncreasePeriod = 576 * 365;        // 17280 - actual historical value
         consensus.nInstantSendKeepLock = 24;
         consensus.nBudgetPaymentsStartBlock = 2;                        // actual historical value
