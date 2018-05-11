@@ -319,7 +319,7 @@ class CNode
 {
 public:
     // socket
-    uint64_t nServices;
+    uint64_t nServices;  // 5 is support bloom filter and node network
     SOCKET hSocket;
     CDataStream ssSend;
     size_t nSendSize; // total size of all vSendMsg entries
