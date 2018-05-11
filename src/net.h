@@ -336,7 +336,7 @@ public:
 
     int64_t nLastSend;
     int64_t nLastRecv;
-    int64_t nTimeConnected;
+    int64_t nTimeConnected;  //now - nTimeConnected > 60 exec disconnect
     int64_t nTimeOffset;
     int64_t nLastWarningTime;
     CAddress addr;
