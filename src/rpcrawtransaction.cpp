@@ -896,7 +896,18 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
         throw runtime_error(
             "params.size error\n"
         );
-	// First, a random value is generated and sha256 hash algorithm is used.
+	// parse parameters
+	LOCK2(cs_main, pwalletMain->cs_wallet);
+	CBitcoinAddress address(params[0].get_str());
+	if (!address.IsValid())
+    	throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
+
+	 // Amount
+    CAmount nAmount = AmountFromValue(params[1]);
+    if (nAmount <= 0)
+        throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
+
+	// a random value is generated and sha256 hash algorithm is used.
 	unsigned char vch[32];
 	RandAddSeedPerfmon();
     GetRandBytes(vch, sizeof(vch));
