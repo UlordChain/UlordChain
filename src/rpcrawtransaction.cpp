@@ -937,14 +937,17 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
     	throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
 	
 	CScript contract =  CScript() << OP_IF << OP_SIZE << secretSize << OP_EQUALVERIFY << OP_SHA256 << str_hash << OP_EQUALVERIFY << OP_DUP  << OP_HASH160;
-	CScript contract_1 = GetScriptForDestination(address.Get()) << OP_ELSE << str_stamp << OP_CHECKLOCKTIMEVERIFY << OP_DROP << OP_DUP << OP_HASH160;
-	CScript contract_2 = GetScriptForDestination(refund_address.Get())<< OP_ENDIF << OP_EQUALVERIFY << OP_CHECKSIG;
+	CScript contract_1 = GetScriptForDestination(CTxDestination(address.Get())) << OP_ELSE << str_stamp << OP_CHECKLOCKTIMEVERIFY << OP_DROP << OP_DUP << OP_HASH160;
+	CScript contract_2 = GetScriptForDestination(CTxDestination(refund_address.Get()))<< OP_ENDIF << OP_EQUALVERIFY << OP_CHECKSIG;
 	contract = contract + contract_1 + contract_2;	
 
 	// The build script is 160 hashes.
 	CScriptID contractP2SH = CScriptID(contract);
-	LogPrintf("contractP2SH is %s\n",contractP2SH.ToString());
-
+	
+	// Start building the lock script for the p2sh type.
+	CScript contractP2SHPkScript = CScript() << OP_HASH160;
+	CScript contractP2SHPkScript_1 = GetScriptForDestination(CTxDestination(contractP2SH)) << OP_EQUAL;
+	contractP2SHPkScript = contractP2SHPkScript + contractP2SHPkScript_1;
     return true;
 }
 
