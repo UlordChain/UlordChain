@@ -925,6 +925,15 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 	sprintf(temp,"%llx",l_time);
 	std::string str = temp;
 
+	// construct contract of script
+	CPubKey newKey;
+    if ( !pwalletMain->GetKeyFromPool(newKey) )
+        throw JSONRPCError(RPC_WALLET_KEYPOOL_RAN_OUT,"Error: Keypool ran out,please call keypoolrefill first");
+    CBitcoinAddress refund_address(CTxDestination(newKey.GetID()));
+	if (!refund_address.IsValid())
+    	throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
+	LogPrintf("refund_address is %s\n",refund_address.ToString());
+
     return true;
 }
 
