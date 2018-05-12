@@ -28,6 +28,7 @@ public:
         singleStep(100000) // satoshis
     {
         setAlignment(Qt::AlignRight);
+        setContextMenuPolicy(Qt::ActionsContextMenu);
 
         connect(lineEdit(), SIGNAL(textEdited(QString)), this, SIGNAL(valueChanged()));
     }

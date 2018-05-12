@@ -1365,7 +1365,7 @@ UnitDisplayStatusBarControl::UnitDisplayStatusBarControl(const PlatformStyle *pl
     menu(0)
 {
     createContextMenu();
-    setToolTip(tr("Unit to show amounts in. Click to select another unit."));
+    // setToolTip(tr("Unit to show amounts in. Click to select another unit."));
     QList<BitcoinUnits::Unit> units = BitcoinUnits::availableUnits();
     int max_width = 0;
     const QFontMetrics fm(font());

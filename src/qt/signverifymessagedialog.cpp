@@ -41,10 +41,10 @@ SignVerifyMessageDialog::SignVerifyMessageDialog(const PlatformStyle *platformSt
     ui->verifyMessageButton_VM->setIcon(QIcon());
     ui->clearButton_VM->setIcon(QIcon());
 #else
-    ui->signMessageButton_SM->setIcon(QIcon(":/icons/" + theme + "/edit"));
-    ui->clearButton_SM->setIcon(QIcon(":/icons/" + theme + "/remove"));
-    ui->verifyMessageButton_VM->setIcon(QIcon(":/icons/" + theme + "/transaction_0"));
-    ui->clearButton_VM->setIcon(QIcon(":/icons/" + theme + "/remove"));
+    // ui->signMessageButton_SM->setIcon(QIcon(":/icons/" + theme + "/edit"));
+    // ui->clearButton_SM->setIcon(QIcon(":/icons/" + theme + "/remove"));
+    // ui->verifyMessageButton_VM->setIcon(QIcon(":/icons/" + theme + "/transaction_0"));
+    // ui->clearButton_VM->setIcon(QIcon(":/icons/" + theme + "/remove"));
 #endif
 
     // These icons are needed on Mac also

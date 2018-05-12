@@ -49,6 +49,35 @@ ReceiveCoinsDialog::ReceiveCoinsDialog(const PlatformStyle *platformStyle, QWidg
     QAction *copyMessageAction = new QAction(tr("Copy message"), this);
     QAction *copyAmountAction = new QAction(tr("Copy amount"), this);
 
+    // "reqLabel" mouse right click menu
+    QAction *reqLabelActCopy = new QAction(tr("Copy"), this);
+    connect(reqLabelActCopy,SIGNAL(triggered(bool)), this, SLOT(reqLabelCopy()));
+    ui->reqLabel->addAction(reqLabelActCopy);
+    QAction *reqLabelActPaste = new QAction(tr("Paste"), this);
+    connect(reqLabelActPaste,SIGNAL(triggered(bool)), this, SLOT(reqLabelPaste()));
+    ui->reqLabel->addAction(reqLabelActPaste);
+    QAction *reqLabelActCut = new QAction(tr("Cut"), this);
+    connect(reqLabelActCut,SIGNAL(triggered(bool)), this, SLOT(reqLabelCut()));
+    ui->reqLabel->addAction(reqLabelActCut);
+    QAction *reqLabelActUndo = new QAction(tr("Undo"), this);
+    connect(reqLabelActUndo,SIGNAL(triggered(bool)), this, SLOT(reqLabelUndo()));
+    ui->reqLabel->addAction(reqLabelActUndo);
+
+    // "reqMessage" mouse right click menu
+    QAction *reqMessageActCopy = new QAction(tr("Copy"), this);
+    connect(reqMessageActCopy,SIGNAL(triggered(bool)), this, SLOT(reqMessageCopy()));
+    ui->reqMessage->addAction(reqMessageActCopy);
+    QAction *reqMessageActPaste = new QAction(tr("Paste"), this);
+    connect(reqMessageActPaste,SIGNAL(triggered(bool)), this, SLOT(reqMessagePaste()));
+    ui->reqMessage->addAction(reqMessageActPaste);
+    QAction *reqMessageActCut = new QAction(tr("Cut"), this);
+    connect(reqMessageActCut,SIGNAL(triggered(bool)), this, SLOT(reqMessageCut()));
+    ui->reqMessage->addAction(reqMessageActCut);
+    QAction *reqMessageActUndo = new QAction(tr("Undo"), this);
+    connect(reqMessageActUndo,SIGNAL(triggered(bool)), this, SLOT(reqMessageUndo()));
+    ui->reqMessage->addAction(reqMessageActUndo);
+
+
     // context menu
     contextMenu = new QMenu();
     contextMenu->addAction(copyLabelAction);
@@ -62,6 +91,48 @@ ReceiveCoinsDialog::ReceiveCoinsDialog(const PlatformStyle *platformStyle, QWidg
     connect(copyAmountAction, SIGNAL(triggered()), this, SLOT(copyAmount()));
 
     connect(ui->clearButton, SIGNAL(clicked()), this, SLOT(clear()));
+}
+
+void ReceiveCoinsDialog::reqLabelCopy()
+{
+    ui->reqLabel->copy();
+
+}
+
+void ReceiveCoinsDialog::reqLabelPaste()
+{
+    ui->reqLabel->paste();
+}
+
+void ReceiveCoinsDialog::reqLabelCut()
+{
+    ui->reqLabel->cut();
+}
+
+void ReceiveCoinsDialog::reqLabelUndo()
+{
+    ui->reqLabel->undo();
+}
+
+void ReceiveCoinsDialog::reqMessageCopy()
+{
+    ui->reqMessage->copy();
+
+}
+
+void ReceiveCoinsDialog::reqMessagePaste()
+{
+    ui->reqMessage->paste();
+}
+
+void ReceiveCoinsDialog::reqMessageCut()
+{
+    ui->reqMessage->cut();
+}
+
+void ReceiveCoinsDialog::reqMessageUndo()
+{
+    ui->reqMessage->undo();
 }
 
 void ReceiveCoinsDialog::setModel(WalletModel *model)

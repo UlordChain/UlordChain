@@ -168,8 +168,8 @@
         <translation>更改密码</translation>
     </message>
     <message>
-        <source>Enter the old and new passphrase to the wallet.</source>
-        <translation>请输入该钱包的旧密码与新密码。</translation>
+        <source>Enter the old passphrase and new passphrase to the wallet.</source>
+        <translation>请输入钱包的旧密码与新密码。</translation>
     </message>
     <message>
         <source>Confirm wallet encryption</source>
@@ -356,7 +356,7 @@
     </message>
     <message>
         <source>Sign &amp;message...</source>
-        <translation>消息签名(&amp;M)...</translation>
+        <translation>签名消息(&amp;M)...</translation>
     </message>
     <message>
         <source>Sign messages with your Ulord addresses to prove you own them</source>
@@ -396,7 +396,7 @@
     </message>
     <message>
         <source>&amp;Peers list</source>
-        <translation>&amp;节点列表</translation>
+        <translation>节点列表&amp;</translation>
     </message>
     <message>
         <source>Show peers info</source>
@@ -404,15 +404,19 @@
     </message>
     <message>
         <source>Wallet &amp;Repair</source>
-        <translation>钱包&amp;修复</translation>
+        <translation>钱包修复&amp;</translation>
     </message>
     <message>
         <source>Show wallet repair options</source>
         <translation>显示钱包修复选项</translation>
     </message>
     <message>
-        <source>Open &amp;Configuration File</source>
-        <translation>打开 &amp;配置文件</translation>
+        <source>Open Wallet &amp;Configuration File</source>
+        <translation>打开配置文件&amp;</translation>
+    </message>
+    <message>
+        <source>Open &amp;Masternode Configuration File</source>
+        <translation>打开主节点配置文件&amp;</translation>
     </message>
     <message>
         <source>Open configuration file</source>
@@ -1135,6 +1139,34 @@ Address: %4
         <translation>&amp;系统登录时启动Ulord程序</translation>
     </message>
     <message>
+        <source>&amp;Start Ulord Core on system login</source>
+        <translation>开机启动&amp;</translation>
+    </message>
+    <message>
+        <source>Automatically start Ulord Core after logging in to the system.</source>
+        <translation>开机启动ulord</translation>
+    </message>
+    <message>
+        <source>Show Masternodes Tab</source>
+        <translation>显示主节点窗口</translation>
+    </message>
+    <message>
+        <source>Automatically open the Ulord Core client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>自动打开路由器上的Ulord Core客户端端口。 这只适用于您的路由器支持UPnP并且已启用。</translation>
+    </message>
+    <message>
+        <source>Used for reaching peers via:</source>
+        <translation>通过以下方式连接对等节点</translation>
+    </message>
+    <message>
+        <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services:</source>
+        <translation>使用SOCKS5代理</translation>
+    </message>
+    <message>
+        <source>Shows, if the supplied default SOCKS5 proxy is used to reach peers via this network type.</source>
+        <translation>如果选择使用SOCKS5代理，可修改</translation>
+    </message>
+    <message>
         <source>Size of &amp;database cache</source>
         <translation>数据库缓存大小(&amp;D)</translation>
     </message>
@@ -1247,7 +1279,7 @@ Address: %4
         <translation>最小化到托盘(&amp;M)</translation>
     </message>
     <message>
-        <source>Minimize instead of exit the application when the window is closed. When this option is enabled, the application will be closed only after selecting Quit in the menu.</source>
+        <source>Minimize instead of exit the application when the window is closed. When this option is enabled, the application will be closed only after selecting Exit in the menu.</source>
         <translation>当窗口关闭时程序最小化而不是退出。当使用该选项时，程序只能通过在菜单中选择退出来关闭</translation>
     </message>
     <message>
@@ -1263,7 +1295,7 @@ Address: %4
         <translation>用户界面语言(&amp;L)：</translation>
     </message>
     <message>
-        <source>The user interface language can be set here. This setting will take effect after restarting Ulord.</source>
+        <source>The user interface language can be set here. This setting will take effect after restarting Ulord Core.</source>
         <translation>用户界面语言在这里设置。在重启Ulord程序后生效。</translation>
     </message>
     <message>
@@ -1289,7 +1321,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>小数位数</translation>
     </message>
     <message>
-        <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items. %s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
+        <source>Third party URLs (e.g. a block explorer) that appear in the transactions tab as context menu items.&lt;br/&gt;%s in the URL is replaced by transaction hash. Multiple URLs are separated by vertical bar |.</source>
         <translation>出现在交易的选项卡的上下文菜单项的第三方网址 (例如：区块链接查询) 。 %s的URL被替换为交易哈希。多个的URL需要竖线 | 分隔。</translation>
     </message>
     <message>
@@ -1797,6 +1829,18 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>当前数据块数量</translation>
     </message>
     <message>
+        <source>Memory Pool</source>
+        <translation>内存池</translation>
+    </message>
+    <message>
+        <source>Current number of transactions</source>
+        <translation>当前交易数量</translation>
+    </message>
+    <message>
+        <source>Memory usage</source>
+        <translation>内存池占用内存</translation>
+    </message>
+    <message>
         <source>Client version</source>
         <translation>客户端版本</translation>
     </message>
@@ -2050,6 +2094,22 @@ https://www.transifex.com/projects/p/ulord/</translation>
     <message>
         <source>Use this form to request payments. All fields are &lt;b&gt;optional&lt;/b&gt;.</source>
         <translation>使用此表单要求付款。所有字段都是&lt;b&gt;可选&lt;/b&gt;。</translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation>复制</translation>
+    </message>
+    <message>
+        <source>Paste</source>
+        <translation>粘贴</translation>
+    </message>
+    <message>
+        <source>Cut</source>
+        <translation>剪切</translation>
+    </message>
+    <message>
+        <source>Undo</source>
+        <translation>撤销</translation>
     </message>
     <message>
         <source>&amp;Label:</source>
@@ -2334,7 +2394,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>(Smart fee not initialized yet. This usually takes a few blocks...)</source>
-        <translation>(手续费演算法还没有准备好.通常都要等几个块才可以...)</translation>
+        <translation>(交易费根据近期的交易费计算...)</translation>
     </message>
     <message>
         <source>Confirmation time:</source>
@@ -2531,9 +2591,31 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <source>Subtract fee from amount</source>
         <translation>从金额中扣除费用</translation>
     </message>
+
+
+    <message>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less ulords than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation>收款人承担费用。</translation>
+    </message>
     <message>
         <source>Pay &amp;To:</source>
         <translation>收款人：&amp;</translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation>复制</translation>
+    </message>
+    <message>
+        <source>Paste</source>
+        <translation>粘贴</translation>
+    </message>
+    <message>
+        <source>Cut</source>
+        <translation>剪切</translation>
+    </message>
+    <message>
+        <source>Undo</source>
+        <translation>撤销</translation>
     </message>
     <message>
         <source>The Ulord address to send the payment to</source>
@@ -2561,7 +2643,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>&amp;Label:</source>
-        <translation>标   签：&amp;</translation>
+        <translation>标  签：&amp;</translation>
     </message>
     <message>
         <source>Enter a label for this address to add it to the list of used addresses</source>
@@ -2569,7 +2651,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>A&amp;mount:</source>
-        <translation>金   额：&amp;</translation>
+        <translation>金  额：&amp;</translation>
     </message>
     <message>
         <source>Message:</source>
@@ -2622,8 +2704,12 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>签名消息(&amp;S)</translation>
     </message>
     <message>
-        <source>You can sign messages with your addresses to prove you own them. Be careful not to sign anything vague, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <source>You can sign messages/agreements with your addresses to prove you can receive bitcoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
         <translation>您可以用你的地址对消息进行签名，以证明您是该地址的所有人。注意不要对模棱两可的消息签名，以免遭受钓鱼式攻击。请确保消息内容准确的表达了您的真实意愿。</translation>
+    </message>
+    <message>
+        <source>Enter the receiver's address, message (ensure you copy line breaks, spaces, tabs, etc. exactly) and signature below to verify the message. Be careful not to read more into the signature than what is in the signed message itself, to avoid being tricked by a man-in-the-middle attack. Note that this only proves the signing party receives with the address, it cannot prove sendership of any transaction!</source>
+        <translation>输入接收者的地址，消息（确保您完全复制换行符，空格，制表符等）和签名以验证消息。 注意不要在签名中读入多余的内容，以避免中间人攻击所。 此外，它不能证明任何交易的发送！</translation>
     </message>
     <message>
         <source>The Ulord address to sign the message with</source>
@@ -3082,7 +3168,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>(n/a)</source>
-        <translation>（不可用）</translation>
+        <translation>（付款到自己的地址）</translation>
     </message>
     <message>
         <source>Transaction status. Hover over this field to show number of confirmations.</source>
@@ -3184,6 +3270,22 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>输入地址或标签进行搜索</translation>
     </message>
     <message>
+        <source>Copy</source>
+        <translation>复制</translation>
+    </message>
+    <message>
+        <source>Paste</source>
+        <translation>粘贴</translation>
+    </message>
+    <message>
+        <source>Cut</source>
+        <translation>剪切</translation>
+    </message>
+    <message>
+        <source>Undo</source>
+        <translation>撤销</translation>
+    </message>
+    <message>
         <source>Min amount</source>
         <translation>最小金额</translation>
     </message>
@@ -3202,6 +3304,10 @@ https://www.transifex.com/projects/p/ulord/</translation>
     <message>
         <source>Copy transaction ID</source>
         <translation>复制交易编号</translation>
+    </message>
+    <message>
+        <source>Copy raw transaction</source>
+        <translation>复制原始交易</translation>
     </message>
     <message>
         <source>Edit label</source>

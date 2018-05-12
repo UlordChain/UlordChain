@@ -96,6 +96,14 @@ private Q_SLOTS:
     void copyTxHex();
     void openThirdPartyTxUrl(QString url);
     void updateWatchOnlyColumn(bool fHaveWatchOnly);
+    void addressWidgetCopy();
+    void addressWidgetPaste();
+    void addressWidgetCut();
+    void addressWidgetUndo();
+    void amountWidgetCopy();
+    void amountWidgetPaste();
+    void amountWidgetCut();
+    void amountWidgetUndo();
 
 Q_SIGNALS:
     void doubleClicked(const QModelIndex&);
