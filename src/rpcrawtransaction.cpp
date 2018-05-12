@@ -897,6 +897,8 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
             "params.size error\n"
         );
 	// parse parameters
+	if (!EnsureWalletIsAvailable(fHelp))
+        return NullUniValue;
 	LOCK2(cs_main, pwalletMain->cs_wallet);
 	CBitcoinAddress address(params[0].get_str());
 	if (!address.IsValid())
