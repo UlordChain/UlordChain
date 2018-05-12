@@ -900,7 +900,6 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 	unsigned char vch[32];
 	RandAddSeedPerfmon();
     GetRandBytes(vch, sizeof(vch));
-	std::vector<unsigned char> temp;
 	uint256 u_hash = Hash(vch,vch+sizeof(vch));
 	std::string tem = u_hash.GetHex();
 	
@@ -909,7 +908,10 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 	gettimeofday(&tm,NULL);
     // 172800 is 48hour to second
 	uint64_t l_time = tm.tv_sec + 172800;
-	
+	char temp[100] = {0};
+	sprintf(temp,"%llx",l_time);
+	std::string str = temp;
+
     return true;
 }
 
@@ -918,6 +920,7 @@ UniValue crosschainparticipate(const UniValue &params, bool fHelp)
 {
     if (fHelp || params.size() !=3)
         throw runtime_error(
+
             "params.size error\n"
         );
     UniValue result(UniValue::VOBJ);
