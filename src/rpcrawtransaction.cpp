@@ -904,6 +904,8 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 	if (!address.IsValid())
     	throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
 
+	// contract script size
+	const int secretSize = 32;
 	 // Amount
     CAmount nAmount = AmountFromValue(params[1]);
     if (nAmount <= 0)
@@ -915,6 +917,7 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
     GetRandBytes(vch, sizeof(vch));
 	uint256 u_hash = Hash(vch,vch+sizeof(vch));
 	std::string tem = u_hash.GetHex();
+	std::vector<unsigned char>str_hash(tem.begin(),tem.end());
 	
 	// Gets the current Unix timestamp.(hex)
 	struct timeval tm;
@@ -924,7 +927,7 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 	char temp[100] = {0};
 	sprintf(temp,"%llx",l_time);
 	std::string str = temp;
-
+    std::vector<unsigned char>str_stamp(str.begin(),str.end());
 	// construct contract of script
 	CPubKey newKey;
     if ( !pwalletMain->GetKeyFromPool(newKey) )
@@ -932,8 +935,11 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
     CBitcoinAddress refund_address(CTxDestination(newKey.GetID()));
 	if (!refund_address.IsValid())
     	throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
-	LogPrintf("refund_address is %s\n",refund_address.ToString());
-
+	
+	CScript contract =  CScript() << OP_IF << OP_SIZE << secretSize << OP_EQUALVERIFY << OP_SHA256 << str_hash \
+		<< OP_EQUALVERIFY << OP_DUP  << OP_HASH160 << GetScriptForDestination(address.Get()) << OP_ELSE \
+		<< str_stamp << OP_CHECKLOCKTIMEVERIFY << OP_DROP << OP_DUP << OP_HASH160 << GetScriptForDestination(refund_address.Get())\
+		<< OP_ENDIF << OP_EQUALVERIFY << OP_CHECKSIG;
     return true;
 }
 
