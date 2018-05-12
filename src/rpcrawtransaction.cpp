@@ -948,6 +948,16 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 	CScript contractP2SHPkScript = CScript() << OP_HASH160;
 	CScript contractP2SHPkScript_1 = GetScriptForDestination(CTxDestination(contractP2SH)) << OP_EQUAL;
 	contractP2SHPkScript = contractP2SHPkScript + contractP2SHPkScript_1;
+
+	// The amount is locked in the redemption script.
+	 vector<CRecipient> vecSend;
+    int nChangePosRet = -1;
+    CRecipient recipient = {contractP2SHPkScript,nAmount,false};
+    vecSend.push_back(recipient);
+
+
+
+
     return true;
 }
 
