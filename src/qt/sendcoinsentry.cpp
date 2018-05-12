@@ -15,6 +15,7 @@
 
 #include <QApplication>
 #include <QClipboard>
+#include <QAction>
 
 SendCoinsEntry::SendCoinsEntry(const PlatformStyle *platformStyle, QWidget *parent) :
     QStackedWidget(parent),
@@ -46,6 +47,37 @@ SendCoinsEntry::SendCoinsEntry(const PlatformStyle *platformStyle, QWidget *pare
     // just a label for displaying ulord address(es)
     ui->payTo_is->setFont(GUIUtil::fixedPitchFont());
 
+    // "payTo" mouse right click menu
+    QAction *payToActCopy = new QAction(tr("Copy"), this);
+    connect(payToActCopy,SIGNAL(triggered(bool)), this, SLOT(payToCopy()));
+    ui->payTo->addAction(payToActCopy);
+    QAction *payToActPaste = new QAction(tr("Paste"), this);
+    connect(payToActPaste,SIGNAL(triggered(bool)), this, SLOT(payToPaste()));
+    ui->payTo->addAction(payToActPaste);
+    QAction *payToActCut = new QAction(tr("Cut"), this);
+    connect(payToActCut,SIGNAL(triggered(bool)), this, SLOT(payToCut()));
+    ui->payTo->addAction(payToActCut);
+    QAction *payToActUndo = new QAction(tr("Undo"), this);
+    connect(payToActUndo,SIGNAL(triggered(bool)), this, SLOT(payToUndo()));
+    ui->payTo->addAction(payToActUndo);
+
+    // "addAsLabel" mouse right click menu
+    QAction *addAsLabelActCopy = new QAction(tr("Copy"), this);
+    connect(addAsLabelActCopy,SIGNAL(triggered(bool)), this, SLOT(addAsLabelCopy()));
+    ui->addAsLabel->addAction(addAsLabelActCopy);
+    QAction *addAsLabelActPaste = new QAction(tr("Paste"), this);
+    connect(addAsLabelActPaste,SIGNAL(triggered(bool)), this, SLOT(addAsLabelPaste()));
+    ui->addAsLabel->addAction(addAsLabelActPaste);
+    QAction *addAsLabelActCut = new QAction(tr("Cut"), this);
+    connect(addAsLabelActCut,SIGNAL(triggered(bool)), this, SLOT(addAsLabelCut()));
+    ui->addAsLabel->addAction(addAsLabelActCut);
+    QAction *addAsLabelActUndo = new QAction(tr("Undo"), this);
+    connect(addAsLabelActUndo,SIGNAL(triggered(bool)), this, SLOT(addAsLabelUndo()));
+    ui->addAsLabel->addAction(addAsLabelActUndo);
+
+
+
+
     // Connect signals
     connect(ui->payAmount, SIGNAL(valueChanged()), this, SIGNAL(payAmountChanged()));
     connect(ui->checkboxSubtractFeeFromAmount, SIGNAL(toggled(bool)), this, SIGNAL(subtractFeeFromAmountChanged()));
@@ -58,6 +90,49 @@ SendCoinsEntry::~SendCoinsEntry()
 {
     delete ui;
 }
+
+void SendCoinsEntry::payToCopy()
+{
+    ui->payTo->copy();
+
+}
+
+void SendCoinsEntry::payToPaste()
+{
+    ui->payTo->paste();
+}
+
+void SendCoinsEntry::payToCut()
+{
+    ui->payTo->cut();
+}
+
+void SendCoinsEntry::payToUndo()
+{
+    ui->payTo->undo();
+}
+
+void SendCoinsEntry::addAsLabelCopy()
+{
+    ui->addAsLabel->copy();
+
+}
+
+void SendCoinsEntry::addAsLabelPaste()
+{
+    ui->addAsLabel->paste();
+}
+
+void SendCoinsEntry::addAsLabelCut()
+{
+    ui->addAsLabel->cut();
+}
+
+void SendCoinsEntry::addAsLabelUndo()
+{
+    ui->addAsLabel->undo();
+}
+
 
 void SendCoinsEntry::on_pasteButton_clicked()
 {

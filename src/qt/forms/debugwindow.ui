@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>769</width>
-    <height>516</height>
+    <height>545</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -159,6 +159,9 @@ QTabBar::tab:left:only-one, QTabBar::tab:right:only-one {
          <property name="cursor">
           <cursorShape>IBeamCursor</cursorShape>
          </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
+         </property>
          <property name="text">
           <string>N/A</string>
          </property>
@@ -181,6 +184,9 @@ QTabBar::tab:left:only-one, QTabBar::tab:right:only-one {
         <widget class="QLabel" name="clientVersion">
          <property name="cursor">
           <cursorShape>IBeamCursor</cursorShape>
+         </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
          </property>
          <property name="text">
           <string>N/A</string>
@@ -208,6 +214,9 @@ QTabBar::tab:left:only-one, QTabBar::tab:right:only-one {
          <property name="cursor">
           <cursorShape>IBeamCursor</cursorShape>
          </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
+         </property>
          <property name="text">
           <string>N/A</string>
          </property>
@@ -234,6 +243,9 @@ QTabBar::tab:left:only-one, QTabBar::tab:right:only-one {
          <property name="cursor">
           <cursorShape>IBeamCursor</cursorShape>
          </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
+         </property>
          <property name="text">
           <string>N/A</string>
          </property>
@@ -257,6 +269,9 @@ QTabBar::tab:left:only-one, QTabBar::tab:right:only-one {
          <property name="cursor">
           <cursorShape>IBeamCursor</cursorShape>
          </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
+         </property>
          <property name="text">
           <string>N/A</string>
          </property>
@@ -279,6 +294,9 @@ QTabBar::tab:left:only-one, QTabBar::tab:right:only-one {
         <widget class="QLabel" name="startupTime">
          <property name="cursor">
           <cursorShape>IBeamCursor</cursorShape>
+         </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
          </property>
          <property name="text">
           <string>N/A</string>
@@ -316,6 +334,9 @@ QTabBar::tab:left:only-one, QTabBar::tab:right:only-one {
          <property name="cursor">
           <cursorShape>IBeamCursor</cursorShape>
          </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
+         </property>
          <property name="text">
           <string>N/A</string>
          </property>
@@ -339,6 +360,9 @@ QTabBar::tab:left:only-one, QTabBar::tab:right:only-one {
          <property name="cursor">
           <cursorShape>IBeamCursor</cursorShape>
          </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
+         </property>
          <property name="text">
           <string>N/A</string>
          </property>
@@ -359,6 +383,9 @@ QTabBar::tab:left:only-one, QTabBar::tab:right:only-one {
        </item>
        <item row="10" column="1">
         <widget class="QLabel" name="masternodeCount">
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
+         </property>
          <property name="text">
           <string>N/A</string>
          </property>
@@ -389,6 +416,9 @@ QTabBar::tab:left:only-one, QTabBar::tab:right:only-one {
          <property name="cursor">
           <cursorShape>IBeamCursor</cursorShape>
          </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
+         </property>
          <property name="text">
           <string>N/A</string>
          </property>
@@ -411,6 +441,9 @@ QTabBar::tab:left:only-one, QTabBar::tab:right:only-one {
         <widget class="QLabel" name="lastBlockTime">
          <property name="cursor">
           <cursorShape>IBeamCursor</cursorShape>
+         </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
          </property>
          <property name="text">
           <string>N/A</string>
@@ -448,6 +481,9 @@ QTabBar::tab:left:only-one, QTabBar::tab:right:only-one {
          <property name="cursor">
           <cursorShape>IBeamCursor</cursorShape>
          </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
+         </property>
          <property name="text">
           <string>N/A</string>
          </property>
@@ -470,6 +506,9 @@ QTabBar::tab:left:only-one, QTabBar::tab:right:only-one {
         <widget class="QLabel" name="mempoolSize">
          <property name="cursor">
           <cursorShape>IBeamCursor</cursorShape>
+         </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
          </property>
          <property name="text">
           <string>N/A</string>
