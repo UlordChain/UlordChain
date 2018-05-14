@@ -1040,7 +1040,17 @@ UniValue crosschaininitial_1(const UniValue &params, bool fHelp)
 
     if (nValue > curBalance)
         throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Insufficient funds");
-    
+   
+    //construct transaction
+    CWalletTx wtxNew;
+    CReserveKey reservekey(pwalletMain);//reservekey of wallet
+    CAmount nFeeRequired;//fee of transaction
+
+    std::string strError; 
+    bool fUsePrivateSend=false;
+    bool fUseInstantSend=false;
+    bool fSubtractFeeFromAmount=false;
+ 
         
     return true;
 }
