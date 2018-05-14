@@ -38,7 +38,7 @@ extern CAmount maxTxFee;
 extern unsigned int nTxConfirmTarget;
 extern bool bSpendZeroConfChange;
 extern bool fSendFreeTransactions;
-
+extern bool EnsureWalletIsAvailable(bool avoidException);
 extern bool fLargeWorkForkFound;
 extern bool fLargeWorkInvalidChainFound;
 

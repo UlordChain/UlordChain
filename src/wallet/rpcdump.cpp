@@ -28,7 +28,6 @@
 using namespace std;
 
 void EnsureWalletIsUnlocked();
-bool EnsureWalletIsAvailable(bool avoidException);
 
 std::string static EncodeDumpTime(int64_t nTime) {
     return DateTimeStrFormat("%Y-%m-%dT%H:%M:%SZ", nTime);
