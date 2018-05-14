@@ -1059,7 +1059,11 @@ UniValue crosschaininitial_1(const UniValue &params, bool fHelp)
            strError = "Error: This transaction requires a transaction fee of at least , because of its amount, complexity, or use of recently received funds!";
         throw JSONRPCError(RPC_WALLET_ERROR, strError);
                                             }       
-       
+    //commit transaction
+    if (!pwalletMain->CommitTransaction(wtxNew, reservekey, fUseInstantSend ? NetMsgType::TXLOCKREQUEST : NetMsgType::TX))
+       throw JSONRPCError(RPC_WALLET_ERROR, "Error: The transaction was rejected! This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.");
+
+   
     return true;
 }
 
