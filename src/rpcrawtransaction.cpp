@@ -1029,6 +1029,10 @@ UniValue crosschaininitial_1(const UniValue &params, bool fHelp)
     int nChangePosRet = -1;
     CRecipient recipient = {contractP2SHPkScript,nAmount,false};
     vecSend.push_back(recipient);
+    //check the tx params
+    EnsureWalletIsUnlocked();                                                                                                                                                                                                                                                 
+    CAmount curBalance = pwalletMain->GetBalance(); // get balance
+
     
         
     return true;
