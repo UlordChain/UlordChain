@@ -1041,7 +1041,7 @@ UniValue crosschaininitial_1(const UniValue &params, bool fHelp)
     if (nValue > curBalance)
         throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Insufficient funds");
    
-    //construct transaction
+    //construct transaction params
     CWalletTx wtxNew;
     CReserveKey reservekey(pwalletMain);//reservekey of wallet
     CAmount nFeeRequired;//fee of transaction
@@ -1050,8 +1050,16 @@ UniValue crosschaininitial_1(const UniValue &params, bool fHelp)
     bool fUsePrivateSend=false;
     bool fUseInstantSend=false;
     bool fSubtractFeeFromAmount=false;
- 
-        
+    
+    //construct transaction 
+    if (!pwalletMain->CreateTransaction(vecSend, wtxNew, reservekey, nFeeRequired, nChangePosRet,
+                                         strError, NULL, true, fUsePrivateSend ? ONLY_DENOMINATED : ALL_COINS, fUseInstantSend))
+    {
+        if (!fSubtractFeeFromAmount && nValue + nFeeRequired > pwalletMain->GetBalance())
+           strError = "Error: This transaction requires a transaction fee of at least , because of its amount, complexity, or use of recently received funds!";
+        throw JSONRPCError(RPC_WALLET_ERROR, strError);
+                                            }       
+       
     return true;
 }
 
