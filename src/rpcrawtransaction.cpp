@@ -1033,6 +1033,13 @@ UniValue crosschaininitial_1(const UniValue &params, bool fHelp)
     EnsureWalletIsUnlocked();                                                                                                                                                                                                                                                 
     CAmount curBalance = pwalletMain->GetBalance(); // get balance
 
+    // Check amount
+    CAmount nValue = nAmount;
+    if (nValue <= 0)
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid amount");
+
+    if (nValue > curBalance)
+        throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Insufficient funds");
     
         
     return true;
