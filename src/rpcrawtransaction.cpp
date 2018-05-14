@@ -962,6 +962,81 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 }
 
 
+UniValue crosschaininitial_1(const UniValue &params, bool fHelp)
+{
+    if (fHelp || params.size() !=2)
+        throw runtime_error(
+            "params.size error\n"
+        );
+    // parse parameters
+    if (!EnsureWalletIsAvailable(fHelp))
+        return NullUniValue;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    CBitcoinAddress address(params[0].get_str());
+    if (!address.IsValid())
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
+
+    // contract script size
+    const int secretSize = 32;
+     // Amount
+    CAmount nAmount = AmountFromValue(params[1]);
+    if (nAmount <= 0)
+        throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
+
+    // a random value is generated and sha256 hash algorithm is used.
+    unsigned char vch[32];
+    RandAddSeedPerfmon();
+    GetRandBytes(vch, sizeof(vch));
+    uint256 u_hash = Hash(vch,vch+sizeof(vch));
+    std::string tem = u_hash.GetHex();
+    std::vector<unsigned char>str_hash(tem.begin(),tem.end());
+    
+    // Gets the current Unix timestamp.(hex)
+    struct timeval tm;
+    gettimeofday(&tm,NULL);
+    // 172800 is 48hour to second
+    uint64_t l_time = tm.tv_sec + 172800;
+    char temp[100] = {0};
+    sprintf(temp,"%llx",l_time);
+    std::string str = temp;
+    std::vector<unsigned char>str_stamp(str.begin(),str.end());
+    // construct contract of script
+    CPubKey newKey;
+    if ( !pwalletMain->GetKeyFromPool(newKey) )
+        throw JSONRPCError(RPC_WALLET_KEYPOOL_RAN_OUT,"Error: Keypool ran out,please call keypoolrefill first");
+    CBitcoinAddress refund_address(CTxDestination(newKey.GetID()));
+    if (!refund_address.IsValid())
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
+    
+    CScript contract =  CScript() << OP_IF << OP_SIZE << secretSize << OP_EQUALVERIFY << OP_SHA256 << str_hash << OP_EQUALVERIFY << OP_DUP  << OP_HASH160;
+    CScript contract_1 = GetScriptForDestination(CTxDestination(address.Get())) << OP_ELSE << str_stamp << OP_CHECKLOCKTIMEVERIFY << OP_DROP << OP_DUP << OP_HASH160;
+    CScript contract_2 = GetScriptForDestination(CTxDestination(refund_address.Get()))<< OP_ENDIF << OP_EQUALVERIFY << OP_CHECKSIG;
+    contract = contract + contract_1 + contract_2;  
+
+    // The build script is 160 hashes.
+    CScriptID contractP2SH = CScriptID(contract);
+    LogPrintf("contractP2SH is %s\n",contractP2SH.ToString());
+    
+    // Start building the lock script for the p2sh type.
+    CScript contractP2SHPkScript = CScript() << OP_HASH160;
+    CScript contractP2SHPkScript_1 = GetScriptForDestination(CTxDestination(contractP2SH)) << OP_EQUAL;
+    contractP2SHPkScript = contractP2SHPkScript + contractP2SHPkScript_1;
+    CScriptID contractP2SHPk = CScriptID(contractP2SHPkScript);
+    LogPrintf("refundP2PKH is %s\n",contractP2SHPk.ToString());
+
+    // The amount is locked in the redemption script.
+     vector<CRecipient> vecSend;
+    int nChangePosRet = -1;
+    CRecipient recipient = {contractP2SHPkScript,nAmount,false};
+    vecSend.push_back(recipient);
+    
+        
+    return true;
+}
+
+
+
+
 UniValue crosschainparticipate(const UniValue &params, bool fHelp)
 {
     if (fHelp || params.size() !=3)
