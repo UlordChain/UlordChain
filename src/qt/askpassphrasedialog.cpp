@@ -36,6 +36,9 @@ AskPassphraseDialog::AskPassphraseDialog(Mode mode, QWidget *parent) :
     ui->passEdit1->installEventFilter(this);
     ui->passEdit2->installEventFilter(this);
     ui->passEdit3->installEventFilter(this);
+    this->setWindowFlags(Qt::Dialog|Qt::WindowCloseButtonHint);
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Ok"));
+    ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     switch(mode)
     {
@@ -180,20 +183,41 @@ void AskPassphraseDialog::accept()
         {
             if(model->changePassphrase(oldpass, newpass1))
             {
-                QMessageBox::information(this, tr("Wallet encrypted"),
-                                     tr("Wallet passphrase was successfully changed."));
+                // QMessageBox::information(this, tr("Wallet encrypted"),
+                //                      tr("Wallet passphrase was successfully changed."));
+                QMessageBox message(QMessageBox::NoIcon,  tr("Wallet encrypted"), tr("Wallet passphrase was successfully changed."),QMessageBox::Ok, 0); 
+                if(NULL!=message.button(QMessageBox::Ok))
+                {
+                    message.button(QMessageBox::Ok)->setText(tr("Ok"));
+                    message.button(QMessageBox::Ok)->setStyleSheet("background-color:#515b78;border:0;border-radius:3px;color:#ffffff;font-size:12px;font-weight:normal;height: 26px;padding-left:25px;padding-right:25px;padding-top:5px;padding-bottom:5px;margin-right: 10px;");
+ 
+                }
+                message.exec();
                 QDialog::accept(); // Success
             }
             else
             {
-                QMessageBox::critical(this, tr("Wallet encryption failed"),
-                                     tr("The passphrase entered for the wallet decryption was incorrect."));
+                QMessageBox message(QMessageBox::NoIcon,  tr("Wallet encryption failed"), tr("The passphrase entered for the wallet decryption was incorrect."),QMessageBox::Ok, 0); 
+                if(NULL!=message.button(QMessageBox::Ok))
+                {
+                    message.button(QMessageBox::Ok)->setText(tr("Ok"));
+                    message.button(QMessageBox::Ok)->setStyleSheet("background-color:#515b78;border:0;border-radius:3px;color:#ffffff;font-size:12px;font-weight:normal;height: 26px;padding-left:25px;padding-right:25px;padding-top:5px;padding-bottom:5px;margin-right: 10px;");
+ 
+                }
+                message.exec();
             }
         }
         else
         {
-            QMessageBox::critical(this, tr("Wallet encryption failed"),
-                                 tr("The supplied passphrases do not match."));
+            QMessageBox message(QMessageBox::NoIcon,  tr("Wallet encryption failed"), tr("The supplied passphrases do not match."),QMessageBox::Ok, 0); 
+            if(NULL!=message.button(QMessageBox::Ok))
+            {
+                message.button(QMessageBox::Ok)->setText(tr("Ok"));
+                message.button(QMessageBox::Ok)->setStyleSheet("background-color:#515b78;border:0;border-radius:3px;color:#ffffff;font-size:12px;font-weight:normal;height: 26px;padding-left:25px;padding-right:25px;padding-top:5px;padding-bottom:5px;margin-right: 10px;");
+
+            }
+            message.exec();
+
         }
         break;
     }

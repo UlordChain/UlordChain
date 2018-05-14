@@ -443,7 +443,7 @@
         <translation>Mở &amp;URI...</translation>
     </message>
     <message>
-        <source>Open a ulord: URI or payment request</source>
+        <source>Open a Ulord: URI or payment request</source>
         <translation>Mở một ulord: URI hoặc một yêu cầu thanh toán</translation>
     </message>
     <message>
@@ -4399,7 +4399,7 @@ ví dụ: alertnotify=echo %%s | mail -s "Ulord Alert" admin@foo.com
         <translation>Đây là thông điệp trợ giúp</translation>
     </message>
     <message>
-        <source>This is Ulord full node software.</source>
+        <source>This is Ulord full-node wallet client</source>
         <translation>Đây là phần mềm thử nghiệm.</translation>
     </message>
     <message>

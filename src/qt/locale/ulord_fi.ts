@@ -443,7 +443,7 @@
         <translation>Avaa &amp;URI...</translation>
     </message>
     <message>
-        <source>Open a ulord: URI or payment request</source>
+        <source>Open a Ulord: URI or payment request</source>
         <translation>Avaa Ulord: URI tai maksupyyntö</translation>
     </message>
     <message>
@@ -4407,7 +4407,7 @@ esimerkiksi: alertnotify=echo %%s | mail -s "Ulord Hälytys" admin@foo.com
         <translation>Tämä ohjeviesti</translation>
     </message>
     <message>
-        <source>This is Ulord full node software.</source>
+        <source>This is Ulord full-node wallet client</source>
         <translation>Tämä on kokeellinen ohjelmisto.</translation>
     </message>
     <message>

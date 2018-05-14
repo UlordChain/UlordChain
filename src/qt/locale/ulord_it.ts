@@ -435,7 +435,7 @@
         <translation>Apri &amp;URI...</translation>
     </message>
     <message>
-        <source>Open a ulord: URI or payment request</source>
+        <source>Open a Ulord: URI or payment request</source>
         <translation>Apri un ulord: URI o una richiesta di pagamento</translation>
     </message>
     <message>

@@ -459,7 +459,7 @@ void RPCConsole::setClientModel(ClientModel *model)
         // Provide initial values
         ui->clientVersion->setText(model->formatFullVersion());
         ui->clientUserAgent->setText(model->formatSubVersion());
-        ui->clientName->setText(model->clientName());
+        ui->clientName->setText(tr(model->clientName().toStdString().c_str()));
         ui->buildDate->setText(model->formatBuildDate());
         ui->startupTime->setText(model->formatClientStartupTime());
         ui->networkName->setText(QString::fromStdString(Params().NetworkIDString()));
@@ -637,7 +637,14 @@ void RPCConsole::setNumBlocks(int count, const QDateTime& blockDate, double nVer
 
 void RPCConsole::setMasternodeCount(const QString &strMasternodes)
 {
-    ui->masternodeCount->setText(strMasternodes);
+    QString tes(strMasternodes);
+    if(tes.startsWith("Total:")){
+        ui->masternodeCount->setText(tr("Total:%1").arg(tes.remove("Total:")));
+    }else
+    {
+        ui->masternodeCount->setText(strMasternodes);
+    }
+    
 }
 
 void RPCConsole::setMempoolSize(long numberOfTxs, size_t dynUsage)
