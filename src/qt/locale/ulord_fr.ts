@@ -443,7 +443,7 @@
         <translation>Ouvrir un &amp;URI...</translation>
     </message>
     <message>
-        <source>Open a ulord: URI or payment request</source>
+        <source>Open a Ulord: URI or payment request</source>
         <translation>Ouvrir une URI ou demande de paiement ulord</translation>
     </message>
     <message>
@@ -4400,7 +4400,7 @@ Pour exemple: alertnotify=echo %%s | mail -s "Alerte Ulord" admin@foo.com
         <translation>Ce message d'aide</translation>
     </message>
     <message>
-        <source>This is Ulord full node software.</source>
+        <source>This is Ulord full-node wallet client</source>
         <translation>Ceci est un logiciel expérimental.</translation>
     </message>
     <message>

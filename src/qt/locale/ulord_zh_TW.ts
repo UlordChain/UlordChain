@@ -232,7 +232,7 @@
     <name>BitcoinGUI</name>
     <message>
         <source>Ulord Core</source>
-        <translation>Ulord全节点</translation>
+        <translation>Ulord全节点钱包</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -284,11 +284,11 @@
     </message>
     <message>
         <source>&amp;About Ulord Core</source>
-        <translation>關於Ulord全节点(&amp;A)</translation>
+        <translation>關於Ulord全节点钱包(&amp;A)</translation>
     </message>
     <message>
         <source>Show information about Ulord Core</source>
-        <translation>顯示Ulord全节点的相關資訊</translation>
+        <translation>顯示Ulord全节点钱包的相關資訊</translation>
     </message>
     <message>
         <source>About &amp;Qt</source>
@@ -443,7 +443,7 @@
         <translation>開啓 &amp;URI...</translation>
     </message>
     <message>
-        <source>Open a ulord: URI or payment request</source>
+        <source>Open a Ulord: URI or payment request</source>
         <translation>開啓一個Ulord協議的 URI 或付款要求</translation>
     </message>
     <message>
@@ -452,7 +452,7 @@
     </message>
     <message>
         <source>Ulord Core client</source>
-        <translation>Ulord全节点客戶端軟體</translation>
+        <translation>Ulord全节点钱包客戶端軟體</translation>
     </message>
     <message numerus="yes">
         <source>Processed %n blocks of transaction history.</source>
@@ -464,7 +464,7 @@
     </message>
     <message>
         <source>Show the Ulord Core help message to get a list with possible Ulord command-line options</source>
-        <translation>顯示Ulord全节点的說明訊息，來取得可用命令列選項的列表</translation>
+        <translation>顯示Ulord全节点钱包的說明訊息，來取得可用命令列選項的列表</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -986,7 +986,7 @@ Address: %4
     <name>HelpMessageDialog</name>
     <message>
         <source>Ulord Core</source>
-        <translation>Ulord全节点</translation>
+        <translation>Ulord全节点钱包</translation>
     </message>
     <message>
         <source>version</source>
@@ -998,7 +998,7 @@ Address: %4
     </message>
     <message>
         <source>About Ulord Core</source>
-        <translation>關於Ulord全节点</translation>
+        <translation>關於Ulord全节点钱包</translation>
     </message>
     <message>
         <source>Command-line options</source>
@@ -1045,15 +1045,15 @@ Address: %4
     </message>
     <message>
         <source>Welcome to Ulord Core.</source>
-        <translation>歡迎使用Ulord全节点</translation>
+        <translation>歡迎使用Ulord全节点钱包</translation>
     </message>
     <message>
         <source>As this is the first time the program is launched, you can choose where Ulord Core will store its data.</source>
-        <translation>因為這是程式第一次啓動，你可以選擇Ulord全节点儲存資料的地方。</translation>
+        <translation>因為這是程式第一次啓動，你可以選擇Ulord全节点钱包儲存資料的地方。</translation>
     </message>
     <message>
         <source>Ulord Core will download and store a copy of the Ulord block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
-        <translation>Ulord全节点會下載並儲存一份Ulord區塊鏈的副本。至少有 %1GB 的資料會儲存到這個目錄中，並且還會持續增長。另外錢包資料也會儲存在這個目錄。</translation>
+        <translation>Ulord全节点钱包會下載並儲存一份Ulord區塊鏈的副本。至少有 %1GB 的資料會儲存到這個目錄中，並且還會持續增長。另外錢包資料也會儲存在這個目錄。</translation>
     </message>
     <message>
         <source>Use the default data directory</source>
@@ -1065,7 +1065,7 @@ Address: %4
     </message>
     <message>
         <source>Ulord Core</source>
-        <translation>Ulord全节点</translation>
+        <translation>Ulord全节点钱包</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" cannot be created.</source>
@@ -2535,7 +2535,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     <name>ShutdownWindow</name>
     <message>
         <source>Ulord Core is shutting down...</source>
-        <translation>Ulord全节点正在關閉中...</translation>
+        <translation>Ulord全节点钱包正在關閉中...</translation>
     </message>
     <message>
         <source>Do not shut down the computer until this window disappears.</source>
@@ -2685,7 +2685,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     <name>SplashScreen</name>
     <message>
         <source>Ulord Core</source>
-        <translation>Ulord全节点</translation>
+        <translation>Ulord全节点钱包</translation>
     </message>
     <message>
         <source>Version %1</source>
@@ -2697,7 +2697,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>The Ulord Core Foundation</source>
-        <translation>Ulord全节点開發人員</translation>
+        <translation>Ulord全节点钱包開發人員</translation>
     </message>
     <message>
         <source>[testnet]</source>
@@ -3259,7 +3259,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Unable to bind to %s on this computer. Ulord Core is probably already running.</source>
-        <translation>沒辦法繫結在這台電腦上的 %s 。Ulord全节点可能已經在執行了。</translation>
+        <translation>沒辦法繫結在這台電腦上的 %s 。Ulord全节点钱包可能已經在執行了。</translation>
     </message>
     <message>
         <source>Warning: -paytxfee is set very high! This is the transaction fee you will pay if you send a transaction.</source>
@@ -3503,7 +3503,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong Ulord Core will not work properly.</source>
-        <translation>警告: 請檢查電腦日期和時間是否正確！Ulord全节点沒辦法在時鐘不準的情況下正常運作。</translation>
+        <translation>警告: 請檢查電腦日期和時間是否正確！Ulord全节点钱包沒辦法在時鐘不準的情況下正常運作。</translation>
     </message>
     <message>
         <source>Whitelist peers connecting from the given netmask or IP address. Can be specified multiple times.</source>
@@ -3531,7 +3531,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Copyright (C) 2014-%i The Dash Core Developers</source>
-        <translation>版權為Ulord全节点開發人員自西元 2014 至 %i 年起所有</translation>
+        <translation>版權為Ulord全节点钱包開發人員自西元 2014 至 %i 年起所有</translation>
     </message>
     <message>
         <source>Could not parse -rpcbind value %s as network address</source>
@@ -3555,7 +3555,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Error loading wallet.dat: Wallet requires newer version of Ulord Core</source>
-        <translation>載入 wallet.dat 檔案時發生錯誤: 這個錢包需要新版的Ulord全节点</translation>
+        <translation>載入 wallet.dat 檔案時發生錯誤: 這個錢包需要新版的Ulord全节点钱包</translation>
     </message>
     <message>
         <source>Error: A fatal internal error occured, see debug.log for details</source>
@@ -3739,7 +3739,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Wallet needed to be rewritten: restart Ulord Core to complete</source>
-        <translation>錢包需要重寫: 請重新啓動Ulord全节点來完成</translation>
+        <translation>錢包需要重寫: 請重新啓動Ulord全节点钱包來完成</translation>
     </message>
     <message>
         <source>Warning: Unsupported argument -benchmark ignored, use -debug=bench.</source>
@@ -3822,7 +3822,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>這是說明訊息</translation>
     </message>
     <message>
-        <source>This is Ulord full node software.</source>
+        <source>This is Ulord full-node wallet client</source>
         <translation>這套軟體屬於實驗性質。</translation>
     </message>
     <message>

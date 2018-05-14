@@ -443,7 +443,7 @@
         <translation>Otwórz URI...</translation>
     </message>
     <message>
-        <source>Open a ulord: URI or payment request</source>
+        <source>Open a Ulord: URI or payment request</source>
         <translation>Otwórz ulord: Link lub żądanie zapłaty</translation>
     </message>
     <message>
@@ -4399,7 +4399,7 @@ Zaleca się również aby ustawić alarm powiadomień tzw. alertnotify, aby dać
         <translation>Ten komunikat pomocny</translation>
     </message>
     <message>
-        <source>This is Ulord full node software.</source>
+        <source>This is Ulord full-node wallet client</source>
         <translation>Jest to oprogramowanie testowe.</translation>
     </message>
     <message>

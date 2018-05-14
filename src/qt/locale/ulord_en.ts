@@ -562,8 +562,8 @@
     </message>
     <message>
         <location line="+1"/>
-        <source>Open a ulord: URI or payment request</source>
-        <translation>Open a ulord: URI or payment request</translation>
+        <source>Open a Ulord: URI or payment request</source>
+        <translation>Open a Ulord: URI or payment request</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5587,8 +5587,8 @@ for example: alertnotify=echo %%s | mail -s &quot;Ulord Alert&quot; admin@foo.co
     </message>
     <message>
         <location line="+1"/>
-        <source>This is Ulord full node software.</source>
-        <translation>This is Ulord full node software.</translation>
+        <source>This is Ulord full-node wallet client</source>
+        <translation>This is Ulord full-node wallet client</translation>
     </message>
     <message>
         <location line="+1"/>

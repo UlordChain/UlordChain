@@ -28,6 +28,7 @@ SignVerifyMessageDialog::SignVerifyMessageDialog(const PlatformStyle *platformSt
     platformStyle(platformStyle)
 {
     ui->setupUi(this);
+    this->setWindowFlags(Qt::Dialog|Qt::WindowCloseButtonHint);
 
 #if QT_VERSION >= 0x040700
     ui->signatureOut_SM->setPlaceholderText(tr("Click \"Sign Message\" to generate signature"));

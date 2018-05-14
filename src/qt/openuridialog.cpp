@@ -16,8 +16,11 @@ OpenURIDialog::OpenURIDialog(QWidget *parent) :
     ui(new Ui::OpenURIDialog)
 {
     ui->setupUi(this);
+    this->setWindowFlags(Qt::Dialog|Qt::WindowCloseButtonHint);
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Ok"));
+    ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 #if QT_VERSION >= 0x040700
-    ui->uriEdit->setPlaceholderText("ulord:");
+    ui->uriEdit->setPlaceholderText("Ulord:");
 #endif
 }
 
@@ -49,5 +52,5 @@ void OpenURIDialog::on_selectFileButton_clicked()
     if(filename.isEmpty())
         return;
     QUrl fileUri = QUrl::fromLocalFile(filename);
-    ui->uriEdit->setText("ulord:?r=" + QUrl::toPercentEncoding(fileUri.toString()));
+    ui->uriEdit->setText("Ulord:?r=" + QUrl::toPercentEncoding(fileUri.toString()));
 }

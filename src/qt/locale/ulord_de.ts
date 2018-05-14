@@ -443,7 +443,7 @@
         <translation>&amp;URI öffnen...</translation>
     </message>
     <message>
-        <source>Open a ulord: URI or payment request</source>
+        <source>Open a Ulord: URI or payment request</source>
         <translation>Eine "ulord:"-URI oder Zahlungsanforderung öffnen</translation>
     </message>
     <message>
@@ -4400,7 +4400,7 @@ Ulord Core wird heruntergefahren.</translation>
         <translation>Dieser Hilfetext</translation>
     </message>
     <message>
-        <source>This is Ulord full node software.</source>
+        <source>This is Ulord full-node wallet client</source>
         <translation>Dies ist experimentelle Software.</translation>
     </message>
     <message>
