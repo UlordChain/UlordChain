@@ -246,7 +246,7 @@ public:
         pchMessageStart[1] = 0x01;
         pchMessageStart[2] = 0x6f;
         pchMessageStart[3] = 0xb1;
-		vAlertPubKey = ParseHex("04838a03bad39edd961c7b25ed87fd34ac234d4786c127b3d31f4ea529b08f26c4d50f3373ce247926eca129aa1d5aad2b68da546336533e24a497bee95195c36f");
+		vAlertPubKey = ParseHex("02c19a92f0f05991d5d454fd814fcb1ca75991dcb4cf4b9fc59ea18e738910e04d");
         nDefaultPort = 9888;
         nMaxTipAge = 6 * 60 * 60; // ~144 blocks behind -> 2 x fork detection time, was 24 * 60 * 60 in bitcoin
         nPruneAfterHeight = 100000;
@@ -291,7 +291,7 @@ public:
 
         nPoolMaxTransactions = 3;
         nFulfilledRequestExpireTime = 60*60; // fulfilled requests expire in 1 hour
-        strSporkPubKey = "044adbc8019f33ad556e99e73f00afa0fe50e9617fdc3098aac24125f517261822affad3ff5ea5f6e37ab39f9443b6912c4f8f806bb8c8bf5aa812a3dc0b3a8c55";
+        strSporkPubKey = "02fd1fba7d7463a7d4159da5c27b9c449e2108c526d63a93446182cb30f10c8cd7";
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
@@ -304,27 +304,8 @@ public:
 
         // Founders reward script expects a vector of 2-of-3 multisig addresses
         vFoundersRewardAddress = {
-            "UNYu5sESPnFiYfUdPovQ4DkVZ1JUZRSDzH", /* main-index: 0*/
-            "UNgxHBPF7E84jdG7vyUk8s8FTZBSkmsrvf", /* main-index: 1*/
-            "UPYUKccNPUznkM7p7K77LxPC1u56WnHX8g", /* main-index: 2*/
-            "UPmQ1Jpo8C3KuXikZ6V4VE7Ci6rSJ98SpF", /* main-index: 3*/
-            "UQ4vWMrqMGX1Xh6EKH3PJqxAHAPpVqqaJF", /* main-index: 4*/
-            "UQV3mydZX5wJ4mRack2neRZcEssQ9uMCEU", /* main-index: 5*/
-            "URM5MvmnywdBrg2ydag4uGAJDtAs1kYHg1", /* main-index: 6*/
-            "URi9L7PXpLAf6ka2CL26dGte6ZGoeYvmvY", /* main-index: 7*/
-            "URzauhyLHsjubYXuzUpfUBgq4HH3Mr1Swc", /* main-index: 8*/
-            "USVJWgzDs3Jf4uzaDMNgGjSqqwEkaFBEX7", /* main-index: 9*/
-            "USdxtWPhmWvtBFGWaVRPuyHyqKWNMtHpKG", /* main-index: 10*/
-            "USfoBmxrefRUaZVmVLcEYPQ8PfrG14MpbZ", /* main-index: 11*/
-            "USnqJ73sPSJW5aRPfcQvJxzMiyTsAC9o1y", /* main-index: 12*/
-            "USp1inLdJKoXKWZj3DTbAwfi5xrbWS89VM", /* main-index: 13*/
-            "UTfhKVcm2UVbhC1TffcTEWq7dfxjTyQDpM", /* main-index: 14*/
-            "UTyP5ak38ErHHMrMEr7sEy87q4d4QQymTb", /* main-index: 15*/
-            "UTyZHmseooXwNTxZQQtrc4gKVF4cw2AYg1", /* main-index: 16*/
-            "UUCRTjTnzAknJsgxRJcHXaG6gVMnRCAgEn", /* main-index: 17*/
-            "UUPLH2XgRZWTShiDSQEpu6QdXwKgAf3LNM", /* main-index: 18*/
-            "UUPLPbyre94vLQMDe2yvvucFHqX5ye4DXM", /* main-index: 19*/
-            "UURodxCQSC8PW4BKFwQ6h3tBRgr8gxTTEu", /* main-index: 20*/
+            "UUH1gwRgYT4SdgMk2ZGyJy4ajyAr5dc3uw", /* main-index: 0*/
+            "UTARSst6p86sYRLEKbe3yoQ5mqtqoJgQaN", /* main-index: 1*/
 	    };
     }
 };
