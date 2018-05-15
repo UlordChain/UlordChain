@@ -1030,7 +1030,7 @@ Address: %4
     </message>
     <message>
         <source>This is Ulord full-node wallet client</source>
-        <translation>本软件为Ulord全节点钱包客户端，同步完整的区块链数据，提供最完整的区块信息。\n\n本地验证交易数据的有效性,完全去中心化钱包，记录链上交易。\n\n适用于专业技术人员及区块链爱好者。</translation>
+        <translation>本软件为Ulord全节点钱包客户端，同步完整的区块链数据，提供最完整的区块信息。&lt;br/&gt;本地验证交易数据的有效性,完全去中心化钱包，记录链上交易。&lt;br/&gt;适用于专业技术人员及区块链爱好者。</translation>
     </message>
     <message>
         <source>Ok</source>
