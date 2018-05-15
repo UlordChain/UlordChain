@@ -1,4 +1,4 @@
-CentOS BUILD NOTES
+CentOS Build Notes
 ====================
 Some notes on how to build Ulord Core in CentOS.
 
