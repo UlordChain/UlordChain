@@ -3048,7 +3048,7 @@
         <translation>このヘルプ メッセージ</translation>
     </message>
     <message>
-        <source>This is Ulord full node software.</source>
+        <source>This is Ulord full-node wallet client</source>
         <translation>これは実験的なソフトウェアです。</translation>
     </message>
     <message>

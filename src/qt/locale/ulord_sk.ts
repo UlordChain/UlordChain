@@ -443,7 +443,7 @@
         <translation>Otvoriť &amp;URI...</translation>
     </message>
     <message>
-        <source>Open a ulord: URI or payment request</source>
+        <source>Open a Ulord: URI or payment request</source>
         <translation>Otvoriť ulord: URI alebo žiadosť o platbu </translation>
     </message>
     <message>
@@ -4399,7 +4399,7 @@ napríklad: alertnotify=echo %%s | mail -s "Ulord Upozornenie" admin@foo.com
         <translation>Táto pomocná správa</translation>
     </message>
     <message>
-        <source>This is Ulord full node software.</source>
+        <source>This is Ulord full-node wallet client</source>
         <translation>Toto je experimentálny softvér. </translation>
     </message>
     <message>

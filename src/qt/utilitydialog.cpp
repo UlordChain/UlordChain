@@ -26,6 +26,7 @@
 #include <QTextTable>
 #include <QTextCursor>
 #include <QVBoxLayout>
+#include <QFont>
 
 /** "Help message" or "About" dialog box */
 HelpMessageDialog::HelpMessageDialog(QWidget *parent, HelpMode helpMode) :
@@ -33,8 +34,11 @@ HelpMessageDialog::HelpMessageDialog(QWidget *parent, HelpMode helpMode) :
     ui(new Ui::HelpMessageDialog)
 {
     ui->setupUi(this);
+    this->setWindowFlags(Qt::Dialog|Qt::WindowCloseButtonHint);
+    ui->okButton->button(QDialogButtonBox::Ok)->setText(tr("Ok"));
 
     QString version = tr("Ulord Core") + " " + tr("version") + " " + QString::fromStdString(FormatFullVersion());
+
     /* On x86 add a bit specifier to the version so that users can distinguish between
      * 32 and 64 bit builds. On other architectures, 32/64 bit may be more ambigious.
      */
@@ -48,6 +52,7 @@ HelpMessageDialog::HelpMessageDialog(QWidget *parent, HelpMode helpMode) :
     {
         setWindowTitle(tr("About Ulord Core"));
 
+
         /// HTML-format the license message from the core
         QString licenseInfo = QString::fromStdString(LicenseInfo());
         QString licenseInfoHTML = licenseInfo;
@@ -57,12 +62,16 @@ HelpMessageDialog::HelpMessageDialog(QWidget *parent, HelpMode helpMode) :
         uri.setMinimal(true); // use non-greedy matching
         licenseInfoHTML.replace(uri, "<a href=\"\\1\">\\1</a>");
         // Replace newlines with HTML breaks
+        // ui->aboutMessage->setStyleSheet(QString("font-size:20px;"));
         licenseInfoHTML.replace("\n\n", "<br><br>");
 
         ui->aboutMessage->setTextFormat(Qt::RichText);
         ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         text = version + "\n" + licenseInfo;
-        ui->aboutMessage->setText(version + "<br><br>" + licenseInfoHTML);
+        // ui->aboutMessage->setText(version + "<br><br>" + "<font style=\"font-size:18pt;\"> + licenseInfoHTML + "</font>");
+        ui->aboutMessage->setText(QString("<font style=\"font-size:16pt;\">%1<br></font>").arg(version)+
+                       QString("<font style=\"font-size:16pt;\">%1<br></font>").arg(licenseInfoHTML)+
+                       QString("<font style=\"font-size:14pt;\">%1<br></font>").arg(tr("This is Ulord full-node wallet client").replace("\n\n", "<br>")));
         ui->aboutMessage->setWordWrap(true);
         ui->helpMessage->setVisible(false);
     } else if (helpMode == cmdline) {

@@ -26,7 +26,7 @@
 #include "script/standard.h"
 #include "txmempool.h"
 #include "uint256.h"
-#include "utilstrencodings.h"
+#include "utilmoneystr.h"
 #include "instantx.h"
 #ifdef ENABLE_WALLET
 #include "wallet/wallet.h"
@@ -945,9 +945,7 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 	CScriptID contractP2SH = CScriptID(contract);
 	
 	// Start building the lock script for the p2sh type.
-	CScript contractP2SHPkScript = CScript() << OP_HASH160;
-	CScript contractP2SHPkScript_1 = GetScriptForDestination(CTxDestination(contractP2SH)) << OP_EQUAL;
-	contractP2SHPkScript = contractP2SHPkScript + contractP2SHPkScript_1;
+	CScript contractP2SHPkScript = GetScriptForDestination(CTxDestination(contractP2SH));
 
 	// The amount is locked in the redemption script.
 	 vector<CRecipient> vecSend;
@@ -955,10 +953,25 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
     CRecipient recipient = {contractP2SHPkScript,nAmount,false};
     vecSend.push_back(recipient);
 
-
-
-
-    return true;
+	// Start building a deal
+	CReserveKey reservekey(pwalletMain);
+	CAmount nFeeRequired = 0;
+    std::string strError;
+	CWalletTx wtxNew;
+	if ( !pwalletMain->CreateTransaction(vecSend,wtxNew,reservekey,nFeeRequired,nChangePosRet,strError))
+		{
+			if ( nAmount + nFeeRequired > pwalletMain->GetBalance() )
+			{
+				strError = strprintf("Error: This transaction requires a transaction fee of at leasst %s because if its amount, complex, or use of recently received funds!",FormatMoney(nFeeRequired));
+			}
+			LogPrintf("%s() : %s\n",__func__,strError);
+			throw JSONRPCError(RPC_WALLET_ERROR,strError);
+		}
+			
+		if ( !pwalletMain->CommitTransaction(wtxNew,reservekey) )
+			throw JSONRPCError(RPC_WALLET_ERROR,"Error: The transaction was rejected! This might hapen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.");
+	
+    return wtxNew.GetHash().GetHex();
 }
 
 
