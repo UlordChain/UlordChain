@@ -63,11 +63,11 @@
     </message>
     <message>
         <source>These are your Ulord addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>這些是你要付款過去的Ulord位址。在付錢之前，務必要檢查金額和收款位址是否正確。</translation>
+        <translation>這些是您要付款過去的Ulord位址。在付錢之前，務必要檢查金額和收款位址是否正確。</translation>
     </message>
     <message>
         <source>These are your Ulord addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>這些是你用來收款的Ulord位址。建議在每次交易時，都使用一個新的收款位址。</translation>
+        <translation>這些是您用來收款的Ulord位址。建議在每次交易時，都使用一個新的收款位址。</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -149,7 +149,7 @@
     </message>
     <message>
         <source>This operation needs your wallet passphrase to unlock the wallet.</source>
-        <translation>這個動作需要你的錢包密碼來解鎖錢包。</translation>
+        <translation>這個動作需要您的錢包密碼來解鎖錢包。</translation>
     </message>
     <message>
         <source>Unlock wallet</source>
@@ -157,7 +157,7 @@
     </message>
     <message>
         <source>This operation needs your wallet passphrase to decrypt the wallet.</source>
-        <translation>這個動作需要你的錢包密碼來把錢包解密。</translation>
+        <translation>這個動作需要您的錢包密碼來把錢包解密。</translation>
     </message>
     <message>
         <source>Decrypt wallet</source>
@@ -177,11 +177,11 @@
     </message>
     <message>
         <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR UT&lt;/b&gt;!</source>
-        <translation>警告: 如果把錢包加密後又忘記密碼，你就會從此&lt;b&gt;失去其中所有的Ulord了&lt;/b&gt;！</translation>
+        <translation>警告: 如果把錢包加密後又忘記密碼，您就會從此&lt;b&gt;失去其中所有的Ulord了&lt;/b&gt;！</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
-        <translation>你確定要把錢包加密嗎？</translation>
+        <translation>您確定要把錢包加密嗎？</translation>
     </message>
     <message>
         <source>Wallet encrypted</source>
@@ -189,11 +189,11 @@
     </message>
     <message>
         <source>Ulord will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your ulords from being stolen by malware infecting your computer.</source>
-        <translation>Ulord軟體現在要關閉，好完成加密程序。請注意，加密錢包不能完全防止入侵你的電腦的惡意程式偷取Ulord。</translation>
+        <translation>Ulord軟體現在要關閉，好完成加密程序。請注意，加密錢包不能完全防止入侵您的電腦的惡意程式偷取Ulord。</translation>
     </message>
     <message>
         <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
-        <translation>重要: 請改用新產生有加密的錢包檔，來取代舊錢包檔的備份。為了安全性的理由，當你開始使用新的有加密的錢包後，舊錢包檔的備份就不能再使用了。</translation>
+        <translation>重要: 請改用新產生有加密的錢包檔，來取代舊錢包檔的備份。為了安全性的理由，當您開始使用新的有加密的錢包後，舊錢包檔的備份就不能再使用了。</translation>
     </message>
     <message>
         <source>Wallet encryption failed</source>
@@ -201,7 +201,7 @@
     </message>
     <message>
         <source>Wallet encryption failed due to an internal error. Your wallet was not encrypted.</source>
-        <translation>因為內部錯誤導致錢包加密失敗。你的錢包還是沒加密。</translation>
+        <translation>因為內部錯誤導致錢包加密失敗。您的錢包還是沒加密。</translation>
     </message>
     <message>
         <source>The supplied passphrases do not match.</source>
@@ -356,7 +356,7 @@
     </message>
     <message>
         <source>Sign messages with your Ulord addresses to prove you own them</source>
-        <translation>用Ulord位址簽署訊息來證明位址是你的</translation>
+        <translation>用Ulord位址簽署訊息來證明位址是您的</translation>
     </message>
     <message>
         <source>&amp;Verify message...</source>
@@ -738,7 +738,7 @@ Address: %4
     </message>
     <message>
         <source>Non-anonymized input selected. &lt;b&gt;Darksend will be disabled.&lt;/b&gt;&lt;br&gt;&lt;br&gt;If you still want to use Darksend, please deselect all non-nonymized inputs first and then check Darksend checkbox again.</source>
-        <translation>選擇了非匿名的輸入。 &lt;b&gt; 匿名發送將會被禁用。&lt;/ b&gt;&lt;br&gt; &lt;br&gt;如果你仍然想用匿名發送，請先取消選取所有非匿名的輸入，然後再勾選匿名發送的核取方塊</translation>
+        <translation>選擇了非匿名的輸入。 &lt;b&gt; 匿名發送將會被禁用。&lt;/ b&gt;&lt;br&gt; &lt;br&gt;如果您仍然想用匿名發送，請先取消選取所有非匿名的輸入，然後再勾選匿名發送的核取方塊</translation>
     </message>
     <message>
         <source>highest</source>
@@ -893,15 +893,15 @@ Address: %4
     </message>
     <message>
         <source>Darksend was successfully set to basic (%1 and 2 rounds). You can change this at any time by opening Ulord's configuration screen.</source>
-        <translation>匿名發送已成功設置為一般(%1到2次循環)。你可以隨時打開Ulord配置窗口來修改。</translation>
+        <translation>匿名發送已成功設置為一般(%1到2次循環)。您可以隨時打開Ulord配置窗口來修改。</translation>
     </message>
     <message>
         <source>Darksend was successfully set to high (%1 and 8 rounds). You can change this at any time by opening Ulord's configuration screen.</source>
-        <translation>匿名發送已成功設置為高(%1到8次循環)。你可以隨時打開Ulord配置窗口來修改。</translation>
+        <translation>匿名發送已成功設置為高(%1到8次循環)。您可以隨時打開Ulord配置窗口來修改。</translation>
     </message>
     <message>
         <source>Darksend was successfully set to maximum (%1 and 16 rounds). You can change this at any time by opening Ulord's configuration screen.</source>
-        <translation>匿名發送已成功設置為最高(%1到16次循環)。你可以隨時打開Ulord配置窗口來修改。</translation>
+        <translation>匿名發送已成功設置為最高(%1到16次循環)。您可以隨時打開Ulord配置窗口來修改。</translation>
     </message>
 </context>
 <context>
@@ -971,7 +971,7 @@ Address: %4
     </message>
     <message>
         <source>Directory already exists. Add %1 if you intend to create a new directory here.</source>
-        <translation>已經有這個目錄了。如果你要在裡面造出新的目錄的話，請加上 %1.</translation>
+        <translation>已經有這個目錄了。如果您要在裡面造出新的目錄的話，請加上 %1.</translation>
     </message>
     <message>
         <source>Path already exists, and is not a directory.</source>
@@ -1049,7 +1049,7 @@ Address: %4
     </message>
     <message>
         <source>As this is the first time the program is launched, you can choose where Ulord Core will store its data.</source>
-        <translation>因為這是程式第一次啓動，你可以選擇Ulord全节点钱包儲存資料的地方。</translation>
+        <translation>因為這是程式第一次啓動，您可以選擇Ulord全节点钱包儲存資料的地方。</translation>
     </message>
     <message>
         <source>Ulord Core will download and store a copy of the Ulord block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
@@ -1159,7 +1159,7 @@ Address: %4
     </message>
     <message>
         <source>If you disable the spending of unconfirmed change, the change from a transaction&lt;br/&gt;cannot be used until that transaction has at least one confirmation.&lt;br/&gt;This also affects how your balance is computed.</source>
-        <translation>如果你關掉「可以花還沒確認的零錢」，那麼交易中找零的零錢&lt;br/&gt;就必須要等交易至少有一次確認後，才能夠使用。&lt;br/&gt;這也會影響餘額的計算方式。</translation>
+        <translation>如果您關掉「可以花還沒確認的零錢」，那麼交易中找零的零錢&lt;br/&gt;就必須要等交易至少有一次確認後，才能夠使用。&lt;br/&gt;這也會影響餘額的計算方式。</translation>
     </message>
     <message>
         <source>Accept connections from outside</source>
@@ -1203,7 +1203,7 @@ Address: %4
     </message>
     <message>
         <source>Automatically open the Ulord client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>自動在路由器上開放Ulord的客戶端通訊埠。只有在你的路由器支援且開啓「通用即插即用」協定(UPnP)時才有作用。</translation>
+        <translation>自動在路由器上開放Ulord的客戶端通訊埠。只有在您的路由器支援且開啓「通用即插即用」協定(UPnP)時才有作用。</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -1344,7 +1344,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Ulord network after a connection is established, but this process has not completed yet.</source>
-        <translation>顯示的資訊可能是過期的。跟Ulord網路的連線建立後，你的錢包會自動和網路同步，但是這個步驟還沒完成。</translation>
+        <translation>顯示的資訊可能是過期的。跟Ulord網路的連線建立後，您的錢包會自動和網路同步，但是這個步驟還沒完成。</translation>
     </message>
     <message>
         <source>Available:</source>
@@ -1452,7 +1452,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>The denominations you submitted to the Masternode.&lt;br&gt;To mix, other users must submit the exact same denominations.</source>
-        <translation>你提交到主節點的面額。&lt;br&gt;為了混合，其他用戶必須提交完全一樣的面額。</translation>
+        <translation>您提交到主節點的面額。&lt;br&gt;為了混合，其他用戶必須提交完全一樣的面額。</translation>
     </message>
     <message>
         <source>(Last Message)</source>
@@ -2389,7 +2389,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Are you sure you want to send?</source>
-        <translation>你確定要付錢出去嗎？</translation>
+        <translation>您確定要付錢出去嗎？</translation>
     </message>
     <message>
         <source>are added as transaction fee</source>
@@ -2417,11 +2417,11 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>The amount exceeds your balance.</source>
-        <translation>金額超過了你的餘額。</translation>
+        <translation>金額超過了您的餘額。</translation>
     </message>
     <message>
         <source>The total exceeds your balance when the %1 transaction fee is included.</source>
-        <translation>包含 %1 的交易手續費後，總金額超過你的餘額了。</translation>
+        <translation>包含 %1 的交易手續費後，總金額超過您的餘額了。</translation>
     </message>
     <message>
         <source>Duplicate address found, can only send to each address once per send operation.</source>
@@ -2433,7 +2433,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>The transaction was rejected! This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.</source>
-        <translation>交易被拒絕了！有時候會發生這種錯誤，是因為你錢包中的一些錢已經被花掉了。比如說你複製了錢包檔 wallet.dat, 然後用複製的錢包花掉了錢，你現在所用的原來的錢包中，卻沒有那筆錢已經花掉的紀錄。</translation>
+        <translation>交易被拒絕了！有時候會發生這種錯誤，是因為您錢包中的一些錢已經被花掉了。比如說您複製了錢包檔 wallet.dat, 然後用複製的錢包花掉了錢，您現在所用的原來的錢包中，卻沒有那筆錢已經花掉的紀錄。</translation>
     </message>
     <message>
         <source>Error: The wallet was unlocked only to anonymize coins.</source>
@@ -2508,7 +2508,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>A message that was attached to the ulord: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Ulord network.</source>
-        <translation>附加在Ulord付款協議 URI 中的訊息，會和交易內容一起存起來，給你自己做參考。注意: 這個訊息不會送到Ulord網路上。</translation>
+        <translation>附加在Ulord付款協議 URI 中的訊息，會和交易內容一起存起來，給您自己做參考。注意: 這個訊息不會送到Ulord網路上。</translation>
     </message>
     <message>
         <source>This is an unverified payment request.</source>
@@ -2554,7 +2554,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>You can sign messages with your addresses to prove you own them. Be careful not to sign anything vague, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
-        <translation>你可以用自己的位址簽署訊息，來證明你對位址的所有權。但是請小心，不要簽署語意含糊不清的內容，因為釣魚式詐騙可能會用騙你簽署的手法來冒充是你。只有在語句中的細節你都同意時才簽署。</translation>
+        <translation>您可以用自己的位址簽署訊息，來證明您對位址的所有權。但是請小心，不要簽署語意含糊不清的內容，因為釣魚式詐騙可能會用騙您簽署的手法來冒充是您。只有在語句中的細節您都同意時才簽署。</translation>
     </message>
     <message>
         <source>The Ulord address to sign the message with</source>
@@ -2578,7 +2578,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Enter the message you want to sign here</source>
-        <translation>請在這裡輸入你想簽署的訊息</translation>
+        <translation>請在這裡輸入您想簽署的訊息</translation>
     </message>
     <message>
         <source>Signature</source>
@@ -2590,7 +2590,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Sign the message to prove you own this Ulord address</source>
-        <translation>簽署這個訊息來證明這個Ulord位址是你的</translation>
+        <translation>簽署這個訊息來證明這個Ulord位址是您的</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -2867,7 +2867,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Generated coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to "not accepted" and it won't be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
-        <translation>生產出來的錢要再等 %1 個區塊產生後成熟才可以用。當區塊產生時會發布到網路上，然後被加進區塊鏈。如果失敗了，狀態就會變成「不被接受」，而且不能夠花。如果在你生產出區塊的幾秒鐘內，也有其他節點生產出來的話，就有可能會發生這種情形。</translation>
+        <translation>生產出來的錢要再等 %1 個區塊產生後成熟才可以用。當區塊產生時會發布到網路上，然後被加進區塊鏈。如果失敗了，狀態就會變成「不被接受」，而且不能夠花。如果在您生產出區塊的幾秒鐘內，也有其他節點生產出來的話，就有可能會發生這種情形。</translation>
     </message>
     <message>
         <source>Debug information</source>
@@ -3243,7 +3243,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>InstantX requires inputs with at least 6 confirmations, you might need to wait a few minutes and try again.</source>
-        <translation>即時到帳系統要求輸入的資金最少要有6個確認，你可能需要等待數分鐘然後再重試。</translation>
+        <translation>即時到帳系統要求輸入的資金最少要有6個確認，您可能需要等待數分鐘然後再重試。</translation>
     </message>
     <message>
         <source>Set maximum size of high-priority/low-fee transactions in bytes (default: %d)</source>
@@ -3263,7 +3263,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Warning: -paytxfee is set very high! This is the transaction fee you will pay if you send a transaction.</source>
-        <translation>警告: -paytxfee 設定了很高的金額！這可是你交易付款所要付的手續費。</translation>
+        <translation>警告: -paytxfee 設定了很高的金額！這可是您交易付款所要付的手續費。</translation>
     </message>
     <message>
         <source>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</source>
@@ -3271,7 +3271,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Warning: We do not appear to fully agree with our peers! You may need to upgrade, or other nodes may need to upgrade.</source>
-        <translation>警告: 我們和某些連線的節點對於區塊鏈結的決定不同！你可能需要升級，或是需要等其它的節點升級。</translation>
+        <translation>警告: 我們和某些連線的節點對於區塊鏈結的決定不同！您可能需要升級，或是需要等其它的節點升級。</translation>
     </message>
     <message>
         <source>Warning: error reading wallet.dat! All keys read correctly, but transaction data or address book entries might be missing or incorrect.</source>
@@ -3279,7 +3279,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Warning: wallet.dat corrupt, data salvaged! Original wallet.dat saved as wallet.{timestamp}.bak in %s; if your balance or transactions are incorrect you should restore from a backup.</source>
-        <translation>警告: 錢包檔 wallet.dat 壞掉，但資料被拯救回來了！原來的 wallet.dat 會改儲存在 %s, 檔名是 wallet.{timestamp}.bak. 如果餘額或交易資料有誤，你應該要用備份資料復原回來。</translation>
+        <translation>警告: 錢包檔 wallet.dat 壞掉，但資料被拯救回來了！原來的 wallet.dat 會改儲存在 %s, 檔名是 wallet.{timestamp}.bak. 如果餘額或交易資料有誤，您應該要用備份資料復原回來。</translation>
     </message>
     <message>
         <source>You must specify a masternodeprivkey in the configuration. Please see documentation for help.</source>
@@ -3343,7 +3343,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Do you want to rebuild the block database now?</source>
-        <translation>你想要現在重建區塊資料庫嗎？</translation>
+        <translation>您想要現在重建區塊資料庫嗎？</translation>
     </message>
     <message>
         <source>Done loading</source>
@@ -3395,11 +3395,11 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Error: You already have pending entries in the Darksend pool</source>
-        <translation>錯誤: 你已經有待處理項目在匿名發送資金池中</translation>
+        <translation>錯誤: 您已經有待處理項目在匿名發送資金池中</translation>
     </message>
     <message>
         <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
-        <translation>在任意的通訊埠聽候失敗。如果你希望這樣的話，可以設定 -listen=0.</translation>
+        <translation>在任意的通訊埠聽候失敗。如果您希望這樣的話，可以設定 -listen=0.</translation>
     </message>
     <message>
         <source>Failed to read block</source>

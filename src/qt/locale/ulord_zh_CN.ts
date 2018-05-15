@@ -63,11 +63,11 @@
     </message>
     <message>
         <source>These are your Ulord addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>这些是你要付款过去的Ulord地址。在付款之前，务必要检查金额和收款地址是否正确。</translation>
+        <translation>这些是您要付款过去的Ulord地址。在付款之前，务必要检查金额和收款地址是否正确。</translation>
     </message>
     <message>
         <source>These are your Ulord addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>这些是你用来收款的Ulord地址。建议在每次交易时，都使用一个新的收款地址。</translation>
+        <translation>这些是您用来收款的Ulord地址。建议在每次交易时，都使用一个新的收款地址。</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -185,7 +185,7 @@
     </message>
     <message>
         <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR UT&lt;/b&gt;!</source>
-        <translation>警告:如果把钱包加​​密后又忘记密码，你就会从此&lt;b&gt;失去所有的Ulord了&lt;/b&gt;!</translation>
+        <translation>警告:如果把钱包加​​密后又忘记密码，您就会从此&lt;b&gt;失去所有的Ulord了&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -197,7 +197,7 @@
     </message>
     <message>
         <source>Ulord will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your ulords from being stolen by malware infecting your computer.</source>
-        <translation>Ulord软体现在要关闭，以完成加密过程。请注意，加密钱包不能完全防止恶意软件入侵你的电脑盗取你的Ulord。</translation>
+        <translation>Ulord软体现在要关闭，以完成加密过程。请注意，加密钱包不能完全防止恶意软件入侵您的电脑盗取您的Ulord。</translation>
     </message>
     <message>
         <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
@@ -376,7 +376,7 @@
     </message>
     <message>
         <source>Sign messages with your Ulord addresses to prove you own them</source>
-        <translation>用Ulord地址签署讯息来证明地址是你的</translation>
+        <translation>用Ulord地址签署讯息来证明地址是您的</translation>
     </message>
     <message>
         <source>&amp;Verify message...</source>
@@ -439,6 +439,14 @@
         <translation>打开配置文件</translation>
     </message>
     <message>
+        <source>Ok</source>
+        <translation>确定</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
+    <message>
         <source>Show Automatic &amp;Backups</source>
         <translation>显示自动备份&amp;</translation>
     </message>
@@ -479,7 +487,7 @@
         <translation>Ulord全节点钱包客户端</translation>
     </message>
     <message numerus="yes">
-        <source>Processed %n blocks of transaction history.</source>
+        <source>Processed %n block(s) of transaction history.</source>
         <translation><numerusform>已处理了%n个区块的交易记录.</numerusform></translation>
     </message>
     <message>
@@ -512,7 +520,7 @@
     </message>
     <message numerus="yes">
         <source>%n active connection(s) to Ulord network</source>
-        <translation><numerusform>%n 已连接至Ulord网络</numerusform></translation>
+        <translation><numerusform>已连接%n个节点</numerusform></translation>
     </message>
     <message>
         <source>Synchronizing with network...</source>
@@ -766,7 +774,7 @@ Address: %4
     </message>
     <message>
         <source>Non-anonymized input selected. &lt;b&gt;Darksend will be disabled.&lt;/b&gt;&lt;br&gt;&lt;br&gt;If you still want to use Darksend, please deselect all non-nonymized inputs first and then check Darksend checkbox again.</source>
-        <translation>已选择非匿名输入. &lt;b&gt;匿名发送将会被禁用.&lt;/ b&gt;&lt;br&gt; &lt;br&gt;如果你仍然想使用匿名发送功能,请先取消所选的非匿名输入,然后再勾选匿名发送.</translation>
+        <translation>已选择非匿名输入. &lt;b&gt;匿名发送将会被禁用.&lt;/ b&gt;&lt;br&gt; &lt;br&gt;如果您仍然想使用匿名发送功能,请先取消所选的非匿名输入,然后再勾选匿名发送.</translation>
     </message>
     <message>
         <source>highest</source>
@@ -1086,7 +1094,7 @@ Address: %4
     </message>
     <message>
         <source>As this is the first time the program is launched, you can choose where Ulord Core will store its data.</source>
-        <translation>此次为第一次程序启动，你可以选择储存Ulord全节点钱包数据的路径。</translation>
+        <translation>此次为第一次程序启动，您可以选择储存Ulord全节点钱包数据的路径。</translation>
     </message>
     <message>
         <source>Ulord Core will download and store a copy of the Ulord block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
@@ -2569,20 +2577,25 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>全部有效金额(不推荐)</translation>
     </message>
     <message>
+        <source>any available funds (not anonymous)</source>
+        <translation>发送</translation>
+    </message>
+    <message>
         <source>and InstantX</source>
         <translation>和 即时支付</translation>
     </message>
     <message>
         <source>%1 to %2</source>
-        <translation>%1 到 %2</translation>
+        <translation>%1到： %2</translation>
     </message>
+
     <message>
         <source>Are you sure you want to send?</source>
         <translation>您确定要发出吗？</translation>
     </message>
     <message>
         <source>are added as transaction fee</source>
-        <translation>作为交易费被添加</translation>
+        <translation>交易费</translation>
     </message>
     <message>
         <source>Total Amount = &lt;b&gt;%1&lt;/b&gt;&lt;br /&gt;= %2</source>
@@ -2591,6 +2604,18 @@ https://www.transifex.com/projects/p/ulord/</translation>
     <message>
         <source>Confirm send coins</source>
         <translation>确认发送货币</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;(%1 of %2 entries displayed)&lt;/b&gt;</source>
+        <translation>&lt;b&gt;(显示%2个条目中的%1个)&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation>确定</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>取消</translation>
     </message>
     <message>
         <source>A fee %1 times higher than %2 per kB is considered an insanely high fee.</source>
@@ -2659,8 +2684,14 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <source>Subtract fee from amount</source>
         <translation>从金额中扣除费用</translation>
     </message>
-
-
+    <message>
+        <source>Ok</source>
+        <translation>确定</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
     <message>
         <source>The fee will be deducted from the amount being sent. The recipient will receive less ulords than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
         <translation>收款人承担费用。</translation>
@@ -2773,11 +2804,11 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>You can sign messages/agreements with your addresses to prove you can receive bitcoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
-        <translation>您可以用你的地址对消息进行签名，以证明您是该地址的所有人。注意不要对模棱两可的消息签名，以免遭受钓鱼式攻击。请确保消息内容准确的表达了您的真实意愿。</translation>
+        <translation>您可以用您的地址对消息进行签名，以证明您是该地址的所有人。注意不要对模棱两可的消息签名，以免遭受钓鱼式攻击。请确保消息内容准确的表达了您的真实意愿。</translation>
     </message>
     <message>
         <source>Enter the receiver's address, message (ensure you copy line breaks, spaces, tabs, etc. exactly) and signature below to verify the message. Be careful not to read more into the signature than what is in the signed message itself, to avoid being tricked by a man-in-the-middle attack. Note that this only proves the signing party receives with the address, it cannot prove sendership of any transaction!</source>
-        <translation>输入接收者的地址，消息（确保您完全复制换行符，空格，制表符等）和签名以验证消息。 注意不要在签名中读入多余的内容，以避免中间人攻击所。 此外，它不能证明任何交易的发送！</translation>
+        <translation>输入接收者的地址，消息（确保您完全复制换行符，空格，制表符等）和签名以验证消息。 注意不要在签名中读入多余的内容，以避免中间人攻击。 此外，它不能证明任何交易的发送！</translation>
     </message>
     <message>
         <source>The Ulord address to sign the message with</source>
@@ -2813,7 +2844,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Sign the message to prove you own this Ulord address</source>
-        <translation>签署信息证明你拥有此Ulord地址</translation>
+        <translation>签署信息证明您拥有此Ulord地址</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -2974,7 +3005,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>%1 confirmations</source>
-        <translation>%1 已确认</translation>
+        <translation>%1个确认</translation>
     </message>
     <message>
         <source>%1/offline (InstantX verification in progress - %2 of %3 signatures)</source>
@@ -3006,7 +3037,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message numerus="yes">
         <source>, broadcast through %n node(s)</source>
-        <translation><numerusform>，通过%n多个节点广播</numerusform></translation>
+        <translation><numerusform>，通过%n个节点广播</numerusform></translation>
     </message>
     <message>
         <source>Date</source>
@@ -3090,7 +3121,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Generated coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to "not accepted" and it won't be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
-        <translation>生成的Ulord在可以使用前必须有 %1 个成熟的区块。当您生成了此区块后，它将被广播到网络中以加入区块链。如果它未成功进入区块链，其状态将变更为“不接受”并且不可使用。这可能偶尔会发生，如果另一个节点比你早几秒钟成功生成一个区块。</translation>
+        <translation>生成的Ulord在可以使用前必须有 %1 个成熟的区块。当您生成了此区块后，它将被广播到网络中以加入区块链。如果它未成功进入区块链，其状态将变更为“不接受”并且不可使用。这可能偶尔会发生，如果另一个节点比您早几秒钟成功生成一个区块。</translation>
     </message>
     <message>
         <source>Debug information</source>
@@ -3126,6 +3157,14 @@ https://www.transifex.com/projects/p/ulord/</translation>
     <message>
         <source>This pane shows a detailed description of the transaction</source>
         <translation>当前面板显示了交易的详细信息</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>关闭</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>取消</translation>
     </message>
 </context>
 <context>
@@ -3558,7 +3597,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Warning: -paytxfee is set very high! This is the transaction fee you will pay if you send a transaction.</source>
-        <translation>警告: -paytxfee 设定了很高的金额！这可是你交易付款所要付的手续费。</translation>
+        <translation>警告: -paytxfee 设定了很高的金额！这可是您交易付款所要付的手续费。</translation>
     </message>
     <message>
         <source>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</source>
@@ -3566,7 +3605,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Warning: We do not appear to fully agree with our peers! You may need to upgrade, or other nodes may need to upgrade.</source>
-        <translation>警告: 我们和某些连线的节点对于区块链结的决定不同！你可能需要升级，或是需要等其它的节点升级。</translation>
+        <translation>警告: 我们和某些连线的节点对于区块链结的决定不同！您可能需要升级，或是需要等其它的节点升级。</translation>
     </message>
     <message>
         <source>Warning: error reading wallet.dat! All keys read correctly, but transaction data or address book entries might be missing or incorrect.</source>
@@ -3574,7 +3613,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Warning: wallet.dat corrupt, data salvaged! Original wallet.dat saved as wallet.{timestamp}.bak in %s; if your balance or transactions are incorrect you should restore from a backup.</source>
-        <translation>警告: 钱包档wallet.dat 损坏，但资料被拯救回来了！原来的wallet.dat 会改储存在%s, 档名是wallet.{timestamp}.bak. 如果余额或交易资料有误，你应该要用备份资料复原回来。</translation>
+        <translation>警告: 钱包档wallet.dat 损坏，但资料被拯救回来了！原来的wallet.dat 会改储存在%s, 档名是wallet.{timestamp}.bak. 如果余额或交易资料有误，您应该要用备份资料复原回来。</translation>
     </message>
     <message>
         <source>You must specify a masternodeprivkey in the configuration. Please see documentation for help.</source>
@@ -3666,7 +3705,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Do you want to rebuild the block database now?</source>
-        <translation>你想要现在重建区块资料库吗？</translation>
+        <translation>您想要现在重建区块资料库吗？</translation>
     </message>
     <message>
         <source>Done loading</source>
@@ -4338,7 +4377,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Specify your own public address</source>
-        <translation>指定你个人公开地址</translation>
+        <translation>指定您个人公开地址</translation>
     </message>
     <message>
         <source>Synchronization pending...</source>
@@ -4458,7 +4497,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>You need to rebuild the database using -reindex to change -txindex</source>
-        <translation>你需要通过使用-reindex改变-txindex来重新建立数据库</translation>
+        <translation>您需要通过使用-reindex改变-txindex来重新建立数据库</translation>
     </message>
     <message>
         <source>Your entries added successfully.</source>

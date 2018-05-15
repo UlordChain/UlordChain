@@ -1099,6 +1099,11 @@ void BitcoinGUI::message(const QString &title, const QString &message, unsigned 
 
         showNormalIfMinimized();
         QMessageBox mBox((QMessageBox::Icon)nMBoxIcon, strTitle, message, buttons, this);
+        if(NULL!=mBox.button(QMessageBox::Ok))
+        {
+           mBox.button(QMessageBox::Ok)->setText(tr("Ok"));
+           // mBox.button(QMessageBox::Ok)->setStyleSheet("background-color:#515b78;border:0;border-radius:3px;color:#ffffff;font-size:12px;font-weight:normal;height: 26px;padding-left:25px;padding-right:25px;padding-top:5px;padding-bottom:5px;margin-right: 10px;");
+        }
         int r = mBox.exec();
         if (ret != NULL)
             *ret = r == QMessageBox::Ok;
