@@ -921,7 +921,8 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 	
 	uint160 secret_hash = Hash160(str_hash);
 	std::string hash_tem = secret_hash.GetHex();
-    std::vector<unsigned char>str_hash160(hash_tem.begin(),hash_tem.end());
+  	CBitcoinAddress hash_address;
+	hash_address.Set((CScriptID&)secret_hash);
 
 	// Gets the current Unix timestamp.(hex)
 	struct timeval tm;
@@ -939,14 +940,15 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
     CBitcoinAddress refund_address(CTxDestination(newKey.GetID()));
 	if (!refund_address.IsValid())
     	throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
+
 	
-	CScript contract =  CScript() << OP_IF << OP_SIZE << 20 << OP_EQUALVERIFY << OP_SHA256 ;
-	CScript contract_5 = CScript() << str_hash160 << OP_EQUALVERIFY << OP_DUP  << OP_HASH160;
-	CScript contract_1 = GetScriptForDestination(CTxDestination(address.Get()));
-	CScript contract_2 = CScript()<< OP_ELSE << str_stamp << OP_CHECKLOCKTIMEVERIFY << OP_DROP << OP_DUP << OP_HASH160;
-	CScript contract_3 = GetScriptForDestination(CTxDestination(newKey.GetID()));
-	CScript contract_4 = CScript()<< OP_ENDIF << OP_EQUALVERIFY << OP_CHECKSIG;
-	contract = contract + contract_5 + contract_1 + contract_2 + contract_3 + contract_4;	
+	std::vector<unsigned char>str_add(params[0].get_str().begin(),params[0].get_str().end());
+	uint160 address_other =Hash160(str_add);
+
+	CScript contract =  CScript() << OP_IF << OP_RIPEMD160 << ToByteVector(secret_hash) << OP_EQUALVERIFY << OP_DUP << OP_HASH160 \
+	<< ToByteVector(address_other)<< OP_ELSE << l_time << OP_CHECKLOCKTIMEVERIFY << OP_DROP << OP_DUP << OP_HASH160\
+	<< ToByteVector(newKey.GetID())<< OP_ENDIF << OP_EQUALVERIFY << OP_CHECKSIG;
+	
 	// The build script is 160 hashes.
 	CScriptID contractP2SH = CScriptID(contract);
 	
@@ -979,14 +981,14 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 	
 	UniValue result(UniValue::VOBJ);
 	result.push_back(Pair("timestame",str));
+	result.push_back(Pair("refund_address",refund_address.ToString()));
 	result.push_back(Pair("hexstring",wtxNew.GetHash().GetHex()));
 	result.push_back(Pair("hex",EncodeHexTx(wtxNew)));
 	result.push_back(Pair("contractP2SH",contractP2SH.ToString()));
-	result.push_back(Pair("contract",ScriptToAsmStr(contract)));
 	result.push_back(Pair("contract",HexStr(contract.begin(),contract.end())));
 	result.push_back(Pair("secret",secret.ToString()));
 	result.push_back(Pair("secrethash",secret_hash.ToString()));
-	
+
     return result;
 }
 
