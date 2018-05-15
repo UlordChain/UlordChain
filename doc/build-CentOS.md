@@ -11,6 +11,7 @@ Run the following as root to install the base dependencies for building:
 
 ```bash
 yum install -y qt-devel protobuf-devel qrencode-devel libevent-devel libtool openssl-devel
+
 yum -y install python python-devel libicu libicu-devel zlib zlib-devel bzip2 bzip2-devel
 ```
 
