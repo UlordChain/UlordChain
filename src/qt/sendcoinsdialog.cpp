@@ -268,7 +268,7 @@ void SendCoinsDialog::on_sendButton_clicked()
         ).arg(strNearestAmount));
     } else {
         recipients[0].inputType = ALL_COINS;
-        strFunds = tr("using") + " <b>" + tr("any available funds (not anonymous)") + "</b>";
+        strFunds = QString("  ") + tr("any available funds (not anonymous)") + "</b>";
     }
 
     if(ui->checkUseInstantSend->isChecked()) {
@@ -409,16 +409,17 @@ void SendCoinsDialog::send(QList<SendCoinsRecipient> recipients, QString strFee,
     questionString.append(tr("<b>(%1 of %2 entries displayed)</b>").arg(displayedEntries).arg(messageEntries));
 
     // Display message box
-    QMessageBox::StandardButton retval = QMessageBox::question(this, tr("Confirm send coins"),
-        questionString.arg(formatted.join("<br />")),
-        QMessageBox::Yes | QMessageBox::Cancel,
-        QMessageBox::Cancel);
-
+    QMessageBox box(QMessageBox::Question, tr("Confirm send coins"),questionString.arg(formatted.join("<br />")),QMessageBox::Yes|QMessageBox::Cancel,this);
+    // box.setStandardButtons(QMessageBox::Yes|QMessageBox::Cancel);
+    box.setButtonText(QMessageBox::Yes,tr("Ok"));
+    box.setButtonText(QMessageBox::Cancel,tr("Cancel"));
+    int retval = box.exec();
     if(retval != QMessageBox::Yes)
     {
         fNewRecipientAllowed = true;
         return;
     }
+
 
     // now send the prepared transaction
     WalletModel::SendCoinsReturn sendStatus = model->sendCoins(currentTransaction);

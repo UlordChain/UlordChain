@@ -443,7 +443,7 @@
         <translation>Abrir &amp;URI...</translation>
     </message>
     <message>
-        <source>Open a ulord: URI or payment request</source>
+        <source>Open a Ulord: URI or payment request</source>
         <translation>Abre um ulord: URI ou solicitação de pagamento</translation>
     </message>
     <message>
@@ -4284,7 +4284,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Esta mensagem de ajuda</translation>
     </message>
     <message>
-        <source>This is Ulord full node software.</source>
+        <source>This is Ulord full-node wallet client</source>
         <translation>Este é um software experimental.</translation>
     </message>
     <message>

@@ -1,9 +1,11 @@
+ #pragma code_page(65001)
 IDI_ICON1 ICON DISCARDABLE "icons/bitcoin.ico"
 
 #include <windows.h>             // needed for VERSIONINFO
 #include "../../clientversion.h" // holds the needed client version information
 
-#define VER_PRODUCTVERSION     CLIENT_VERSION_MAJOR,CLIENT_VERSION_MINOR,CLIENT_VERSION_REVISION,CLIENT_VERSION_BUILD
+#define VER_PRODUCTVERSION     CLIENT_VERSION_MAJOR,CLIENT_VERSION_MINOR,CLIENT_VERSION_REVISION
+//#define VER_PRODUCTVERSION_STR STRINGIZE(CLIENT_VERSION_MAJOR) "." STRINGIZE(CLIENT_VERSION_MINOR) "." STRINGIZE(CLIENT_VERSION_REVISION)
 #define VER_PRODUCTVERSION_STR STRINGIZE(CLIENT_VERSION_MAJOR) "." STRINGIZE(CLIENT_VERSION_MINOR) "." STRINGIZE(CLIENT_VERSION_REVISION)
 #define VER_FILEVERSION        VER_PRODUCTVERSION
 #define VER_FILEVERSION_STR    VER_PRODUCTVERSION_STR
@@ -18,14 +20,14 @@ BEGIN
     BEGIN
         BLOCK "040904E4" // U.S. English - multilingual (hex)
         BEGIN
-            VALUE "CompanyName",        "Ulord"
-            VALUE "FileDescription",    "Ulord Core (GUI node for Ulord)"
+            VALUE "CompanyName",        "天河国云"
+            VALUE "FileDescription",    "Ulord全节点钱包"
             VALUE "FileVersion",        VER_FILEVERSION_STR
             VALUE "InternalName",       "ulord-qt"
             VALUE "LegalCopyright",     COPYRIGHT_STR
             VALUE "LegalTrademarks1",   "Distributed under the MIT software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php."
             VALUE "OriginalFilename",   "ulord-qt.exe"
-            VALUE "ProductName",        "Ulord Core"
+            VALUE "ProductName",        "Ulord全节点钱包"
             VALUE "ProductVersion",     VER_PRODUCTVERSION_STR
         END
     END

@@ -443,7 +443,7 @@
         <translation>Открыть &amp;URI...</translation>
     </message>
     <message>
-        <source>Open a ulord: URI or payment request</source>
+        <source>Open a Ulord: URI or payment request</source>
         <translation>Открыть ulord: URI или запрос платежа</translation>
     </message>
     <message>
@@ -4400,7 +4400,7 @@ rpcpassword=%s
         <translation>Эта справка</translation>
     </message>
     <message>
-        <source>This is Ulord full node software.</source>
+        <source>This is Ulord full-node wallet client</source>
         <translation>Это экспериментальное ПО.</translation>
     </message>
     <message>

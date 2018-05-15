@@ -41,6 +41,7 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     mapper(0)
 {
     ui->setupUi(this);
+    this->setWindowFlags(Qt::Dialog|Qt::WindowCloseButtonHint);
 
     /* Main elements init */
     ui->databaseCache->setMinimum(nMinDbCache);

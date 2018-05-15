@@ -26,7 +26,7 @@
 #include "script/standard.h"
 #include "txmempool.h"
 #include "uint256.h"
-#include "utilstrencodings.h"
+#include "utilmoneystr.h"
 #include "instantx.h"
 #ifdef ENABLE_WALLET
 #include "wallet/wallet.h"
@@ -915,10 +915,14 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 	unsigned char vch[32];
 	RandAddSeedPerfmon();
     GetRandBytes(vch, sizeof(vch));
-	uint256 u_hash = Hash(vch,vch+sizeof(vch));
-	std::string tem = u_hash.GetHex();
+	uint256 secret = Hash(vch,vch+sizeof(vch));
+	std::string tem = secret.GetHex();
 	std::vector<unsigned char>str_hash(tem.begin(),tem.end());
 	
+	uint160 secret_hash = Hash160(str_hash);
+	std::string hash_tem = secret_hash.GetHex();
+    std::vector<unsigned char>str_hash160(hash_tem.begin(),hash_tem.end());
+
 	// Gets the current Unix timestamp.(hex)
 	struct timeval tm;
 	gettimeofday(&tm,NULL);
@@ -936,18 +940,18 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 	if (!refund_address.IsValid())
     	throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
 	
-	CScript contract =  CScript() << OP_IF << OP_SIZE << secretSize << OP_EQUALVERIFY << OP_SHA256 << str_hash << OP_EQUALVERIFY << OP_DUP  << OP_HASH160;
-	CScript contract_1 = GetScriptForDestination(CTxDestination(address.Get())) << OP_ELSE << str_stamp << OP_CHECKLOCKTIMEVERIFY << OP_DROP << OP_DUP << OP_HASH160;
-	CScript contract_2 = GetScriptForDestination(CTxDestination(refund_address.Get()))<< OP_ENDIF << OP_EQUALVERIFY << OP_CHECKSIG;
-	contract = contract + contract_1 + contract_2;	
-
+	CScript contract =  CScript() << OP_IF << OP_SIZE << 20 << OP_EQUALVERIFY << OP_SHA256 ;
+	CScript contract_5 = CScript() << str_hash160 << OP_EQUALVERIFY << OP_DUP  << OP_HASH160;
+	CScript contract_1 = GetScriptForDestination(CTxDestination(address.Get()));
+	CScript contract_2 = CScript()<< OP_ELSE << str_stamp << OP_CHECKLOCKTIMEVERIFY << OP_DROP << OP_DUP << OP_HASH160;
+	CScript contract_3 = GetScriptForDestination(CTxDestination(newKey.GetID()));
+	CScript contract_4 = CScript()<< OP_ENDIF << OP_EQUALVERIFY << OP_CHECKSIG;
+	contract = contract + contract_5 + contract_1 + contract_2 + contract_3 + contract_4;	
 	// The build script is 160 hashes.
 	CScriptID contractP2SH = CScriptID(contract);
 	
 	// Start building the lock script for the p2sh type.
-	CScript contractP2SHPkScript = CScript() << OP_HASH160;
-	CScript contractP2SHPkScript_1 = GetScriptForDestination(CTxDestination(contractP2SH)) << OP_EQUAL;
-	contractP2SHPkScript = contractP2SHPkScript + contractP2SHPkScript_1;
+	CScript contractP2SHPkScript = GetScriptForDestination(CTxDestination(contractP2SH));
 
 	// The amount is locked in the redemption script.
 	 vector<CRecipient> vecSend;
@@ -955,10 +959,35 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
     CRecipient recipient = {contractP2SHPkScript,nAmount,false};
     vecSend.push_back(recipient);
 
-
-
-
-    return true;
+	// Start building a deal
+	CReserveKey reservekey(pwalletMain);
+	CAmount nFeeRequired = 0;
+    std::string strError;
+	CWalletTx wtxNew;
+	if ( !pwalletMain->CreateTransaction(vecSend,wtxNew,reservekey,nFeeRequired,nChangePosRet,strError))
+		{
+			if ( nAmount + nFeeRequired > pwalletMain->GetBalance() )
+			{
+				strError = strprintf("Error: This transaction requires a transaction fee of at leasst %s because if its amount, complex, or use of recently received funds!",FormatMoney(nFeeRequired));
+			}
+			LogPrintf("%s() : %s\n",__func__,strError);
+			throw JSONRPCError(RPC_WALLET_ERROR,strError);
+		}
+			
+		if ( !pwalletMain->CommitTransaction(wtxNew,reservekey) )
+			throw JSONRPCError(RPC_WALLET_ERROR,"Error: The transaction was rejected! This might hapen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.");
+	
+	UniValue result(UniValue::VOBJ);
+	result.push_back(Pair("timestame",str));
+	result.push_back(Pair("hexstring",wtxNew.GetHash().GetHex()));
+	result.push_back(Pair("hex",EncodeHexTx(wtxNew)));
+	result.push_back(Pair("contractP2SH",contractP2SH.ToString()));
+	result.push_back(Pair("contract",ScriptToAsmStr(contract)));
+	result.push_back(Pair("contract",HexStr(contract.begin(),contract.end())));
+	result.push_back(Pair("secret",secret.ToString()));
+	result.push_back(Pair("secrethash",secret_hash.ToString()));
+	
+    return result;
 }
 
 

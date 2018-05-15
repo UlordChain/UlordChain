@@ -11,12 +11,15 @@
 #include <QModelIndex>
 #include <QSettings>
 #include <QString>
+#include <QPushButton>
 
 TransactionDescDialog::TransactionDescDialog(const QModelIndex &idx, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::TransactionDescDialog)
 {
     ui->setupUi(this);
+    this->setWindowFlags(Qt::Dialog|Qt::WindowCloseButtonHint);
+    ui->buttonBox->button(QDialogButtonBox::Close)->setText(tr("Close"));
 
     /* Open CSS when configured */
     this->setStyleSheet(GUIUtil::loadStyleSheet());

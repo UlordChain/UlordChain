@@ -124,7 +124,8 @@ BitcoinGUI::BitcoinGUI(const PlatformStyle *platformStyle, const NetworkStyle *n
 
     GUIUtil::restoreWindowGeometry("nWindow", QSize(850, 550), this);
 
-    QString windowTitle = tr("Ulord Core") + " - ";
+    // QString windowTitle = tr("Ulord Core") + " - ";
+    QString windowTitle = tr("Ulord Core");
 #ifdef ENABLE_WALLET
     /* if compiled with wallet support, -disablewallet can still disable the wallet */
     enableWallet = !GetBoolArg("-disablewallet", false);
@@ -133,9 +134,9 @@ BitcoinGUI::BitcoinGUI(const PlatformStyle *platformStyle, const NetworkStyle *n
 #endif // ENABLE_WALLET
     if(enableWallet)
     {
-        windowTitle += tr("Wallet");
+        // windowTitle += tr("Wallet");
     } else {
-        windowTitle += tr("Node");
+        // windowTitle += tr("Node");
     }
     QString userWindowTitle = QString::fromStdString(GetArg("-windowtitle", ""));
     if(!userWindowTitle.isEmpty()) windowTitle += " - " + userWindowTitle;
@@ -426,11 +427,11 @@ void BitcoinGUI::createActions()
     usedReceivingAddressesAction->setStatusTip(tr("Show the list of used receiving addresses and labels"));
 
     openAction = new QAction(/*QApplication::style()->standardIcon(QStyle::SP_DirOpenIcon), */ tr("Open &URI..."), this);
-    openAction->setStatusTip(tr("Open a ulord: URI or payment request"));
+    openAction->setStatusTip(tr("Open a Ulord: URI or payment request"));
 
     showHelpMessageAction = new QAction(/*QApplication::style()->standardIcon(QStyle::SP_MessageBoxInformation), */ tr("&Command-line options"), this);
     showHelpMessageAction->setMenuRole(QAction::NoRole);
-    showHelpMessageAction->setStatusTip(tr("Show the Ulord Core help message to get a list with possible Ulord Core command-line options"));
+    // showHelpMessageAction->setStatusTip(tr("Show the Ulord Core help message to get a list with possible Ulord Core command-line options"));
 
     showPrivateSendHelpAction = new QAction(QApplication::style()->standardIcon(QStyle::SP_MessageBoxInformation), tr("&PrivateSend information"), this);
     showPrivateSendHelpAction->setMenuRole(QAction::NoRole);
@@ -540,7 +541,7 @@ void BitcoinGUI::createMenuBar()
     // help->addAction(showPrivateSendHelpAction);
     help->addSeparator();
     help->addAction(aboutAction);
-    help->addAction(aboutQtAction);
+    // help->addAction(aboutQtAction);
 }
 
 void BitcoinGUI::createToolBars()
@@ -1098,6 +1099,11 @@ void BitcoinGUI::message(const QString &title, const QString &message, unsigned 
 
         showNormalIfMinimized();
         QMessageBox mBox((QMessageBox::Icon)nMBoxIcon, strTitle, message, buttons, this);
+        if(NULL!=mBox.button(QMessageBox::Ok))
+        {
+           mBox.button(QMessageBox::Ok)->setText(tr("Ok"));
+           // mBox.button(QMessageBox::Ok)->setStyleSheet("background-color:#515b78;border:0;border-radius:3px;color:#ffffff;font-size:12px;font-weight:normal;height: 26px;padding-left:25px;padding-right:25px;padding-top:5px;padding-bottom:5px;margin-right: 10px;");
+        }
         int r = mBox.exec();
         if (ret != NULL)
             *ret = r == QMessageBox::Ok;
