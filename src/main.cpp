@@ -1237,6 +1237,10 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
         CAmount nValueOut = tx.GetValueOut();
         CAmount nFees = nValueIn-nValueOut;
         // nModifiedFees includes any fee deltas from PrioritiseTransaction
+	if(nFees<=0) 
+	{
+	   return state.DoS(0, false, REJECT_INSUFFICIENTFEE, "insufficient nFees");
+	}    
         CAmount nModifiedFees = nFees;
         double nPriorityDummy = 0;
         pool.ApplyDeltas(hash, nPriorityDummy, nModifiedFees);
