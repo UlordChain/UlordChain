@@ -1155,6 +1155,19 @@ UniValue crosschainauditcontract(const UniValue &params, bool fHelp)
         throw runtime_error(
             "params.size error\n"
         );
+	LOCK(cs_main);
+    RPCTypeCheck(params, boost::assign::list_of(UniValue::VSTR)(UniValue::VBOOL)(UniValue::VBOOL));
+	// The first parameter is the contract, and the hash160 algorithm is used for it.
+	std::string contract = params[0].get_str();
+	uint160 contract_hash = Hash160(contract.begin(),contract.end());
+
+	// The second parameter is the raw data for a transaction.
+	// parse hex string from parameter.
+	CTransaction tx;
+    if (!DecodeHexTx(tx, params[0].get_str()))
+        throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
+    uint256 hashTx = tx.GetHash();
+
     UniValue result(UniValue::VOBJ);
     return result;
 }
