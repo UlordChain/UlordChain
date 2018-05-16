@@ -36,7 +36,7 @@
 #include <secp256k1.h>
 #include <secp256k1_recovery.h>
 
-
+#include "nameclaim.h"
 
 //////////////////////////////////////////////////////////
 #include <stdint.h>
@@ -46,6 +46,8 @@
 #include <univalue.h>
 
 using namespace std;
+
+typedef vector<unsigned char> valtype;
 
 void ScriptPubKeyToJSON(const CScript& scriptPubKey, UniValue& out, bool fIncludeHex)
 {
@@ -1166,8 +1168,33 @@ UniValue crosschainauditcontract(const UniValue &params, bool fHelp)
 	CTransaction tx;
     if (!DecodeHexTx(tx, params[0].get_str()))
         throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
-    uint256 hashTx = tx.GetHash();
-
+	
+	// The transaction object constructed by the transaction is parsed.
+	BOOST_FOREACH(const CTxOut& txout, tx.vout) 
+	{
+		const CScript scriptPubkey = StripClaimScriptPrefix(txout.scriptPubKey);
+		vector<valtype> vSolutions;
+		txnouttype addressType;
+		uint160 addrhash;
+		if (Solver(scriptPubkey, addressType, vSolutions))
+		{
+	        if(addressType== TX_SCRIPTHASH )
+	        {
+	            addrhash=uint160(vSolutions[0]);
+				break;
+	        }
+	        else if(addressType==TX_PUBKEYHASH )
+	        {
+	            addrhash=uint160(vSolutions[0]);
+				continue;
+	        }
+	        else if(addressType== TX_PUBKEY)
+	        {
+	            addrhash= Hash160(vSolutions[0]);
+				continue;
+	        }
+		}
+	}
     UniValue result(UniValue::VOBJ);
     return result;
 }
