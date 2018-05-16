@@ -951,7 +951,8 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 	
 	// The build script is 160 hashes.
 	CScriptID contractP2SH = CScriptID(contract);
-	
+	CBitcoinAddress contract_address;
+	contract_address.Set(contractP2SH);	
 	// Start building the lock script for the p2sh type.
 	CScript contractP2SHPkScript = GetScriptForDestination(CTxDestination(contractP2SH));
 
@@ -984,7 +985,7 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 	result.push_back(Pair("refund_address",refund_address.ToString()));
 	result.push_back(Pair("hexstring",wtxNew.GetHash().GetHex()));
 	result.push_back(Pair("hex",EncodeHexTx(wtxNew)));
-	result.push_back(Pair("contractP2SH",contractP2SH.ToString()));
+	result.push_back(Pair("contractP2SH",contract_address.ToString()));
 	result.push_back(Pair("contract",HexStr(contract.begin(),contract.end())));
 	result.push_back(Pair("secret",secret.ToString()));
 	result.push_back(Pair("secrethash",secret_hash.ToString()));
