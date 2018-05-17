@@ -1220,6 +1220,10 @@ UniValue crosschainauditcontract(const UniValue &params, bool fHelp)
 		LogPrintf("contractP2SH  :is %s\n",contractP2SH.ToString());
 		LogPrintf("addrhash      :is %s\n",addrhash.ToString());	
 		contract_address.Set(contractP2SH);
+		if (!contract.IsNormalPaymentScript())
+		{
+			LogPrintf("contract is not an atomic swap script recognized by this tool");
+		}
 	}
 	else
 	{
