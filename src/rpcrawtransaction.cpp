@@ -1170,24 +1170,26 @@ UniValue crosschainauditcontract(const UniValue &params, bool fHelp)
             "params.size error\n"
         );
 	LOCK(cs_main);
-    RPCTypeCheck(params, boost::assign::list_of(UniValue::VSTR)(UniValue::VBOOL)(UniValue::VBOOL));
+    RPCTypeCheck(params, boost::assign::list_of(UniValue::VSTR)(UniValue::VSTR));
 	// The first parameter is the contract, and the hash160 algorithm is used for it.
-	std::string contract = params[0].get_str();
-	uint160 contract_hash = Hash160(contract.begin(),contract.end());
+	string str_contract = params[0].get_str();
+	std::vector<unsigned char>v_contract = ParseHex(str_contract);
+	CScript contract(v_contract.begin(),v_contract.end());
+	CScriptID contractP2SH = CScriptID(contract);
 
 	// The second parameter is the raw data for a transaction.
 	// parse hex string from parameter.
 	CTransaction tx;
-    if (!DecodeHexTx(tx, params[0].get_str()))
+    if (!DecodeHexTx(tx, params[1].get_str()))
         throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
 	
 	// The transaction object constructed by the transaction is parsed.
+	std::vector<valtype> vSolutions;
+	txnouttype addressType;
+	uint160 addrhash;
 	BOOST_FOREACH(const CTxOut& txout, tx.vout) 
 	{
 		const CScript scriptPubkey = StripClaimScriptPrefix(txout.scriptPubKey);
-		vector<valtype> vSolutions;
-		txnouttype addressType;
-		uint160 addrhash;
 		if (Solver(scriptPubkey, addressType, vSolutions))
 		{
 	        if(addressType== TX_SCRIPTHASH )
@@ -1207,8 +1209,19 @@ UniValue crosschainauditcontract(const UniValue &params, bool fHelp)
 	        }
 		}
 	}
+	
+	// compare hash160 value of address
+	if ( contractP2SH == addrhash )
+	{
+	    LogPrintf("the vout of the tx is ok");	
+		LogPrintf("contractP2SH  :is %s\n",contractP2SH.ToString());
+		LogPrintf("addrhash      :is %s\n",addrhash.ToString());	
+	}
+	else
+	{
+		throw JSONRPCError(RPC_INVALID_PARAMS, "TX decode failed");
+	}
+
     UniValue result(UniValue::VOBJ);
     return result;
 }
-
-
