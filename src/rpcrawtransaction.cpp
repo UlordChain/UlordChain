@@ -1188,6 +1188,7 @@ UniValue crosschainauditcontract(const UniValue &params, bool fHelp)
 	std::vector<valtype> vSolutions;
 	txnouttype addressType;
 	uint160 addrhash;
+	CAmount value;
 	BOOST_FOREACH(const CTxOut& txout, tx.vout) 
 	{
 		const CScript scriptPubkey = StripClaimScriptPrefix(txout.scriptPubKey);
@@ -1196,6 +1197,7 @@ UniValue crosschainauditcontract(const UniValue &params, bool fHelp)
 	        if(addressType== TX_SCRIPTHASH )
 	        {
 	            addrhash=uint160(vSolutions[0]);
+				value = txout.nValue;
 				break;
 	        }
 	        else if(addressType==TX_PUBKEYHASH )
@@ -1226,7 +1228,7 @@ UniValue crosschainauditcontract(const UniValue &params, bool fHelp)
 
     UniValue result(UniValue::VOBJ);
 	result.push_back(Pair("contract address",contract_address.ToString()));
-
+	result.push_back(Pair("contract value",ValueFromAmount(value)));
 
 
     return result;
