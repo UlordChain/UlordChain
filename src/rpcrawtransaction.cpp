@@ -987,7 +987,7 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 	result.push_back(Pair("refund_address",refund_address.ToString()));
 	result.push_back(Pair("hexstring",wtxNew.GetHash().GetHex()));
 	result.push_back(Pair("hex",EncodeHexTx(wtxNew)));
-	result.push_back(Pair("contractP2SH",contract_address.ToString()));
+	result.push_back(Pair("Contract(address) ",contract_address.ToString()));
 	result.push_back(Pair("contract",HexStr(contract.begin(),contract.end())));
 	result.push_back(Pair("secret",secret.ToString()));
 	result.push_back(Pair("secrethash",secret_hash.ToString()));
@@ -1176,6 +1176,7 @@ UniValue crosschainauditcontract(const UniValue &params, bool fHelp)
 	std::vector<unsigned char>v_contract = ParseHex(str_contract);
 	CScript contract(v_contract.begin(),v_contract.end());
 	CScriptID contractP2SH = CScriptID(contract);
+	CBitcoinAddress contract_address;
 
 	// The second parameter is the raw data for a transaction.
 	// parse hex string from parameter.
@@ -1211,11 +1212,12 @@ UniValue crosschainauditcontract(const UniValue &params, bool fHelp)
 	}
 	
 	// compare hash160 value of address
-	if ( contractP2SH == addrhash )
+	if ( 0 == strcmp(contractP2SH.ToString().c_str(),addrhash.ToString().c_str()) )
 	{
-	    LogPrintf("the vout of the tx is ok");	
+	    LogPrintf("the vout of the tx is ok\n");	
 		LogPrintf("contractP2SH  :is %s\n",contractP2SH.ToString());
 		LogPrintf("addrhash      :is %s\n",addrhash.ToString());	
+		contract_address.Set(contractP2SH);
 	}
 	else
 	{
@@ -1223,5 +1225,9 @@ UniValue crosschainauditcontract(const UniValue &params, bool fHelp)
 	}
 
     UniValue result(UniValue::VOBJ);
+	result.push_back(Pair("contract address",contract_address.ToString()));
+
+
+
     return result;
 }
