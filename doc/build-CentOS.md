@@ -69,7 +69,7 @@ Preparation:
 To configure with wallet:
 ```bash
 ./configure --without-gui
-# If your gcc version is the default of CentOS, your need to
+# If your gcc version is the default of CentOS( "4.8.5 20150623 (Red Hat 4.8.5-28) (GCC)" ), your need to
 ./configure --without-gui CFLAGS="-std=c99"
 ```
 
