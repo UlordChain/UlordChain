@@ -17,6 +17,8 @@ using namespace std;
 class CMasternodeMan;
 
 extern CMasternodeMan mnodeman;
+extern CService ucenterservice;
+
 
 /**
  * Provides a forward and reverse index between MN vin's and integers.

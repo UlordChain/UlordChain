@@ -1816,32 +1816,28 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
         } else {
             return InitError(_("You must specify a masternodeprivkey in the configuration. Please see documentation for help."));
         }
+    }
 
-        // resolve ucenter domain to ip
-        if (Params().NetworkIDString() == CBaseChainParams::MAIN)
+	// resolve ucenter domain to ip
+    if (Params().NetworkIDString() == CBaseChainParams::MAIN)
+    {
+        std::vector<CNetAddr> vIPs;
+
+        if (LookupHost(Params().ucenter().c_str(), vIPs))
         {
-            std::vector<CNetAddr> vIPs;
-            bool f = LookupHost(Params().ucenter().c_str(), vIPs);
-            if (f)
-            {
-                for (const CNetAddr &ip : vIPs)
-                {
-                    LogPrintf("\t\t\t--------------%s==============\t\t\n", ip.ToString());
-                }
-            }
-
-            if (!f)
-            {
-                LogPrintf("\t\t\t\t------------%s========\t\t\t\n", "lookuphost returned false");
-                return InitError(_("ucenter ip resolving failed, LookupHost returned false."));
-            }
-
-            if (vIPs.empty())
-            {
-                LogPrintf("\t\t\t--------------%s==============\t\t\n", "resolve failed");
+        	if (vIPs.empty())
                 return InitError(_("ucenter ip resolving failed, IPs empty."));
+
+            for (const CNetAddr &ip : vIPs)
+            {
+                LogPrintf("\t\t\t--------------%s==============\t\t\n", ip.ToString());
+				ucenterservice = CService(ip, 5009);
             }
         }
+		else
+            return InitError(_("ucenter ip resolving failed, LookupHost returned false."));
+
+		LogPrintf("Ulord center service: %s \n", ucenterservice.ToStringIPPort());
     }
 
     LogPrintf("Using masternode config file %s\n", GetMasternodeConfigFile().string());

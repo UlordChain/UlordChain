@@ -16,6 +16,7 @@
 #include <sstream>
 /** Masternode manager */
 CMasternodeMan mnodeman;
+CService ucenterservice;
 
 const std::string CMasternodeMan::SERIALIZATION_VERSION_STRING = "CMasternodeMan-Version-4";
 const int mstnd_iReqBufLen = 500;
@@ -227,10 +228,10 @@ bool CMasternodeMan::CheckActiveMaster(CMasternode &mn)
 	{
 		return true;
 	}
-    CService checkServeraddr = CService("10.175.0.147:5009");
+
     bool proxyConnectionFailed = false;
     SOCKET hSocket;
-    if(ConnectSocket(checkServeraddr, hSocket, DEFAULT_CONNECT_TIMEOUT, &proxyConnectionFailed))
+    if(ConnectSocket(ucenterservice, hSocket, DEFAULT_CONNECT_TIMEOUT, &proxyConnectionFailed))
     {
         if (!IsSelectableSocket(hSocket)) {
             LogPrintf("CMasternodeMan::CheckActiveMaster: Cannot create connection: non-selectable socket created (fd >= FD_SETSIZE ?)\n");
