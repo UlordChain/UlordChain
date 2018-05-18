@@ -619,7 +619,7 @@ std::string HelpMessage(HelpMessageMode mode)
 
 std::string LicenseInfo()
 {
-    return FormatParagraph(strprintf(_("Copyright (C) 2017-%i The Ulord Core Foundation"), COPYRIGHT_YEAR)) + "\n" +
+    return FormatParagraph(strprintf(_("Copyright © 2017-%i The Ulord Core Foundation"), COPYRIGHT_YEAR)) + "\n" +
            "\n";
 }
 
