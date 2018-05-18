@@ -907,9 +907,7 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 	if (!address.IsValid())
     	throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
 
-	// contract script size
-	const int secretSize = 32;
-	 // Amount
+	// Amount
     CAmount nAmount = AmountFromValue(params[1]);
     if (nAmount <= 0)
         throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
@@ -933,7 +931,7 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
     // 172800 is 48hour to second
 	int64_t l_time = tm.tv_sec + 172800;
 	char temp[100] = {0};
-	sprintf(temp,"%llx",l_time);
+	sprintf(temp,"%lx",l_time);
 	std::string str = temp;
     std::vector<unsigned char>str_stamp(str.begin(),str.end());
 	// construct contract of script
@@ -1033,9 +1031,9 @@ UniValue crosschaininitial_1(const UniValue &params, bool fHelp)
     gettimeofday(&tmpTime,NULL);
 	
     // locktime is now time add 172800 (48hour to second)
-    uint64_t l_time = tmpTime.tv_sec + 172800;
+    int64_t l_time = tmpTime.tv_sec + 172800;
     char temp[100] = {0};
-    sprintf(temp,"%llx",l_time);
+    sprintf(temp,"%lx",l_time);
 	std::string strLockTime = temp;
     std::vector<unsigned char>strStamp(strLockTime.begin(),strLockTime.end());
     
