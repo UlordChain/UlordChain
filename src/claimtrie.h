@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_CLAIMTRIE_H
-#define BITCOIN_CLAIMTRIE_H
+#ifndef ULORD_CLAIMTRIE_H
+#define ULORD_CLAIMTRIE_H
 
 #include "amount.h"
 #include "serialize.h"
@@ -593,4 +593,4 @@ private:
     int getNumBlocksOfContinuousOwnership(const std::string& name) const;
 };
 
-#endif // BITCOIN_CLAIMTRIE_H
+#endif // ULORD_CLAIMTRIE_H

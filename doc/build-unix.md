@@ -4,6 +4,8 @@ Some notes on how to build Ulord Core in Unix.
 
 (for OpenBSD specific instructions, see [build-openbsd.md](build-openbsd.md))
 
+(for CentOS specific instructions, see [build-CentOS.md](build-CentOS.md))
+
 Note
 ---------------------
 Always use absolute paths to configure and compile Ulord Core and the dependencies,
