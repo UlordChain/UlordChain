@@ -247,6 +247,15 @@ bool CBitcoinAddress::IsValid(const CChainParams& params) const
                          vchVersion == params.Base58Prefix(CChainParams::SCRIPT_ADDRESS);
     return fCorrectSize && fKnownVersion;
 }
+uint160 CBitcoinAddress::GetData()const
+{
+	if (!IsValid())
+        return uint160();
+	uint160 id;
+    memcpy(&id, &vchData[0], 20);
+	 if (vchVersion == Params().Base58Prefix(CChainParams::PUBKEY_ADDRESS))
+        return id;
+}
 
 CTxDestination CBitcoinAddress::Get() const
 {
