@@ -6,7 +6,7 @@ Ulord is a P2P value delivery public chain. Through building its blockchain unde
 UlordChain Documentation and Usage Resources
 ---------------
 
-![](http://ulord.one/images/ulordCnter.png)
+![](https://avatars0.githubusercontent.com/u/35293052?s=200&v=4)
 
 Resources may be helpful to know about Ulord.
 
