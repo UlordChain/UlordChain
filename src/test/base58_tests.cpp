@@ -122,27 +122,29 @@ public:
 
 int   readfiletohex(std::vector<char> & readbuf )
 {
-   char buffer[500]="";  
-   int readlen=0;
+    char buffer[500]="";  
+    int readlen=0;
+    int icount = 0;
 
-   std::ifstream in("base58_keys_valid.json");  
-   if (! in.is_open())  
-   {    
-       std::cout << "Error opening file"; exit (1); 
-   }  
+    std::ifstream in("base58_keys_valid.json");  
+    if (! in.is_open())  
+    {    
+        std::cout << "Error opening file"; exit (1); 
+    }  
 
-   while (!in.eof() )  
-   {  
-       in.getline(buffer,500);  
-       readlen= strlen(buffer);      
-       
-       readbuf.insert(readbuf.end(), &buffer[0],&(buffer[0])+readlen);
-       readbuf.push_back(0x0a);
-       //readbuf.push_back( std::vector<char>(&buffer[0],&(buffer[0])+readlen));       
-      
-   }
-   readbuf.pop_back();
-   in.close();
+    while (!in.eof() )  
+    {  
+        in.getline(buffer,500);  
+        readlen= strlen(buffer);      
+        
+        readbuf.insert(readbuf.end(), &buffer[0],&(buffer[0])+readlen);
+        readbuf.push_back(0x0a);
+        //readbuf.push_back( std::vector<char>(&buffer[0],&(buffer[0])+readlen));       
+        icount += (readlen + 1);
+    }
+    readbuf.pop_back();
+    in.close();
+    return icount - 1;
 }
 
 // Goal: check that parsed keys match test payload

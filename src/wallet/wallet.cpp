@@ -3904,7 +3904,7 @@ bool CWallet::AbandonCash(const vector<CRecipient>& vecSend, CWalletTx& wtxNew, 
                                 // Insert change txn at random position:
                                 nChangePosRet = GetRandInt(txNew.vout.size()+1);
                             }
-                            else if (nChangePosRet > txNew.vout.size())
+                            else if ((unsigned int)nChangePosRet > txNew.vout.size())
                             {
                                 strFailReason = _("Change index out of range");
                                 return false;

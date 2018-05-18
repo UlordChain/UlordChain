@@ -24,7 +24,7 @@
 using namespace std;
 void showbuf(CDataStream& buf)
 {
-	int i = 0, count = 0;
+	unsigned int i = 0, count = 0;
 	for (i = 0; i < buf.size(); ++i)
 	{
 		printf("%02x ",(uint8_t)buf[i]);
