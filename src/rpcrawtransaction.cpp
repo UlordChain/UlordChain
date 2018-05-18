@@ -37,12 +37,13 @@
 #include <secp256k1_recovery.h>
 
 #include "nameclaim.h"
-
+#include <time.h>
 //////////////////////////////////////////////////////////
 #include <stdint.h>
 
 #include <boost/assign/list_of.hpp>
-
+#include <boost/algorithm/string.hpp>
+#include <boost/foreach.hpp>
 #include <univalue.h>
 
 using namespace std;
@@ -930,7 +931,7 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 	struct timeval tm;
 	gettimeofday(&tm,NULL);
     // 172800 is 48hour to second
-	uint64_t l_time = tm.tv_sec + 172800;
+	int64_t l_time = tm.tv_sec + 172800;
 	char temp[100] = {0};
 	sprintf(temp,"%llx",l_time);
 	std::string str = temp;
@@ -939,17 +940,12 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 	CPubKey newKey;
     if ( !pwalletMain->GetKeyFromPool(newKey) )
         throw JSONRPCError(RPC_WALLET_KEYPOOL_RAN_OUT,"Error: Keypool ran out,please call keypoolrefill first");
-    CBitcoinAddress refund_address(CTxDestination(newKey.GetID()));
-	if (!refund_address.IsValid())
-    	throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
-
-	
-	std::vector<unsigned char>str_add(params[0].get_str().begin(),params[0].get_str().end());
-	uint160 address_other =Hash160(str_add);
+	 uint160 refund =  newKey.gethash();
+	uint160 addr = address.GetData();
 
 	CScript contract =  CScript() << OP_IF << OP_RIPEMD160 << ToByteVector(secret_hash) << OP_EQUALVERIFY << OP_DUP << OP_HASH160 \
-	<< ToByteVector(address_other)<< OP_ELSE << l_time << OP_CHECKLOCKTIMEVERIFY << OP_DROP << OP_DUP << OP_HASH160\
-	<< ToByteVector(newKey.GetID())<< OP_ENDIF << OP_EQUALVERIFY << OP_CHECKSIG;
+	<< ToByteVector(addr) << OP_ELSE << l_time << OP_CHECKLOCKTIMEVERIFY << OP_DROP << OP_DUP << OP_HASH160\
+	<< ToByteVector(refund) << OP_ENDIF << OP_EQUALVERIFY << OP_CHECKSIG;
 	
 	// The build script is 160 hashes.
 	CScriptID contractP2SH = CScriptID(contract);
@@ -983,6 +979,8 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 			throw JSONRPCError(RPC_WALLET_ERROR,"Error: The transaction was rejected! This might hapen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.");
 	
 	UniValue result(UniValue::VOBJ);
+	CBitcoinAddress refund_address;
+	refund_address.Set(CKeyID(refund));
 	result.push_back(Pair("timestame",str));
 	result.push_back(Pair("refund_address",refund_address.ToString()));
 	result.push_back(Pair("hexstring",wtxNew.GetHash().GetHex()));
@@ -991,7 +989,6 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 	result.push_back(Pair("contract",HexStr(contract.begin(),contract.end())));
 	result.push_back(Pair("secret",secret.ToString()));
 	result.push_back(Pair("secrethash",secret_hash.ToString()));
-
     return result;
 }
 
@@ -1163,6 +1160,15 @@ UniValue crosschainextractsecret(const UniValue &params, bool fHelp)
 
 
 }
+char * timetostr(int t,char *buf)
+{
+	int h = t / 3600;
+	int m_t = t - 3600 * h;
+	int m = m_t / 60;
+	int s = m_t - m * 60;
+	sprintf(buf,"%dh %dm %ds",h,m,s);
+	return buf;
+}
 UniValue crosschainauditcontract(const UniValue &params, bool fHelp)
 {
     if (fHelp || params.size() !=2)
@@ -1177,6 +1183,7 @@ UniValue crosschainauditcontract(const UniValue &params, bool fHelp)
 	CScript contract(v_contract.begin(),v_contract.end());
 	CScriptID contractP2SH = CScriptID(contract);
 	CBitcoinAddress contract_address;
+	std::vector<std::string> vStr;
 
 	// The second parameter is the raw data for a transaction.
 	// parse hex string from parameter.
@@ -1220,20 +1227,49 @@ UniValue crosschainauditcontract(const UniValue &params, bool fHelp)
 		LogPrintf("contractP2SH  :is %s\n",contractP2SH.ToString());
 		LogPrintf("addrhash      :is %s\n",addrhash.ToString());	
 		contract_address.Set(contractP2SH);
-		if (!contract.IsNormalPaymentScript())
+		if (!contract.IsCrossChainPaymentScript())
 		{
 			LogPrintf("contract is not an atomic swap script recognized by this tool");
 		}
+		//split the contract
+		std::string contractString  = ScriptToAsmStr(contract);
+	    boost::split( vStr, contractString, boost::is_any_of( " " ), boost::token_compress_on );
+		LogPrintf("addrhRecipient address      :is %s\n",vStr[6]);
+		LogPrintf("Author's refund address     :is %s\n",vStr[13]);
 	}
 	else
 	{
 		throw JSONRPCError(RPC_INVALID_PARAMS, "TX decode failed");
 	}
+	CBitcoinAddress repecit_address;
+	CBitcoinAddress refund_address;
+	std::vector<unsigned char> u_recepit = ParseHex(vStr[6]);
+	std::vector<unsigned char> u_refund = ParseHex(vStr[13]);
+	uint160 repecit(u_recepit);
+	uint160 refund(u_refund);
+	repecit_address.Set((CKeyID&)repecit);
+	refund_address.Set((CKeyID&)refund);
+	
+	std::vector<unsigned char> u_secrethash = ParseHex(vStr[2]);
+	uint160 secrethash(u_secrethash);
+	
+	int64_t i_locktime = atoi64(vStr[8]);
 
+	struct timeval tm;
+	gettimeofday(&tm,NULL);
+	int64_t current_time = tm.tv_sec;
+	int64_t remain_time = i_locktime - current_time  ;
+	string str_time;
+	char buf[100] = {0};
+	timetostr(remain_time,buf);
+	str_time = buf;	
     UniValue result(UniValue::VOBJ);
-	result.push_back(Pair("contract address",contract_address.ToString()));
-	result.push_back(Pair("contract value",ValueFromAmount(value)));
-
-
+	result.push_back(Pair("contract address:",contract_address.ToString()));
+	result.push_back(Pair("contract value:",ValueFromAmount(value)));
+	result.push_back(Pair("Recipient address:",repecit_address.ToString()));
+	result.push_back(Pair("Author's refund address:",refund_address.ToString()));
+	result.push_back(Pair("Secret hash:",secrethash.ToString()));
+	result.push_back(Pair("Locktime:",asctime(localtime(&i_locktime))));
+	result.push_back(Pair("Locktime reached in :",str_time));
     return result;
 }
