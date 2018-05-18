@@ -246,7 +246,7 @@ public:
         pchMessageStart[1] = 0x01;
         pchMessageStart[2] = 0x6f;
         pchMessageStart[3] = 0xb1;
-		vAlertPubKey = ParseHex("02c19a92f0f05991d5d454fd814fcb1ca75991dcb4cf4b9fc59ea18e738910e04d");
+		vAlertPubKey = ParseHex("028efd0f3c697689f8f1f6744edbbc1f85871b8c51218ddd89d90a3e435d1a8691");
         nDefaultPort = 9888;
         nMaxTipAge = 6 * 60 * 60; // ~144 blocks behind -> 2 x fork detection time, was 24 * 60 * 60 in bitcoin
         nPruneAfterHeight = 100000;
@@ -279,9 +279,9 @@ public:
         vFixedSeeds.clear();
         vSeeds.clear();		
         vSeeds.push_back(CDNSSeedData("ulord.one", "seed1.ulord.one"));
-	vSeeds.push_back(CDNSSeedData("ulord.one", "seed2.ulord.one"));  
-	vSeeds.push_back(CDNSSeedData("ulord.one", "seed3.ulord.one"));
-	uCenter = "ulord.fcash.cc";                           // for masternode verify
+		vSeeds.push_back(CDNSSeedData("ulord.one", "seed2.ulord.one"));  
+		vSeeds.push_back(CDNSSeedData("ulord.one", "seed3.ulord.one"));
+		uCenter = "ucenter.ulord.one";                           // for masternode verify
 
         fMiningRequiresPeers = true;
         fDefaultConsistencyChecks = false;
@@ -291,7 +291,7 @@ public:
 
         nPoolMaxTransactions = 3;
         nFulfilledRequestExpireTime = 60*60; // fulfilled requests expire in 1 hour
-        strSporkPubKey = "02fd1fba7d7463a7d4159da5c27b9c449e2108c526d63a93446182cb30f10c8cd7";
+        strSporkPubKey = "03dc480bc3e569ea1ceed5ab8ed5904abd3e938e0f7e594ebf82397e7830fa56a5";
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
@@ -304,8 +304,8 @@ public:
 
         // Founders reward script expects a vector of 2-of-3 multisig addresses
         vFoundersRewardAddress = {
-            "UUH1gwRgYT4SdgMk2ZGyJy4ajyAr5dc3uw", /* main-index: 0*/
-            "UTARSst6p86sYRLEKbe3yoQ5mqtqoJgQaN", /* main-index: 1*/
+            "USu35JzWCXSvgvDL1utfFzb52zR1fdkfZ9", /* main-index: 0*/
+            "US2b9XyE5fCu8DNXhC4xwU7wo7b4uMNy4q", /* main-index: 1*/
 	    };
     }
 };
@@ -396,7 +396,7 @@ public:
         vSeeds.push_back(CDNSSeedData("ulord.one","testnet-seed1.ulord.one"));  
 	    //vSeeds.push_back(CDNSSeedData("ulord.io","testnet-seed1.ulord.io"));
 	    //vSeeds.push_back(CDNSSeedData("fcash.cc","testnet-seed1.fcash.cc"));
-        //uCenter = "ulord.fcash.cc";                           // currently ignored
+        uCenter = "test-ucenter.ulord.one";                           // currently ignored
 
         // Testnet Ulord addresses start with 'u'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,130);

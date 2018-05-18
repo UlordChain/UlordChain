@@ -619,7 +619,7 @@ std::string HelpMessage(HelpMessageMode mode)
 
 std::string LicenseInfo()
 {
-    return FormatParagraph(strprintf(_("Copyright (C) 2017-%i The Ulord Core Foundation"), COPYRIGHT_YEAR)) + "\n" +
+    return FormatParagraph(strprintf(_("Copyright © 2017-%i The Ulord Core Foundation"), COPYRIGHT_YEAR)) + "\n" +
            "\n";
 }
 
@@ -1820,15 +1820,12 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
         // resolve ucenter domain to ip
         if (Params().NetworkIDString() == CBaseChainParams::MAIN)
         {
-
-            LogPrintf("asdfasdfasdf");
             std::vector<CNetAddr> vIPs;
             bool f = LookupHost(Params().ucenter().c_str(), vIPs);
             if (f)
             {
                 for (const CNetAddr &ip : vIPs)
                 {
-                    // should be 118.190.150.58
                     LogPrintf("\t\t\t--------------%s==============\t\t\n", ip.ToString());
                 }
             }
