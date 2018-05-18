@@ -145,7 +145,10 @@ public:
     {
         return CKeyID(Hash160(vch, vch + size()));
     }
-
+	uint160 gethash()const
+	{
+		return Hash160(vch, vch + size());
+	}
     //! Get the 256-bit hash of this public key.
     uint256 GetHash() const
     {
