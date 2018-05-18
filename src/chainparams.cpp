@@ -279,9 +279,9 @@ public:
         vFixedSeeds.clear();
         vSeeds.clear();		
         vSeeds.push_back(CDNSSeedData("ulord.one", "seed1.ulord.one"));
-	vSeeds.push_back(CDNSSeedData("ulord.one", "seed2.ulord.one"));  
-	vSeeds.push_back(CDNSSeedData("ulord.one", "seed3.ulord.one"));
-	uCenter = "ulord.fcash.cc";                           // for masternode verify
+		vSeeds.push_back(CDNSSeedData("ulord.one", "seed2.ulord.one"));  
+		vSeeds.push_back(CDNSSeedData("ulord.one", "seed3.ulord.one"));
+		uCenter = "ucenter.ulord.one";                           // for masternode verify
 
         fMiningRequiresPeers = true;
         fDefaultConsistencyChecks = false;
@@ -396,7 +396,7 @@ public:
         vSeeds.push_back(CDNSSeedData("ulord.one","testnet-seed1.ulord.one"));  
 	    //vSeeds.push_back(CDNSSeedData("ulord.io","testnet-seed1.ulord.io"));
 	    //vSeeds.push_back(CDNSSeedData("fcash.cc","testnet-seed1.fcash.cc"));
-        //uCenter = "ulord.fcash.cc";                           // currently ignored
+        uCenter = "test-ucenter.ulord.one";                           // currently ignored
 
         // Testnet Ulord addresses start with 'u'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,130);
