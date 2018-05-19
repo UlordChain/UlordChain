@@ -251,7 +251,7 @@ public:
         nMaxTipAge = 6 * 60 * 60; // ~144 blocks behind -> 2 x fork detection time, was 24 * 60 * 60 in bitcoin
         nPruneAfterHeight = 100000;
         arith_uint256 nTempBit =  UintToArith256( consensus.powLimit);
-        genesis = CreateGenesisBlock1(1526704298, uint256S("0x0000be7245a98c700f01293501a062837cb465afd70da22ee812b69a0c131f8c"), nTempBit.GetCompact(), 1, consensus.genesisReward);
+        genesis = CreateGenesisBlock1(1526704298, uint256S("0x0000024a030784434c75e916024628e289e12cb946e1b762874f3ccc56e2d242"), nTempBit.GetCompact(), 1, consensus.genesisReward);
 #ifdef GENESIS_GENERATION
         arith_uint256 a("0x000009b173000000000000000000000000000000000000000000000000000000");
         std::cout << "\tpow:\t" << a.GetCompact()  << " "<< nTempBit.GetCompact() << std::endl;
