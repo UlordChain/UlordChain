@@ -1,6 +1,6 @@
 // Copyright (c) 2016-2018 The Ulord Core Foundation
-#ifndef POW_H
-#define POW_H
+#ifndef ULORD_HELLO_POW_H
+#define ULORD_HELLO_POW_H
 
 #include <stdint.h>
 #include <string.h>
@@ -48,4 +48,4 @@ extern "C" {
 */
 void powFunction(uint8_t *input, uint32_t inputLen, uint8_t *Maddr, uint8_t *output);
 
-#endif
+#endif // ULORD_HELLO_POW_H
