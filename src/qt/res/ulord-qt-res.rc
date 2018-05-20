@@ -20,7 +20,7 @@ BEGIN
     BEGIN
         BLOCK "040904E4" // U.S. English - multilingual (hex)
         BEGIN
-            VALUE "CompanyName",        "天河国云"
+            VALUE "CompanyName",        "Ulord Foundation Ltd."
             VALUE "FileDescription",    "Ulord全节点钱包"
             VALUE "FileVersion",        VER_FILEVERSION_STR
             VALUE "InternalName",       "ulord-qt"
