@@ -2748,7 +2748,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Разработчики Bitcoin Core</translation>
     </message>
     <message>
-        <source>The Ulord Core Foundation</source>
+        <source>Ulord Foundation Ltd.</source>
         <translation>Разработчики Ulord Core</translation>
     </message>
     <message>

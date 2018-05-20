@@ -1,7 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2015 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2016-2018 The Ulord Core Foundation
+// Copyright (c) 2016-2018 Ulord Foundation Ltd.
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -619,7 +619,7 @@ std::string HelpMessage(HelpMessageMode mode)
 
 std::string LicenseInfo()
 {
-    return FormatParagraph(strprintf(_("Copyright © 2017-%i The Ulord Core Foundation"), COPYRIGHT_YEAR)) + "\n" +
+    return FormatParagraph(strprintf(_("Copyright © 2017-%i Ulord Foundation Ltd."), COPYRIGHT_YEAR)) + "\n" +
            "\n";
 }
 

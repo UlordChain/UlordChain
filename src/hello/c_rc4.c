@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2018 The Ulord Core Foundation
+// Copyright (c) 2016-2018 Ulord Foundation Ltd.
 #include "c_rc4.h"
 
 #include <stdio.h>

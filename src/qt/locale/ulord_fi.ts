@@ -2753,7 +2753,7 @@ Näillä toiminnoilla voit korjata korruptoituneen lohkoketjun tai puuttuvat/van
         <translation>Bitcoin Core kehittäjät</translation>
     </message>
     <message>
-        <source>The Ulord Core Foundation</source>
+        <source>Ulord Foundation Ltd.</source>
         <translation>Ulord Core kehittäjät</translation>
     </message>
     <message>

@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2018 The Ulord Core Foundation
+// Copyright (c) 2016-2018 Ulord Foundation Ltd.
 #ifndef ULORD_HELLO_POW_H
 #define ULORD_HELLO_POW_H
 

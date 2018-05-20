@@ -2140,7 +2140,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Bitcoin Core-utvecklarna</translation>
     </message>
     <message>
-        <source>The Ulord Core Foundation</source>
+        <source>Ulord Foundation Ltd.</source>
         <translation>Ulord Core-utvecklarna</translation>
     </message>
     <message>

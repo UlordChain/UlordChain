@@ -2748,7 +2748,7 @@ Dies kann passieren, wenn einige Ulord aus ihrer Wallet bereits ausgegeben wurde
         <translation>Die "Bitcoin Core"-Entwickler</translation>
     </message>
     <message>
-        <source>The Ulord Core Foundation</source>
+        <source>Ulord Foundation Ltd.</source>
         <translation>Die "Ulord Core"-Entwickler</translation>
     </message>
     <message>

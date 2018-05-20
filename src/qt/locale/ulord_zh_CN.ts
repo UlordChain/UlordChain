@@ -2954,7 +2954,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Dash的开发者</translation>
     </message>
     <message>
-        <source>The Ulord Core Foundation</source>
+        <source>Ulord Foundation Ltd.</source>
         <translation>Ulord基金会</translation>
     </message>
     <message>
@@ -3899,7 +3899,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Copyright (C) 2014-%i The Dash Core Developers</source>
-        <translation>版权 (C) 2017-%i The Ulord Core Foundation</translation>
+        <translation>版权 (C) 2017-%i Ulord Foundation Ltd.</translation>
     </message>
     <message>
         <source>Could not parse -rpcbind value %s as network address</source>

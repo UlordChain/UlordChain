@@ -38,7 +38,7 @@
 #define DO_STRINGIZE(X) #X
 
 //! Copyright string used in Windows .rc files
-#define COPYRIGHT_STR "2017-" STRINGIZE(COPYRIGHT_YEAR) " The Ulord Core Foundation"
+#define COPYRIGHT_STR "2017-" STRINGIZE(COPYRIGHT_YEAR) " Ulord Foundation Ltd."
 /**
  * ulordd-res.rc includes this file, but it cannot cope with real c++ code.
  * WINDRES_PREPROC is defined to indicate that its pre-processor is running.

@@ -2747,7 +2747,7 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Vývojári jadra Bitcoin</translation>
     </message>
     <message>
-        <source>The Ulord Core Foundation</source>
+        <source>Ulord Foundation Ltd.</source>
         <translation>Vývojári Ulord Core</translation>
     </message>
     <message>
