@@ -1,5 +1,6 @@
 // Copyright (c) 2011-2015 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
+// Copyright (c) 2016-2018 The Ulord Core Foundation
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -145,7 +146,9 @@ SendCoinsDialog::SendCoinsDialog(const PlatformStyle *platformStyle, QWidget *pa
     ui->sliderSmartFee->setValue(settings.value("nSmartFeeSliderPosition").toInt());
     ui->customFee->setValue(settings.value("nTransactionFee").toLongLong());
     ui->checkBoxMinimumFee->setChecked(settings.value("fPayOnlyMinFee").toBool());
-    ui->checkBoxFreeTx->setChecked(settings.value("fSendFreeTransactions").toBool());
+    ui->checkBoxFreeTx->setChecked(false);
+    ui->checkBoxFreeTx->hide();
+    ui->labelFreeTx->hide();
     minimizeFeeSection(settings.value("fFeeSectionMinimized").toBool());
 }
 
@@ -672,6 +675,8 @@ void SendCoinsDialog::minimizeFeeSection(bool fMinimize)
 
 void SendCoinsDialog::on_buttonChooseFee_clicked()
 {
+    ui->checkBoxFreeTx->hide();
+    ui->labelFreeTx->hide();
     minimizeFeeSection(false);
 }
 
