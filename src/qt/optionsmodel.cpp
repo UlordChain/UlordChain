@@ -81,7 +81,7 @@ void OptionsModel::Init(bool resetSettings)
     fCoinControlFeatures = settings.value("fCoinControlFeatures", false).toBool();
 
     if (!settings.contains("digits"))
-        settings.setValue("digits", "2");
+        settings.setValue("digits", "6");
     if (!settings.contains("theme"))
         settings.setValue("theme", "");
 
