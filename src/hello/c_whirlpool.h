@@ -8,9 +8,9 @@ extern "C" {
 #endif
 
 	/*
-	 * 功能：单向函数 Whirlpool
-	 * 输入：1. input ：输入消息
-	 *		 2. output：输出结果
+     * FUNCTION：one-way function Whirlpool
+     *      1. input : input message, msglength
+     *		2. output：Whirlpool message
 	*/
 	void crypto_whirlpool(uint8_t *input, uint32_t inputLen, uint8_t *output);
 
