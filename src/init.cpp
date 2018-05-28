@@ -1836,9 +1836,10 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
         }
 		else
             return InitError(_("ucenter ip resolving failed, LookupHost returned false."));
-
-		LogPrintf("Ulord center service: %s \n", ucenterservice.ToStringIPPort());
     }
+	else
+		ucenterservice = CService("10.175.0.147:5009");
+	LogPrintf("Ulord center service: %s \n", ucenterservice.ToStringIPPort());
 
     LogPrintf("Using masternode config file %s\n", GetMasternodeConfigFile().string());
 
