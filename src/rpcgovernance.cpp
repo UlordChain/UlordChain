@@ -97,6 +97,7 @@ UniValue gobject(const UniValue& params, bool fHelp)
         return hex_str;
     }
 
+    #ifdef ENABLE_WALLET
     // PREPARE THE GOVERNANCE OBJECT BY CREATING A COLLATERAL TRANSACTION
     if(strCommand == "prepare")
     {
@@ -152,6 +153,7 @@ UniValue gobject(const UniValue& params, bool fHelp)
 
         return wtx.GetHash().ToString();
     }
+    #endif // ENABLE_WALLET
 
     // AFTER COLLATERAL TRANSACTION HAS MATURED USER CAN SUBMIT GOVERNANCE OBJECT TO PROPAGATE NETWORK
     if(strCommand == "submit")
