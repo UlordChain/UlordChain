@@ -1136,6 +1136,11 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
             "params.size error\n"
         );
     UniValue result(UniValue::VOBJ);
+
+	LOCK(cs_main);
+	RPCTypeCheck(params, boost::assign::list_of(UniValue::VSTR)(UniValue::VSTR)(UniValue::VSTR));
+
+
     return result;
 }
 UniValue crosschainrefund(const UniValue &params, bool fHelp)
