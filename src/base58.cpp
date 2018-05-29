@@ -249,9 +249,9 @@ bool CBitcoinAddress::IsValid(const CChainParams& params) const
 }
 uint160 CBitcoinAddress::GetData()const
 {
-	if (!IsValid())
+    if (!IsValid())
         return uint160();
-	uint160 id;
+    uint160 id;
     memcpy(&id, &vchData[0], 20);
     return id;
 }
