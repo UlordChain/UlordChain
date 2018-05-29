@@ -1145,7 +1145,8 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 		{
 			throw JSONRPCError(RPC_INVALID_PARAMS, "Error:the parameter size can't be zero");
 		}
-
+	//get the contract from parameter 0
+	string strContract = params[0].get_str();
 
     return result;
 }
