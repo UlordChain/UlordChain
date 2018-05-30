@@ -1148,6 +1148,7 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 	//get the contract from parameter 0
 	string strContract = params[0].get_str();
     std::vector<unsigned char>vContract = ParseHex(strContract);
+	CScript contract(vContract.begin(),vContract.end());
 
     return result;
 }
