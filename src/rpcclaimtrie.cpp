@@ -81,7 +81,7 @@ UniValue getclaimsintrie(const UniValue& params, bool fHelp)
                     {
                         LogPrintf("%s: the specified txout of %s does not have an claim command\n", __func__, itClaims->outPoint.hash.GetHex());
                     }
-	            // Add a layer of base58 encoding to the value
+	            // Add a layer of base58check encoding to the value
 		    std::string sValue = EncodeBase58Check(vvchParams[1]);
                     claim.push_back(Pair("value", sValue));
                 }
@@ -160,6 +160,7 @@ bool getValueForClaim(const COutPoint& out, std::string& sValue)
     }
     if (op == OP_CLAIM_NAME)
     {
+	// Add a layer of base58check encoding to the value
         sValue = EncodeBase58Check(vvchParams[1]);
     }
     else if (op == OP_UPDATE_CLAIM)
@@ -542,8 +543,8 @@ UniValue getclaimsfortx(const UniValue& params, bool fHelp)
                 o.push_back(Pair("name", sName));
                 if (op == OP_CLAIM_NAME)
                 {
-					//std::string sValue(vvchParams[1].begin(), vvchParams[1].end());
-					std::string sValue = EncodeBase58Check(vvchParams[1]);
+		    // Add a layer of base58check encoding to the value
+		    std::string sValue = EncodeBase58Check(vvchParams[1]);
                     uint160 claimId = ClaimIdHash(hash, i);
                     o.push_back(Pair("claimId", claimId.GetHex()));
                     o.push_back(Pair("value", sValue));
@@ -551,8 +552,8 @@ UniValue getclaimsfortx(const UniValue& params, bool fHelp)
                 else if (op == OP_UPDATE_CLAIM)
                 {
                     uint160 claimId(vvchParams[1]);
-                    //std::string sValue(vvchParams[2].begin(), vvchParams[2].end());
-					std::string sValue = EncodeBase58Check(vvchParams[2]);
+                    // Add a layer of base58check encoding to the value
+		    std::string sValue = EncodeBase58Check(vvchParams[2]);
                     o.push_back(Pair("claimId", claimId.GetHex()));
                     o.push_back(Pair("value", sValue));
                 }
