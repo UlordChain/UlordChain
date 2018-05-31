@@ -1150,6 +1150,9 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
     std::vector<unsigned char>vContract = ParseHex(strContract);
 	CScript contract(vContract.begin(),vContract.end());
 
+	//split the contract
+	std::string contractString	= ScriptToAsmStr(contract);
+
     return result;
 }
 UniValue crosschainrefund(const UniValue &params, bool fHelp)
