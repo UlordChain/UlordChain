@@ -223,7 +223,7 @@ bool CScript::IsNormalPaymentScript() const
 
     return true;
 }
-
+// Determines whether the script is cross-linked
 bool CScript::IsCrossChainPaymentScript() const
 {
     if(this->size() != 81) return false;
