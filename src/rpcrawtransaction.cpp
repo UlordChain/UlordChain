@@ -1153,6 +1153,7 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 	//split the contract
 	std::string contractString	= ScriptToAsmStr(contract);
     std::vector<std::string> vStr;
+    boost::split( vStr, contractString, boost::is_any_of( " " ), boost::token_compress_on );
 
     return result;
 }
