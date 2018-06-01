@@ -1155,6 +1155,9 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
     std::vector<std::string> vStr;
     boost::split( vStr, contractString, boost::is_any_of( " " ), boost::token_compress_on );
 
+	//get participent address hash
+	std::vector<unsigned char> vParticipentAddressHash = ParseHex(vStr[6]);
+
     return result;
 }
 UniValue crosschainrefund(const UniValue &params, bool fHelp)
