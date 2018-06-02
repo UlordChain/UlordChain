@@ -317,8 +317,8 @@ typedef std::pair<CClaimValue, std::vector<CSupportValue> > claimAndSupportsType
 typedef std::map<uint160, claimAndSupportsType> claimSupportMapType;
 typedef std::map<uint160, std::vector<CSupportValue> > supportsWithoutClaimsMapType;
 
-
-extern UniValue getclaimsintrie(const UniValue& params, bool fHelp);   //in rpc/claimtrie.cpp
+//claim interface command Implementation in rpcwallet.cpp
+extern UniValue getclaimsintrie(const UniValue& params, bool fHelp);   
 extern UniValue getclaimtrie(const UniValue& params, bool fHelp);
 extern bool getValueForClaim(const COutPoint& out, std::string& sValue);
 extern UniValue getvalueforname(const UniValue& params, bool fHelp);
@@ -333,7 +333,7 @@ extern UniValue getclaimsfortx(const UniValue& params, bool fHelp);
 extern UniValue proofToJSON(const CClaimTrieProof& proof);
 extern UniValue getnameproof(const UniValue& params, bool fHelp);
 
-/* atomic swap contract of transaction about RPC */
+// atomic swap contract of transaction about RPC 
 extern UniValue crosschaininitial(const UniValue &params, bool fHelp);
 extern UniValue crosschainparticipate(const UniValue &params, bool fHelp);
 extern UniValue crosschainredeem(const UniValue &params, bool fHelp);
