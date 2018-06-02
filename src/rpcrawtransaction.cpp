@@ -1036,6 +1036,7 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 
 	//get participent address hash
 	std::vector<unsigned char> vParticipentAddressHash = ParseHex(vStr[6]);
+    uint160 participentAddressHash(vParticipentAddressHash);
 
     return result;
 }
