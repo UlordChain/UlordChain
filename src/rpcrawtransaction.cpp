@@ -28,6 +28,7 @@
 #include "uint256.h"
 #include "utilmoneystr.h"
 #include "instantx.h"
+#include "utiltime.h"
 #ifdef ENABLE_WALLET
 #include "wallet/wallet.h"
 #endif
@@ -1162,7 +1163,7 @@ UniValue crosschainauditcontract(const UniValue &params, bool fHelp)
 	result.push_back(Pair("Recipient address:",repecit_address.ToString()));
 	result.push_back(Pair("Author's refund address:",refund_address.ToString()));
 	result.push_back(Pair("Secret hash:",secrethash.ToString()));
-	result.push_back(Pair("Locktime:",asctime(localtime(&i_locktime))));
+	result.push_back(Pair("Locktime:",DateTimeStrFormat("%Y-%m-%d %H:%M:%S",i_locktime)));
 	result.push_back(Pair("Locktime reached in :",str_time));
     return result;
 }
