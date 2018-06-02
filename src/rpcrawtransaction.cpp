@@ -892,7 +892,7 @@ UniValue sendrawtransaction(const UniValue& params, bool fHelp)
     return hashTx.GetHex();
 }
 
-
+#ifdef ENABLE_WALLET
 UniValue crosschaininitial(const UniValue &params, bool fHelp)
 {
     if (fHelp || params.size() !=2)
@@ -1180,7 +1180,7 @@ UniValue crosschainextractsecret(const UniValue &params, bool fHelp)
 
 
 }
-/*
+
 char * timetostr(int t,char *buf)
 {
 	int h = t / 3600;
@@ -1293,4 +1293,5 @@ UniValue crosschainauditcontract(const UniValue &params, bool fHelp)
 	result.push_back(Pair("Locktime:",asctime(localtime(&i_locktime))));
 	result.push_back(Pair("Locktime reached in :",str_time));
     return result;
-}*/
+}
+#endif
