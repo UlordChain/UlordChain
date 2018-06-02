@@ -16,8 +16,8 @@
 #include "util.h"
 #include "spork.h"
 #include "utilstrencodings.h"
-#ifdef ENABLE_WALLET
 #include "masternode-sync.h"
+#ifdef ENABLE_WALLET
 #include "wallet/wallet.h"
 #include "wallet/walletdb.h"
 #endif
@@ -259,7 +259,10 @@ UniValue spork(const UniValue& params, bool fHelp)
         "spork <name> [<value>]\n"
         "<name> is the corresponding spork name, or 'show' to show all current spork settings, active to show which sporks are active"
         "<value> is a epoch datetime to enable or disable spork"
-        + HelpRequiringPassphrase());
+#ifdef ENABLE_WALLET
+        + HelpRequiringPassphrase()
+#endif // ENABLE_WALLET
+        );
 }
 
 UniValue validateaddress(const UniValue& params, bool fHelp)
