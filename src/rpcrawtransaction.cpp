@@ -1031,7 +1031,7 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
     //contract check
 	if(!contract.IsCrossChainPaymentScript())
 		{
-			throw JSONRPCError(RPC_INVALID_PARAMS, "Error:the parameter is no stander contract");
+			return JSONRPCError(RPC_INVALID_PARAMS, "Error:the parameter is no stander contract");
 		}	
 
 	//get participent address hash
