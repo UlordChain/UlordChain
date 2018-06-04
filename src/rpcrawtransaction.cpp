@@ -1038,6 +1038,12 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 	std::vector<unsigned char> vParticipentAddressHash = ParseHex(vStr[6]);
     uint160 participentAddressHash(vParticipentAddressHash);
 
+    //decode the tx
+	CTransaction preTx;
+	if (!DecodeHexTx(preTx, params[1].get_str()))
+       return JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
+
+
     return result;
 }
 UniValue crosschainrefund(const UniValue &params, bool fHelp)
