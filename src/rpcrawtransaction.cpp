@@ -1044,7 +1044,8 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
        return JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
 
 	//get secret hash from contract
-	std::vector<unsigned char> contractSecretHash = ParseHex(vStr[2]);	
+	std::vector<unsigned char> contractSecretHash = ParseHex(vStr[2]);
+    uint160 uContractSecretHash(contractSecretHash);	
 
 
     return result;
