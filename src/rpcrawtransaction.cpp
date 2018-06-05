@@ -1043,6 +1043,9 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 	if (!DecodeHexTx(preTx, params[1].get_str()))
        return JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
 
+	//get secret hash from contract
+	std::vector<unsigned char> contractSecretHash = ParseHex(vStr[2]);	
+
 
     return result;
 }
