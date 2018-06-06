@@ -1052,6 +1052,8 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 
 	//check the secret in parameter and in contract
 	std::vector<unsigned char> transactionSecretHash(20);
+	CRIPEMD160().Write(begin_ptr(secretVector), secretVector.size()).Finalize(begin_ptr(transactionSecretHash));
+	uint160 uTransactionSecretHash(transactionSecretHash);	
 
     return result;
 }
