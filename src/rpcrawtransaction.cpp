@@ -1053,7 +1053,11 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 	//check the secret in parameter and in contract
 	std::vector<unsigned char> transactionSecretHash(20);
 	CRIPEMD160().Write(begin_ptr(secretVector), secretVector.size()).Finalize(begin_ptr(transactionSecretHash));
-	uint160 uTransactionSecretHash(transactionSecretHash);	
+	uint160 uTransactionSecretHash(transactionSecretHash);
+	if ( 0 != strcmp(uContractSecretHash.ToString().c_str(),uTransactionSecretHash.ToString().c_str()) )
+		{
+			return JSONRPCError(RPC_INVALID_PARAMS, "Error:the secret in parameter not match in in contract");		
+		}	
 
     return result;
 }
