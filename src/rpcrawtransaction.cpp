@@ -1050,6 +1050,8 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
     //get secret form parameter 2
 	std::vector<unsigned char> secretVector =ParseHexV(params[2], "secret");
 
+	//check the secret in parameter and in contract
+	std::vector<unsigned char> transactionSecretHash(20);
 
     return result;
 }
