@@ -173,9 +173,9 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
         } else {
             ui->togglePrivateSend->setText(tr("Stop Mixing"));
         }
-        // Disable PrivSendPool builtin support for automatic backups while we are in GUI,
+        // Disable privSendPool builtin support for automatic backups while we are in GUI,
         // we'll handle automatic backups and user warnings in privateSendStatus()
-        PrivSendPool.fCreateAutoBackups = false;
+        privSendPool.fCreateAutoBackups = false;
 
         timer = new QTimer(this);
         connect(timer, SIGNAL(timeout()), this, SLOT(privateSendStatus()));
@@ -458,7 +458,7 @@ void OverviewPage::privateSendStatus()
     int nBestHeight = clientModel->getNumBlocks();
 
     // We are processing more then 1 block per second, we'll just leave
-    if(((nBestHeight - PrivSendPool.nCachedNumBlocks) / (GetTimeMillis() - nLastDSProgressBlockTime + 1) > 1)) return;
+    if(((nBestHeight - privSendPool.nCachedNumBlocks) / (GetTimeMillis() - nLastDSProgressBlockTime + 1) > 1)) return;
     nLastDSProgressBlockTime = GetTimeMillis();
 
     QString strKeysLeftText(tr("keys left: %1").arg(pwalletMain->nKeysLeftSinceAutoBackup));
@@ -468,8 +468,8 @@ void OverviewPage::privateSendStatus()
     ui->labelPrivateSendEnabled->setToolTip(strKeysLeftText);
 
     if (!fEnablePrivateSend) {
-        if (nBestHeight != PrivSendPool.nCachedNumBlocks) {
-            PrivSendPool.nCachedNumBlocks = nBestHeight;
+        if (nBestHeight != privSendPool.nCachedNumBlocks) {
+            privSendPool.nCachedNumBlocks = nBestHeight;
             updatePrivateSendProgress();
         }
 
@@ -546,13 +546,13 @@ void OverviewPage::privateSendStatus()
     }
 
     // check PrivSend status and unlock if needed
-    if(nBestHeight != PrivSendPool.nCachedNumBlocks) {
+    if(nBestHeight != privSendPool.nCachedNumBlocks) {
         // Balance and number of transactions might have changed
-        PrivSendPool.nCachedNumBlocks = nBestHeight;
+        privSendPool.nCachedNumBlocks = nBestHeight;
         updatePrivateSendProgress();
     }
 
-    QString strStatus = QString(PrivSendPool.GetStatus().c_str());
+    QString strStatus = QString(privSendPool.GetStatus().c_str());
 
     QString s = tr("Last PrivateSend message:\n") + strStatus;
 
@@ -561,21 +561,21 @@ void OverviewPage::privateSendStatus()
 
     ui->labelPrivateSendLastMessage->setText(s);
 
-    if(PrivSendPool.nSessionDenom == 0){
+    if(privSendPool.nSessionDenom == 0){
         ui->labelSubmittedDenom->setText(tr("N/A"));
     } else {
-        QString strDenom(PrivSendPool.GetDenominationsToString(PrivSendPool.nSessionDenom).c_str());
+        QString strDenom(privSendPool.GetDenominationsToString(privSendPool.nSessionDenom).c_str());
         ui->labelSubmittedDenom->setText(strDenom);
     }
 
 }
 
 void OverviewPage::privateSendAuto(){
-    PrivSendPool.DoAutomaticDenominating();
+    privSendPool.DoAutomaticDenominating();
 }
 
 void OverviewPage::privateSendReset(){
-    PrivSendPool.ResetPool();
+    privSendPool.ResetPool();
 
     QMessageBox::warning(this, tr("PrivateSend"),
         tr("PrivateSend was successfully reset."),
@@ -614,7 +614,7 @@ void OverviewPage::togglePrivateSend(){
             if(!ctx.isValid())
             {
                 //unlock was cancelled
-                PrivSendPool.nCachedNumBlocks = std::numeric_limits<int>::max();
+                privSendPool.nCachedNumBlocks = std::numeric_limits<int>::max();
                 QMessageBox::warning(this, tr("PrivateSend"),
                     tr("Wallet is locked and user declined to unlock. Disabling PrivateSend."),
                     QMessageBox::Ok, QMessageBox::Ok);
@@ -626,11 +626,11 @@ void OverviewPage::togglePrivateSend(){
     }
 
     fEnablePrivateSend = !fEnablePrivateSend;
-    PrivSendPool.nCachedNumBlocks = std::numeric_limits<int>::max();
+    privSendPool.nCachedNumBlocks = std::numeric_limits<int>::max();
 
     if(!fEnablePrivateSend){
         ui->togglePrivateSend->setText(tr("Start Mixing"));
-        PrivSendPool.UnlockCoins();
+        privSendPool.UnlockCoins();
     } else {
         ui->togglePrivateSend->setText(tr("Stop Mixing"));
 
