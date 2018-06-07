@@ -21,7 +21,7 @@
 #include "wallet/wallet.h" // for CWallet::GetRequiredFee()
 #endif
 
-#include "darksend.h"
+#include "privsend.h"
 
 #include <boost/thread.hpp>
 

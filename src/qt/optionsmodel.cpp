@@ -23,7 +23,7 @@
 #include "wallet/walletdb.h"
 #endif
 
-#include "darksend.h"
+#include "privsend.h"
 #ifdef ENABLE_WALLET
 #include "masternodeconfig.h"
 #endif

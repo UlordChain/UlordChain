@@ -18,7 +18,7 @@
 #include "utilitydialog.h"
 #include "walletmodel.h"
 
-#include "darksend.h"
+#include "privsend.h"
 #include "instantx.h"
 #include "darksendconfig.h"
 #include "masternode-sync.h"

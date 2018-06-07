@@ -11,7 +11,7 @@
 #include "timedata.h"
 #include "wallet/wallet.h"
 
-#include "darksend.h"
+#include "privsend.h"
 #include "instantx.h"
 
 #include <stdint.h>

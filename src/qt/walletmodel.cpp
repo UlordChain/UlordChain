@@ -20,7 +20,7 @@
 #include "wallet/wallet.h"
 #include "wallet/walletdb.h" // for BackupWallet
 
-#include "darksend.h"
+#include "privsend.h"
 #include "instantx.h"
 #include "spork.h"
 

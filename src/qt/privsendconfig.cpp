@@ -2,7 +2,7 @@
 #include "ui_darksendconfig.h"
 
 #include "bitcoinunits.h"
-#include "darksend.h"
+#include "privsend.h"
 #include "guiconstants.h"
 #include "optionsmodel.h"
 #include "walletmodel.h"
