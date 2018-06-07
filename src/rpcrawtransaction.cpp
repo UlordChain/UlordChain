@@ -1063,6 +1063,11 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 	CMutableTransaction txNew;
 	CAmount nFeePay = 3100;
 
+    //get the redeem txin
+	CAmount preOutAmount = 0;
+	COutPoint preOutPoint;
+	uint256 preTxid = preTx.GetHash();
+
     return result;
 }
 UniValue crosschainrefund(const UniValue &params, bool fHelp)
