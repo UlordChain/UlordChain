@@ -741,8 +741,8 @@ Osoite: %4
         <translation>Kopioi vaihtoraha</translation>
     </message>
     <message>
-        <source>Non-anonymized input selected. &lt;b&gt;Darksend will be disabled.&lt;/b&gt;&lt;br&gt;&lt;br&gt;If you still want to use Darksend, please deselect all non-nonymized inputs first and then check Darksend checkbox again.</source>
-        <translation>Ei anonyymeja syötteitä valittu. &lt;b&gt;Darksend poistetaan käytöstä.&lt;/b&gt;&lt;br&gt;&lt;br&gt;Jos silti haluat käyttää Darksend:iä, poista ei anonyymit valinnat ensin ja valitse uudelleen Darksend optio.</translation>
+        <source>Non-anonymized input selected. &lt;b&gt;PrivSend will be disabled.&lt;/b&gt;&lt;br&gt;&lt;br&gt;If you still want to use PrivSend, please deselect all non-nonymized inputs first and then check PrivSend checkbox again.</source>
+        <translation>Ei anonyymeja syötteitä valittu. &lt;b&gt;PrivSend poistetaan käytöstä.&lt;/b&gt;&lt;br&gt;&lt;br&gt;Jos silti haluat käyttää PrivSend:iä, poista ei anonyymit valinnat ensin ja valitse uudelleen PrivSend optio.</translation>
     </message>
     <message>
         <source>highest</source>
@@ -842,10 +842,10 @@ Osoite: %4
     </message>
 </context>
 <context>
-    <name>DarksendConfig</name>
+    <name>PrivsendConfig</name>
     <message>
-        <source>Configure Darksend</source>
-        <translation>Darksend Asetukset</translation>
+        <source>Configure PrivSend</source>
+        <translation>PrivSend Asetukset</translation>
     </message>
     <message>
         <source>Basic Privacy</source>
@@ -892,20 +892,20 @@ Osoite: %4
         <translation>Tämä vaihtoehto on hitain ja kaikkein anonyymi. Suurimman yksityisyyden käyttö maksaa</translation>
     </message>
     <message>
-        <source>Darksend Configuration</source>
-        <translation>Darksend Asetukset</translation>
+        <source>PrivSend Configuration</source>
+        <translation>PrivSend Asetukset</translation>
     </message>
     <message>
-        <source>Darksend was successfully set to basic (%1 and 2 rounds). You can change this at any time by opening Ulord's configuration screen.</source>
-        <translation>Darksend on asetettu perusasetuksiin (%1 and 2 kierrosta). Voit muuttaa asetuksia milloin vain Ulord asetuksista.</translation>
+        <source>PrivSend was successfully set to basic (%1 and 2 rounds). You can change this at any time by opening Ulord's configuration screen.</source>
+        <translation>PrivSend on asetettu perusasetuksiin (%1 and 2 kierrosta). Voit muuttaa asetuksia milloin vain Ulord asetuksista.</translation>
     </message>
     <message>
-        <source>Darksend was successfully set to high (%1 and 8 rounds). You can change this at any time by opening Ulord's configuration screen.</source>
-        <translation>Darksend on asetettu keskitason asetuksiin (%1 and 8 kierrosta). Voit muuttaa asetuksia milloin vain Ulord asetuksista.</translation>
+        <source>PrivSend was successfully set to high (%1 and 8 rounds). You can change this at any time by opening Ulord's configuration screen.</source>
+        <translation>PrivSend on asetettu keskitason asetuksiin (%1 and 8 kierrosta). Voit muuttaa asetuksia milloin vain Ulord asetuksista.</translation>
     </message>
     <message>
-        <source>Darksend was successfully set to maximum (%1 and 16 rounds). You can change this at any time by opening Ulord's configuration screen.</source>
-        <translation>Darksend on asetettu maksimitason asetuksiin (%1 and 16 kierrosta). Voit muuttaa asetuksia milloin vain Ulord asetuksista.</translation>
+        <source>PrivSend was successfully set to maximum (%1 and 16 rounds). You can change this at any time by opening Ulord's configuration screen.</source>
+        <translation>PrivSend on asetettu maksimitason asetuksiin (%1 and 16 kierrosta). Voit muuttaa asetuksia milloin vain Ulord asetuksista.</translation>
     </message>
 </context>
 <context>
@@ -1147,12 +1147,12 @@ Varoitus: Jos käytät käyttöjärjestelmää (Live os) suoraan usb, dvd tai cd
         <translation>(0 = auto, &lt;0 = jätä näin monta prosessorin ydintä vapaaksi)</translation>
     </message>
     <message>
-        <source>Darksend rounds to use</source>
-        <translation>Kuinka montaa Darksend kierrosta käytetään</translation>
+        <source>PrivSend rounds to use</source>
+        <translation>Kuinka montaa PrivSend kierrosta käytetään</translation>
     </message>
     <message>
-        <source>This amount acts as a threshold to turn off Darksend once it's reached.</source>
-        <translation>Tämä määrä toimii rajana keskeytykselle kun Darksend anonymisointi sen saavuttaa.</translation>
+        <source>This amount acts as a threshold to turn off PrivSend once it's reached.</source>
+        <translation>Tämä määrä toimii rajana keskeytykselle kun PrivSend anonymisointi sen saavuttaa.</translation>
     </message>
     <message>
         <source>Amount of Ulord to keep anonymized</source>
@@ -1424,8 +1424,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Valmiina:</translation>
     </message>
     <message>
-        <source>Darksend Balance:</source>
-        <translation>Darksend Saldo:</translation>
+        <source>PrivSend Balance:</source>
+        <translation>PrivSend Saldo:</translation>
     </message>
     <message>
         <source>Amount and Rounds:</source>
@@ -1444,8 +1444,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>e/s</translation>
     </message>
     <message>
-        <source>Darksend</source>
-        <translation>Darksend</translation>
+        <source>PrivSend</source>
+        <translation>PrivSend</translation>
     </message>
     <message>
         <source>Recent transactions</source>
@@ -1464,16 +1464,16 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>(Viimeisin Viesti)</translation>
     </message>
     <message>
-        <source>Try to manually submit a Darksend request.</source>
-        <translation>Yritä manuaalisesti esittää Darksend sekoituspyyntö.</translation>
+        <source>Try to manually submit a PrivSend request.</source>
+        <translation>Yritä manuaalisesti esittää PrivSend sekoituspyyntö.</translation>
     </message>
     <message>
         <source>Try Mix</source>
         <translation>Yritä Sekoittaa</translation>
     </message>
     <message>
-        <source>Reset the current status of Darksend (can interrupt Darksend if it's in the process of Mixing, which can cost you money!)</source>
-        <translation>Nollaa nykyinen Darksend tila (voi keskeyttää Darksend sekoituksen, joka voi maksaa ylimääräisiä kuluja)</translation>
+        <source>Reset the current status of PrivSend (can interrupt PrivSend if it's in the process of Mixing, which can cost you money!)</source>
+        <translation>Nollaa nykyinen PrivSend tila (voi keskeyttää PrivSend sekoituksen, joka voi maksaa ylimääräisiä kuluja)</translation>
     </message>
     <message>
         <source>Reset</source>
@@ -1488,12 +1488,12 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Ei käytössä</translation>
     </message>
     <message>
-        <source>Start Darksend Mixing</source>
-        <translation>Käynnistä Darksend Sekoitus</translation>
+        <source>Start PrivSend Mixing</source>
+        <translation>Käynnistä PrivSend Sekoitus</translation>
     </message>
     <message>
-        <source>Stop Darksend Mixing</source>
-        <translation>Lopeta Darksend Sekoitus</translation>
+        <source>Stop PrivSend Mixing</source>
+        <translation>Lopeta PrivSend Sekoitus</translation>
     </message>
     <message>
         <source>No inputs detected</source>
@@ -1536,9 +1536,9 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Käytössä</translation>
     </message>
     <message>
-        <source>Last Darksend message:
+        <source>Last PrivSend message:
 </source>
-        <translation>Viimeisin Darksend viesti:
+        <translation>Viimeisin PrivSend viesti:
 </translation>
     </message>
     <message>
@@ -1546,20 +1546,20 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>e/s</translation>
     </message>
     <message>
-        <source>Darksend was successfully reset.</source>
-        <translation>Darksend nollattu onnistuneesti.</translation>
+        <source>PrivSend was successfully reset.</source>
+        <translation>PrivSend nollattu onnistuneesti.</translation>
     </message>
     <message>
-        <source>If you don't want to see internal Darksend fees/transactions select "Most Common" as Type on the "Transactions" tab.</source>
-        <translation>Jos et halua nähdä sisäisiä Darksend sekoituksen kuluja/tapahtumia, valitse "Yleiset" tyypiksi siirtotapahtumissa.</translation>
+        <source>If you don't want to see internal PrivSend fees/transactions select "Most Common" as Type on the "Transactions" tab.</source>
+        <translation>Jos et halua nähdä sisäisiä PrivSend sekoituksen kuluja/tapahtumia, valitse "Yleiset" tyypiksi siirtotapahtumissa.</translation>
     </message>
     <message>
-        <source>Darksend requires at least %1 to use.</source>
-        <translation>Darksendin käyttö vaatii vähintään %1.</translation>
+        <source>PrivSend requires at least %1 to use.</source>
+        <translation>PrivSendin käyttö vaatii vähintään %1.</translation>
     </message>
     <message>
-        <source>Wallet is locked and user declined to unlock. Disabling Darksend.</source>
-        <translation>Lompakko on lukittu ja käyttäjä ei avannut sitä. Darksend asetetaan pois käytöstä.</translation>
+        <source>Wallet is locked and user declined to unlock. Disabling PrivSend.</source>
+        <translation>Lompakko on lukittu ja käyttäjä ei avannut sitä. PrivSend asetetaan pois käytöstä.</translation>
     </message>
 </context>
 <context>
@@ -2369,8 +2369,8 @@ Näillä toiminnoilla voit korjata korruptoituneen lohkoketjun tai puuttuvat/van
         <translation>Lisää &amp;Vastaanottaja</translation>
     </message>
     <message>
-        <source>Darksend</source>
-        <translation>Darksend</translation>
+        <source>PrivSend</source>
+        <translation>PrivSend</translation>
     </message>
     <message>
         <source>InstantX</source>
@@ -2421,8 +2421,8 @@ Näillä toiminnoilla voit korjata korruptoituneen lohkoketjun tai puuttuvat/van
         <translation>anonymisoituja varoja</translation>
     </message>
     <message>
-        <source>(darksend requires this amount to be rounded up to the nearest %1).</source>
-        <translation>(darksend pyöristää tämän lähimpään %1).</translation>
+        <source>(PrivSend requires this amount to be rounded up to the nearest %1).</source>
+        <translation>(PrivSend pyöristää tämän lähimpään %1).</translation>
     </message>
     <message>
         <source>any available funds (not recommended)</source>
@@ -3025,8 +3025,8 @@ Näillä toiminnoilla voit korjata korruptoituneen lohkoketjun tai puuttuvat/van
         <translation>Vastaanotettu osoitteesta</translation>
     </message>
     <message>
-        <source>Received via Darksend</source>
-        <translation>Darksend vastaanotettu</translation>
+        <source>Received via PrivSend</source>
+        <translation>PrivSend vastaanotettu</translation>
     </message>
     <message>
         <source>Sent to</source>
@@ -3041,24 +3041,24 @@ Näillä toiminnoilla voit korjata korruptoituneen lohkoketjun tai puuttuvat/van
         <translation>Louhittu</translation>
     </message>
     <message>
-        <source>Darksend Denominate</source>
-        <translation>Darksend denominointi</translation>
+        <source>PrivSend Denominate</source>
+        <translation>PrivSend denominointi</translation>
     </message>
     <message>
-        <source>Darksend Collateral Payment</source>
-        <translation>Darksend vakuus maksu</translation>
+        <source>PrivSend Collateral Payment</source>
+        <translation>PrivSend vakuus maksu</translation>
     </message>
     <message>
-        <source>Darksend Make Collateral Inputs</source>
-        <translation>Darksend luo vakuus syötteet</translation>
+        <source>PrivSend Make Collateral Inputs</source>
+        <translation>PrivSend luo vakuus syötteet</translation>
     </message>
     <message>
-        <source>Darksend Create Denominations</source>
-        <translation>Darksend denominointien luonti</translation>
+        <source>PrivSend Create Denominations</source>
+        <translation>PrivSend denominointien luonti</translation>
     </message>
     <message>
-        <source>Darksent</source>
-        <translation>Darksend lähetetty</translation>
+        <source>Privsent</source>
+        <translation>PrivSend lähetetty</translation>
     </message>
     <message>
         <source>watch-only</source>
@@ -3136,24 +3136,24 @@ Näillä toiminnoilla voit korjata korruptoituneen lohkoketjun tai puuttuvat/van
         <translation>Lähetetty</translation>
     </message>
     <message>
-        <source>Darksent</source>
-        <translation>Darksend lähetetty</translation>
+        <source>Privsent</source>
+        <translation>PrivSend lähetetty</translation>
     </message>
     <message>
-        <source>Darksend Make Collateral Inputs</source>
-        <translation>Darksend luo vakuus syötteet</translation>
+        <source>PrivSend Make Collateral Inputs</source>
+        <translation>PrivSend luo vakuus syötteet</translation>
     </message>
     <message>
-        <source>Darksend Create Denominations</source>
-        <translation>Darksend denominointien luonti</translation>
+        <source>PrivSend Create Denominations</source>
+        <translation>PrivSend denominointien luonti</translation>
     </message>
     <message>
-        <source>Darksend Denominate</source>
-        <translation>Darksend denominointi</translation>
+        <source>PrivSend Denominate</source>
+        <translation>PrivSend denominointi</translation>
     </message>
     <message>
-        <source>Darksend Collateral Payment</source>
-        <translation>Darksend vakuus maksu</translation>
+        <source>PrivSend Collateral Payment</source>
+        <translation>PrivSend vakuus maksu</translation>
     </message>
     <message>
         <source>To yourself</source>
@@ -3335,8 +3335,8 @@ Näillä toiminnoilla voit korjata korruptoituneen lohkoketjun tai puuttuvat/van
         <translation>Ei voida lukita data hakemistoa %s. Ulord Core on luultavasti jo käynnissä.</translation>
     </message>
     <message>
-        <source>Darksend uses exact denominated amounts to send funds, you might simply need to anonymize some more coins.</source>
-        <translation>Darksend käyttää tarkalleen denominoituja syötteitä lähettäessään varoja, saatat tarvita anonymisoida lisää varoja.</translation>
+        <source>PrivSend uses exact denominated amounts to send funds, you might simply need to anonymize some more coins.</source>
+        <translation>PrivSend käyttää tarkalleen denominoituja syötteitä lähettäessään varoja, saatat tarvita anonymisoida lisää varoja.</translation>
     </message>
     <message>
         <source>Enter regression test mode, which uses a special chain in which blocks can be solved instantly.</source>
@@ -3391,12 +3391,12 @@ Näillä toiminnoilla voit korjata korruptoituneen lohkoketjun tai puuttuvat/van
         <translation>Ei voida yhdistää %s tässä tietokoneessa. Ulord Core on luultavasti jo käynnissä.</translation>
     </message>
     <message>
-        <source>Unable to locate enough Darksend denominated funds for this transaction.</source>
-        <translation>Ei tarpeeksi Darksend anonymisoituja varoja tälle siirtotapahtumalle.</translation>
+        <source>Unable to locate enough PrivSend denominated funds for this transaction.</source>
+        <translation>Ei tarpeeksi PrivSend anonymisoituja varoja tälle siirtotapahtumalle.</translation>
     </message>
     <message>
-        <source>Unable to locate enough Darksend non-denominated funds for this transaction that are not equal 1000 UT.</source>
-        <translation>Ei tarpeeksi Darksend ei-anonymisoituja varoja tälle siirtotapahtumalle, joka ei ole 1000 UT.</translation>
+        <source>Unable to locate enough PrivSend non-denominated funds for this transaction that are not equal 1000 UT.</source>
+        <translation>Ei tarpeeksi PrivSend ei-anonymisoituja varoja tälle siirtotapahtumalle, joka ei ole 1000 UT.</translation>
     </message>
     <message>
         <source>Warning: -paytxfee is set very high! This is the transaction fee you will pay if you send a transaction.</source>
@@ -3495,8 +3495,8 @@ Näillä toiminnoilla voit korjata korruptoituneen lohkoketjun tai puuttuvat/van
         <translation>Vioittunut lohkotietokanta havaittu</translation>
     </message>
     <message>
-        <source>Darksend options:</source>
-        <translation>Darksend valinnat:</translation>
+        <source>PrivSend options:</source>
+        <translation>PrivSend valinnat:</translation>
     </message>
     <message>
         <source>Debugging/Testing options:</source>
@@ -3567,8 +3567,8 @@ Näillä toiminnoilla voit korjata korruptoituneen lohkoketjun tai puuttuvat/van
         <translation>Virhe: Lompakko on lukittu, siirtotapahtumaa ei voida luoda!</translation>
     </message>
     <message>
-        <source>Error: You already have pending entries in the Darksend pool</source>
-        <translation>Virhe: Sinulla on jo odottavia merkintöjä Darksend varannossa</translation>
+        <source>Error: You already have pending entries in the PrivSend pool</source>
+        <translation>Virhe: Sinulla on jo odottavia merkintöjä PrivSend varannossa</translation>
     </message>
     <message>
         <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
@@ -3619,8 +3619,8 @@ Näillä toiminnoilla voit korjata korruptoituneen lohkoketjun tai puuttuvat/van
         <translation>Poista kaikki lompakon siirtotapahtumat ja palauta vain nuo osat lohkoketjusta -rescan valinnan avulla käynnistyksessä</translation>
     </message>
     <message>
-        <source>Disable all Ulord specific functionality (Masternodes, Darksend, InstantX, Budgeting) (0-1, default: %u)</source>
-        <translation>Kytke pois käytöstä kaikki Ulord:in erityistoiminnot (Masternodet, Darksend, InstantX, Budjetointi) (0-1, oletus: %u)</translation>
+        <source>Disable all Ulord specific functionality (Masternodes, PrivSend, InstantX, Budgeting) (0-1, default: %u)</source>
+        <translation>Kytke pois käytöstä kaikki Ulord:in erityistoiminnot (Masternodet, PrivSend, InstantX, Budjetointi) (0-1, oletus: %u)</translation>
     </message>
     <message>
         <source>Distributed under the MIT software license, see the accompanying file COPYING or &lt;http://www.opensource.org/licenses/mit-license.php&gt;.</source>
@@ -3631,8 +3631,8 @@ Näillä toiminnoilla voit korjata korruptoituneen lohkoketjun tai puuttuvat/van
         <translation>Ota instantx käyttöön, näytä lukittujen siirtojen vahvistukset (bool, oletus: %s)</translation>
     </message>
     <message>
-        <source>Enable use of automated darksend for funds stored in this wallet (0-1, default: %u)</source>
-        <translation>Ota käyttöön automaattinen Darksend rahavaroille tässä lompakossa  (0-1, oletus: %u)</translation>
+        <source>Enable use of automated PrivSend for funds stored in this wallet (0-1, default: %u)</source>
+        <translation>Ota käyttöön automaattinen PrivSend rahavaroille tässä lompakossa  (0-1, oletus: %u)</translation>
     </message>
     <message>
         <source>Error: Unsupported argument -socks found. Setting SOCKS version isn't possible anymore, only SOCKS5 proxies are supported.</source>
@@ -3691,8 +3691,8 @@ Näillä toiminnoilla voit korjata korruptoituneen lohkoketjun tai puuttuvat/van
         <translation>Tulosta debuggaustieto (oletus: %u, tarjottava &lt;category&gt; on valinnainen)</translation>
     </message>
     <message>
-        <source>Provide liquidity to Darksend by infrequently mixing coins on a continual basis (0-100, default: %u, 1=very frequent, high fees, 100=very infrequent, low fees)</source>
-        <translation>Tarjoa Darksend:ille likviditeettiä jatkuvaa kolikoiden sekoitusta varten (0-100, oletus: %u, 1=usein, isot maksukulut, 100=harvoin, pienet maksukulut)</translation>
+        <source>Provide liquidity to PrivSend by infrequently mixing coins on a continual basis (0-100, default: %u, 1=very frequent, high fees, 100=very infrequent, low fees)</source>
+        <translation>Tarjoa PrivSend:ille likviditeettiä jatkuvaa kolikoiden sekoitusta varten (0-100, oletus: %u, 1=usein, isot maksukulut, 100=harvoin, pienet maksukulut)</translation>
     </message>
     <message>
         <source>Require high priority for relaying free or low-fee transactions (default:%u)</source>
@@ -3815,16 +3815,16 @@ esimerkiksi: alertnotify=echo %%s | mail -s "Ulord Hälytys" admin@foo.com
         <translation>Ei voida jäsentää -rpcbind arvoa %s verkko-osoitteena</translation>
     </message>
     <message>
-        <source>Darksend is idle.</source>
-        <translation>Darksend odottaa.</translation>
+        <source>PrivSend is idle.</source>
+        <translation>PrivSend odottaa.</translation>
     </message>
     <message>
-        <source>Darksend request complete:</source>
-        <translation>Darksend pyyntö valmis:</translation>
+        <source>PrivSend request complete:</source>
+        <translation>PrivSend pyyntö valmis:</translation>
     </message>
     <message>
-        <source>Darksend request incomplete:</source>
-        <translation>Darksend pyyntö kesken:</translation>
+        <source>PrivSend request incomplete:</source>
+        <translation>PrivSend pyyntö kesken:</translation>
     </message>
     <message>
         <source>Disable safemode, override a real safe mode event (default: %u)</source>
@@ -3955,8 +3955,8 @@ esimerkiksi: alertnotify=echo %%s | mail -s "Ulord Hälytys" admin@foo.com
         <translation>Virheellinen määrä -paytxfee=&lt;amount&gt;: '%s'</translation>
     </message>
     <message>
-        <source>Last successful Darksend action was too recent.</source>
-        <translation>Viimeinen onnistunut Darksend tapahtuma oli liian äskettäin.</translation>
+        <source>Last successful PrivSend action was too recent.</source>
+        <translation>Viimeinen onnistunut PrivSend tapahtuma oli liian äskettäin.</translation>
     </message>
     <message>
         <source>Limit size of signature cache to &lt;n&gt; entries (default: %u)</source>
@@ -4231,8 +4231,8 @@ esimerkiksi: alertnotify=echo %%s | mail -s "Ulord Hälytys" admin@foo.com
         <translation>Pidä enintään &lt;n&gt; ei yhdistettyä siirtotapahtumaa muistissa (oletus: %u)</translation>
     </message>
     <message>
-        <source>Last Darksend was too recent.</source>
-        <translation>Viimeisin Darksend oli liian äskettäin.</translation>
+        <source>Last PrivSend was too recent.</source>
+        <translation>Viimeisin PrivSend oli liian äskettäin.</translation>
     </message>
     <message>
         <source>Line: %d</source>
@@ -4483,8 +4483,8 @@ esimerkiksi: alertnotify=echo %%s | mail -s "Ulord Hälytys" admin@foo.com
         <translation>Käyttäjätunnus JSON-RPC yhteyksille</translation>
     </message>
     <message>
-        <source>Value more than Darksend pool maximum allows.</source>
-        <translation>Määrä on enemmän kuin Darksend varannon maksimi sallii.</translation>
+        <source>Value more than PrivSend pool maximum allows.</source>
+        <translation>Määrä on enemmän kuin PrivSend varannon maksimi sallii.</translation>
     </message>
     <message>
         <source>Verifying blocks...</source>

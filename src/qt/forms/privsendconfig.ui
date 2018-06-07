@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DarksendConfig</class>
- <widget class="QDialog" name="DarksendConfig">
+ <class>PrivsendConfig</class>
+ <widget class="QDialog" name="PrivsendConfig">
   <property name="geometry">
    <rect>
     <x>0</x>

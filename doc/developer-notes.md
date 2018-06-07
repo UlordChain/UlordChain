@@ -170,7 +170,7 @@ Threads
 
 - BitcoinMiner : Generates bitcoins (if wallet is enabled).
 
-- ThreadCheckDarkSendPool : Runs masternode list and sync data update loops
+- ThreadCheckPrivSendPool : Runs masternode list and sync data update loops
 
 - Shutdown : Does an orderly shutdown of everything.
 

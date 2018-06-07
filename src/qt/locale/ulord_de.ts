@@ -740,8 +740,8 @@ Adresse: %4</translation>
         <translation>Wechselgeld kopieren</translation>
     </message>
     <message>
-        <source>Non-anonymized input selected. &lt;b&gt;Darksend will be disabled.&lt;/b&gt;&lt;br&gt;&lt;br&gt;If you still want to use Darksend, please deselect all non-nonymized inputs first and then check Darksend checkbox again.</source>
-        <translation>Nicht-anonymisierter Input ausgewählt. &lt;b&gt;Darksend wird deaktiviert.&lt;/b&gt;&lt;br&gt;&lt;br&gt;Sollten Sie trotzdem Darksend verwenden wollen, müssen Sie zuerst alle nicht-anonymisierten Inputs entmarkieren und  das Ankreuzfeld "Darksend" erneut auswählen.</translation>
+        <source>Non-anonymized input selected. &lt;b&gt;PrivSend will be disabled.&lt;/b&gt;&lt;br&gt;&lt;br&gt;If you still want to use PrivSend, please deselect all non-nonymized inputs first and then check PrivSend checkbox again.</source>
+        <translation>Nicht-anonymisierter Input ausgewählt. &lt;b&gt;PrivSend wird deaktiviert.&lt;/b&gt;&lt;br&gt;&lt;br&gt;Sollten Sie trotzdem PrivSend verwenden wollen, müssen Sie zuerst alle nicht-anonymisierten Inputs entmarkieren und  das Ankreuzfeld "PrivSend" erneut auswählen.</translation>
     </message>
     <message>
         <source>highest</source>
@@ -841,10 +841,10 @@ Adresse: %4</translation>
     </message>
 </context>
 <context>
-    <name>DarksendConfig</name>
+    <name>PrivsendConfig</name>
     <message>
-        <source>Configure Darksend</source>
-        <translation>Darksend konfigurieren</translation>
+        <source>Configure PrivSend</source>
+        <translation>PrivSend konfigurieren</translation>
     </message>
     <message>
         <source>Basic Privacy</source>
@@ -891,20 +891,20 @@ Adresse: %4</translation>
         <translation>Dies ist die langsamste und sicherste Option. Maximale Anonymität kostet</translation>
     </message>
     <message>
-        <source>Darksend Configuration</source>
-        <translation>Darksend-Konfiguration</translation>
+        <source>PrivSend Configuration</source>
+        <translation>PrivSend-Konfiguration</translation>
     </message>
     <message>
-        <source>Darksend was successfully set to basic (%1 and 2 rounds). You can change this at any time by opening Ulord's configuration screen.</source>
-        <translation>Darksend wurde erfolgreich auf einfachen Datenschutz (%1 und 2 Runden) gesetzt. Sie können dies jederzeit im Konfigurationsfenster von Ulord ändern.</translation>
+        <source>PrivSend was successfully set to basic (%1 and 2 rounds). You can change this at any time by opening Ulord's configuration screen.</source>
+        <translation>PrivSend wurde erfolgreich auf einfachen Datenschutz (%1 und 2 Runden) gesetzt. Sie können dies jederzeit im Konfigurationsfenster von Ulord ändern.</translation>
     </message>
     <message>
-        <source>Darksend was successfully set to high (%1 and 8 rounds). You can change this at any time by opening Ulord's configuration screen.</source>
-        <translation>Darksend wurde erfolgreich auf hohen Datenschutz (%1 und 8 Runden) gesetzt. Sie können dies jederzeit im Konfigurationsfenster von Ulord ändern.</translation>
+        <source>PrivSend was successfully set to high (%1 and 8 rounds). You can change this at any time by opening Ulord's configuration screen.</source>
+        <translation>PrivSend wurde erfolgreich auf hohen Datenschutz (%1 und 8 Runden) gesetzt. Sie können dies jederzeit im Konfigurationsfenster von Ulord ändern.</translation>
     </message>
     <message>
-        <source>Darksend was successfully set to maximum (%1 and 16 rounds). You can change this at any time by opening Ulord's configuration screen.</source>
-        <translation>Darksend wurde erfolgreich auf maximalen Datenschutz (%1 und 16 Runden) gesetzt. Sie können dies jederzeit im Konfigurationsfenster von Ulord ändern.</translation>
+        <source>PrivSend was successfully set to maximum (%1 and 16 rounds). You can change this at any time by opening Ulord's configuration screen.</source>
+        <translation>PrivSend wurde erfolgreich auf maximalen Datenschutz (%1 und 16 Runden) gesetzt. Sie können dies jederzeit im Konfigurationsfenster von Ulord ändern.</translation>
     </message>
 </context>
 <context>
@@ -1145,12 +1145,12 @@ Adresse: %4</translation>
         <translation>(0 = automatisch, &lt;0 = so viele Kerne frei lassen)</translation>
     </message>
     <message>
-        <source>Darksend rounds to use</source>
-        <translation>Darksend Runden</translation>
+        <source>PrivSend rounds to use</source>
+        <translation>PrivSend Runden</translation>
     </message>
     <message>
-        <source>This amount acts as a threshold to turn off Darksend once it's reached.</source>
-        <translation>Beim Erreichen dieses Betrages wird Darksend ausgeschaltet.</translation>
+        <source>This amount acts as a threshold to turn off PrivSend once it's reached.</source>
+        <translation>Beim Erreichen dieses Betrages wird PrivSend ausgeschaltet.</translation>
     </message>
     <message>
         <source>Amount of Ulord to keep anonymized</source>
@@ -1422,8 +1422,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Vollendet:</translation>
     </message>
     <message>
-        <source>Darksend Balance:</source>
-        <translation>Darksend Kontostand:</translation>
+        <source>PrivSend Balance:</source>
+        <translation>PrivSend Kontostand:</translation>
     </message>
     <message>
         <source>Amount and Rounds:</source>
@@ -1442,8 +1442,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>k.A.</translation>
     </message>
     <message>
-        <source>Darksend</source>
-        <translation>Darksend</translation>
+        <source>PrivSend</source>
+        <translation>PrivSend</translation>
     </message>
     <message>
         <source>Recent transactions</source>
@@ -1462,16 +1462,16 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>(Letzte Nachricht)</translation>
     </message>
     <message>
-        <source>Try to manually submit a Darksend request.</source>
-        <translation>Versuche eine Darksendanfrage manuell abzusetzen.</translation>
+        <source>Try to manually submit a PrivSend request.</source>
+        <translation>Versuche eine PrivSendanfrage manuell abzusetzen.</translation>
     </message>
     <message>
         <source>Try Mix</source>
         <translation>Versuche zu Mixen</translation>
     </message>
     <message>
-        <source>Reset the current status of Darksend (can interrupt Darksend if it's in the process of Mixing, which can cost you money!)</source>
-        <translation>Aktuellen Darksend Status zurücksetzen (wenn der Prozess des Mixens bereits begonnen hat kann es passieren, dass Darksend unterbrochen wird. Bereits gezahlte Gebühren werden einbehalten!) </translation>
+        <source>Reset the current status of PrivSend (can interrupt PrivSend if it's in the process of Mixing, which can cost you money!)</source>
+        <translation>Aktuellen PrivSend Status zurücksetzen (wenn der Prozess des Mixens bereits begonnen hat kann es passieren, dass PrivSend unterbrochen wird. Bereits gezahlte Gebühren werden einbehalten!) </translation>
     </message>
     <message>
         <source>Reset</source>
@@ -1486,12 +1486,12 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Deaktiviert</translation>
     </message>
     <message>
-        <source>Start Darksend Mixing</source>
-        <translation>Starte Darksend Mixen</translation>
+        <source>Start PrivSend Mixing</source>
+        <translation>Starte PrivSend Mixen</translation>
     </message>
     <message>
-        <source>Stop Darksend Mixing</source>
-        <translation>Stoppe Darksend Mixen</translation>
+        <source>Stop PrivSend Mixing</source>
+        <translation>Stoppe PrivSend Mixen</translation>
     </message>
     <message>
         <source>No inputs detected</source>
@@ -1534,9 +1534,9 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Aktiviert</translation>
     </message>
     <message>
-        <source>Last Darksend message:
+        <source>Last PrivSend message:
 </source>
-        <translation>Letzter Darksend Status:
+        <translation>Letzter PrivSend Status:
 </translation>
     </message>
     <message>
@@ -1544,20 +1544,20 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>k.A.</translation>
     </message>
     <message>
-        <source>Darksend was successfully reset.</source>
-        <translation>Darksend wurde erfolgreich zurückgesetzt.</translation>
+        <source>PrivSend was successfully reset.</source>
+        <translation>PrivSend wurde erfolgreich zurückgesetzt.</translation>
     </message>
     <message>
-        <source>If you don't want to see internal Darksend fees/transactions select "Most Common" as Type on the "Transactions" tab.</source>
-        <translation>Wenn Sie keine internen Darksend-Gebühren oder -Transaktionen sehen wollen wählen Sie "Gängigste" als Typ auf der "Transaktionen" Karteikarte.</translation>
+        <source>If you don't want to see internal PrivSend fees/transactions select "Most Common" as Type on the "Transactions" tab.</source>
+        <translation>Wenn Sie keine internen PrivSend-Gebühren oder -Transaktionen sehen wollen wählen Sie "Gängigste" als Typ auf der "Transaktionen" Karteikarte.</translation>
     </message>
     <message>
-        <source>Darksend requires at least %1 to use.</source>
-        <translation>Zur Benutzung von Darksend benötigt man mindestens %1</translation>
+        <source>PrivSend requires at least %1 to use.</source>
+        <translation>Zur Benutzung von PrivSend benötigt man mindestens %1</translation>
     </message>
     <message>
-        <source>Wallet is locked and user declined to unlock. Disabling Darksend.</source>
-        <translation>Das Wallet ist gesperrt und der Benutzer hat abgelehnt, es zu entsperren. Darksend wird deaktiviert.</translation>
+        <source>Wallet is locked and user declined to unlock. Disabling PrivSend.</source>
+        <translation>Das Wallet ist gesperrt und der Benutzer hat abgelehnt, es zu entsperren. PrivSend wird deaktiviert.</translation>
     </message>
 </context>
 <context>
@@ -2363,8 +2363,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Empfänger &amp;hinzufügen</translation>
     </message>
     <message>
-        <source>Darksend</source>
-        <translation>Darksend</translation>
+        <source>PrivSend</source>
+        <translation>PrivSend</translation>
     </message>
     <message>
         <source>InstantX</source>
@@ -2415,8 +2415,8 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>anonymisierte Coins</translation>
     </message>
     <message>
-        <source>(darksend requires this amount to be rounded up to the nearest %1).</source>
-        <translation>(Darksend verlangt, dass dieser Betrag auf den nächsten %1 aufgerundet wird)</translation>
+        <source>(PrivSend requires this amount to be rounded up to the nearest %1).</source>
+        <translation>(PrivSend verlangt, dass dieser Betrag auf den nächsten %1 aufgerundet wird)</translation>
     </message>
     <message>
         <source>any available funds (not recommended)</source>
@@ -3020,8 +3020,8 @@ Dies kann passieren, wenn einige Ulord aus ihrer Wallet bereits ausgegeben wurde
         <translation>Empfangen von</translation>
     </message>
     <message>
-        <source>Received via Darksend</source>
-        <translation>über/durch Darksend empfangen</translation>
+        <source>Received via PrivSend</source>
+        <translation>über/durch PrivSend empfangen</translation>
     </message>
     <message>
         <source>Sent to</source>
@@ -3036,24 +3036,24 @@ Dies kann passieren, wenn einige Ulord aus ihrer Wallet bereits ausgegeben wurde
         <translation>Erarbeitet</translation>
     </message>
     <message>
-        <source>Darksend Denominate</source>
-        <translation>Darksend Stückelung</translation>
+        <source>PrivSend Denominate</source>
+        <translation>PrivSend Stückelung</translation>
     </message>
     <message>
-        <source>Darksend Collateral Payment</source>
-        <translation>Darksend Sicherheits-Zahlung</translation>
+        <source>PrivSend Collateral Payment</source>
+        <translation>PrivSend Sicherheits-Zahlung</translation>
     </message>
     <message>
-        <source>Darksend Make Collateral Inputs</source>
-        <translation>Darksend Sicherheits-Eingänge machen</translation>
+        <source>PrivSend Make Collateral Inputs</source>
+        <translation>PrivSend Sicherheits-Eingänge machen</translation>
     </message>
     <message>
-        <source>Darksend Create Denominations</source>
-        <translation>Darksend Stückelungs-Gebühr</translation>
+        <source>PrivSend Create Denominations</source>
+        <translation>PrivSend Stückelungs-Gebühr</translation>
     </message>
     <message>
-        <source>Darksent</source>
-        <translation>Darksend</translation>
+        <source>Privsent</source>
+        <translation>PrivSend</translation>
     </message>
     <message>
         <source>watch-only</source>
@@ -3131,24 +3131,24 @@ Dies kann passieren, wenn einige Ulord aus ihrer Wallet bereits ausgegeben wurde
         <translation>Überwiesen an</translation>
     </message>
     <message>
-        <source>Darksent</source>
-        <translation>Darksend</translation>
+        <source>Privsent</source>
+        <translation>PrivSend</translation>
     </message>
     <message>
-        <source>Darksend Make Collateral Inputs</source>
-        <translation>Darksend Sicherheits-Eingänge machen</translation>
+        <source>PrivSend Make Collateral Inputs</source>
+        <translation>PrivSend Sicherheits-Eingänge machen</translation>
     </message>
     <message>
-        <source>Darksend Create Denominations</source>
-        <translation>Darksend Stückelungs-Gebühr</translation>
+        <source>PrivSend Create Denominations</source>
+        <translation>PrivSend Stückelungs-Gebühr</translation>
     </message>
     <message>
-        <source>Darksend Denominate</source>
-        <translation>Darksend Stückelung</translation>
+        <source>PrivSend Denominate</source>
+        <translation>PrivSend Stückelung</translation>
     </message>
     <message>
-        <source>Darksend Collateral Payment</source>
-        <translation>Darksend Sicherheits-Zahlung</translation>
+        <source>PrivSend Collateral Payment</source>
+        <translation>PrivSend Sicherheits-Zahlung</translation>
     </message>
     <message>
         <source>To yourself</source>
@@ -3330,8 +3330,8 @@ Dies kann passieren, wenn einige Ulord aus ihrer Wallet bereits ausgegeben wurde
         <translation>Das Programm kann das Daten-Verzeichnis %s nicht als "in Verwendung" markieren. Wahrscheinlich läuft das Programm bereits.</translation>
     </message>
     <message>
-        <source>Darksend uses exact denominated amounts to send funds, you might simply need to anonymize some more coins.</source>
-        <translation>Darksend benutzt exakt gestückelte Beträge zum Versenden, Sie müssen dafür möglicherweise noch mehr Ulord anonymisieren.</translation>
+        <source>PrivSend uses exact denominated amounts to send funds, you might simply need to anonymize some more coins.</source>
+        <translation>PrivSend benutzt exakt gestückelte Beträge zum Versenden, Sie müssen dafür möglicherweise noch mehr Ulord anonymisieren.</translation>
     </message>
     <message>
         <source>Enter regression test mode, which uses a special chain in which blocks can be solved instantly.</source>
@@ -3386,12 +3386,12 @@ Dies kann passieren, wenn einige Ulord aus ihrer Wallet bereits ausgegeben wurde
         <translation>Ulord Core den Prozess %s auf dem Computer nicht an sich binden. Wahrscheinlich läuft das Programm bereits.</translation>
     </message>
     <message>
-        <source>Unable to locate enough Darksend denominated funds for this transaction.</source>
-        <translation>Für diese Transaktion konnten nicht genug mit Darksend gestückelte Beträge gefunden werden.</translation>
+        <source>Unable to locate enough PrivSend denominated funds for this transaction.</source>
+        <translation>Für diese Transaktion konnten nicht genug mit PrivSend gestückelte Beträge gefunden werden.</translation>
     </message>
     <message>
-        <source>Unable to locate enough Darksend non-denominated funds for this transaction that are not equal 1000 UT.</source>
-        <translation>Für diese Transaktion konnten nicht genug nicht mit Darksend gestückelte Beträge gefunden werden, die ungleich 1000 UT sind.</translation>
+        <source>Unable to locate enough PrivSend non-denominated funds for this transaction that are not equal 1000 UT.</source>
+        <translation>Für diese Transaktion konnten nicht genug nicht mit PrivSend gestückelte Beträge gefunden werden, die ungleich 1000 UT sind.</translation>
     </message>
     <message>
         <source>Warning: -paytxfee is set very high! This is the transaction fee you will pay if you send a transaction.</source>
@@ -3490,8 +3490,8 @@ Dies kann passieren, wenn einige Ulord aus ihrer Wallet bereits ausgegeben wurde
         <translation>Beschädigte Blockdatenbank erkannt</translation>
     </message>
     <message>
-        <source>Darksend options:</source>
-        <translation>Darksend Optionen:</translation>
+        <source>PrivSend options:</source>
+        <translation>PrivSend Optionen:</translation>
     </message>
     <message>
         <source>Debugging/Testing options:</source>
@@ -3562,8 +3562,8 @@ Dies kann passieren, wenn einige Ulord aus ihrer Wallet bereits ausgegeben wurde
         <translation>Fehler: Wallet gesperrt, Transaktion kann nicht erstellt werden!</translation>
     </message>
     <message>
-        <source>Error: You already have pending entries in the Darksend pool</source>
-        <translation>Fehler: Es sind bereits anstehende Einträge im Darksend-Pool</translation>
+        <source>Error: You already have pending entries in the PrivSend pool</source>
+        <translation>Fehler: Es sind bereits anstehende Einträge im PrivSend-Pool</translation>
     </message>
     <message>
         <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
@@ -3614,8 +3614,8 @@ Dies kann passieren, wenn einige Ulord aus ihrer Wallet bereits ausgegeben wurde
         <translation>Lösche alle Wallet-Transaktionen stelle nur diese mittels -rescan beim nächsten Start des Wallets wieder her.</translation>
     </message>
     <message>
-        <source>Disable all Ulord specific functionality (Masternodes, Darksend, InstantX, Budgeting) (0-1, default: %u)</source>
-        <translation>Deaktiviere all Ulord-spezifischen Funktionen (Masternodes, Darksend, InstantX, Budgeting) (0-1, Standard: %u)</translation>
+        <source>Disable all Ulord specific functionality (Masternodes, PrivSend, InstantX, Budgeting) (0-1, default: %u)</source>
+        <translation>Deaktiviere all Ulord-spezifischen Funktionen (Masternodes, PrivSend, InstantX, Budgeting) (0-1, Standard: %u)</translation>
     </message>
     <message>
         <source>Distributed under the MIT software license, see the accompanying file COPYING or &lt;http://www.opensource.org/licenses/mit-license.php&gt;.</source>
@@ -3626,8 +3626,8 @@ Dies kann passieren, wenn einige Ulord aus ihrer Wallet bereits ausgegeben wurde
         <translation>Aktiviere InstantX, zeige Bestätigungen für gesperrte Transaktionen an (bool, Standard: %s)</translation>
     </message>
     <message>
-        <source>Enable use of automated darksend for funds stored in this wallet (0-1, default: %u)</source>
-        <translation>Aktiviere Darksend automatisch (0-1, Standard: %u)</translation>
+        <source>Enable use of automated PrivSend for funds stored in this wallet (0-1, default: %u)</source>
+        <translation>Aktiviere PrivSend automatisch (0-1, Standard: %u)</translation>
     </message>
     <message>
         <source>Error: Unsupported argument -socks found. Setting SOCKS version isn't possible anymore, only SOCKS5 proxies are supported.</source>
@@ -3647,7 +3647,7 @@ Dies kann passieren, wenn einige Ulord aus ihrer Wallet bereits ausgegeben wurde
     </message>
     <message>
         <source>Found unconfirmed denominated outputs, will wait till they confirm to continue.</source>
-        <translation>Unbestätigte für Darksend vorbereitete Ausgabebeträge gefunden, warte bis sie bestätigt sind bevor weitergemacht wird.</translation>
+        <translation>Unbestätigte für PrivSend vorbereitete Ausgabebeträge gefunden, warte bis sie bestätigt sind bevor weitergemacht wird.</translation>
     </message>
     <message>
         <source>How thorough the block verification of -checkblocks is (0-4, default: %u)</source>
@@ -3686,8 +3686,8 @@ Dies kann passieren, wenn einige Ulord aus ihrer Wallet bereits ausgegeben wurde
         <translation>Debugging-Informationen ausgeben (Standard: %u, &lt;category&gt; anzugeben ist optional)</translation>
     </message>
     <message>
-        <source>Provide liquidity to Darksend by infrequently mixing coins on a continual basis (0-100, default: %u, 1=very frequent, high fees, 100=very infrequent, low fees)</source>
-        <translation>Durch diese Einstellung können Sie dem Darksend-Netzwerk zusätzliche Liquidität zur Verfügung stellen in dem Sie von Zeit zu Zeit bereits anonymisierte Ulord wieder dem Mixing-Prozess zuführen. (0-100, 0=aus, 1=sehr oft, 100=sehr selten (wenig Gebühren). Standard: %u)</translation>
+        <source>Provide liquidity to PrivSend by infrequently mixing coins on a continual basis (0-100, default: %u, 1=very frequent, high fees, 100=very infrequent, low fees)</source>
+        <translation>Durch diese Einstellung können Sie dem PrivSend-Netzwerk zusätzliche Liquidität zur Verfügung stellen in dem Sie von Zeit zu Zeit bereits anonymisierte Ulord wieder dem Mixing-Prozess zuführen. (0-100, 0=aus, 1=sehr oft, 100=sehr selten (wenig Gebühren). Standard: %u)</translation>
     </message>
     <message>
         <source>Require high priority for relaying free or low-fee transactions (default:%u)</source>
@@ -3807,16 +3807,16 @@ zum Beispiel: alertnotify=echo %%s | mail -s \"Ulord Alert\" admin@foo.com</tran
         <translation>-rpcbind Wert %s konnte nicht als Netzwerkadresse erkannt werden</translation>
     </message>
     <message>
-        <source>Darksend is idle.</source>
-        <translation>Darksend ist untätig.</translation>
+        <source>PrivSend is idle.</source>
+        <translation>PrivSend ist untätig.</translation>
     </message>
     <message>
-        <source>Darksend request complete:</source>
-        <translation>Darksend-Anfrage vollständig:</translation>
+        <source>PrivSend request complete:</source>
+        <translation>PrivSend-Anfrage vollständig:</translation>
     </message>
     <message>
-        <source>Darksend request incomplete:</source>
-        <translation>Darksend-Anfrage unvollständig:</translation>
+        <source>PrivSend request incomplete:</source>
+        <translation>PrivSend-Anfrage unvollständig:</translation>
     </message>
     <message>
         <source>Disable safemode, override a real safe mode event (default: %u)</source>
@@ -3948,8 +3948,8 @@ Ulord Core wird heruntergefahren.</translation>
         <translation>Ungültiger Betrag für -paytxfee=&lt;amount&gt;: '%s'</translation>
     </message>
     <message>
-        <source>Last successful Darksend action was too recent.</source>
-        <translation>Die letzte erfolgreiche Darksend-Transaktion ist noch zu neu.</translation>
+        <source>Last successful PrivSend action was too recent.</source>
+        <translation>Die letzte erfolgreiche PrivSend-Transaktion ist noch zu neu.</translation>
     </message>
     <message>
         <source>Limit size of signature cache to &lt;n&gt; entries (default: %u)</source>
@@ -4224,8 +4224,8 @@ Ulord Core wird heruntergefahren.</translation>
         <translation>Maximal &lt;n&gt; (noch) nicht einsortierte Zahlungen zwischenspeichern (Voreinstellung: %u)</translation>
     </message>
     <message>
-        <source>Last Darksend was too recent.</source>
-        <translation>Letzte Darksend-Transaktion ist noch zu neu.</translation>
+        <source>Last PrivSend was too recent.</source>
+        <translation>Letzte PrivSend-Transaktion ist noch zu neu.</translation>
     </message>
     <message>
         <source>Line: %d</source>
@@ -4476,8 +4476,8 @@ Ulord Core wird heruntergefahren.</translation>
         <translation>Benutzername für JSON-RPC-Verbindungen</translation>
     </message>
     <message>
-        <source>Value more than Darksend pool maximum allows.</source>
-        <translation>Wert größer als der vom Darksend Pool maximal erlaubte.</translation>
+        <source>Value more than PrivSend pool maximum allows.</source>
+        <translation>Wert größer als der vom PrivSend Pool maximal erlaubte.</translation>
     </message>
     <message>
         <source>Verifying blocks...</source>

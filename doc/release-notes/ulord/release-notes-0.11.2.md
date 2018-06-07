@@ -77,8 +77,8 @@ ulordd/ulord-qt (on Linux).
 - Masternode payment scheduler
 - Better protection from cheating masternodes
 - Extended functionality for `masternode list` RPC command
-- Live Darksend and InstantX fee calculations in CoinControl
-- Darksend input caching
+- Live PrivSend and InstantX fee calculations in CoinControl
+- PrivSend input caching
 - Open config file from within the wallet
 - New CSS-based wallet GUI with selectable interface themes
 - Configurable automatic wallet backups

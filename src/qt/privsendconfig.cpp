@@ -1,5 +1,5 @@
-#include "darksendconfig.h"
-#include "ui_darksendconfig.h"
+#include "privsendconfig.h"
+#include "ui_privsendconfig.h"
 
 #include "bitcoinunits.h"
 #include "privsend.h"
@@ -12,9 +12,9 @@
 #include <QKeyEvent>
 #include <QSettings>
 
-DarksendConfig::DarksendConfig(QWidget *parent) :
+PrivsendConfig::PrivsendConfig(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::DarksendConfig),
+    ui(new Ui::PrivsendConfig),
     model(0)
 {
     ui->setupUi(this);
@@ -24,17 +24,17 @@ DarksendConfig::DarksendConfig(QWidget *parent) :
     connect(ui->buttonMax, SIGNAL(clicked()), this, SLOT(clickMax()));
 }
 
-DarksendConfig::~DarksendConfig()
+PrivsendConfig::~PrivsendConfig()
 {
     delete ui;
 }
 
-void DarksendConfig::setModel(WalletModel *model)
+void PrivsendConfig::setModel(WalletModel *model)
 {
     this->model = model;
 }
 
-void DarksendConfig::clickBasic()
+void PrivsendConfig::clickBasic()
 {
     configure(true, 1000, 2);
 
@@ -49,7 +49,7 @@ void DarksendConfig::clickBasic()
     close();
 }
 
-void DarksendConfig::clickHigh()
+void PrivsendConfig::clickHigh()
 {
     configure(true, 1000, 8);
 
@@ -64,7 +64,7 @@ void DarksendConfig::clickHigh()
     close();
 }
 
-void DarksendConfig::clickMax()
+void PrivsendConfig::clickMax()
 {
     configure(true, 1000, 16);
 
@@ -79,7 +79,7 @@ void DarksendConfig::clickMax()
     close();
 }
 
-void DarksendConfig::configure(bool enabled, int coins, int rounds) {
+void PrivsendConfig::configure(bool enabled, int coins, int rounds) {
 
     QSettings settings;
 

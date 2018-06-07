@@ -43,15 +43,15 @@ Masternodes:
 - Show number of masternodes in debug window
 
 
-Darksend:
+PrivSend:
 
-- Reduced lower darksend limit to 1.5 UC
+- Reduced lower PrivSend limit to 1.5 UC
 - Fixed progress bar calculation for low amounts
 - Improved support for adding UC after anon has completed
 - Added denomination information to Overview tab
-- Added more detailed Darksend status information to Overview tab
-- Added Darksend high precision matching engine
-- Added Darksend balance to `getinfo`
+- Added more detailed PrivSend status information to Overview tab
+- Added PrivSend high precision matching engine
+- Added PrivSend balance to `getinfo`
 - Changed maximum rounds of mixing to 16
 
 

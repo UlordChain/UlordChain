@@ -96,7 +96,7 @@ As well as everyone that helped translating on [Transifex](https://www.transifex
 Darkcoin tree 0.9.x was the open source implementation of masternodes based on
 the 0.8.x tree and was first released on Mar/13/2014.
 
-Darkcoin tree 0.10.x used to be the closed source implementation of Darksend
+Darkcoin tree 0.10.x used to be the closed source implementation of PrivSend
 which was released open source on Sep/25/2014.
 
 Ulord Core tree 0.11.x was a fork of Bitcoin Core tree 0.9, Darkcoin was rebranded

@@ -65,12 +65,12 @@ SendCoinsDialog::SendCoinsDialog(const PlatformStyle *platformStyle, QWidget *pa
 
     // Ulord specific
     QSettings settings;
-    if (!settings.contains("bUseDarkSend"))
-        settings.setValue("bUseDarkSend", false);
+    if (!settings.contains("bUsePrivSend"))
+        settings.setValue("bUsePrivSend", false);
     if (!settings.contains("bUseInstantX"))
         settings.setValue("bUseInstantX", false);
 
-    bool fUsePrivateSend = settings.value("bUseDarkSend").toBool();
+    bool fUsePrivateSend = settings.value("bUsePrivSend").toBool();
     bool fUseInstantSend = settings.value("bUseInstantX").toBool();
     ui->checkUsePrivateSend->setVisible(false);
     ui->checkUseInstantSend->setVisible(false);
@@ -583,7 +583,7 @@ void SendCoinsDialog::setBalance(const CAmount& balance, const CAmount& unconfir
     {
 	    uint64_t bal = 0;
         QSettings settings;
-        settings.setValue("bUseDarkSend", ui->checkUsePrivateSend->isChecked());
+        settings.setValue("bUsePrivSend", ui->checkUsePrivateSend->isChecked());
 	    if(ui->checkUsePrivateSend->isChecked()) {
 		    bal = anonymizedBalance;
 	    } else {
