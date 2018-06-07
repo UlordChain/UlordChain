@@ -1057,7 +1057,11 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 	if ( 0 != strcmp(uContractSecretHash.ToString().c_str(),uTransactionSecretHash.ToString().c_str()) )
 		{
 			return JSONRPCError(RPC_INVALID_PARAMS, "Error:the secret in parameter not match in in contract");		
-		}	
+		}
+
+	//declare transaction
+	CMutableTransaction txNew;
+	CAmount nFeePay = 3100;
 
     return result;
 }
