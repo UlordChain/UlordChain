@@ -97,7 +97,7 @@ When a new block is found on the network, a masternode quorum will be determined
 
 ### DSTX - "dstx"
 
-CDarksendBroadcastTx
+CPrivsendBroadcastTx
 
 Masternodes can broadcast subsidised transactions without fees for the sake of security in mixing. This is done via the DSTX message.
 
@@ -122,7 +122,7 @@ Mixing pool status update
 
 ### DSQUEUE - "dsq"
 
-CDarksendQueue
+CPrivSendQueue
 
 Asks users to sign final mixing tx message.
 
@@ -145,16 +145,16 @@ Response to DSQ message which allows the user to join a mixing pool
 
 ### DSVIN - "dsi"
 
-CDarkSendEntry
+CPrivSendEntry
 
 When queue is ready user is expected to send his entry to start actual mixing
 
 | Field Size | Field Name | Data type | Description |
 | ---------- | ----------- | --------- | -------- |
-| ? | vecTxDSIn | CTxDSIn[] | vector of users inputs (CTxDSIn serialization is equal to CTxIn serialization)
+| ? | vecTxPSIn | CTxPSIn[] | vector of users inputs (CTxPSIn serialization is equal to CTxIn serialization)
 | 8 | nAmount | int64_t | depreciated since 12.1, it's used for backwards compatibility only and can be removed with future protocol bump
 | ? | txCollateral | CTransaction | Collateral transaction which is used to prevent misbehavior and also to charge fees randomly
-| ? | vecTxDSOut | CTxDSOut[] | vector of user outputs (CTxDSOut serialization is equal to CTxOut serialization)
+| ? | vecTxPSOut | CTxPSOut[] | vector of user outputs (CTxPSOut serialization is equal to CTxOut serialization)
 
 ### DSSIGNFINALTX - "dss"
 

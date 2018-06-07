@@ -26,7 +26,7 @@
 #include "util.h"
 #include "utilmoneystr.h"
 
-#include "darksend.h"
+#include "privsend.h"
 #include "governance.h"
 #include "instantx.h"
 #include "keepass.h"
@@ -2600,7 +2600,7 @@ bool CWallet::SelectCoinsByDenominations(int nDenom, CAmount nValueMin, CAmount 
     // bit 3 - .1UT+1
 
     std::vector<int> vecBits;
-    if (!darkSendPool.GetDenominationsBits(nDenom, vecBits)) {
+    if (!privSendPool.GetDenominationsBits(nDenom, vecBits)) {
         return false;
     }
 
@@ -2740,7 +2740,7 @@ bool CWallet::SelectCoinsGrouppedByAddresses(std::vector<CompactTallyItem>& vecT
     return true;
 }
 
-bool CWallet::SelectCoinsDark(CAmount nValueMin, CAmount nValueMax, std::vector<CTxIn>& vecTxInRet, CAmount& nValueRet, int nPrivateSendRoundsMin, int nPrivateSendRoundsMax) const
+bool CWallet::SelectCoinsPriv(CAmount nValueMin, CAmount nValueMax, std::vector<CTxIn>& vecTxInRet, CAmount& nValueRet, int nPrivateSendRoundsMin, int nPrivateSendRoundsMax) const
 {
     CCoinControl *coinControl=NULL;
 
@@ -3164,7 +3164,7 @@ bool CWallet::CreateTheAddrTrans(const vector<CRecipient>& vecSend, CWalletTx& w
                         nFeeRet += nChange;
                         wtxNew.mapValue["DS"] = "1";
                         // recheck skipped denominations during next mixing
-                        darkSendPool.ClearSkippedDenominations();
+                        privSendPool.ClearSkippedDenominations();
                     } else {
 
                         // Fill a vout to ourself
@@ -3505,7 +3505,7 @@ bool CWallet::CreateTransaction(const vector<CRecipient>& vecSend, CWalletTx& wt
                         nFeeRet += nChange;
                         wtxNew.mapValue["DS"] = "1";
                         // recheck skipped denominations during next mixing
-                        darkSendPool.ClearSkippedDenominations();
+                        privSendPool.ClearSkippedDenominations();
                     } else {
 
                         // Fill a vout to ourself
@@ -3850,7 +3850,7 @@ bool CWallet::AbandonCash(const vector<CRecipient>& vecSend, CWalletTx& wtxNew, 
                         nFeeRet += nChange;
                         wtxNew.mapValue["DS"] = "1";
                         // recheck skipped denominations during next mixing
-                        darkSendPool.ClearSkippedDenominations();
+                        privSendPool.ClearSkippedDenominations();
                     } 
                     else 
                     {

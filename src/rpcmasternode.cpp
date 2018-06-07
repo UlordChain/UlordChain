@@ -3,7 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "activemasternode.h"
-#include "darksend.h"
+#include "privsend.h"
 #include "init.h"
 #include "main.h"
 #include "masternode-payments.h"
@@ -41,8 +41,8 @@ UniValue privatesend(const UniValue& params, bool fHelp)
             return "Mixing is not supported from masternodes";
 
         fEnablePrivateSend = true;
-        bool result = darkSendPool.DoAutomaticDenominating();
-        return "Mixing " + (result ? "started successfully" : ("start failed: " + darkSendPool.GetStatus() + ", will retry"));
+        bool result = privSendPool.DoAutomaticDenominating();
+        return "Mixing " + (result ? "started successfully" : ("start failed: " + privSendPool.GetStatus() + ", will retry"));
     }
 
     if(params[0].get_str() == "stop") {
@@ -51,7 +51,7 @@ UniValue privatesend(const UniValue& params, bool fHelp)
     }
 
     if(params[0].get_str() == "reset") {
-        darkSendPool.ResetPool();
+        privSendPool.ResetPool();
         return "Mixing was reset";
     }
 
@@ -66,15 +66,15 @@ UniValue getpoolinfo(const UniValue& params, bool fHelp)
             "Returns an object containing mixing pool related information.\n");
 
     UniValue obj(UniValue::VOBJ);
-    obj.push_back(Pair("state",             darkSendPool.GetStateString()));
+    obj.push_back(Pair("state",             privSendPool.GetStateString()));
     obj.push_back(Pair("mixing_mode",       fPrivateSendMultiSession ? "multi-session" : "normal"));
-    obj.push_back(Pair("queue",             darkSendPool.GetQueueSize()));
-    obj.push_back(Pair("entries",           darkSendPool.GetEntriesCount()));
-    obj.push_back(Pair("status",            darkSendPool.GetStatus()));
+    obj.push_back(Pair("queue",             privSendPool.GetQueueSize()));
+    obj.push_back(Pair("entries",           privSendPool.GetEntriesCount()));
+    obj.push_back(Pair("status",            privSendPool.GetStatus()));
 
-    if (darkSendPool.pSubmittedToMasternode) {
-        obj.push_back(Pair("outpoint",      darkSendPool.pSubmittedToMasternode->vin.prevout.ToStringShort()));
-        obj.push_back(Pair("addr",          darkSendPool.pSubmittedToMasternode->addr.ToString()));
+    if (privSendPool.pSubmittedToMasternode) {
+        obj.push_back(Pair("outpoint",      privSendPool.pSubmittedToMasternode->vin.prevout.ToStringShort()));
+        obj.push_back(Pair("addr",          privSendPool.pSubmittedToMasternode->addr.ToString()));
     }
 
     if (pwalletMain) {

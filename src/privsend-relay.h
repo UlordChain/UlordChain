@@ -3,15 +3,15 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef DARKSEND_RELAY_H
-#define DARKSEND_RELAY_H
+#ifndef PRIVSEND_RELAY_H
+#define PRIVSEND_RELAY_H
 
 #include "main.h"
 #include "activemasternode.h"
 #include "masternodeman.h"
 
 
-class CDarkSendRelay
+class CPrivSendRelay
 {
 public:
     CTxIn vinMasternode;
@@ -22,8 +22,8 @@ public:
     CTxIn in;
     CTxOut out;
 
-    CDarkSendRelay();
-    CDarkSendRelay(CTxIn& vinMasternodeIn, vector<unsigned char>& vchSigIn, int nBlockHeightIn, int nRelayTypeIn, CTxIn& in2, CTxOut& out2);
+    CPrivSendRelay();
+    CPrivSendRelay(CTxIn& vinMasternodeIn, vector<unsigned char>& vchSigIn, int nBlockHeightIn, int nRelayTypeIn, CTxIn& in2, CTxOut& out2);
     
     ADD_SERIALIZE_METHODS;
 

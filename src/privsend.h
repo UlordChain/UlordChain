@@ -2,15 +2,15 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef DARKSEND_H
-#define DARKSEND_H
+#ifndef PRIVSEND_H
+#define PRIVSEND_H
 
 #include "masternode.h"
 #include "wallet/wallet.h"
 
-class CDarksendPool;
-class CDarkSendSigner;
-class CDarksendBroadcastTx;
+class CPrivSendPool;
+class CPrivSendSigner;
+class CPrivsendBroadcastTx;
 
 // timeouts
 static const int PRIVATESEND_AUTO_TIMEOUT_MIN       = 5;
@@ -43,28 +43,28 @@ extern bool fEnablePrivateSend;
 extern bool fPrivateSendMultiSession;
 
 // The main object for accessing mixing
-extern CDarksendPool darkSendPool;
+extern CPrivSendPool privSendPool;
 // A helper object for signing messages from Masternodes
-extern CDarkSendSigner darkSendSigner;
+extern CPrivSendSigner privSendSigner;
 
-extern std::map<uint256, CDarksendBroadcastTx> mapDarksendBroadcastTxes;
+extern std::map<uint256, CPrivsendBroadcastTx> mapPrivSendBroadcastTxes;
 extern std::vector<CAmount> vecPrivateSendDenominations;
 
 /** Holds an mixing input
  */
-class CTxDSIn : public CTxIn
+class CTxPSIn : public CTxIn
 {
 public:
     bool fHasSig; // flag to indicate if signed
     int nSentTimes; //times we've sent this anonymously
 
-    CTxDSIn(const CTxIn& txin) :
+    CTxPSIn(const CTxIn& txin) :
         CTxIn(txin),
         fHasSig(false),
         nSentTimes(0)
         {}
 
-    CTxDSIn() :
+    CTxPSIn() :
         CTxIn(),
         fHasSig(false),
         nSentTimes(0)
@@ -73,52 +73,52 @@ public:
 
 /** Holds an mixing output
  */
-class CTxDSOut : public CTxOut
+class CTxPSOut : public CTxOut
 {
 public:
     int nSentTimes; //times we've sent this anonymously
 
-    CTxDSOut(const CTxOut& out) :
+    CTxPSOut(const CTxOut& out) :
         CTxOut(out),
         nSentTimes(0)
         {}
 
-    CTxDSOut() :
+    CTxPSOut() :
         CTxOut(),
         nSentTimes(0)
         {}
 };
 
 // A clients transaction in the mixing pool
-class CDarkSendEntry
+class CPrivSendEntry
 {
 public:
-    std::vector<CTxDSIn> vecTxDSIn;
-    std::vector<CTxDSOut> vecTxDSOut;
+    std::vector<CTxPSIn> vecTxPSIn;
+    std::vector<CTxPSOut> vecTxPSOut;
     CTransaction txCollateral;
 
-    CDarkSendEntry() :
-        vecTxDSIn(std::vector<CTxDSIn>()),
-        vecTxDSOut(std::vector<CTxDSOut>()),
+    CPrivSendEntry() :
+        vecTxPSIn(std::vector<CTxPSIn>()),
+        vecTxPSOut(std::vector<CTxPSOut>()),
         txCollateral(CTransaction())
         {}
 
-    CDarkSendEntry(const std::vector<CTxIn>& vecTxIn, const std::vector<CTxOut>& vecTxOut, const CTransaction& txCollateral) :
+    CPrivSendEntry(const std::vector<CTxIn>& vecTxIn, const std::vector<CTxOut>& vecTxOut, const CTransaction& txCollateral) :
         txCollateral(txCollateral)
     {
         BOOST_FOREACH(CTxIn txin, vecTxIn)
-            vecTxDSIn.push_back(txin);
+            vecTxPSIn.push_back(txin);
         BOOST_FOREACH(CTxOut txout, vecTxOut)
-            vecTxDSOut.push_back(txout);
+            vecTxPSOut.push_back(txout);
     }
 
     ADD_SERIALIZE_METHODS;
 
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
-        READWRITE(vecTxDSIn);
+        READWRITE(vecTxPSIn);
         READWRITE(txCollateral);
-        READWRITE(vecTxDSOut);
+        READWRITE(vecTxPSOut);
     }
 
     bool AddScriptSig(const CTxIn& txin);
@@ -128,7 +128,7 @@ public:
 /**
  * A currently inprogress mixing merge and denomination information
  */
-class CDarksendQueue
+class CPrivSendQueue
 {
 public:
     int nDenom;
@@ -139,7 +139,7 @@ public:
     // memory only
     bool fTried;
 
-    CDarksendQueue() :
+    CPrivSendQueue() :
         nDenom(0),
         vin(CTxIn()),
         nTime(0),
@@ -148,7 +148,7 @@ public:
         fTried(false)
         {}
 
-    CDarksendQueue(int nDenom, CTxIn vin, int64_t nTime, bool fReady) :
+    CPrivSendQueue(int nDenom, CTxIn vin, int64_t nTime, bool fReady) :
         nDenom(nDenom),
         vin(vin),
         nTime(nTime),
@@ -190,7 +190,7 @@ public:
                         nDenom, nTime, fReady ? "true" : "false", fTried ? "true" : "false", vin.prevout.ToStringShort());
     }
 
-    friend bool operator==(const CDarksendQueue& a, const CDarksendQueue& b)
+    friend bool operator==(const CPrivSendQueue& a, const CPrivSendQueue& b)
     {
         return a.nDenom == b.nDenom && a.vin.prevout == b.vin.prevout && a.nTime == b.nTime && a.fReady == b.fReady;
     }
@@ -198,7 +198,7 @@ public:
 
 /** Helper class to store mixing transaction (tx) information.
  */
-class CDarksendBroadcastTx
+class CPrivsendBroadcastTx
 {
 public:
     CTransaction tx;
@@ -206,14 +206,14 @@ public:
     std::vector<unsigned char> vchSig;
     int64_t sigTime;
 
-    CDarksendBroadcastTx() :
+    CPrivsendBroadcastTx() :
         tx(CTransaction()),
         vin(CTxIn()),
         vchSig(std::vector<unsigned char>()),
         sigTime(0)
         {}
 
-    CDarksendBroadcastTx(CTransaction tx, CTxIn vin, int64_t sigTime) :
+    CPrivsendBroadcastTx(CTransaction tx, CTxIn vin, int64_t sigTime) :
         tx(tx),
         vin(vin),
         vchSig(std::vector<unsigned char>()),
@@ -236,7 +236,7 @@ public:
 
 /** Helper object for signing and checking signatures
  */
-class CDarkSendSigner
+class CPrivSendSigner
 {
 public:
     /// Is the input associated with this public key? (and there is 10000 UT - checking if valid masternode)
@@ -251,7 +251,7 @@ public:
 
 /** Used to keep track of current status of mixing pool
  */
-class CDarksendPool
+class CPrivSendPool
 {
 private:
     // pool responses
@@ -300,10 +300,10 @@ private:
         STATUS_ACCEPTED
     };
 
-    mutable CCriticalSection cs_darksend;
+    mutable CCriticalSection cs_privsend;
 
     // The current mixing sessions in progress on the network
-    std::vector<CDarksendQueue> vecDarksendQueue;
+    std::vector<CPrivSendQueue> vecPrivSendQueue;
     // Keep track of the used Masternodes
     std::vector<CTxIn> vecMasternodesUsed;
 
@@ -312,7 +312,7 @@ private:
     // Mixing uses collateral transactions to trust parties entering the pool
     // to behave honestly. If they don't it takes their money.
     std::vector<CTransaction> vecSessionCollaterals;
-    std::vector<CDarkSendEntry> vecEntries; // Masternode/clients entries
+    std::vector<CPrivSendEntry> vecEntries; // Masternode/clients entries
 
     PoolState nState; // should be one of the POOL_STATE_XXX values
     int64_t nTimeLastSuccessfulStep; // the time when last successful mixing step was performed, in UTC milliseconds
@@ -335,7 +335,7 @@ private:
     CMutableTransaction finalMutableTransaction; // the finalized transaction ready for signing
 
     /// Add a clients entry to the pool
-    bool AddEntry(const CDarkSendEntry& entryNew, PoolMessage& nMessageIDRet);
+    bool AddEntry(const CPrivSendEntry& entryNew, PoolMessage& nMessageIDRet);
     /// Add signature to a txin
     bool AddScriptSig(const CTxIn& txin);
 
@@ -374,7 +374,7 @@ private:
     /// Check to make sure a given input matches an input in the pool and its scriptSig is valid
     bool IsInputScriptSigValid(const CTxIn& txin);
     /// Are these outputs compatible with other client in the pool?
-    bool IsOutputsCompatibleWithSessionDenom(const std::vector<CTxDSOut>& vecTxDSOut);
+    bool IsOutputsCompatibleWithSessionDenom(const std::vector<CTxPSOut>& vecTxPSOut);
 
     bool IsDenomSkipped(CAmount nDenomValue) {
         return std::find(vecDenominationsSkipped.begin(), vecDenominationsSkipped.end(), nDenomValue) != vecDenominationsSkipped.end();
@@ -407,7 +407,7 @@ private:
     void RelayFinalTransaction(const CTransaction& txFinal);
     void RelaySignaturesAnon(std::vector<CTxIn>& vin);
     void RelayInAnon(std::vector<CTxIn>& vin, std::vector<CTxOut>& vout);
-    void RelayIn(const CDarkSendEntry& entry);
+    void RelayIn(const CPrivSendEntry& entry);
     void PushStatus(CNode* pnode, PoolStatusUpdate nStatusUpdate, PoolMessage nMessageID);
     void RelayStatus(PoolStatusUpdate nStatusUpdate, PoolMessage nMessageID = MSG_NOERR);
     void RelayCompletedTransaction(PoolMessage nMessageID);
@@ -420,7 +420,7 @@ public:
     int nCachedNumBlocks; //used for the overview screen
     bool fCreateAutoBackups; //builtin support for automatic backups
 
-    CDarksendPool() :
+    CPrivSendPool() :
         nCachedLastSuccessBlock(0),
         nMinBlockSpacing(0),
         fUnitTest(false),
@@ -449,7 +449,7 @@ public:
 
     /// Get the denominations for a list of outputs (returns a bitshifted integer)
     int GetDenominations(const std::vector<CTxOut>& vecTxOut, bool fSingleRandomDenom = false);
-    int GetDenominations(const std::vector<CTxDSOut>& vecTxDSOut);
+    int GetDenominations(const std::vector<CTxPSOut>& vecTxPSOut);
     std::string GetDenominationsToString(int nDenom);
     bool GetDenominationsBits(int nDenom, std::vector<int> &vecBitsRet);
 
@@ -459,7 +459,7 @@ public:
 
     void UnlockCoins();
 
-    int GetQueueSize() const { return vecDarksendQueue.size(); }
+    int GetQueueSize() const { return vecPrivSendQueue.size(); }
     int GetState() const { return nState; }
     std::string GetStateString() const;
     std::string GetStatus();
@@ -478,6 +478,6 @@ public:
     void UpdatedBlockTip(const CBlockIndex *pindex);
 };
 
-void ThreadCheckDarkSendPool();
+void ThreadCheckPrivSendPool();
 
 #endif

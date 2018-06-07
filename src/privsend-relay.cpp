@@ -1,8 +1,8 @@
-#include "darksend.h"
-#include "darksend-relay.h"
+#include "privsend.h"
+#include "privsend-relay.h"
 
 
-CDarkSendRelay::CDarkSendRelay()
+CPrivSendRelay::CPrivSendRelay()
 {
     vinMasternode = CTxIn();
     nBlockHeight = 0;
@@ -11,7 +11,7 @@ CDarkSendRelay::CDarkSendRelay()
     out = CTxOut();
 }
 
-CDarkSendRelay::CDarkSendRelay(CTxIn& vinMasternodeIn, vector<unsigned char>& vchSigIn, int nBlockHeightIn, int nRelayTypeIn, CTxIn& in2, CTxOut& out2)
+CPrivSendRelay::CPrivSendRelay(CTxIn& vinMasternodeIn, vector<unsigned char>& vchSigIn, int nBlockHeightIn, int nRelayTypeIn, CTxIn& in2, CTxOut& out2)
 {
     vinMasternode = vinMasternodeIn;
     vchSig = vchSigIn;
@@ -21,7 +21,7 @@ CDarkSendRelay::CDarkSendRelay(CTxIn& vinMasternodeIn, vector<unsigned char>& vc
     out = out2;
 }
 
-std::string CDarkSendRelay::ToString()
+std::string CPrivSendRelay::ToString()
 {
     std::ostringstream info;
 
@@ -34,7 +34,7 @@ std::string CDarkSendRelay::ToString()
     return info.str();   
 }
 
-bool CDarkSendRelay::Sign(std::string strSharedKey)
+bool CPrivSendRelay::Sign(std::string strSharedKey)
 {
     std::string strError = "";
     std::string strMessage = in.ToString() + out.ToString();
@@ -42,25 +42,25 @@ bool CDarkSendRelay::Sign(std::string strSharedKey)
     CKey key2;
     CPubKey pubkey2;
 
-    if(!darkSendSigner.GetKeysFromSecret(strSharedKey, key2, pubkey2)) {
-        LogPrintf("CDarkSendRelay::Sign -- GetKeysFromSecret() failed, invalid shared key %s\n", strSharedKey);
+    if(!privSendSigner.GetKeysFromSecret(strSharedKey, key2, pubkey2)) {
+        LogPrintf("CPrivSendRelay::Sign -- GetKeysFromSecret() failed, invalid shared key %s\n", strSharedKey);
         return false;
     }
 
-    if(!darkSendSigner.SignMessage(strMessage, vchSig2, key2)) {
-        LogPrintf("CDarkSendRelay::Sign -- SignMessage() failed\n");
+    if(!privSendSigner.SignMessage(strMessage, vchSig2, key2)) {
+        LogPrintf("CPrivSendRelay::Sign -- SignMessage() failed\n");
         return false;
     }
 
-    if(!darkSendSigner.VerifyMessage(pubkey2, vchSig2, strMessage, strError)) {
-        LogPrintf("CDarkSendRelay::Sign -- VerifyMessage() failed, error: %s\n", strError);
+    if(!privSendSigner.VerifyMessage(pubkey2, vchSig2, strMessage, strError)) {
+        LogPrintf("CPrivSendRelay::Sign -- VerifyMessage() failed, error: %s\n", strError);
         return false;
     }
 
     return true;
 }
 
-bool CDarkSendRelay::VerifyMessage(std::string strSharedKey)
+bool CPrivSendRelay::VerifyMessage(std::string strSharedKey)
 {
     std::string strError = "";
     std::string strMessage = in.ToString() + out.ToString();
@@ -68,20 +68,20 @@ bool CDarkSendRelay::VerifyMessage(std::string strSharedKey)
     CKey key2;
     CPubKey pubkey2;
 
-    if(!darkSendSigner.GetKeysFromSecret(strSharedKey, key2, pubkey2)) {
-        LogPrintf("CDarkSendRelay::VerifyMessage -- GetKeysFromSecret() failed, invalid shared key %s\n", strSharedKey);
+    if(!privSendSigner.GetKeysFromSecret(strSharedKey, key2, pubkey2)) {
+        LogPrintf("CPrivSendRelay::VerifyMessage -- GetKeysFromSecret() failed, invalid shared key %s\n", strSharedKey);
         return false;
     }
 
-    if(!darkSendSigner.VerifyMessage(pubkey2, vchSig2, strMessage, strError)) {
-        LogPrintf("CDarkSendRelay::VerifyMessage -- VerifyMessage() failed, error: %s\n", strError);
+    if(!privSendSigner.VerifyMessage(pubkey2, vchSig2, strMessage, strError)) {
+        LogPrintf("CPrivSendRelay::VerifyMessage -- VerifyMessage() failed, error: %s\n", strError);
         return false;
     }
 
     return true;
 }
 
-void CDarkSendRelay::Relay()
+void CPrivSendRelay::Relay()
 {
     int nCount = std::min(mnodeman.CountEnabled(MIN_PRIVATESEND_PEER_PROTO_VERSION), 20);
     int nRank1 = (rand() % nCount)+1; 
@@ -97,7 +97,7 @@ void CDarkSendRelay::Relay()
     RelayThroughNode(nRank2);
 }
 
-void CDarkSendRelay::RelayThroughNode(int nRank)
+void CPrivSendRelay::RelayThroughNode(int nRank)
 {
     CMasternode* pmn = mnodeman.GetMasternodeByRank(nRank, nBlockHeight, MIN_PRIVATESEND_PEER_PROTO_VERSION);
 
