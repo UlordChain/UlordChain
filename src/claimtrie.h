@@ -338,6 +338,7 @@ public:
     
     friend class CClaimTrieCache;
     
+    // leveldb 
     CDBWrapper db;
     int nCurrentHeight;
     int nExpirationTime;
