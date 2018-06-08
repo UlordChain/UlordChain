@@ -1073,6 +1073,25 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 	txnouttype addressType = TX_NONSTANDARD;
 	uint160 addrhash;
 
+	//get the previous tx ouput
+	BOOST_FOREACH(const CTxOut& txout, preTx.vout) 
+	{
+		const CScript scriptPubkey = StripClaimScriptPrefix(txout.scriptPubKey);
+		if (Solver(scriptPubkey, addressType, vSolutions))
+		{
+	        if(addressType== TX_SCRIPTHASH )
+	        {
+	            addrhash=uint160(vSolutions[0]);
+				preOutAmount =  txout.nValue;
+				CTxIn tmptxin = CTxIn(preTxid,preOutN,CScript());
+				tmptxin.prevPubKey = txout.scriptPubKey;
+				txNew.vin.push_back(tmptxin);
+				break;	
+	        }
+		}
+		preOutN++;
+	}
+
     return result;
 }
 UniValue crosschainrefund(const UniValue &params, bool fHelp)
