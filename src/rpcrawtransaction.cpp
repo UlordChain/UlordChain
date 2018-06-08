@@ -1067,6 +1067,11 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 	CAmount preOutAmount = 0;
 	COutPoint preOutPoint;
 	uint256 preTxid = preTx.GetHash();
+	CTxOut preTxOut;
+	uint32_t preOutN =0;	
+	std::vector<valtype> vSolutions;
+	txnouttype addressType = TX_NONSTANDARD;
+	uint160 addrhash;
 
     return result;
 }
