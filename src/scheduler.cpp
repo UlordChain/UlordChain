@@ -9,7 +9,7 @@
 #include <assert.h>
 #include <boost/bind.hpp>
 #include <utility>
-
+// multi thread manager task queue ，task add queue pool ，and thread exec task
 CScheduler::CScheduler() : nThreadsServicingQueue(0), stopRequested(false), stopWhenEmpty(false)
 {
 }
