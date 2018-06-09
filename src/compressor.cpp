@@ -19,7 +19,7 @@ bool CScriptCompressor::IsToKeyID(CKeyID &hash) const
     }
     return false;
 }
-
+// judge is pay to script hash 
 bool CScriptCompressor::IsToScriptID(CScriptID &hash) const
 {
     if (script.size() == 23 && script[0] == OP_HASH160 && script[1] == 20
