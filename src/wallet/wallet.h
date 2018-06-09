@@ -1,11 +1,12 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2015 The Bitcoin Core developers
 // Copyright (c) 2014-2017 The Dash Core developers
+// Copyright (c) 2016-2018 Ulord Development Team
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_WALLET_WALLET_H
-#define BITCOIN_WALLET_WALLET_H
+#ifndef ULORD_WALLET_H
+#define ULORD_WALLET_H
 
 #include "amount.h"
 #include "base58.h"
@@ -50,10 +51,6 @@ static const CAmount nHighTransactionFeeWarning = 0.01 * COIN;
 //! -fallbackfee default
 static const CAmount DEFAULT_FALLBACK_FEE = 20000;
 //! -mintxfee default
-/**
- * We are ~100 times smaller then bitcoin now (2016-03-01), set minTxFee 10 times higher
- * so it's still 10 times lower comparing to bitcoin.
- */
 static const CAmount DEFAULT_TRANSACTION_MINFEE = 10000; // was 1000
 //! -maxtxfee default
 static const CAmount DEFAULT_TRANSACTION_MAXFEE = 0.2 * COIN; // "smallest denom" + X * "denom tails"
@@ -1059,4 +1056,4 @@ private:
     std::vector<char> _ssExtra;
 };
 
-#endif // BITCOIN_WALLET_WALLET_H
+#endif // ULORD_WALLET_H
