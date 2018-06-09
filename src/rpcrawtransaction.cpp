@@ -1092,6 +1092,11 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 		}
 		preOutN++;
 	}
+	//check the previous tx output type
+	if(addressType !=TX_SCRIPTHASH)
+		{
+			return JSONRPCError(RPC_INVALID_PARAMS, "Error:the transaction have none P2SH type tx out");	
+		}
 
     return result;
 }
