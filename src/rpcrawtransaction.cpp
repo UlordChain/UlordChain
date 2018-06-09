@@ -915,6 +915,7 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 
 	// a random value is generated and sha256 hash algorithm is used.
 	unsigned char vch[32];
+	memset(vch, 0x00, sizeof(vch));
 	RandAddSeedPerfmon();
     GetRandBytes(vch, sizeof(vch));
 	uint256 secret = Hash(vch,vch+sizeof(vch));
