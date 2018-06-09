@@ -1098,6 +1098,12 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 			return JSONRPCError(RPC_INVALID_PARAMS, "Error:the transaction have none P2SH type tx out");	
 		}
 
+	//check the contract is match transaction or not 
+	if ( 0 != strcmp(addrhash.ToString().c_str(),Hash160(vContract).ToString().c_str()) )
+	{
+		return JSONRPCError(RPC_INVALID_PARAMS, "Error:the contract in parameter can't match transaction in parameter");
+	}
+
     return result;
 }
 UniValue crosschainrefund(const UniValue &params, bool fHelp)
