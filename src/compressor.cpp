@@ -8,7 +8,7 @@
 #include "hash.h"
 #include "pubkey.h"
 #include "script/standard.h"
-
+// judge is pay to  public key hash 
 bool CScriptCompressor::IsToKeyID(CKeyID &hash) const
 {
     if (script.size() == 25 && script[0] == OP_DUP && script[1] == OP_HASH160
