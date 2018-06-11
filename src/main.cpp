@@ -2386,14 +2386,14 @@ bool DisconnectBlock(const CBlock& block, CValidationState& state, const CBlockI
         // The CCoins serialization does not serialize negative numbers.
         // No network rules currently depend on the version here, so an inconsistency is harmless
         // but it must be corrected before txout nversion ever influences a network rule.
-if (outs->nVersion != outsBlock.nVersion)
-{
-LogPrintf("main.cpp:2365, outs->nVersion(%d) != outsBlock.nVer(%d), ", outs->nVersion, outsBlock.nVersion);
-outs->nVersion = outsBlock.nVersion;
-}
-        if (outsBlock.nVersion < 0)
+        if (outs->nVersion != outsBlock.nVersion)//TODO:
+        {
+          //LogPrintf("main.cpp:2365, outs->nVersion(%d) != outsBlock.nVer(%d) \n", outs->nVersion, outsBlock.nVersion);
+          outs->nVersion = outsBlock.nVersion;
+        }
+        if (outsBlock.nVersion < 0)//TODO:
             outs->nVersion = outsBlock.nVersion;
-        if (*outs != outsBlock)
+        if (*outs != outsBlock)//TODO:
             fClean = fClean && error("DisconnectBlock(): added transaction mismatch? database corrupted");
 
 		 // remove any claims
