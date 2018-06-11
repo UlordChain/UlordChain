@@ -6,8 +6,7 @@ Some notes on how to build Ulord Core for Windows.
 Most developers use cross-compilation from Ubuntu to build executables for
 Windows. This is also used to build the release binaries.
 
-Building on Windows itself is possible (for example using msys / mingw-w64),
-but no one documented the steps to do this. If you are doing this, please contribute them.
+
 
 Cross-compilation
 -------------------
