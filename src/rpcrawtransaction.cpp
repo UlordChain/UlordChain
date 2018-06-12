@@ -1113,6 +1113,12 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 		{
 			return JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Error:Can't find the pubkey of participte address");			
 		}
+	if(!keystore.GetKey(keyID,key))
+		{
+			return JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Error:Can't find the key of participte address");	
+		}
+
+
 
     return result;
 }
