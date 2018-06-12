@@ -1170,6 +1170,11 @@ UniValue crosschainauditcontract(const UniValue &params, bool fHelp)
 	string str_contract = params[0].get_str();
 	std::vector<unsigned char>v_contract = ParseHex(str_contract);
 	CScript contract(v_contract.begin(),v_contract.end());
+	 //contract check
+	if(!contract.IsCrossChainPaymentScript())
+	{
+		return JSONRPCError(RPC_INVALID_PARAMS, "Error:the parameter is no stander contract");
+	}
 	CScriptID contractP2SH = CScriptID(contract);
 	CBitcoinAddress contract_address;
 	std::vector<std::string> vStr;
