@@ -1124,6 +1124,7 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 	bool ret;
 	ret = reservekey.GetReservedKey(newKey);
 	assert(ret);
+    CBitcoinAddress outPutAddress(CTxDestination(newKey.GetID()));
 
 
     return result;
