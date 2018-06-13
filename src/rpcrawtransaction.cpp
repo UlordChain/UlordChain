@@ -1125,7 +1125,8 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 	ret = reservekey.GetReservedKey(newKey);
 	assert(ret);
     CBitcoinAddress outPutAddress(CTxDestination(newKey.GetID()));
-
+    if (!outPutAddress.IsValid())
+        return JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Error:Invalid Ulord address");
 
     return result;
 }
