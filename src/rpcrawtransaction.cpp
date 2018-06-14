@@ -898,12 +898,20 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 {
     if (fHelp || params.size() !=2)
         throw runtime_error(
-             "crosschaininitial \"crosschain address\" amount\n"
+            "crosschaininitial \"crosschain address\" amount\n"
             "\nCreate crosschain transaction (serialized, hex-encoded) to local node and network.\n"
             "\nArguments:\n"
-	     "1. \"crosschain address\"  (string,required) The crosschainaddress to to send to .\n"
+	    "1. \"crosschain address\"  (string,required) The crosschainaddress to to send to .\n"
             "2. \"amount\" (numeric or string,required) The amount in " + CURRENCY_UNIT + " to send. eg 0.1\n"
             "\nResult:\n"
+	    "\"hex\"             (string) The secret in hex\n"
+            "\"hex\"             (string) The secret hash in hex\n"
+            "\"hex\"             (string) The contract for address in hex\n"
+            "\"hex\"             (string) The contract transaction hash in hex\n"
+            "\"hex\"             (string) The contract raw transaction in hex\n"
+            "\nExamples:\n"
+            "\nCreate a transaction\n"
+            + HelpExampleCli("crosschaininitial", "\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" 0.1")
         );
 	// parse parameters
 	if (!EnsureWalletIsAvailable(fHelp))
