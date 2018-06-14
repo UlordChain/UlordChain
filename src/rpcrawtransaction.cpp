@@ -901,6 +901,9 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
              "crosschaininitial \"crosschain address\" amount\n"
             "\nCreate crosschain transaction (serialized, hex-encoded) to local node and network.\n"
             "\nArguments:\n"
+	     "1. \"crosschain address\"  (string,required) The crosschainaddress to to send to .\n"
+            "2. \"amount\" (numeric or string,required) The amount in " + CURRENCY_UNIT + " to send. eg 0.1\n"
+            "\nResult:\n"
         );
 	// parse parameters
 	if (!EnsureWalletIsAvailable(fHelp))
