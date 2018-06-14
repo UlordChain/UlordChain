@@ -898,7 +898,9 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 {
     if (fHelp || params.size() !=2)
         throw runtime_error(
-            "params.size error\n"
+             "crosschaininitial \"crosschain address\" amount\n"
+            "\nCreate crosschain transaction (serialized, hex-encoded) to local node and network.\n"
+            "\nArguments:\n"
         );
 	// parse parameters
 	if (!EnsureWalletIsAvailable(fHelp))
