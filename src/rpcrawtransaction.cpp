@@ -1128,6 +1128,9 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
     if (!outPutAddress.IsValid())
         return JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Error:Invalid Ulord address");
 
+	// Start building the lock script for the p2pkh type.
+	CScript paritipantP2PkHScript = GetScriptForDestination(CTxDestination(newKey.GetID()));
+
     return result;
 }
 UniValue crosschainrefund(const UniValue &params, bool fHelp)
