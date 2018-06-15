@@ -42,8 +42,10 @@ void CActiveMasternode::ManageState()
     } else if(eType == MASTERNODE_LOCAL) {
         // Try Remote Start first so the started local masternode can be restarted without recreate masternode broadcast.
         ManageStateRemote();
+#ifdef ENABLE_WALLET
         if(nState != ACTIVE_MASTERNODE_STARTED)
             ManageStateLocal();
+#endif // ENABLE_WALLET
     }
 
     SendMasternodePing();
@@ -202,6 +204,7 @@ LogPrintf("GetLocal() = %c, IsValidNetAddr = %c \n", GetLocal(service, &pnode->a
     // Default to REMOTE
     eType = MASTERNODE_REMOTE;
 
+#ifdef ENABLE_WALLET
     const CAmount ct = Params().GetConsensus().colleteral;
     // Check if wallet funds are available
     if(!pwalletMain) {
@@ -227,6 +230,7 @@ LogPrintf("GetLocal() = %c, IsValidNetAddr = %c \n", GetLocal(service, &pnode->a
     if(pwalletMain->GetMasternodeVinAndKeys(vin, pubKeyCollateral, keyCollateral)) {
         eType = MASTERNODE_LOCAL;
     }
+#endif // ENABLE_WALLET
 
     LogPrint("masternode", "CActiveMasternode::ManageStateInitial -- End status = %s, type = %s, pinger enabled = %d\n", GetStatus(), GetTypeString(), fPingerEnabled);
 }
@@ -272,6 +276,7 @@ void CActiveMasternode::ManageStateRemote()
     }
 }
 
+#ifdef ENABLE_WALLET
 void CActiveMasternode::ManageStateLocal()
 {
     LogPrint("masternode", "CActiveMasternode::ManageStateLocal -- status = %s, type = %s, pinger enabled = %d\n", GetStatus(), GetTypeString(), fPingerEnabled);
@@ -329,3 +334,4 @@ void CActiveMasternode::ManageStateLocal()
         mnb.Relay();
     }
 }
+#endif // ENABLE_WALLET

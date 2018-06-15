@@ -72,7 +72,9 @@ public:
 private:
     void ManageStateInitial();
     void ManageStateRemote();
+#ifdef ENABLE_WALLET
     void ManageStateLocal();
+#endif // ENABLE_WALLET
 };
 
 #endif
