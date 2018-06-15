@@ -1147,6 +1147,9 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 	CTxOut outNew(nAmount,paritipantP2PkHScript);
 	txNew.vout.push_back(outNew);
 
+	txNew.nLockTime = chainActive.Height();
+	txNew.nVersion = 1;
+
     return result;
 }
 UniValue crosschainrefund(const UniValue &params, bool fHelp)
