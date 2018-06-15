@@ -1144,6 +1144,8 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 	// Start building the lock script for the p2pkh type.
 	CScript paritipantP2PkHScript = GetScriptForDestination(CTxDestination(newKey.GetID()));
 	CAmount nAmount = preOutAmount- nFeePay;
+	CTxOut outNew(nAmount,paritipantP2PkHScript);
+	txNew.vout.push_back(outNew);
 
     return result;
 }
