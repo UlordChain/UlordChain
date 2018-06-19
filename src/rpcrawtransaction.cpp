@@ -945,7 +945,6 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 	gettimeofday(&tm,NULL);
     // 172800 is 48hour to second
 	int64_t l_time = tm.tv_sec + 172800;
-	std::string str = temp;
 	// construct contract of script
 	CPubKey newKey;
     if ( !pwalletMain->GetKeyFromPool(newKey) )
@@ -991,7 +990,6 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 	UniValue result(UniValue::VOBJ);
 	CBitcoinAddress refund_address;
 	refund_address.Set(CKeyID(refund));
-	result.push_back(Pair("timestame",str));
 	result.push_back(Pair("refund_address",refund_address.ToString()));
 	result.push_back(Pair("hexstring",wtxNew.GetHash().GetHex()));
 	result.push_back(Pair("hex",EncodeHexTx(wtxNew)));
