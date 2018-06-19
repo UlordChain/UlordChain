@@ -946,7 +946,6 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
     // 172800 is 48hour to second
 	int64_t l_time = tm.tv_sec + 172800;
 	std::string str = temp;
-    std::vector<unsigned char>str_stamp(str.begin(),str.end());
 	// construct contract of script
 	CPubKey newKey;
     if ( !pwalletMain->GetKeyFromPool(newKey) )
