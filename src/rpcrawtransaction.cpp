@@ -1150,6 +1150,12 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 	txNew.nLockTime = chainActive.Height();
 	txNew.nVersion = 1;
 
+	// Sign the redeem transaction
+	CTransaction txNewConst(txNew);
+	std::vector<unsigned char> vchSig;
+	CScript scriptSigRs;
+	uint256 hash = SignatureHash(contract, txNew, 0, SIGHASH_ALL);
+
     return result;
 }
 UniValue crosschainrefund(const UniValue &params, bool fHelp)
