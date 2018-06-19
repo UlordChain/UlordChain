@@ -945,8 +945,6 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 	gettimeofday(&tm,NULL);
     // 172800 is 48hour to second
 	int64_t l_time = tm.tv_sec + 172800;
-	char temp[100] = {0};
-	sprintf(temp,"%lx",l_time);
 	std::string str = temp;
     std::vector<unsigned char>str_stamp(str.begin(),str.end());
 	// construct contract of script
