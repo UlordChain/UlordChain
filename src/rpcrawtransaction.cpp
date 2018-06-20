@@ -1150,7 +1150,8 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 	std::vector<unsigned char> vchSig;
 	CScript scriptSigRs;
 	uint256 hash = SignatureHash(contract, txNew, 0, SIGHASH_ALL);
-	bool signSuccess = key.Sign(hash, vchSig);	
+	bool signSuccess = key.Sign(hash, vchSig);
+    bool verifySuccess = pubKey.Verify(hash,vchSig);	
 
     return result;
 }
