@@ -1154,6 +1154,16 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
     bool verifySuccess = pubKey.Verify(hash,vchSig);
     vchSig.push_back((unsigned char)SIGHASH_ALL);	
 
+	if(signSuccess)
+		{
+		CScript script1 =CScript() <<ToByteVector(vchSig);
+		CScript script2 =CScript() << ToByteVector(pubKey);
+		CScript script3 =CScript() <<ToByteVector(secretVector);
+		CScript script4 =CScript() << OP_TRUE <<ToByteVector(vContract);
+		scriptSigRs= script1 + script2 + script3 + script4;
+		txNew.vin[0].scriptSig = scriptSigRs;		
+		}
+
     return result;
 }
 UniValue crosschainrefund(const UniValue &params, bool fHelp)
