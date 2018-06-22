@@ -1171,6 +1171,12 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
     //serialize and get the size of transaction
 	unsigned int nBytes = ::GetSerializeSize(txNew, SER_NETWORK, PROTOCOL_VERSION);
 
+	//check limit size
+	if (nBytes >= MAX_STANDARD_TX_SIZE)
+	{
+		return JSONRPCError(RPC_INTERNAL_ERROR, "ERROR:transaction too large");
+	}
+
     return result;
 }
 UniValue crosschainrefund(const UniValue &params, bool fHelp)
