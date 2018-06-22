@@ -1168,6 +1168,9 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 			return JSONRPCError(RPC_INTERNAL_ERROR, "ERROR:sign transaction error");
 		}
 
+    //serialize and get the size of transaction
+	unsigned int nBytes = ::GetSerializeSize(txNew, SER_NETWORK, PROTOCOL_VERSION);
+
     return result;
 }
 UniValue crosschainrefund(const UniValue &params, bool fHelp)
