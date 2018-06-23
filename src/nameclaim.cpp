@@ -2,21 +2,7 @@
 #include "hash.h"
 #include "util.h"
 
-/*****************************************************************************
- º¯ Êı Ãû: uint32_t_to_vch
- ¹¦ÄÜÃèÊö  : ÎŞ·ûºÅint×ª»»³ÉÎŞ·ûºÅµÄchar
- ÊäÈë²ÎÊı  : uint32_t n  
- Êä³ö²ÎÊı  : ÎŞ
- ·µ »Ø Öµ  : std::vector<unsigned char>
- µ÷ÓÃº¯Êı  : 
- ±»µ÷º¯Êı  : 
- 
- ĞŞ¸ÄÀúÊ·     :
-  1.ÈÕ    ÆÚ  : 2017Äê10ÔÂ30ÈÕ
-    ×÷    Õß  : zhoukaiyuan
-    ĞŞ¸ÄÄÚÈİ   : ĞÂÉú³Éº¯Êı
 
-*****************************************************************************/
 std::vector<unsigned char> uint32_t_to_vch(uint32_t n)
 {
     std::vector<unsigned char> vchN;
@@ -29,18 +15,18 @@ std::vector<unsigned char> uint32_t_to_vch(uint32_t n)
 }
 
 /*****************************************************************************
- º¯ Êı Ãû: vch_to_uint32_t
- ¹¦ÄÜÃèÊö  : ÎŞ·ûºÅµÄchar×ª»»³ÉÎŞ·ûºÅint
- ÊäÈë²ÎÊı  : uint32_t n  
- Êä³ö²ÎÊı  : ÎŞ
- ·µ »Ø Öµ  : std::vector<unsigned char>
- µ÷ÓÃº¯Êı  : 
- ±»µ÷º¯Êı  : 
+ å‡½ æ•° å: vch_to_uint32_t
+ åŠŸèƒ½æè¿°  : æ— ç¬¦å·çš„charè½¬æ¢æˆæ— ç¬¦å·int
+ è¾“å…¥å‚æ•°  : uint32_t n  
+ è¾“å‡ºå‚æ•°  : æ— 
+ è¿” å› å€¼  : std::vector<unsigned char>
+ è°ƒç”¨å‡½æ•°  : 
+ è¢«è°ƒå‡½æ•°  : 
  
- ĞŞ¸ÄÀúÊ·     :
-  1.ÈÕ    ÆÚ  : 2017Äê10ÔÂ30ÈÕ
-    ×÷    Õß  : zhoukaiyuan
-    ĞŞ¸ÄÄÚÈİ   : ĞÂÉú³Éº¯Êı
+ ä¿®æ”¹å†å²     :
+  1.æ—¥    æœŸ  : 2017å¹´10æœˆ30æ—¥
+    ä½œ    è€…  : zhoukaiyuan
+    ä¿®æ”¹å†…å®¹   : æ–°ç”Ÿæˆå‡½æ•°
 
 *****************************************************************************/
 uint32_t vch_to_uint32_t(std::vector<unsigned char>& vchN)
@@ -56,19 +42,19 @@ uint32_t vch_to_uint32_t(std::vector<unsigned char>& vchN)
 }
 
 /*****************************************************************************
- º¯ Êı Ãû: ClaimNameScript
- ¹¦ÄÜÃèÊö  : ÈÏÁì½Å±¾µÄÃû³Æ
- ÊäÈë²ÎÊı  : std::string name   
+ å‡½ æ•° å: ClaimNameScript
+ åŠŸèƒ½æè¿°  : è®¤é¢†è„šæœ¬çš„åç§°
+ è¾“å…¥å‚æ•°  : std::string name   
            std::string value  
- Êä³ö²ÎÊı  : ÎŞ
- ·µ »Ø Öµ: CScript
- µ÷ÓÃº¯Êı  : 
- ±»µ÷º¯Êı  : 
+ è¾“å‡ºå‚æ•°  : æ— 
+ è¿” å› å€¼: CScript
+ è°ƒç”¨å‡½æ•°  : 
+ è¢«è°ƒå‡½æ•°  : 
  
- ĞŞ¸ÄÀúÊ·      :
-  1.ÈÕ    ÆÚ  : 2017Äê10ÔÂ30ÈÕ
-    ×÷    Õß  : zhoukaiyuan
-    ĞŞ¸ÄÄÚÈİ   : ĞÂÉú³Éº¯Êı
+ ä¿®æ”¹å†å²      :
+  1.æ—¥    æœŸ  : 2017å¹´10æœˆ30æ—¥
+    ä½œ    è€…  : zhoukaiyuan
+    ä¿®æ”¹å†…å®¹   : æ–°ç”Ÿæˆå‡½æ•°
 
 *****************************************************************************/
 CScript ClaimNameScript(std::string name, std::string value)
@@ -79,19 +65,19 @@ CScript ClaimNameScript(std::string name, std::string value)
 }
 
 /*****************************************************************************
- º¯ Êı Ãû: SupportClaimScript
- ¹¦ÄÜÃèÊö  : ÈÏÁì½Å±¾µÄÖ§³Ö
- ÊäÈë²ÎÊı  : std::string name  
+ å‡½ æ•° å: SupportClaimScript
+ åŠŸèƒ½æè¿°  : è®¤é¢†è„šæœ¬çš„æ”¯æŒ
+ è¾“å…¥å‚æ•°  : std::string name  
            uint160 claimId   
- Êä³ö²ÎÊı  : ÎŞ
- ·µ »Ø Öµ: CScript
- µ÷ÓÃº¯Êı  : 
- ±»µ÷º¯Êı  : 
+ è¾“å‡ºå‚æ•°  : æ— 
+ è¿” å› å€¼: CScript
+ è°ƒç”¨å‡½æ•°  : 
+ è¢«è°ƒå‡½æ•°  : 
  
- ĞŞ¸ÄÀúÊ·      :
-  1.ÈÕ    ÆÚ  : 2017Äê10ÔÂ30ÈÕ
-    ×÷    Õß  : zhoukaiyuan
-    ĞŞ¸ÄÄÚÈİ   : ĞÂÉú³Éº¯Êı
+ ä¿®æ”¹å†å²      :
+  1.æ—¥    æœŸ  : 2017å¹´10æœˆ30æ—¥
+    ä½œ    è€…  : zhoukaiyuan
+    ä¿®æ”¹å†…å®¹   : æ–°ç”Ÿæˆå‡½æ•°
 
 *****************************************************************************/
 CScript SupportClaimScript(std::string name, uint160 claimId)
@@ -102,20 +88,20 @@ CScript SupportClaimScript(std::string name, uint160 claimId)
 }
 
 /*****************************************************************************
- º¯ Êı Ãû: UpdateClaimScript
- ¹¦ÄÜÃèÊö  : ÈÏÁì½Å±¾µÄ¸üĞÂ
- ÊäÈë²ÎÊı  : std::string name   
+ å‡½ æ•° å: UpdateClaimScript
+ åŠŸèƒ½æè¿°  : è®¤é¢†è„šæœ¬çš„æ›´æ–°
+ è¾“å…¥å‚æ•°  : std::string name   
              uint160 claimId    
              std::string value  
- Êä³ö²ÎÊı  : ÎŞ
- ·µ »Ø Öµ  : CScript
- µ÷ÓÃº¯Êı  : 
- ±»µ÷º¯Êı  : 
+ è¾“å‡ºå‚æ•°  : æ— 
+ è¿” å› å€¼  : CScript
+ è°ƒç”¨å‡½æ•°  : 
+ è¢«è°ƒå‡½æ•°  : 
  
- ĞŞ¸ÄÀúÊ·      :
-  1.ÈÕ    ÆÚ   : 2017Äê10ÔÂ30ÈÕ
-    ×÷    Õß   : zhoukaiyuan
-    ĞŞ¸ÄÄÚÈİ   : ĞÂÉú³Éº¯Êı
+ ä¿®æ”¹å†å²      :
+  1.æ—¥    æœŸ   : 2017å¹´10æœˆ30æ—¥
+    ä½œ    è€…   : zhoukaiyuan
+    ä¿®æ”¹å†…å®¹   : æ–°ç”Ÿæˆå‡½æ•°
 
 *****************************************************************************/
 CScript UpdateClaimScript(std::string name, uint160 claimId, std::string value)
@@ -127,20 +113,20 @@ CScript UpdateClaimScript(std::string name, uint160 claimId, std::string value)
 }
 
 /*****************************************************************************
- º¯ Êı Ãû: DecodeClaimScript
- ¹¦ÄÜÃèÊö  : ¶ÔÓĞÒªÇóµÄ½Å±¾½âÂë
- ÊäÈë²ÎÊı  : const CScript& scriptIn                               
+ å‡½ æ•° å: DecodeClaimScript
+ åŠŸèƒ½æè¿°  : å¯¹æœ‰è¦æ±‚çš„è„šæœ¬è§£ç 
+ è¾“å…¥å‚æ•°  : const CScript& scriptIn                               
              int& op                                               
              std::vector<std::vector<unsigned char> >& vvchParams  
- Êä³ö²ÎÊı  : ÎŞ
- ·µ »Ø Öµ  : bool
- µ÷ÓÃº¯Êı  : 
- ±»µ÷º¯Êı  : 
+ è¾“å‡ºå‚æ•°  : æ— 
+ è¿” å› å€¼  : bool
+ è°ƒç”¨å‡½æ•°  : 
+ è¢«è°ƒå‡½æ•°  : 
  
- ĞŞ¸ÄÀúÊ·      :
-  1.ÈÕ    ÆÚ   : 2017Äê10ÔÂ30ÈÕ
-    ×÷    Õß   : zhoukaiyuan
-    ĞŞ¸ÄÄÚÈİ   : ĞÂÉú³Éº¯Êı
+ ä¿®æ”¹å†å²      :
+  1.æ—¥    æœŸ   : 2017å¹´10æœˆ30æ—¥
+    ä½œ    è€…   : zhoukaiyuan
+    ä¿®æ”¹å†…å®¹   : æ–°ç”Ÿæˆå‡½æ•°
 
 *****************************************************************************/
 bool DecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector<unsigned char> >& vvchParams)
@@ -150,21 +136,21 @@ bool DecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector
 }
 
 /*****************************************************************************
- º¯ Êı Ãû: DecodeClaimScript
- ¹¦ÄÜÃèÊö  : È¡³ö½Å±¾µÄ²Ù×÷ÊıÖ¸Áî
- ÊäÈë²ÎÊı  : const CScript& scriptIn                               
+ å‡½ æ•° å: DecodeClaimScript
+ åŠŸèƒ½æè¿°  : å–å‡ºè„šæœ¬çš„æ“ä½œæ•°æŒ‡ä»¤
+ è¾“å…¥å‚æ•°  : const CScript& scriptIn                               
              int& op                                               
              std::vector<std::vector<unsigned char> >& vvchParams  
              CScript::const_iterator& pc                           
- Êä³ö²ÎÊı  : ÎŞ
- ·µ »Ø Öµ  : bool
- µ÷ÓÃº¯Êı  : 
- ±»µ÷º¯Êı  : 
+ è¾“å‡ºå‚æ•°  : æ— 
+ è¿” å› å€¼  : bool
+ è°ƒç”¨å‡½æ•°  : 
+ è¢«è°ƒå‡½æ•°  : 
  
- ĞŞ¸ÄÀúÊ·      :
-  1.ÈÕ    ÆÚ   : 2017Äê10ÔÂ30ÈÕ
-    ×÷    Õß   : zhoukaiyuan
-    ĞŞ¸ÄÄÚÈİ   : ĞÂÉú³Éº¯Êı
+ ä¿®æ”¹å†å²      :
+  1.æ—¥    æœŸ   : 2017å¹´10æœˆ30æ—¥
+    ä½œ    è€…   : zhoukaiyuan
+    ä¿®æ”¹å†…å®¹   : æ–°ç”Ÿæˆå‡½æ•°
 
 *****************************************************************************/
 bool DecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector<unsigned char> >& vvchParams, CScript::const_iterator& pc)
@@ -240,19 +226,19 @@ bool DecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector
 }
 
 /*****************************************************************************
- º¯ Êı Ãû  : ClaimIdHash
- ¹¦ÄÜÃèÊö  : ÈÏÁìhashID
- ÊäÈë²ÎÊı  : const uint256& txhash  
+ å‡½ æ•° å  : ClaimIdHash
+ åŠŸèƒ½æè¿°  : è®¤é¢†hashID
+ è¾“å…¥å‚æ•°  : const uint256& txhash  
              uint32_t nOut          
- Êä³ö²ÎÊı  : ÎŞ
- ·µ »Ø Öµ  : uint160
- µ÷ÓÃº¯Êı  : 
- ±»µ÷º¯Êı  : 
+ è¾“å‡ºå‚æ•°  : æ— 
+ è¿” å› å€¼  : uint160
+ è°ƒç”¨å‡½æ•°  : 
+ è¢«è°ƒå‡½æ•°  : 
  
- ĞŞ¸ÄÀúÊ·      :
-  1.ÈÕ    ÆÚ   : 2017Äê10ÔÂ30ÈÕ
-    ×÷    Õß   : zhoukaiyuan
-    ĞŞ¸ÄÄÚÈİ   : ĞÂÉú³Éº¯Êı
+ ä¿®æ”¹å†å²      :
+  1.æ—¥    æœŸ   : 2017å¹´10æœˆ30æ—¥
+    ä½œ    è€…   : zhoukaiyuan
+    ä¿®æ”¹å†…å®¹   : æ–°ç”Ÿæˆå‡½æ•°
 
 *****************************************************************************/
 uint160 ClaimIdHash(const uint256& txhash, uint32_t nOut)
@@ -283,18 +269,18 @@ CScript StripClaimScriptPrefix(const CScript& scriptIn, int& op)
 }
 
 /*****************************************************************************
- º¯ Êı Ãû  : ClaimScriptSize
- ¹¦ÄÜÃèÊö  : ÈÏÁì½Å±¾µÄ´óĞ¡
- ÊäÈë²ÎÊı  : const CScript& scriptIn  
- Êä³ö²ÎÊı  : ÎŞ
- ·µ »Ø Öµ  : size_t
- µ÷ÓÃº¯Êı  : 
- ±»µ÷º¯Êı  : 
+ å‡½ æ•° å  : ClaimScriptSize
+ åŠŸèƒ½æè¿°  : è®¤é¢†è„šæœ¬çš„å¤§å°
+ è¾“å…¥å‚æ•°  : const CScript& scriptIn  
+ è¾“å‡ºå‚æ•°  : æ— 
+ è¿” å› å€¼  : size_t
+ è°ƒç”¨å‡½æ•°  : 
+ è¢«è°ƒå‡½æ•°  : 
  
- ĞŞ¸ÄÀúÊ·      :
-  1.ÈÕ    ÆÚ   : 2017Äê10ÔÂ30ÈÕ
-    ×÷    Õß   : zhoukaiyuan
-    ĞŞ¸ÄÄÚÈİ   : ĞÂÉú³Éº¯Êı
+ ä¿®æ”¹å†å²      :
+  1.æ—¥    æœŸ   : 2017å¹´10æœˆ30æ—¥
+    ä½œ    è€…   : zhoukaiyuan
+    ä¿®æ”¹å†…å®¹   : æ–°ç”Ÿæˆå‡½æ•°
 
 *****************************************************************************/
 size_t ClaimScriptSize(const CScript& scriptIn)
