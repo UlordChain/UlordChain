@@ -14,21 +14,6 @@ std::vector<unsigned char> uint32_t_to_vch(uint32_t n)
     return vchN;
 }
 
-/*****************************************************************************
- 函 数 名: vch_to_uint32_t
- 功能描述  : 无符号的char转换成无符号int
- 输入参数  : uint32_t n  
- 输出参数  : 无
- 返 回 值  : std::vector<unsigned char>
- 调用函数  : 
- 被调函数  : 
- 
- 修改历史     :
-  1.日    期  : 2017年10月30日
-    作    者  : zhoukaiyuan
-    修改内容   : 新生成函数
-
-*****************************************************************************/
 uint32_t vch_to_uint32_t(std::vector<unsigned char>& vchN)
 {
     uint32_t n;
