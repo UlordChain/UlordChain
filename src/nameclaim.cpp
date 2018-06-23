@@ -26,22 +26,7 @@ uint32_t vch_to_uint32_t(std::vector<unsigned char>& vchN)
     return n;
 }
 
-/*****************************************************************************
- 函 数 名: ClaimNameScript
- 功能描述  : 认领脚本的名称
- 输入参数  : std::string name   
-           std::string value  
- 输出参数  : 无
- 返 回 值: CScript
- 调用函数  : 
- 被调函数  : 
- 
- 修改历史      :
-  1.日    期  : 2017年10月30日
-    作    者  : zhoukaiyuan
-    修改内容   : 新生成函数
 
-*****************************************************************************/
 CScript ClaimNameScript(std::string name, std::string value)
 {
      std::vector<unsigned char> vchName(name.begin(), name.end());
@@ -49,22 +34,7 @@ CScript ClaimNameScript(std::string name, std::string value)
      return CScript() << OP_CLAIM_NAME << vchName << vchValue << OP_2DROP << OP_DROP << OP_TRUE; 
 }
 
-/*****************************************************************************
- 函 数 名: SupportClaimScript
- 功能描述  : 认领脚本的支持
- 输入参数  : std::string name  
-           uint160 claimId   
- 输出参数  : 无
- 返 回 值: CScript
- 调用函数  : 
- 被调函数  : 
- 
- 修改历史      :
-  1.日    期  : 2017年10月30日
-    作    者  : zhoukaiyuan
-    修改内容   : 新生成函数
 
-*****************************************************************************/
 CScript SupportClaimScript(std::string name, uint160 claimId)
 {
     std::vector<unsigned char> vchName(name.begin(), name.end());
@@ -72,23 +42,7 @@ CScript SupportClaimScript(std::string name, uint160 claimId)
     return CScript() << OP_SUPPORT_CLAIM << vchName << vchClaimId << OP_2DROP << OP_DROP << OP_TRUE;
 }
 
-/*****************************************************************************
- 函 数 名: UpdateClaimScript
- 功能描述  : 认领脚本的更新
- 输入参数  : std::string name   
-             uint160 claimId    
-             std::string value  
- 输出参数  : 无
- 返 回 值  : CScript
- 调用函数  : 
- 被调函数  : 
- 
- 修改历史      :
-  1.日    期   : 2017年10月30日
-    作    者   : zhoukaiyuan
-    修改内容   : 新生成函数
 
-*****************************************************************************/
 CScript UpdateClaimScript(std::string name, uint160 claimId, std::string value)
 {
     std::vector<unsigned char> vchName(name.begin(), name.end());
@@ -97,47 +51,14 @@ CScript UpdateClaimScript(std::string name, uint160 claimId, std::string value)
     return CScript() << OP_UPDATE_CLAIM << vchName << vchClaimId << vchValue << OP_2DROP << OP_2DROP << OP_TRUE;
 }
 
-/*****************************************************************************
- 函 数 名: DecodeClaimScript
- 功能描述  : 对有要求的脚本解码
- 输入参数  : const CScript& scriptIn                               
-             int& op                                               
-             std::vector<std::vector<unsigned char> >& vvchParams  
- 输出参数  : 无
- 返 回 值  : bool
- 调用函数  : 
- 被调函数  : 
- 
- 修改历史      :
-  1.日    期   : 2017年10月30日
-    作    者   : zhoukaiyuan
-    修改内容   : 新生成函数
 
-*****************************************************************************/
 bool DecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector<unsigned char> >& vvchParams)
 {
     CScript::const_iterator pc = scriptIn.begin();
     return DecodeClaimScript(scriptIn, op, vvchParams, pc);
 }
 
-/*****************************************************************************
- 函 数 名: DecodeClaimScript
- 功能描述  : 取出脚本的操作数指令
- 输入参数  : const CScript& scriptIn                               
-             int& op                                               
-             std::vector<std::vector<unsigned char> >& vvchParams  
-             CScript::const_iterator& pc                           
- 输出参数  : 无
- 返 回 值  : bool
- 调用函数  : 
- 被调函数  : 
- 
- 修改历史      :
-  1.日    期   : 2017年10月30日
-    作    者   : zhoukaiyuan
-    修改内容   : 新生成函数
 
-*****************************************************************************/
 bool DecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector<unsigned char> >& vvchParams, CScript::const_iterator& pc)
 {
     opcodetype opcode;
@@ -210,22 +131,6 @@ bool DecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector
     return true;
 }
 
-/*****************************************************************************
- 函 数 名  : ClaimIdHash
- 功能描述  : 认领hashID
- 输入参数  : const uint256& txhash  
-             uint32_t nOut          
- 输出参数  : 无
- 返 回 值  : uint160
- 调用函数  : 
- 被调函数  : 
- 
- 修改历史      :
-  1.日    期   : 2017年10月30日
-    作    者   : zhoukaiyuan
-    修改内容   : 新生成函数
-
-*****************************************************************************/
 uint160 ClaimIdHash(const uint256& txhash, uint32_t nOut)
 {
     std::vector<unsigned char> claimToHash(txhash.begin(), txhash.end());
@@ -253,21 +158,6 @@ CScript StripClaimScriptPrefix(const CScript& scriptIn, int& op)
     return CScript(pc, scriptIn.end());
 }
 
-/*****************************************************************************
- 函 数 名  : ClaimScriptSize
- 功能描述  : 认领脚本的大小
- 输入参数  : const CScript& scriptIn  
- 输出参数  : 无
- 返 回 值  : size_t
- 调用函数  : 
- 被调函数  : 
- 
- 修改历史      :
-  1.日    期   : 2017年10月30日
-    作    者   : zhoukaiyuan
-    修改内容   : 新生成函数
-
-*****************************************************************************/
 size_t ClaimScriptSize(const CScript& scriptIn)
 {
     CScript strippedScript = StripClaimScriptPrefix(scriptIn);
