@@ -1182,6 +1182,12 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 		return JSONRPCError(RPC_INTERNAL_ERROR, "ERROR:transaction too large");
 	}
 
+    //Is Dust
+	if (txNew.vout[0].IsDust(::minRelayTxFee))
+	{
+		return JSONRPCError(RPC_INTERNAL_ERROR, "ERROR:transaction is dust transaction");
+	}
+
     return result;
 }
 UniValue crosschainrefund(const UniValue &params, bool fHelp)
