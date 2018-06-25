@@ -1193,7 +1193,10 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 	 wtxNew.fTimeReceivedIsTxTime = true;
      wtxNew.BindWallet(pwalletMain);
 	 wtxNew.fFromMe = true;
-	*static_cast<CTransaction*>(&wtxNew) = CTransaction(txNew);	
+	*static_cast<CTransaction*>(&wtxNew) = CTransaction(txNew);
+
+	if (!pwalletMain->CommitTransaction(wtxNew, reservekey,NetMsgType::TX))
+			return JSONRPCError(RPC_WALLET_ERROR, "Transaction commit failed");	
 
     return result;
 }
