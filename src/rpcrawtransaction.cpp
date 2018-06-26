@@ -1200,6 +1200,10 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 
 	double fFeePay = (double)nFeePay;
 	string strRedeemFee = strprintf("Redeem fee: %.8f UT(%.8f UT/kB)\n", (fFeePay / COIN), ((fFeePay / COIN)/nBytes));
+
+	result.push_back(Pair("Redeem fee",strRedeemFee));
+	result.push_back(Pair("Redeem transaction hash",CTransaction(txNew).GetHash().GetHex()));
+	result.push_back(Pair("Redeem transaction",EncodeHexTx(CTransaction(txNew))));
     return result;
 }
 UniValue crosschainrefund(const UniValue &params, bool fHelp)
