@@ -1198,6 +1198,8 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 	if (!pwalletMain->CommitTransaction(wtxNew, reservekey,NetMsgType::TX))
 			return JSONRPCError(RPC_WALLET_ERROR, "Transaction commit failed");	
 
+	double fFeePay = (double)nFeePay;
+	string strRedeemFee = strprintf("Redeem fee: %.8f UT(%.8f UT/kB)\n", (fFeePay / COIN), ((fFeePay / COIN)/nBytes));
     return result;
 }
 UniValue crosschainrefund(const UniValue &params, bool fHelp)
