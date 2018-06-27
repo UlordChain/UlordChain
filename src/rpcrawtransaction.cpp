@@ -1219,6 +1219,12 @@ UniValue crosschainrefund(const UniValue &params, bool fHelp)
 	LOCK(cs_main);
 	RPCTypeCheck(params, boost::assign::list_of(UniValue::VSTR)(UniValue::VSTR)(UniValue::VSTR));
 
+    //check params size
+    if ((params[0].get_str().size() <= 0)||(params[1].get_str().size() <= 0)||(params[2].get_str().size() <= 0))
+		{
+			return JSONRPCError(RPC_INVALID_PARAMS, "Error:the parameter size can't be zero");
+		}
+
     return result;
 }
 UniValue crosschainextractsecret(const UniValue &params, bool fHelp)
