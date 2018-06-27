@@ -285,7 +285,9 @@ bool CSuperblockManager::IsSuperblockTriggered(int nBlockHeight)
     if (!CSuperblock::IsValidBlockHeight(nBlockHeight)) {
         return false;
     }
-    else LogPrintf("SuperBlockHeight right %d\n",nBlockHeight);
+    else {
+        LogPrintf("SuperBlockHeight right %d\n",nBlockHeight);
+    }
     return true;
 }
 
