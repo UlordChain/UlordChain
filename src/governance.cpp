@@ -464,7 +464,7 @@ void CGovernanceManager::UpdateCachesAndClean()
 
     fRateChecksEnabled = true;
 }
-
+//nGovObjHash == nHash
 CGovernanceObject *CGovernanceManager::FindGovernanceObject(const uint256& nHash)
 {
     LOCK(cs);
