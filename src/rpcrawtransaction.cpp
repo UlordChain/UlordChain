@@ -1212,7 +1212,13 @@ UniValue crosschainrefund(const UniValue &params, bool fHelp)
         throw runtime_error(
             "params.size error\n"
         );
-    UniValue result(UniValue::VOBJ);
+
+	//the return data
+	UniValue result(UniValue::VOBJ);
+
+	LOCK(cs_main);
+	RPCTypeCheck(params, boost::assign::list_of(UniValue::VSTR)(UniValue::VSTR)(UniValue::VSTR));
+
     return result;
 }
 UniValue crosschainextractsecret(const UniValue &params, bool fHelp)
