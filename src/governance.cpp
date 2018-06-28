@@ -741,7 +741,7 @@ bool CGovernanceManager::MasternodeRateCheck(const CGovernanceObject& govobj, bo
     bool fRateCheckBypassed = false;
     return MasternodeRateCheck(govobj, fUpdateLast, true, fRateCheckBypassed);
 }
-
+// rate check ,trigger can not great than twice per superblockcycle , watchdog can not great than twice per 3600 second
 bool CGovernanceManager::MasternodeRateCheck(const CGovernanceObject& govobj, bool fUpdateLast, bool fForce, bool& fRateCheckBypassed)
 {
     LOCK(cs);
