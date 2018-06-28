@@ -1225,6 +1225,10 @@ UniValue crosschainrefund(const UniValue &params, bool fHelp)
 			return JSONRPCError(RPC_INVALID_PARAMS, "Error:the parameter size can't be zero");
 		}
 
+	//get the contract from parameter 0
+	string strContract = params[0].get_str();
+	std::vector<unsigned char>vContract = ParseHex(strContract);
+
     return result;
 }
 UniValue crosschainextractsecret(const UniValue &params, bool fHelp)
