@@ -1235,6 +1235,12 @@ UniValue crosschainrefund(const UniValue &params, bool fHelp)
 	std::vector<std::string> vStr;
 	boost::split( vStr, contractString, boost::is_any_of( " " ), boost::token_compress_on );
 
+	//contract check
+	if(!contract.IsCrossChainPaymentScript())
+		{
+			return JSONRPCError(RPC_INVALID_PARAMS, "Error:the parameter is no stander contract");
+		}	
+
     return result;
 }
 UniValue crosschainextractsecret(const UniValue &params, bool fHelp)
