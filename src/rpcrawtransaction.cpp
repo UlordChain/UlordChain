@@ -1224,6 +1224,17 @@ UniValue crosschainrefund(const UniValue &params, bool fHelp)
 		{
 			return false;
 		}
+
+	//get the contract from parameter 0
+	string strContract = params[0].get_str();
+	std::vector<unsigned char>vContract = ParseHex(strContract);
+	CScript contract(vContract.begin(),vContract.end());
+
+	//split the contract
+	std::string contractString	= ScriptToAsmStr(contract);
+	std::vector<std::string> vStr;
+	boost::split( vStr, contractString, boost::is_any_of( " " ), boost::token_compress_on );
+
     return result;
 }
 UniValue crosschainextractsecret(const UniValue &params, bool fHelp)
