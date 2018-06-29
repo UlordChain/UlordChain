@@ -1006,7 +1006,10 @@ UniValue crosschainparticipate(const UniValue &params, bool fHelp)
         throw runtime_error(
 	    "crosschaininitial \"crosschain address\"amount \"secret address \n"
             "\nCreate crosschain transaction (serialized, hex-encoded) to local node and network.\n"
-            "params.size error\n"
+	    "\nArguments:\n"
+            "1. \"crosschain address\"  (string,required) The crosschainaddress to to send to .\n"
+            "2. \"amount\" (numeric or string,required) The amount in " + CURRENCY_UNIT + " to send. eg 0.1\n"
+            "3. \"secret address \" (string,required) The secret address. \n"
         );
     UniValue result(UniValue::VOBJ);
     return result;
