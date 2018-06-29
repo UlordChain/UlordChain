@@ -271,7 +271,7 @@ bool CGovernanceObject::CheckSignature(CPubKey& pubKeyMasternode)
 
     return true;
 }
-
+// the function is not use .
 int CGovernanceObject::GetObjectSubtype()
 {
     // todo - 12.1
