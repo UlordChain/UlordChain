@@ -1239,7 +1239,10 @@ UniValue crosschainrefund(const UniValue &params, bool fHelp)
 	if(!contract.IsCrossChainPaymentScript())
 		{
 			return JSONRPCError(RPC_INVALID_PARAMS, "Error:the parameter is no stander contract");
-		}	
+		}
+
+	//get lock time 
+	int64_t lockTime = atoi64(vStr[8]);	
 
     return result;
 }
