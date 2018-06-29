@@ -1242,7 +1242,11 @@ UniValue crosschainrefund(const UniValue &params, bool fHelp)
 		}
 
 	//get lock time 
-	int64_t lockTime = atoi64(vStr[8]);	
+	int64_t lockTime = atoi64(vStr[8]);
+
+	//get refund address hash
+	std::vector<unsigned char> vRefundAddressHash = ParseHex(vStr[13]);
+	uint160 refundAddressHash(vRefundAddressHash);	
 
     return result;
 }
