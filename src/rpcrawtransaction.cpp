@@ -1255,7 +1255,11 @@ UniValue crosschainrefund(const UniValue &params, bool fHelp)
 	//decode the tx
 	CTransaction preTx;
 	if (!DecodeHexTx(preTx, params[1].get_str()))
-		return JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");	
+		return JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
+
+	//declare transaction
+	CMutableTransaction txNew;
+	CAmount nFeePay = 3100;	
 
     return result;
 }
