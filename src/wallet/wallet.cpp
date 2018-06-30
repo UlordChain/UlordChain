@@ -2817,7 +2817,7 @@ bool CWallet::GetMasternodeVinAndKeys(CTxIn& txinRet, CPubKey& pubKeyRet, CKey& 
         return false;
     }
 
-    if(strTxHash.empty()) // No output specified, select the first one
+    if(strTxHash.empty()) // No output specified, select the one specified by masternodeConfig
     {
     	CMasternodeConfig::CMasternodeEntry mne = masternodeConfig.GetLocalEntry();
 		if(mne.getTxHash() != "")
