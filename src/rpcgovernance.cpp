@@ -27,7 +27,7 @@ UniValue gobject(const UniValue& params, bool fHelp)
         strCommand = params[0].get_str();
 
     if (fHelp  ||
-        (strCommand != "vote-many" && strCommand != "vote-conf" && strCommand != "vote-alias" && strCommand != "prepare" && strCommand != "submit" && strCommand != "count" &&
+        (strCommand != "vote-many" && strCommand != "vote-conf" && strCommand != "vote-alias" && strCommand != "prepare" && strCommand != "submit" && strCommand != "count" && strCommand != "vote-agent" &&
          strCommand != "deserialize" &&  strCommand != "serialize" && strCommand != "get" && strCommand != "getvotes" && strCommand != "getcurrentvotes" && strCommand != "list" && strCommand != "diff"))
         throw std::runtime_error(
                 "gobject \"command\"...\n"
@@ -321,6 +321,94 @@ UniValue gobject(const UniValue& params, bool fHelp)
         }
 
         resultsObj.push_back(Pair("ulord.conf", statusObj));
+
+        returnObj.push_back(Pair("overall", strprintf("Voted successfully %d time(s) and failed %d time(s).", nSuccessful, nFailed)));
+        returnObj.push_back(Pair("detail", resultsObj));
+
+        return returnObj;
+    }
+
+	if(strCommand == "vote-agent")
+    {
+        if(params.size() != 5)
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Correct usage is 'gobject vote-agent <governance-hash> [funding|valid|delete] [yes|no|abstain] <principal-key>'");
+
+        uint256 hash;
+        std::string strVote;
+
+        hash = ParseHashV(params[1], "Object hash");
+        std::string strVoteSignal = params[2].get_str();
+        std::string strVoteOutcome = params[3].get_str();
+		std::string strPrincipalKey = params[4].get_str();
+
+        vote_signal_enum_t eVoteSignal = CGovernanceVoting::ConvertVoteSignal(strVoteSignal);
+        if(eVoteSignal == VOTE_SIGNAL_NONE) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER,
+                               "Invalid vote signal. Please using one of the following: "
+                               "(funding|valid|delete|endorsed) OR `custom sentinel code` ");
+        }
+
+        vote_outcome_enum_t eVoteOutcome = CGovernanceVoting::ConvertVoteOutcome(strVoteOutcome);
+        if(eVoteOutcome == VOTE_OUTCOME_NONE) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid vote outcome. Please use one of the following: 'yes', 'no' or 'abstain'");
+        }
+
+		CKey keyPrincipal;
+		CPubKey pubKeyPrincipal;
+		if(!strPrincipalKey.empty()) {
+            if(!privSendSigner.GetKeysFromSecret(strPrincipalKey, keyPrincipal, pubKeyPrincipal))
+                throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid principal key. Please useing the correct Key.");
+        } else {
+			throw JSONRPCError(RPC_INVALID_PARAMETER, "Principal key is empty.");
+        }
+
+        int nSuccessful = 0;
+        int nFailed = 0;
+
+        UniValue resultsObj(UniValue::VOBJ);
+
+        std::vector<unsigned char> vchMasterNodeSignature;
+        std::string strMasterNodeSignMessage;
+
+        UniValue statusObj(UniValue::VOBJ);
+        UniValue returnObj(UniValue::VOBJ);
+
+        CMasternode mn;
+        bool fMnFound = mnodeman.Get(pubKeyPrincipal, mn);
+
+        if(!fMnFound) {
+            nFailed++;
+            statusObj.push_back(Pair("result", "failed"));
+            statusObj.push_back(Pair("errorMessage", "Can't find masternode by principal Key"));
+            resultsObj.push_back(Pair(strPrincipalKey, statusObj));
+            returnObj.push_back(Pair("overall", strprintf("Voted successfully %d time(s) and failed %d time(s).", nSuccessful, nFailed)));
+            returnObj.push_back(Pair("detail", resultsObj));
+            return returnObj;
+        }
+
+        CGovernanceVote vote(mn.vin, hash, eVoteSignal, eVoteOutcome);
+        if(!vote.Sign(keyPrincipal, pubKeyPrincipal)) {
+            nFailed++;
+            statusObj.push_back(Pair("result", "failed"));
+            statusObj.push_back(Pair("errorMessage", "Failure to sign."));
+            resultsObj.push_back(Pair(strPrincipalKey, statusObj));
+            returnObj.push_back(Pair("overall", strprintf("Voted successfully %d time(s) and failed %d time(s).", nSuccessful, nFailed)));
+            returnObj.push_back(Pair("detail", resultsObj));
+            return returnObj;
+        }
+
+        CGovernanceException exception;
+        if(governance.ProcessVoteAndRelay(vote, exception)) {
+            nSuccessful++;
+            statusObj.push_back(Pair("result", "success"));
+        }
+        else {
+            nFailed++;
+            statusObj.push_back(Pair("result", "failed"));
+            statusObj.push_back(Pair("errorMessage", exception.GetMessage()));
+        }
+
+        resultsObj.push_back(Pair(strPrincipalKey, statusObj));
 
         returnObj.push_back(Pair("overall", strprintf("Voted successfully %d time(s) and failed %d time(s).", nSuccessful, nFailed)));
         returnObj.push_back(Pair("detail", resultsObj));
