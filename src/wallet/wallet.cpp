@@ -27,6 +27,7 @@
 #include "util.h"
 #include "utilmoneystr.h"
 
+#include "masternodeconfig.h"
 #include "privsend.h"
 #include "governance.h"
 #include "instantx.h"
@@ -2817,7 +2818,23 @@ bool CWallet::GetMasternodeVinAndKeys(CTxIn& txinRet, CPubKey& pubKeyRet, CKey& 
     }
 
     if(strTxHash.empty()) // No output specified, select the first one
-        return GetVinAndKeysFromOutput(vPossibleCoins[0], txinRet, pubKeyRet, keyRet);
+    {
+    	CMasternodeConfig::CMasternodeEntry mne = masternodeConfig.GetLocalEntry();
+		if(mne.getTxHash() != "")
+		{
+			uint256 confTxHash;
+            int confoutid;
+    		BOOST_FOREACH(COutput& out, vPossibleCoins)
+    		{
+    			confTxHash.SetHex(mne.getTxHash());
+                confoutid = boost::lexical_cast<unsigned int>(mne.getOutputIndex());
+    			if(out.tx->GetHash() == confTxHash && confoutid == out.i)
+					return GetVinAndKeysFromOutput(out, txinRet, pubKeyRet, keyRet);			
+    		}
+		}
+		LogPrintf("CWallet::GetMasternodeVinAndKeys -- Could not locate the masternode configure vin, please check the masternode.conf\n");
+		return false;
+    }
 
     // Find specific vin
     uint256 txHash = uint256S(strTxHash);
