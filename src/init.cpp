@@ -43,7 +43,7 @@
 #include "wallet/db.h"
 #include "wallet/wallet.h"
 #include "wallet/walletdb.h"
-#endif
+#endif // ENABLE_WALLET
 
 #include "activemasternode.h"
 #include "privsend.h"
@@ -53,7 +53,7 @@
 #include "instantx.h"
 #ifdef ENABLE_WALLET
 #include "keepass.h"
-#endif
+#endif // ENABLE_WALLET
 #include "masternode-payments.h"
 #include "masternode-sync.h"
 #include "masternodeman.h"
@@ -1843,6 +1843,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 
     LogPrintf("Using masternode config file %s\n", GetMasternodeConfigFile().string());
 
+    #ifdef ENABLE_WALLET
     if(GetBoolArg("-mnconflock", true) && pwalletMain && (masternodeConfig.getCount() > 0)) {
         LOCK(pwalletMain->cs_wallet);
         LogPrintf("Locking Masternodes:\n");
@@ -1873,6 +1874,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     nPrivateSendRounds = std::min(std::max(nPrivateSendRounds, 2), nLiquidityProvider ? 99999 : 16);
     nPrivateSendAmount = GetArg("-privatesendamount", DEFAULT_PRIVATESEND_AMOUNT);
     nPrivateSendAmount = std::min(std::max(nPrivateSendAmount, 2), 999999);
+    #endif  // ENABLE_WALLET
 
     fEnableInstantSend = GetBoolArg("-enableinstantsend", 1);
     nInstantSendDepth = GetArg("-instantsenddepth", DEFAULT_INSTANTSEND_DEPTH);
