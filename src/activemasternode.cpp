@@ -170,7 +170,6 @@ LogPrintf("GetLocal() = %c, IsValidNetAddr = %c \n", GetLocal(service, &pnode->a
     }
 
     if(!fFoundLocal) {
-//LogPrintf("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n");
         nState = ACTIVE_MASTERNODE_NOT_CAPABLE;
         strNotCapableReason = "Can't detect valid external address. Please consider using the externalip configuration option if problem persists. Make sure to use IPv4 address only.";
         LogPrintf("CActiveMasternode::ManageStateInitial -- %s: %s\n", GetStateString(), strNotCapableReason);
