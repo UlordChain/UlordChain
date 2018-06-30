@@ -1010,6 +1010,15 @@ UniValue crosschainparticipate(const UniValue &params, bool fHelp)
             "1. \"crosschain address\"  (string,required) The crosschainaddress to to send to .\n"
             "2. \"amount\" (numeric or string,required) The amount in " + CURRENCY_UNIT + " to send. eg 0.1\n"
             "3. \"secret address \" (string,required) The secret address. \n"
+	    "\nResult:\n"
+            "\"hex\"             (string) The contract for address in hex\n"
+            "\"hex\"             (string) The contract hash in hex\n"
+            "\"hex\"             (string) The contract transaction hash in hex\n"
+            "\"hex\"             (string) The contract raw transaction in hex\n"
+            "\nExamples:\n"
+            "\nCreate a transaction\n"
+            + HelpExampleCli("crosschaininitial", "\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\",\
+            				sbd6vhmcrBGdPmyuffYvkfyzxJnD7m2ePf ")
         );
     UniValue result(UniValue::VOBJ);
     return result;
