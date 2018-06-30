@@ -1250,7 +1250,12 @@ UniValue crosschainrefund(const UniValue &params, bool fHelp)
 
 	//get refund address hash
 	std::vector<unsigned char> vRefundAddressHash = ParseHex(vStr[13]);
-	uint160 refundAddressHash(vRefundAddressHash);	
+	uint160 refundAddressHash(vRefundAddressHash);
+
+	//decode the tx
+	CTransaction preTx;
+	if (!DecodeHexTx(preTx, params[1].get_str()))
+		return JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");	
 
     return result;
 }
