@@ -89,3 +89,17 @@ bool CMasternodeConfig::read(std::string& strErr) {
     streamConfig.close();
     return true;
 }
+
+CMasternodeConfig::CMasternodeEntry CMasternodeConfig::GetLocalEntry()
+{
+	if(fMasterNode)
+	{
+		for(auto & mn : entries)
+		{
+			if(mn.getPrivKey() == GetArg("-masternodeprivkey", ""))
+				return mn;
+		}
+	}
+	return CMasternodeEntry();
+}
+

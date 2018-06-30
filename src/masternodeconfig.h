@@ -32,6 +32,14 @@ public:
             this->outputIndex = outputIndex;
         }
 
+		CMasternodeEntry(){
+			this->alias = "";
+            this->ip = "";
+            this->privKey = "";
+            this->txHash = "";
+            this->outputIndex = "";
+		}
+
         const std::string& getAlias() const {
             return alias;
         }
@@ -88,6 +96,8 @@ public:
     int getCount() {
         return (int)entries.size();
     }
+
+	CMasternodeConfig::CMasternodeEntry GetLocalEntry();
 
 private:
     std::vector<CMasternodeEntry> entries;
