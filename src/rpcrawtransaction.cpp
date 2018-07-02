@@ -1028,7 +1028,19 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 {
     if (fHelp || params.size() !=3)
         throw runtime_error(
-            "params.size error\n"
+            "crosschainredeem \"contract\" \"contract transaction\" \"secret\" \n"
+            "\nCreate crosschain redeem transaction (serialized, hex-encoded) to local node and network.\n"
+            "\nArguments:\n"
+            "1. \"contract \"  (string,required) The contract in hex\n"
+            "2. \"contract transaction \"  (string,required) The contract raw transaction in hex\n"
+            "3. \"secret \"  (string,required) (string,required) The secret in hex\n"
+            "nResult:\n"
+            "\"Redeem fee\"      (string) The Redeem fee of redeem transacton\n"
+            "\"hex\"             (string) The redeem transaction hash in hex\n"
+            "\"hex\"             (string) The redeem raw transaction in hex\n"
+			"\nExamples:\n"
+			"\nCreate a redeem transaction\n"
+            + HelpExampleCli("crosschainredeem", "\"63a6148887e0860cc6d28972b4622e9f2e1c2bc4fce57a8876a9140a836d8ee19150b965b93a8724e65a79d73100306704f9e50b5bb17576a914de71cb447f326f3a70f9da4a8369ad3068a3493f6888ac \"0100000002355bfc80e5e4d14c634131a30f121a49b27daec201b592d0079247d189dba9a2000000006b483045022100c3ebf9d0a2b44c0a20b84b37bce495f91de3ebd706de9a15cecf77548d2c1a3002203970002c5493b170bd375010b8876799af721a07900c6eb4ee7c21c140469922012103942f6cd9b855c565acd40406a692d39805eef3ab38ec56166afb6d04b071fc21feffffffcb53ff98a0d504249b04c8fe829e9a0c3bd468caeaaba50f3da6d16b0b69eaf3000000006a4730440220138197f27a806028f3bd885aa0e0fecd3b9e2cce43f09d18ed7219e5a087ab0e022075e18b7a8031d340ef2f97fd2efef3a51fbe1b0a2ae04cb76f3ba4ca500e895b01210286921478ed27357ee44f5a5340b051a33b84f5654b7c1d3ec5da2dc9f39d6e3afeffffff02a0850b54020000001976a9142488e2ce9de4952ce739d5cb0df3f2f6bae2395c88ac00e40b540200000017a914babe4713f8e43291e490f738e1b38474440be152872c010000 \"e93e589dda24433fcac88a42b995ad24bafe3b5acd45d71bd66a8feedab27a70\"")
         );
     UniValue result(UniValue::VOBJ);
 
