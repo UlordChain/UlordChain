@@ -1365,7 +1365,9 @@ UniValue crosschainrefund(const UniValue &params, bool fHelp)
 	bool ret;
 	ret = reservekey.GetReservedKey(newKey);
 	assert(ret);
-
+	CBitcoinAddress outPutAddress(CTxDestination(newKey.GetID()));
+	if (!outPutAddress.IsValid())
+		return JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
     return result;
 }
 UniValue crosschainextractsecret(const UniValue &params, bool fHelp)
