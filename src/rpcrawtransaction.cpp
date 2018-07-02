@@ -1368,6 +1368,9 @@ UniValue crosschainrefund(const UniValue &params, bool fHelp)
 	CBitcoinAddress outPutAddress(CTxDestination(newKey.GetID()));
 	if (!outPutAddress.IsValid())
 		return JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
+
+	// Start building the lock script for the p2pkh type.
+	CScript refundP2PkHScript = GetScriptForDestination(CTxDestination(newKey.GetID()));
     return result;
 }
 UniValue crosschainextractsecret(const UniValue &params, bool fHelp)
