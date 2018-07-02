@@ -1345,6 +1345,10 @@ UniValue crosschainrefund(const UniValue &params, bool fHelp)
 		return JSONRPCError(RPC_INVALID_PARAMS, "Error:the contract in parameter can't match transaction in parameter");
 	}	
 
+	//get the pubkey and key of participate address
+	const CKeyStore& keystore = *pwalletMain;
+	CKeyID keyID(refundAddressHash);
+
     return result;
 }
 UniValue crosschainextractsecret(const UniValue &params, bool fHelp)
