@@ -1322,6 +1322,12 @@ UniValue crosschainrefund(const UniValue &params, bool fHelp)
 		preOutN++;
 	}
 
+	if(addressType !=TX_SCRIPTHASH)
+		{
+			throw JSONRPCError(RPC_INVALID_PARAMS, "Error:the transaction have none P2SH type tx out");	
+		}	
+
+
     return result;
 }
 UniValue crosschainextractsecret(const UniValue &params, bool fHelp)
