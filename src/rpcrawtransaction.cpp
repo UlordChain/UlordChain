@@ -1348,6 +1348,12 @@ UniValue crosschainrefund(const UniValue &params, bool fHelp)
 	//get the pubkey and key of participate address
 	const CKeyStore& keystore = *pwalletMain;
 	CKeyID keyID(refundAddressHash);
+	CPubKey pubKey;
+	CKey key;	
+	if(!keystore.GetPubKey(keyID,pubKey))
+		{
+			return JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Error:Can't find the pubkey of participte address");			
+		}
 
     return result;
 }
