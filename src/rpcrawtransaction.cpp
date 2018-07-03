@@ -1375,6 +1375,9 @@ UniValue crosschainrefund(const UniValue &params, bool fHelp)
 	CTxOut outNew(nAmount,refundP2PkHScript);
 	txNew.vout.push_back(outNew);
 
+	txNew.nLockTime = lockTime;
+	txNew.nVersion = 1;
+
     return result;
 }
 UniValue crosschainextractsecret(const UniValue &params, bool fHelp)
