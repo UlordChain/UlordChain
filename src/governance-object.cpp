@@ -355,7 +355,7 @@ void CGovernanceObject::LoadData()
         fUnparsable = true;
         std::ostringstream ostr;
         ostr << "CGovernanceObject::LoadData Error parsing JSON"
-             << ", e.what() = " << e.what();
+             << ", e.what() = " << e.what() << "\n";
         DBG( cout << ostr.str() << endl; );
         LogPrintf( ostr.str().c_str() );
         return;
@@ -363,7 +363,7 @@ void CGovernanceObject::LoadData()
     catch(...) {
         fUnparsable = true;
         std::ostringstream ostr;
-        ostr << "CGovernanceObject::LoadData Unknown Error parsing JSON";
+        ostr << "CGovernanceObject::LoadData Unknown Error parsing JSON \n";
         DBG( cout << ostr.str() << endl; );
         LogPrintf( ostr.str().c_str() );
         return;
