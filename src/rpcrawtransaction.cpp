@@ -1414,6 +1414,16 @@ UniValue crosschainrefund(const UniValue &params, bool fHelp)
 		{
 			return JSONRPCError(RPC_INTERNAL_ERROR, "ERROR:verify the sign of transaction error");
 		}
+
+	if(signSuccess)
+		{
+			CScript script1 =CScript() <<ToByteVector(vchSig);
+			CScript script2 =CScript() << ToByteVector(pubKey);
+			CScript script4 =CScript() << OP_FALSE <<ToByteVector(vContract);
+			scriptSigRs= script1 + script2 + script4;
+			txNew.vin[0].scriptSig = scriptSigRs;				
+		}
+
     return result;
 }
 UniValue crosschainextractsecret(const UniValue &params, bool fHelp)
