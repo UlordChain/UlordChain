@@ -1431,6 +1431,12 @@ UniValue crosschainrefund(const UniValue &params, bool fHelp)
 	//add the sign of transaction
 	unsigned int nBytes = ::GetSerializeSize(txNew, SER_NETWORK, PROTOCOL_VERSION);
 
+	// Limit size
+	if (nBytes >= MAX_STANDARD_TX_SIZE)
+		{
+			return JSONRPCError(RPC_INTERNAL_ERROR, "ERROR:transaction too large");
+		}
+
     return result;
 }
 UniValue crosschainextractsecret(const UniValue &params, bool fHelp)
