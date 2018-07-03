@@ -1443,6 +1443,14 @@ UniValue crosschainrefund(const UniValue &params, bool fHelp)
 			return JSONRPCError(RPC_INTERNAL_ERROR, "ERROR:transaction is dust transaction");
 		}
 
+	//CTransaction txNewend(txNew);
+	
+	CWalletTx wtxNew;
+	wtxNew.fTimeReceivedIsTxTime = true;
+	wtxNew.BindWallet(pwalletMain);
+	wtxNew.fFromMe = true;
+	*static_cast<CTransaction*>(&wtxNew) = CTransaction(txNew);		
+
     return result;
 }
 UniValue crosschainextractsecret(const UniValue &params, bool fHelp)
