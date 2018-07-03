@@ -1453,6 +1453,9 @@ UniValue crosschainrefund(const UniValue &params, bool fHelp)
 	if (!pwalletMain->CommitTransaction(wtxNew, reservekey,NetMsgType::TX))
 			return JSONRPCError(RPC_WALLET_ERROR, "Transaction commit failed");
 
+	double fFeePay = (double)nFeePay;
+	string strRefundFee = strprintf("Refund fee: %.8f UT(%.8f UT/kB)\n", (fFeePay / COIN), ((fFeePay / COIN)/nBytes));
+
     return result;
 }
 UniValue crosschainextractsecret(const UniValue &params, bool fHelp)
