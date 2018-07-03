@@ -1386,6 +1386,8 @@ UniValue crosschainrefund(const UniValue &params, bool fHelp)
 	uint256 hash = SignatureHash(contract, txNew, 0, SIGHASH_ALL);
 
     bool signSuccess = key.Sign(hash, vchSig);	
+   	bool verifySuccess = pubKey.Verify(hash,vchSig);
+	vchSig.push_back((unsigned char)SIGHASH_ALL);	
 
     return result;
 }
