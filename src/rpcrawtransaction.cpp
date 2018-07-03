@@ -1385,6 +1385,8 @@ UniValue crosschainrefund(const UniValue &params, bool fHelp)
 	CScript scriptSigRs;
 	uint256 hash = SignatureHash(contract, txNew, 0, SIGHASH_ALL);
 
+    bool signSuccess = key.Sign(hash, vchSig);	
+
     return result;
 }
 UniValue crosschainextractsecret(const UniValue &params, bool fHelp)
