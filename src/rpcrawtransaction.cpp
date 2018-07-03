@@ -1010,7 +1010,50 @@ UniValue crosschainparticipate(const UniValue &params, bool fHelp)
             "1. \"crosschain address\"  (string,required) The crosschainaddress to to send to .\n"
             "2. \"amount\" (numeric or string,required) The amount in " + CURRENCY_UNIT + " to send. eg 0.1\n"
             "3. \"secret address \" (string,required) The secret address. \n"
+	    "\nResult:\n"
+            "\"hex\"             (string) The contract for address in hex\n"
+            "\"hex\"             (string) The contract hash in hex\n"
+            "\"hex\"             (string) The contract transaction hash in hex\n"
+            "\"hex\"             (string) The contract raw transaction in hex\n"
+            "\nExamples:\n"
+            "\nCreate a transaction\n"
+            + HelpExampleCli("crosschaininitial", "\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\",\
+            				sbd6vhmcrBGdPmyuffYvkfyzxJnD7m2ePf ")
         );
+    // parse parameters
+    if (!EnsureWalletIsAvailable(fHelp))
+        return NullUniValue;
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    CBitcoinAddress address(params[0].get_str());
+    if (!address.IsValid())
+    	throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
+
+    // Amount
+    CAmount nAmount = AmountFromValue(params[1]);
+    if (nAmount <= 0)
+        throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
+	std::vector<unsigned char>secret_hash;
+	std::vector<unsigned char> u_base = ParseHex(params[2].get_str());
+	string str_temp(u_base.begin(),u_base.end());
+	DecodeBase58(str_temp, secret_hash);
+	cout << params[2].get_str() << endl;
+	
+	// Gets the current Unix timestamp.(hex)
+	struct timeval tm;
+	gettimeofday(&tm,NULL);
+    // 86400 is 24hour to second
+	int64_t l_time = tm.tv_sec + 86400;
+	
+	// construct contract of script
+	CPubKey newKey;
+    if ( !pwalletMain->GetKeyFromPool(newKey) )
+        throw JSONRPCError(RPC_WALLET_KEYPOOL_RAN_OUT,"Error: Keypool ran out,please call keypoolrefill first");
+	uint160 refund =  newKey.gethash();
+	uint160 addr = address.GetData();
+
+	CScript contract =  CScript() << OP_IF << OP_RIPEMD160 << ToByteVector(secret_hash) << OP_EQUALVERIFY << OP_DUP << OP_HASH160 \
+	<< ToByteVector(addr) << OP_ELSE << l_time << OP_CHECKLOCKTIMEVERIFY << OP_DROP << OP_DUP << OP_HASH160\
+	<< ToByteVector(refund) << OP_ENDIF << OP_EQUALVERIFY << OP_CHECKSIG;
     UniValue result(UniValue::VOBJ);
     return result;
 
@@ -1019,7 +1062,19 @@ UniValue crosschainredeem(const UniValue &params, bool fHelp)
 {
     if (fHelp || params.size() !=3)
         throw runtime_error(
-            "params.size error\n"
+            "crosschainredeem \"contract\" \"contract transaction\" \"secret\" \n"
+            "\nCreate crosschain redeem transaction (serialized, hex-encoded) to local node and network.\n"
+            "\nArguments:\n"
+            "1. \"contract \"  (string,required) The contract in hex\n"
+            "2. \"contract transaction \"  (string,required) The contract raw transaction in hex\n"
+            "3. \"secret \"  (string,required) (string,required) The secret in hex\n"
+            "nResult:\n"
+            "\"Redeem fee\"      (string) The Redeem fee of redeem transacton\n"
+            "\"hex\"             (string) The redeem transaction hash in hex\n"
+            "\"hex\"             (string) The redeem raw transaction in hex\n"
+			"\nExamples:\n"
+			"\nCreate a redeem transaction\n"
+            + HelpExampleCli("crosschainredeem", "\"63a6148887e0860cc6d28972b4622e9f2e1c2bc4fce57a8876a9140a836d8ee19150b965b93a8724e65a79d73100306704f9e50b5bb17576a914de71cb447f326f3a70f9da4a8369ad3068a3493f6888ac \"0100000002355bfc80e5e4d14c634131a30f121a49b27daec201b592d0079247d189dba9a2000000006b483045022100c3ebf9d0a2b44c0a20b84b37bce495f91de3ebd706de9a15cecf77548d2c1a3002203970002c5493b170bd375010b8876799af721a07900c6eb4ee7c21c140469922012103942f6cd9b855c565acd40406a692d39805eef3ab38ec56166afb6d04b071fc21feffffffcb53ff98a0d504249b04c8fe829e9a0c3bd468caeaaba50f3da6d16b0b69eaf3000000006a4730440220138197f27a806028f3bd885aa0e0fecd3b9e2cce43f09d18ed7219e5a087ab0e022075e18b7a8031d340ef2f97fd2efef3a51fbe1b0a2ae04cb76f3ba4ca500e895b01210286921478ed27357ee44f5a5340b051a33b84f5654b7c1d3ec5da2dc9f39d6e3afeffffff02a0850b54020000001976a9142488e2ce9de4952ce739d5cb0df3f2f6bae2395c88ac00e40b540200000017a914babe4713f8e43291e490f738e1b38474440be152872c010000 \"e93e589dda24433fcac88a42b995ad24bafe3b5acd45d71bd66a8feedab27a70\"")
         );
     UniValue result(UniValue::VOBJ);
 
@@ -1214,7 +1269,19 @@ UniValue crosschainrefund(const UniValue &params, bool fHelp)
 {
     if (fHelp || params.size() !=2)
         throw runtime_error(
-            "params.size error\n"
+		"crosschainrefund \"contract \"contract transaction \n"
+		"\nCreate crosschain refund transaction (serialized, hex-encoded) to local node and network.\n"
+		"\nArguments:\n"
+		"1. \"contract \"  (string,required) The contract in hex\n"
+		"2. \"contract transaction \"  (string,required) The contract raw transaction in hex\n"
+		"nResult:\n"
+		"\"Refund fee\" 	 (string) The refund fee of redeem transacton\n"
+		"\"hex\"			 (string) The refund transaction hash in hex\n"
+		"\"hex\"			 (string) The refund raw transaction in hex\n"
+		"\nExamples:\n"
+		"\nCreate a refund transaction\n"
+		+ HelpExampleCli("crosschainrefund", "63a6148887e0860cc6d28972b4622e9f2e1c2bc4fce57a8876a9140a836d8ee19150b965b93a8724e65a79d73100306704f9e50b5bb17576a914de71cb447f326f3a70f9da4a8369ad3068a3493f6888ac " 
+		"0100000002355bfc80e5e4d14c634131a30f121a49b27daec201b592d0079247d189dba9a2000000006b483045022100c3ebf9d0a2b44c0a20b84b37bce495f91de3ebd706de9a15cecf77548d2c1a3002203970002c5493b170bd375010b8876799af721a07900c6eb4ee7c21c140469922012103942f6cd9b855c565acd40406a692d39805eef3ab38ec56166afb6d04b071fc21feffffffcb53ff98a0d504249b04c8fe829e9a0c3bd468caeaaba50f3da6d16b0b69eaf3000000006a4730440220138197f27a806028f3bd885aa0e0fecd3b9e2cce43f09d18ed7219e5a087ab0e022075e18b7a8031d340ef2f97fd2efef3a51fbe1b0a2ae04cb76f3ba4ca500e895b01210286921478ed27357ee44f5a5340b051a33b84f5654b7c1d3ec5da2dc9f39d6e3afeffffff02a0850b54020000001976a9142488e2ce9de4952ce739d5cb0df3f2f6bae2395c88ac00e40b540200000017a914babe4713f8e43291e490f738e1b38474440be152872c010000 ")
         );
 
 	//the return data
@@ -1265,6 +1332,84 @@ UniValue crosschainrefund(const UniValue &params, bool fHelp)
 	CAmount preOutAmount = 0;
 	COutPoint preOutPoint;
 	uint256 preTxid = preTx.GetHash();	
+	CTxOut preTxOut;
+	uint32_t preOutN =0;	
+	std::vector<valtype> vSolutions;
+	txnouttype addressType = TX_NONSTANDARD;
+	uint160 addrhash;
+
+	BOOST_FOREACH(const CTxOut& txout, preTx.vout) 
+	{
+		const CScript scriptPubkey = StripClaimScriptPrefix(txout.scriptPubKey);
+		if (Solver(scriptPubkey, addressType, vSolutions))
+		{
+			if(addressType== TX_SCRIPTHASH )
+			{
+				addrhash=uint160(vSolutions[0]);
+				preOutAmount =	txout.nValue;
+				CTxIn tmptxin = CTxIn(preTxid,preOutN,CScript(),(std::numeric_limits<uint32_t>::max()-1));
+				tmptxin.prevPubKey = txout.scriptPubKey;
+				txNew.vin.push_back(tmptxin);
+				break;					
+			}
+		}
+		preOutN++;
+	}
+
+	if(addressType !=TX_SCRIPTHASH)
+		{
+			throw JSONRPCError(RPC_INVALID_PARAMS, "Error:the transaction have none P2SH type tx out");	
+		}	
+
+	//check the contract is match transaction or not 
+	if ( 0 != strcmp(addrhash.ToString().c_str(),Hash160(vContract).ToString().c_str()) )
+	{
+		return JSONRPCError(RPC_INVALID_PARAMS, "Error:the contract in parameter can't match transaction in parameter");
+	}	
+
+	//get the pubkey and key of participate address
+	const CKeyStore& keystore = *pwalletMain;
+	CKeyID keyID(refundAddressHash);
+	CPubKey pubKey;
+	CKey key;	
+	if(!keystore.GetPubKey(keyID,pubKey))
+		{
+			return JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Error:Can't find the pubkey of participte address");			
+		}
+	if(!keystore.GetKey(keyID,key))
+		{
+			return JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Error:Can't find the key of participte address");	
+		}
+
+	//get the out pubkey type p2pkh
+	CReserveKey reservekey(pwalletMain);
+	CPubKey newKey;
+	bool ret;
+	ret = reservekey.GetReservedKey(newKey);
+	assert(ret);
+	CBitcoinAddress outPutAddress(CTxDestination(newKey.GetID()));
+	if (!outPutAddress.IsValid())
+		return JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
+
+	// Start building the lock script for the p2pkh type.
+	CScript refundP2PkHScript = GetScriptForDestination(CTxDestination(newKey.GetID()));
+	CAmount nAmount = preOutAmount- nFeePay;
+	CTxOut outNew(nAmount,refundP2PkHScript);
+	txNew.vout.push_back(outNew);
+
+	txNew.nLockTime = lockTime;
+	txNew.nVersion = 1;
+
+	// Sign the refund transaction
+	
+	CTransaction txNewConst(txNew);
+	std::vector<unsigned char> vchSig;
+	CScript scriptSigRs;
+	uint256 hash = SignatureHash(contract, txNew, 0, SIGHASH_ALL);
+
+    bool signSuccess = key.Sign(hash, vchSig);	
+   	bool verifySuccess = pubKey.Verify(hash,vchSig);
+	vchSig.push_back((unsigned char)SIGHASH_ALL);	
 
     return result;
 }
