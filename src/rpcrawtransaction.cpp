@@ -1455,6 +1455,9 @@ UniValue crosschainrefund(const UniValue &params, bool fHelp)
 
 	double fFeePay = (double)nFeePay;
 	string strRefundFee = strprintf("Refund fee: %.8f UT(%.8f UT/kB)\n", (fFeePay / COIN), ((fFeePay / COIN)/nBytes));
+	result.push_back(Pair("Refund fee",strRefundFee));
+	result.push_back(Pair("Refund transaction hash",CTransaction(txNew).GetHash().GetHex()));
+	result.push_back(Pair("Refund transaction",EncodeHexTx(CTransaction(txNew))));		
 
     return result;
 }
