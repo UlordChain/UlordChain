@@ -1032,6 +1032,28 @@ UniValue crosschainparticipate(const UniValue &params, bool fHelp)
     CAmount nAmount = AmountFromValue(params[1]);
     if (nAmount <= 0)
         throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
+	std::vector<unsigned char>secret_hash;
+	std::vector<unsigned char> u_base = ParseHex(params[2].get_str());
+	string str_temp(u_base.begin(),u_base.end());
+	DecodeBase58(str_temp, secret_hash);
+	cout << params[2].get_str() << endl;
+	
+	// Gets the current Unix timestamp.(hex)
+	struct timeval tm;
+	gettimeofday(&tm,NULL);
+    // 86400 is 24hour to second
+	int64_t l_time = tm.tv_sec + 86400;
+	
+	// construct contract of script
+	CPubKey newKey;
+    if ( !pwalletMain->GetKeyFromPool(newKey) )
+        throw JSONRPCError(RPC_WALLET_KEYPOOL_RAN_OUT,"Error: Keypool ran out,please call keypoolrefill first");
+	uint160 refund =  newKey.gethash();
+	uint160 addr = address.GetData();
+
+	CScript contract =  CScript() << OP_IF << OP_RIPEMD160 << ToByteVector(secret_hash) << OP_EQUALVERIFY << OP_DUP << OP_HASH160 \
+	<< ToByteVector(addr) << OP_ELSE << l_time << OP_CHECKLOCKTIMEVERIFY << OP_DROP << OP_DUP << OP_HASH160\
+	<< ToByteVector(refund) << OP_ENDIF << OP_EQUALVERIFY << OP_CHECKSIG;
     UniValue result(UniValue::VOBJ);
     return result;
 
