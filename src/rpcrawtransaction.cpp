@@ -1423,6 +1423,10 @@ UniValue crosschainrefund(const UniValue &params, bool fHelp)
 			scriptSigRs= script1 + script2 + script4;
 			txNew.vin[0].scriptSig = scriptSigRs;				
 		}
+	else
+		{
+			return JSONRPCError(RPC_INTERNAL_ERROR, "ERROR:sign transaction error");
+		}
 
     return result;
 }
