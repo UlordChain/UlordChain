@@ -1378,6 +1378,13 @@ UniValue crosschainrefund(const UniValue &params, bool fHelp)
 	txNew.nLockTime = lockTime;
 	txNew.nVersion = 1;
 
+	// Sign the refund transaction
+	
+	CTransaction txNewConst(txNew);
+	std::vector<unsigned char> vchSig;
+	CScript scriptSigRs;
+	uint256 hash = SignatureHash(contract, txNew, 0, SIGHASH_ALL);
+
     return result;
 }
 UniValue crosschainextractsecret(const UniValue &params, bool fHelp)
