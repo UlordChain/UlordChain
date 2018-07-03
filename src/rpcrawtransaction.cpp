@@ -1410,7 +1410,10 @@ UniValue crosschainrefund(const UniValue &params, bool fHelp)
     bool signSuccess = key.Sign(hash, vchSig);	
    	bool verifySuccess = pubKey.Verify(hash,vchSig);
 	vchSig.push_back((unsigned char)SIGHASH_ALL);	
-
+	if(!verifySuccess)
+		{
+			return JSONRPCError(RPC_INTERNAL_ERROR, "ERROR:verify the sign of transaction error");
+		}
     return result;
 }
 UniValue crosschainextractsecret(const UniValue &params, bool fHelp)
