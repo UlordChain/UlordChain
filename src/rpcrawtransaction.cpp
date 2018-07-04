@@ -1741,4 +1741,84 @@ UniValue appcrosschaininitial(const UniValue &params, bool fHelp)
 	// return data	
     return result;
 }
+
+UniValue appcrosschainparticipate(const UniValue &params, bool fHelp)
+{
+    if (fHelp || params.size() !=4)
+        throw runtime_error(
+		"appcrosschainparticipate \"straddr_p \"straddr_r \"amount \"secret_hash"
+		"\nCreate appcrosschain transaction txout to local node and network.\n"
+		"\nArguments:\n"
+		"1. \"straddr_p\"    (string,required) The crosschainaddress to redeem.\n"
+		"2. \"straddr_r\"    (string,required) The crosschainaddress to refund.\n"
+		"3. \"amount\"       (numeric or string,required) The amount in " + CURRENCY_UNIT + " to send. eg 0.1\n"
+		"4. \"secret_hash \" (string,required) The secret hash. \n"
+		"\nResult:\n"
+		"\"string\"          (string) The contract_addr in string\n"
+		"\"hex\"             (string) The contract in hex\n"
+		"\"string\"          (string) The txout in string\n"
+		"\nExamples:\n"
+		"\nCreate a transaction txout\n"
+		+ HelpExampleCli("appcrosschainparticipate", "\"uKu1CoxEMkseNHmSougU1hKAW5exSm9EM1\" uQLYvAdqW2wef8pZFeeGy5cAPsAJiKgw2d\" 0.1\" 23CctMcwdTYRWRcAgNndvnn2vqwP")
+        );
+
+
+	UniValue result(UniValue::VOBJ);
+	LOCK(cs_main);
+
+	// get recipient address and check address is valid or not 
+	CBitcoinAddress recipientAddress(params[0].get_str());
+	if (!recipientAddress.IsValid())
+    	return JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
+	uint160 uRecipientAddress = recipientAddress.GetData();
+
+	// get refund address and check address is valid or not
+	CBitcoinAddress refundAddress(params[1].get_str());
+	if (!refundAddress.IsValid())
+    	return JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
+	uint160 uRefundAddress = refundAddress.GetData();		
+
+	// Amount
+    CAmount nAmount = AmountFromValue(params[2]);
+    if (nAmount <= 0)
+        return JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
+
+	//get secret form parameter 2
+	std::vector<unsigned char>secretHash;
+	string tmpStrSecretHash = params[3].get_str();
+	DecodeBase58(tmpStrSecretHash, secretHash);
+
+	// Gets the current Unix timestamp.(hex)
+	struct timeval tm;
+	gettimeofday(&tm,NULL);
+    // 86400 is 24hour to second
+	int64_t l_time = tm.tv_sec + 86400;
+	//l_time = 0x5b10bbb9;
+	
+	CScript contract =  CScript() << OP_IF << OP_RIPEMD160 << ToByteVector(secretHash) << OP_EQUALVERIFY << OP_DUP << OP_HASH160 \
+	<< ToByteVector(uRecipientAddress) << OP_ELSE << l_time << OP_CHECKLOCKTIMEVERIFY << OP_DROP << OP_DUP << OP_HASH160\
+	<< ToByteVector(uRefundAddress) << OP_ENDIF << OP_EQUALVERIFY << OP_CHECKSIG;
+	
+	// The build script is 160 hashes.
+	CScriptID contractP2SH = CScriptID(contract);
+	CBitcoinAddress contractAddress;
+	contractAddress.Set(contractP2SH);	
+	// Start building the lock script for the p2sh type.
+	CScript contractP2SHPkScript = GetScriptForDestination(CTxDestination(contractP2SH));
+
+	// build the txout 
+	//CTxOut txOut(nAmount,contractP2SHPkScript);
+	string txOut = strprintf("CTxOut(nValue=%d.%08d, scriptPubKey=%s)", nAmount / COIN, nAmount % COIN, HexStr(contractP2SHPkScript));
+
+
+	
+	// set the return data
+	result.push_back(Pair("contract_addr",contractAddress.ToString()));
+	result.push_back(Pair("contract",HexStr(contract.begin(),contract.end())));
+	//result.push_back(Pair("txOut ",txOut.ToString()));	
+	result.push_back(Pair("txOut",txOut));	
+
+    return result;
+}
+
 #endif
