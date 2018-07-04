@@ -2063,5 +2063,135 @@ UniValue appcrosschainextractsecret(const UniValue &params, bool fHelp)
 
 }
 
+UniValue appcrosschainauditcontract(const UniValue &params, bool fHelp)
+{
+    if (fHelp || params.size() !=2)
+        throw runtime_error(
+        "appcrosschainauditcontract \"contract\" rawtx1\n"
+        "\nAudit appcrosschain transactions and crosschain contracts.\n"
+        "\nArguments:\n"
+        "1. \"contract\"  (string,required) The crosschain contract(hex string) to to send to .\n"
+        "2. \"rawtx1 \"   (string,required) The hex string of the raw transaction\n"
+        "\nResult:\n"
+        "\"string\"       (string) is_contract in string\n"
+        "\"amount\"       (amount) tx_value in amount \n"
+        "\"string\"       (string) part_addr in string\n"
+        "\"string\"       (string) screct_hash in string\n"
+        "\"string\"       (string) lock_time in string\n"
+        "\nExamples:\n"
+        "\naduit the contract\n"
+        + HelpExampleCli("appcrosschainauditcontract", "\"63a6144a807c17c36019a0292000e1631c5ba25389ff4a8876a9140a836d8ee19150b965b93a8724e65a79d73100306704b9bb105bb17576a9143b38cd88198165424d71d8e6b51e8ad487c4d0556888ac " "\"0100000002244d79a1ab2a96c83d334927e13827cea01d50dd061267312ec35a89dab11f22000000006a473044022069692f31c4efb3cca9c43712309257752fff2598987474d083cbdde8c0930f6e02201ec4d256b94dfba16505333fabc8fd4839191eec997329e7ea85b444793794ad012103d94b9c0228e38a7dac0c20d03d68fafca8dd815f44a6abf32e622451e54f9a4efeffffff2c5929b77a3cc49adda1672fd803594a27544ef6122a027235beebe85a096c85000000006a473044022002fab97f2be5dea37cd1d4db0deba637346cde5e019deee3e2228fd19ba3ad1102207ee0b869f4f67511b1b1df5f280870917322df177b44d19ddf160136c5ca5bff0121030366e82c8d7a17eccb5ed0b170a862983ae855a3ffb79939269227f1a0ff932dfeffffff02549e474d000000001976a914413a859d58dc1fd6888c502ced862ca1e1726b2288ac00e40b540200000017a91472a36a34582b29e75a6d78a39c962f325fa73e6287a4050000")
+
+        );
+	
+	//the return data	
+    UniValue result(UniValue::VOBJ);
+
+	LOCK(cs_main);
+	RPCTypeCheck(params, boost::assign::list_of(UniValue::VSTR)(UniValue::VSTR));
+		
+    //check params size
+    if ((params[0].get_str().size() <= 0)||(params[1].get_str().size() <= 0))
+		{
+			return JSONRPCError(RPC_INVALID_PARAMS, "Error:the parameter size can't be zero");
+		}
+
+	//get the contract from parameter 0
+	string strContract = params[0].get_str();
+	std::vector<unsigned char>vContract = ParseHex(strContract);
+	CScript contract(vContract.begin(),vContract.end());
+
+	//split the contract
+	std::string contractString  = ScriptToAsmStr(contract);
+	std::vector<std::string> vStr;
+    boost::split( vStr, contractString, boost::is_any_of( " " ), boost::token_compress_on );
+
+    //contract check
+	if(!contract.IsCrossChainPaymentScript())
+		{
+			return JSONRPCError(RPC_INVALID_PARAMS, "Error:the parameter is no stander contract");
+		}	
+
+	// get recipient address and check address is valid or not 
+	CBitcoinAddress recipientAddress;	
+	std::vector<unsigned char> uRcepit = ParseHex(vStr[6]);
+	uint160 repecit(uRcepit);	
+	recipientAddress.Set((CKeyID&)repecit);
+	if (!recipientAddress.IsValid())
+    	return JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
+	
+    //decode the tx
+	CTransaction preTx;
+	if (!DecodeHexTx(preTx, params[1].get_str()))
+       return JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
+
+	//get secret hash from contract
+	std::vector<unsigned char> contractSecretHash = ParseHex(vStr[2]);	
+	uint160 uContractSecretHash(contractSecretHash);
+	// Base58 encoding the secret
+    std::string strSecretHash = EncodeBase58(contractSecretHash);
+
+	//declare transaction
+	CMutableTransaction txNew;
+	
+    //get the redeem amount
+	CAmount preOutAmount = 0;
+	COutPoint preOutPoint;
+	uint256 preTxid = preTx.GetHash();
+	CTxOut preTxOut;
+	uint32_t preOutN =0;	
+	std::vector<valtype> vSolutions;
+	txnouttype addressType = TX_NONSTANDARD;
+	uint160 addrhash;
+			
+	BOOST_FOREACH(const CTxOut& txout, preTx.vout) 
+	{
+		const CScript scriptPubkey = StripClaimScriptPrefix(txout.scriptPubKey);
+		if (Solver(scriptPubkey, addressType, vSolutions))
+		{
+	        if(addressType== TX_SCRIPTHASH )
+	        {
+	            addrhash=uint160(vSolutions[0]);
+				preOutAmount =  txout.nValue;
+				CTxIn tmptxin = CTxIn(preTxid,preOutN,CScript());
+				tmptxin.prevPubKey = txout.scriptPubKey;
+				txNew.vin.push_back(tmptxin);
+				break;	
+	        }
+		}
+		preOutN++;
+	}
+
+	if(addressType !=TX_SCRIPTHASH)
+	{
+		return JSONRPCError(RPC_INVALID_PARAMS, "Error:the transaction have none P2SH type tx out");	
+	}
+
+	//check the contract is match transaction or not 
+	if ( 0 != strcmp(addrhash.ToString().c_str(),Hash160(vContract).ToString().c_str()) )
+	{
+		return JSONRPCError(RPC_INVALID_PARAMS, "Error:the contract in parameter can't match transaction in parameter");
+	}
+
+	bool isTrueContract = true;
+	double reAmount  = (double)preOutAmount / COIN;
+
+
+//	int64_t i_locktime = atoi64(vStr[8]);	
+	string str_time;
+	str_time= vStr[8];
+
+	// set the return data
+	result.push_back(Pair("is_contract",isTrueContract));
+	result.push_back(Pair("tx_value",reAmount));
+	result.push_back(Pair("part_addr",recipientAddress.ToString()));
+	result.push_back(Pair("screct_hash",strSecretHash));	
+	result.push_back(Pair("lock_time",str_time));
+	//result.push_back(Pair("Locktime:",DateTimeStrFormat("%Y-%m-%d %H:%M:%S",i_locktime)));
+	
+    return result;
+}
+
+
 
 #endif
