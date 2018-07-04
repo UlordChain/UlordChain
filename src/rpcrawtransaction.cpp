@@ -1483,6 +1483,18 @@ UniValue crosschainextractsecret(const UniValue &params, bool fHelp)
 	LOCK(cs_main);
 	RPCTypeCheck(params, boost::assign::list_of(UniValue::VSTR));
 
+    //check params size
+    if (params[0].get_str().size() <= 0)
+		{
+			return JSONRPCError(RPC_INVALID_PARAMS, "Error:the parameter size can't be zero");
+		}
+	
+	//decode the tx
+	CTransaction redeemTx;
+	if (!DecodeHexTx(redeemTx, params[0].get_str()))
+       return JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
+	CScript scriptSig = redeemTx.vin[0].scriptSig;
+
     return result;
 
 
