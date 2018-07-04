@@ -1532,6 +1532,8 @@ UniValue crosschainextractsecret(const UniValue &params, bool fHelp)
 			return JSONRPCError(RPC_INVALID_PARAMS, "Error:the secret in parameter not match in in contract");		
 		}
 
+	//return the secret
+	result.push_back(Pair("secret",secretString));
 
     return result;
 
