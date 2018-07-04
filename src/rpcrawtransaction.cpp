@@ -1465,7 +1465,16 @@ UniValue crosschainextractsecret(const UniValue &params, bool fHelp)
 {
     if (fHelp || params.size() !=2)
         throw runtime_error(
-            "params.size error\n"
+		"crosschainextractsecret \"contract transaction \n"
+		"\nExtract secret from crosschain redeem transaction (serialized, hex-encoded).\n"
+		"\nArguments:\n"
+		"1. \redeem transaction \"  (string,required) The contract raw transaction in hex\n"
+		"nResult:\n"
+		"\"hex\"			 (string) The secret in hex\n"
+		"\nExamples:\n"
+		"\nextract secret\n"
+		+ HelpExampleCli("crosschainextractsecret",
+		"010000000199748737a44ab1e988434450704c7434390b662f529d8ef82b7da4061aa84b7d01000000e048304502210088b3a6145b1f5c42538884d7bba539b12b58e87d42f0428ed49198d46a1f7b8402204e595e24f04bf1886ff6ae1092d9a6d5aa9d5cfb8593adf221f5dd46c40341e7012103bd70e22349c72f10adb1e2e27c55fd8d044d99df6aea8a7e87224cad0e943f6120b0316faffb7b0f2b2229347ed6b7bf7b538ff5cbc8d89927862cd2a5c76a7da1514c5163a6140a5070c5c4b93675530823366b35e380ff80eb4c8876a9140a836d8ee19150b965b93a8724e65a79d73100306704d1f70b5bb17576a91466668c2a81e90433bf6cd055c149ca4bb3275ce46888acffffffff01e4d70b54020000001976a9148c9adfee5d9e1ea53e641263b28a1645c2030ade88ac3c010000 ")
         );
     UniValue result(UniValue::VOBJ);
     return result;
