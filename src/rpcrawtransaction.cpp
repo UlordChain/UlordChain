@@ -1515,6 +1515,10 @@ UniValue crosschainextractsecret(const UniValue &params, bool fHelp)
 	std::vector<std::string> vStrC;
     boost::split( vStrC, contractString, boost::is_any_of( " " ), boost::token_compress_on );	
 
+	//get secret hash from contract
+	std::vector<unsigned char> contractSecretHash = ParseHex(vStrC[2]);	
+	uint160 uContractSecretHash(contractSecretHash);
+
     return result;
 
 
