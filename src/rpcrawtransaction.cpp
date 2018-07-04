@@ -1821,4 +1821,96 @@ UniValue appcrosschainparticipate(const UniValue &params, bool fHelp)
     return result;
 }
 
+UniValue appcrosschainredeem(const UniValue &params, bool fHelp)
+{
+    if (fHelp || params.size() !=4)
+        throw runtime_error(
+            "appcrosschainredeem \"contract\" \"scriptsig\" \"pubkey \"secret "
+            "\nCreate appcrosschain redeem transaction scriptsig (hex-encoded) to local node and network.\n"
+            "\nArguments:\n"
+            "1. \"contract \"  (string,required) The contract in hex\n"
+            "2. \"scriptsig \" (string,required) The scriptsig in hex\n"
+            "3. \"pubkey \"    (string,required) The pubkey in hex\n"
+            "3. \"secret \"    (string,required) (string,required) The secret in hex\n"
+            "nResult:\n"
+            "\"string\"        (string) The scriptsig to redeem transacton\n"
+			"\nExamples:\n"
+			"\nCreate a redeem transaction scriptsig\n"
+            + HelpExampleCli("appcrosschainredeem", "\"63a6144a807c17c36019a0292000e1631c5ba25389ff4a8876a9140a836d8ee19150b965b93a8724e65a79d73100306704b9bb105bb17576a9143b38cd88198165424d71d8e6b51e8ad487c4d0556888ac  \"30440220411f58f7ce0a890501ab5fcb2ac718c207a2e51a249ec2ab795f18046efffd98022008b0c025e653c1ad9cd74cce36f70534c35676b5e81e3da01166e3bb27b9b8e8  \"03bd70e22349c72f10adb1e2e27c55fd8d044d99df6aea8a7e87224cad0e943f61 \"f6eaf6bdd41068a49aa5e8fa201b34cf9d334b2d41c5218b3be4ed0232386bed \"")
+        );
+	
+	//the return data
+	UniValue result(UniValue::VOBJ);
+
+	LOCK(cs_main);
+	RPCTypeCheck(params, boost::assign::list_of(UniValue::VSTR)(UniValue::VSTR)(UniValue::VSTR)(UniValue::VSTR));
+
+    //check params size
+    if ((params[0].get_str().size() <= 0)||(params[1].get_str().size() <= 0)||(params[2].get_str().size() <= 0)||(params[3].get_str().size() <= 0))
+		{
+			return JSONRPCError(RPC_INVALID_PARAMS, "Error:the parameter size can't be zero");
+		}
+
+	//get the contract from parameter 0
+	string strContract = params[0].get_str();
+	std::vector<unsigned char>vContract = ParseHex(strContract);
+	CScript contract(vContract.begin(),vContract.end());
+
+	//split the contract
+	std::string contractString  = ScriptToAsmStr(contract);
+	std::vector<std::string> vStr;
+    boost::split( vStr, contractString, boost::is_any_of( " " ), boost::token_compress_on );
+
+    //contract check
+	if(!contract.IsCrossChainPaymentScript())
+		{
+			return JSONRPCError(RPC_INVALID_PARAMS, "Error:the parameter is no stander contract");
+		}	
+
+	//get secret hash from contract
+	std::vector<unsigned char> contractSecretHash = ParseHex(vStr[2]);	
+	uint160 uContractSecretHash(contractSecretHash);
+
+    //get secret form parameter 2
+	std::vector<unsigned char> secretVector =ParseHexV(params[3], "secret");
+
+	//check the secret in parameter and in contract
+	std::vector<unsigned char> transactionSecretHash(20);
+	CRIPEMD160().Write(begin_ptr(secretVector), secretVector.size()).Finalize(begin_ptr(transactionSecretHash));
+	uint160 uTransactionSecretHash(transactionSecretHash);	
+	if ( 0 != strcmp(uContractSecretHash.ToString().c_str(),uTransactionSecretHash.ToString().c_str()) )
+		{
+			return JSONRPCError(RPC_INVALID_PARAMS, "Error:the secret in parameter not match in in contract");		
+		}
+
+	//get participent address hash
+	std::vector<unsigned char> vParticipentAddressHash = ParseHex(vStr[6]);
+	uint160 participentAddressHash(vParticipentAddressHash);
+
+	std::vector<unsigned char> vpubkey = ParseHexV(params[2], "pubkey");
+	uint160 pubkeyAddressHash = Hash160(vpubkey);
+	if ( 0 != strcmp(participentAddressHash.ToString().c_str(),pubkeyAddressHash.ToString().c_str()) )
+		{
+			return JSONRPCError(RPC_INVALID_PARAMS, "Error:the pubkey not match participent address in contract");		
+		}
+
+	std::vector<unsigned char> vchSig = ParseHexV(params[1], "scriptsig");
+
+	CScript scriptSigRs;
+    vchSig.push_back((unsigned char)SIGHASH_ALL);
+	
+
+	CScript script1 =CScript() <<ToByteVector(vchSig);
+	CScript script2 =CScript() << ToByteVector(vpubkey);
+	CScript script3 =CScript() <<ToByteVector(secretVector);
+	CScript script4 =CScript() << OP_TRUE <<ToByteVector(vContract);
+	scriptSigRs= script1 + script2 + script3 + script4;
+	
+	string strScriptSigRs = strprintf("%s",HexStr(scriptSigRs));
+
+	result.push_back(Pair("scriptsig",strScriptSigRs));
+	return result;
+}
+
+
 #endif
