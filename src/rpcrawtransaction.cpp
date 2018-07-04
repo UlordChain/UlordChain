@@ -1519,6 +1519,10 @@ UniValue crosschainextractsecret(const UniValue &params, bool fHelp)
 	std::vector<unsigned char> contractSecretHash = ParseHex(vStrC[2]);	
 	uint160 uContractSecretHash(contractSecretHash);
 
+    //get secret form script sig
+    std::string secretString =vStr[2];
+	std::vector<unsigned char> scriptSigSecretVector =ParseHex(vStr[2]);
+
     return result;
 
 
