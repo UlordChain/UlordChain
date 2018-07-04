@@ -1495,6 +1495,15 @@ UniValue crosschainextractsecret(const UniValue &params, bool fHelp)
        return JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
 	CScript scriptSig = redeemTx.vin[0].scriptSig;
 
+	//split the scriptSig
+	std::string scriptSigString  = ScriptToAsmStr(scriptSig);
+	std::vector<std::string> vStr;
+    boost::split( vStr, scriptSigString, boost::is_any_of( " " ), boost::token_compress_on );
+
+	//get contract
+	std::vector<unsigned char> vContract = ParseHex(vStr[4]);
+	CScript contract(vContract.begin(),vContract.end());
+
     return result;
 
 
