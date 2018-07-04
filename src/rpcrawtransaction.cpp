@@ -1986,5 +1986,82 @@ UniValue appcrosschainrefund(const UniValue &params, bool fHelp)
 
 }
 
+UniValue appcrosschainextractsecret(const UniValue &params, bool fHelp)
+{
+    if (fHelp || params.size() !=1)
+        throw runtime_error(
+		"appcrosschainextractsecret \"rawtransaction \n"
+		"\nExtract secret from appcrosschain redeem transaction (serialized, hex-encoded).\n"
+		"\nArguments:\n"
+		"1.\rawtransaction \"  (string,required) The contract raw transaction in hex\n"
+		"nResult:\n"
+		"\"hex\"               (string) The secret in hex\n"
+		"\nExamples:\n"
+		"\nextract secret\n"
+		+ HelpExampleCli("appcrosschainextractsecret",
+		"01000000010a130c5570ea583c97c363e8ff328a780c311c1dd508e44958ea6b9e9a580b4c01000000df4730440220411f58f7ce0a890501ab5fcb2ac718c207a2e51a249ec2ab795f18046efffd98022008b0c025e653c1ad9cd74cce36f70534c35676b5e81e3da01166e3bb27b9b8e8012103bd70e22349c72f10adb1e2e27c55fd8d044d99df6aea8a7e87224cad0e943f6120f6eaf6bdd41068a49aa5e8fa201b34cf9d334b2d41c5218b3be4ed0232386bed514c5163a6144a807c17c36019a0292000e1631c5ba25389ff4a8876a9140a836d8ee19150b965b93a8724e65a79d73100306704b9bb105bb17576a9143b38cd88198165424d71d8e6b51e8ad487c4d0556888acffffffff01e4d70b54020000001976a9146f9af477ac6f6e1aa67d26bcef71c20855e2f10c88aca6050000 ")
+        );
+	//the return data	
+    UniValue result(UniValue::VOBJ);
+
+	LOCK(cs_main);
+	RPCTypeCheck(params, boost::assign::list_of(UniValue::VSTR));
+	
+    //check params size
+    if (params[0].get_str().size() <= 0)
+		{
+			return JSONRPCError(RPC_INVALID_PARAMS, "Error:the parameter size can't be zero");
+		}
+	
+	//decode the tx
+	CTransaction redeemTx;
+	if (!DecodeHexTx(redeemTx, params[0].get_str()))
+       return JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
+	CScript scriptSig = redeemTx.vin[0].scriptSig;
+	
+	//split the scriptSig
+	std::string scriptSigString  = ScriptToAsmStr(scriptSig);
+	std::vector<std::string> vStr;
+    boost::split( vStr, scriptSigString, boost::is_any_of( " " ), boost::token_compress_on );
+
+	//get contract
+	std::vector<unsigned char> vContract = ParseHex(vStr[4]);
+	CScript contract(vContract.begin(),vContract.end());
+	
+	//contract check
+	if(!contract.IsCrossChainPaymentScript())
+		{
+			return JSONRPCError(RPC_INVALID_PARAMS, "Error:the parameter is no stander contract");
+		}
+	
+	//split the contract
+	std::string contractString  = ScriptToAsmStr(contract);
+	std::vector<std::string> vStrC;
+    boost::split( vStrC, contractString, boost::is_any_of( " " ), boost::token_compress_on );	
+	
+	//get secret hash from contract
+	std::vector<unsigned char> contractSecretHash = ParseHex(vStrC[2]);	
+	uint160 uContractSecretHash(contractSecretHash);
+
+    //get secret form script sig
+    std::string secretString =vStr[2];
+	std::vector<unsigned char> scriptSigSecretVector =ParseHex(vStr[2]);
+
+	//check the secret in parameter and in contract
+	std::vector<unsigned char> transactionSecretHash(20);
+	CRIPEMD160().Write(begin_ptr(scriptSigSecretVector), scriptSigSecretVector.size()).Finalize(begin_ptr(transactionSecretHash));
+	uint160 uTransactionSecretHash(transactionSecretHash);	
+	if ( 0 != strcmp(uContractSecretHash.ToString().c_str(),uTransactionSecretHash.ToString().c_str()) )
+		{
+			return JSONRPCError(RPC_INVALID_PARAMS, "Error:the secret in parameter not match in in contract");		
+		}
+
+	//return the secret
+	result.push_back(Pair("secret",secretString));
+    return result;
+
+
+}
+
 
 #endif
