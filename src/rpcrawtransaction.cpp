@@ -1504,6 +1504,17 @@ UniValue crosschainextractsecret(const UniValue &params, bool fHelp)
 	std::vector<unsigned char> vContract = ParseHex(vStr[4]);
 	CScript contract(vContract.begin(),vContract.end());
 
+	//contract check
+	if(!contract.IsCrossChainPaymentScript())
+		{
+			return JSONRPCError(RPC_INVALID_PARAMS, "Error:the parameter is no stander contract");
+		}
+	
+	//split the contract
+	std::string contractString  = ScriptToAsmStr(contract);
+	std::vector<std::string> vStrC;
+    boost::split( vStrC, contractString, boost::is_any_of( " " ), boost::token_compress_on );	
+
     return result;
 
 
