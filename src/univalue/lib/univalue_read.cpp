@@ -9,7 +9,7 @@
 #include "univalue_utffilter.h"
 
 using namespace std;
-
+// judge is or not digit
 static bool json_isdigit(int ch)
 {
     return ((ch >= '0') && (ch <= '9'));
@@ -245,7 +245,7 @@ enum expect_bits {
 #define expect(bit) (expectMask & (EXP_##bit))
 #define setExpect(bit) (expectMask |= EXP_##bit)
 #define clearExpect(bit) (expectMask &= ~EXP_##bit)
-
+// read token from  raw 
 bool UniValue::read(const char *raw)
 {
     clear();

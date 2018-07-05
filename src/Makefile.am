@@ -284,7 +284,7 @@ libbitcoin_wallet_a_SOURCES = \
 
 # hello primitives library
 hello_libbitcoin_hello_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_CONFIG_INCLUDES) $(PIC_FLAGS)
-hello_libbitcoin_hello_a_CFLAGS = $(AM_CFLAGS) "-std=c99" 
+hello_libbitcoin_hello_a_CFLAGS = $(AM_CFLAGS) "-std=gnu99" 
 hello_libbitcoin_hello_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS) $(PIC_FLAGS)
 hello_libbitcoin_hello_a_SOURCES = \
     hello/PoW.c \

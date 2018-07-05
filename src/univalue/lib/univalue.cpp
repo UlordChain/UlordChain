@@ -19,22 +19,30 @@ namespace
 static bool ParsePrechecks(const std::string& str)
 {
     if (str.empty()) // No empty string allowed
+    {    
         return false;
+    }
     if (str.size() >= 1 && (json_isspace(str[0]) || json_isspace(str[str.size()-1]))) // No padding allowed
+    {    
         return false;
+    }    
     if (str.size() != strlen(str.c_str())) // No embedded NUL characters allowed
+    {    
         return false;
+    }    
     return true;
 }
 
 bool ParseInt32(const std::string& str, int32_t *out)
 {
     if (!ParsePrechecks(str))
+    {    
         return false;
+    }    
     char *endp = NULL;
     errno = 0; // strtol will not set errno if valid
     long int n = strtol(str.c_str(), &endp, 10);
-    if(out) *out = (int32_t)n;
+    if(out){ *out = (int32_t)n; }
     // Note that strtol returns a *long int*, so even if strtol doesn't report a over/underflow
     // we still have to check that the returned value is within the range of an *int32_t*. On 64-bit
     // platforms the size of these types may be different.
@@ -46,11 +54,13 @@ bool ParseInt32(const std::string& str, int32_t *out)
 bool ParseInt64(const std::string& str, int64_t *out)
 {
     if (!ParsePrechecks(str))
+    {    
         return false;
+    }    
     char *endp = NULL;
     errno = 0; // strtoll will not set errno if valid
     long long int n = strtoll(str.c_str(), &endp, 10);
-    if(out) *out = (int64_t)n;
+    if(out){ *out = (int64_t)n;}
     // Note that strtoll returns a *long long int*, so even if strtol doesn't report a over/underflow
     // we still have to check that the returned value is within the range of an *int64_t*.
     return endp && *endp == 0 && !errno &&
@@ -71,7 +81,7 @@ bool ParseDouble(const std::string& str, double *out)
     if(out) *out = result;
     return text.eof() && !text.fail();
 }
-}
+}//namespace 
 
 using namespace std;
 
@@ -96,7 +106,9 @@ bool UniValue::setBool(bool val_)
     clear();
     typ = VBOOL;
     if (val_)
+    {    
         val = "1";
+    }    
     return true;
 }
 
@@ -195,8 +207,9 @@ bool UniValue::push_backV(const std::vector<UniValue>& vec)
 bool UniValue::pushKV(const std::string& key, const UniValue& val)
 {
     if (typ != VOBJ)
+    {    
         return false;
-
+    }
     keys.push_back(key);
     values.push_back(val);
     return true;
