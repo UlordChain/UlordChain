@@ -20,8 +20,8 @@ void crypto_hmac_md5(uint8_t *input, uint32_t inputLen, uint8_t *output) {
 	uint8_t hmacMd5Digest[MD5_DIGEST_LENGTH];
 	unsigned int mdLen;
 
-// "OpenSSL 1.1.0h-fips  27 Mar 2018"
-#if (OPENSSL_VERSION_NUMBER >= 0x1010008fL)
+// "OpenSSL 1.1.0-pre1-fips (alpha) 10 Dec 2015"
+#if (OPENSSL_VERSION_NUMBER >= 0x10100001L)	
 	HMAC_CTX *ctx;
 
 	ctx = HMAC_CTX_new();
