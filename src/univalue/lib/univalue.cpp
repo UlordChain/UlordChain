@@ -81,7 +81,7 @@ bool ParseDouble(const std::string& str, double *out)
     if(out) *out = result;
     return text.eof() && !text.fail();
 }
-}
+}//namespace 
 
 using namespace std;
 
