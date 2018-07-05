@@ -106,7 +106,9 @@ bool UniValue::setBool(bool val_)
     clear();
     typ = VBOOL;
     if (val_)
+    {    
         val = "1";
+    }    
     return true;
 }
 
