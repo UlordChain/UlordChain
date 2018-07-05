@@ -9,7 +9,7 @@
 #include "univalue_utffilter.h"
 
 using namespace std;
-
+// judge is or not digit
 static bool json_isdigit(int ch)
 {
     return ((ch >= '0') && (ch <= '9'));
