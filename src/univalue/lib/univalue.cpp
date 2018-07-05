@@ -54,7 +54,9 @@ bool ParseInt32(const std::string& str, int32_t *out)
 bool ParseInt64(const std::string& str, int64_t *out)
 {
     if (!ParsePrechecks(str))
+    {    
         return false;
+    }    
     char *endp = NULL;
     errno = 0; // strtoll will not set errno if valid
     long long int n = strtoll(str.c_str(), &endp, 10);
