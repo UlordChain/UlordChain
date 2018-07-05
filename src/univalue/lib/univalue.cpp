@@ -36,7 +36,9 @@ static bool ParsePrechecks(const std::string& str)
 bool ParseInt32(const std::string& str, int32_t *out)
 {
     if (!ParsePrechecks(str))
+    {    
         return false;
+    }    
     char *endp = NULL;
     errno = 0; // strtol will not set errno if valid
     long int n = strtol(str.c_str(), &endp, 10);
