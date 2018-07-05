@@ -60,7 +60,7 @@ bool ParseInt64(const std::string& str, int64_t *out)
     char *endp = NULL;
     errno = 0; // strtoll will not set errno if valid
     long long int n = strtoll(str.c_str(), &endp, 10);
-    if(out) *out = (int64_t)n;
+    if(out){ *out = (int64_t)n;}
     // Note that strtoll returns a *long long int*, so even if strtol doesn't report a over/underflow
     // we still have to check that the returned value is within the range of an *int64_t*.
     return endp && *endp == 0 && !errno &&
