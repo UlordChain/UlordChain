@@ -207,8 +207,9 @@ bool UniValue::push_backV(const std::vector<UniValue>& vec)
 bool UniValue::pushKV(const std::string& key, const UniValue& val)
 {
     if (typ != VOBJ)
+    {    
         return false;
-
+    }
     keys.push_back(key);
     values.push_back(val);
     return true;
