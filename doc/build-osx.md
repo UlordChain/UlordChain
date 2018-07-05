@@ -5,7 +5,7 @@ This guide will show you how to build ulordd (headless client) for OSX.
 Notes
 -----
 
-* Tested on OS X 10.7 through 10.11 on 64-bit Intel processors only.
+* Tested on OS X 10.11 through 10.13 on 64-bit Intel processors only.
 
 * All of the commands should be executed in a Terminal application. The
 built-in one is located in `/Applications/Utilities`.
@@ -17,7 +17,7 @@ You need to install Xcode with all the options checked so that the compiler
 and everything is available in /usr not just /Developer. Xcode should be
 available on your OS X installation media, but if not, you can get the
 current version from https://developer.apple.com/xcode/. If you install
-Xcode 4.3 or later, you'll need to install its command line tools. This can
+Xcode 9.0 or later, you'll need to install its command line tools. This can
 be done in `Xcode > Preferences > Downloads > Components` and generally must
 be re-done or updated every time Xcode is updated.
 
