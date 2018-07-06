@@ -286,8 +286,8 @@ UniValue validateaddress(const UniValue& params, bool fHelp)
             "  \"account\" : \"account\"         (string) DEPRECATED. The account associated with the address, \"\" is the default account\n"
             "}\n"
             "\nExamples:\n"
-            + HelpExampleCli("validateaddress", "\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\"")
-            + HelpExampleRpc("validateaddress", "\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\"")
+            + HelpExampleCli("validateaddress", "\"URZFLwbfLeFeiZ2cEEcgcgBggBZBvuMkak\"")
+            + HelpExampleRpc("validateaddress", "\"URZFLwbfLeFeiZ2cEEcgcgBggBZBvuMkak\"")
         );
 
 #ifdef ENABLE_WALLET
