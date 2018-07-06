@@ -105,6 +105,4 @@ Issues and commit changes are welcome.
 
 Testing
 -------
-
-Tests are placed in /tests directory.
-
+You can find the unit test cases [here](./src/test).
