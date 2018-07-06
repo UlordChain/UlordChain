@@ -820,8 +820,8 @@ UniValue getaddressbalance(const UniValue& params, bool fHelp)
             "  \"received\"  (string) The total number of satoshis received (including change)\n"
             "}\n"
             "\nExamples:\n"
-            + HelpExampleCli("getaddressbalance", "'{\"addresses\": [\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\"]}'")
-            + HelpExampleRpc("getaddressbalance", "{\"addresses\": [\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\"]}")
+            + HelpExampleCli("getaddressbalance", "'{\"addresses\": [\"URZFLwbfLeFeiZ2cEEcgcgBggBZBvuMkak\"]}'")
+            + HelpExampleRpc("getaddressbalance", "{\"addresses\": [\"URZFLwbfLeFeiZ2cEEcgcgBggBZBvuMkak\"]}")
         );
 
     std::vector<std::pair<uint160, int> > addresses;
