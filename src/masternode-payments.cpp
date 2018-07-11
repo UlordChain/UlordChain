@@ -531,6 +531,7 @@ bool CMasternodeBlockPayees::GetBestPayee(CScript& payeeRet)
         return false;
     }
 
+    //find the max votes
     int nVotes = -1;
     BOOST_FOREACH(CMasternodePayee& payee, vecPayees) {
         if (payee.GetVoteCount() > nVotes) {
