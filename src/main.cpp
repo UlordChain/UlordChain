@@ -2649,6 +2649,118 @@ public:
     }
 };
 
+//
+#ifdef ENABLE_ADDRSTAT
+bool  g_bSqlClose=false;
+int   g_sqlblockheight = 0;
+
+ofstream * g_fout;//( "dbdata1.txt");
+int   g_filecount;
+int   g_reccount;
+
+int MyAddrDb_init()
+{
+    g_filecount=1; 
+    g_reccount=0;
+    char filepath[100]={""};
+    sprintf(filepath,"dbdata%d.txt", g_filecount);
+	std::string file = GetFilePath(filepath);
+	LogPrintf("MyAddrDb_init:new file  %s ",file );
+    g_fout= new ofstream(file.c_str());
+    
+    return 0;
+}
+
+void UpdateAddrMyDb(const int  height )
+{
+    if(g_bSqlClose==true) return;
+    if(height!=0 &&height <= g_sqlblockheight)
+    {
+        //LogPrintf("sqldb"," update addr height %d \n",g_sqlblockheight );
+      //cout << "update height height"<<g_sqlblockheight << endl;
+
+        return;
+    }
+	if(height!=g_sqlblockheight+1)
+	 {
+              LogPrintf("height check  update addr height %d %d ",height,g_sqlblockheight );
+	      cout << "update height height"<<g_sqlblockheight<< " " << height << endl;
+	      exit(1);
+	 }
+	 g_sqlblockheight=height;
+
+    if(g_reccount > 1000000 )
+    {
+        char filepath[100]={""};
+        g_filecount++;
+        sprintf(filepath,"dbdata%d.txt", g_filecount);
+		std::string file = GetFilePath(filepath);
+        LogPrintf("UpdateAddrMyDb:new file height check  update addr height %d  %s ",height,file );
+        g_fout->close();
+        delete g_fout;
+        g_fout= new  ofstream(file.c_str());
+        g_reccount=1;
+    }
+    return;
+}
+
+int my_insert(const char * pAddr , CAmount amount,int nHeight,int txIdx,int type)
+{
+    if(!g_fout->is_open())
+    {
+    	printf("file is not open\n");
+		return 0;
+    }
+    *g_fout<<pAddr<<","<<amount<<","<<nHeight<<","<<txIdx<<","<<type<<endl;
+    g_reccount++;
+    return 1;
+}
+
+void AddAddrMyDbIndex(const CScript& scriptPubKey, CAmount nAmount, unsigned int txIdx ,unsigned int  vIdx, int height )
+{
+    if(height!=0 &&height <= g_sqlblockheight)
+    {
+        //LogPrintf("sqldb"," update addr height %d \n",g_sqlblockheight );
+		//cout << "update height height"<<g_sqlblockheight << endl;
+
+        return;
+    }
+    txnouttype type;
+    std::vector<CTxDestination> addresses;
+    int nRequired;
+    int  nCount;
+    if(nAmount==0)return;
+    if (!ExtractDestinations(scriptPubKey, type, addresses, nRequired)) {
+        //CScript strippedScript = StripClaimScriptPrefix(scriptPubKey);
+		//if (!ExtractDestinations(strippedScript, type, addresses, nRequired))
+		{
+        	LogPrintf("error Failed to extract %d tx %d vdx %d amount %d addr  %s  \n",height,txIdx,vIdx,nAmount, HexStr(scriptPubKey.begin(), scriptPubKey.end()).c_str() );
+			//LogPrintf("Failed to extract addr  %s  \n",HexStr(scriptPubKey.begin(), scriptPubKey.end()).c_str() );
+			cout << "Failed to extract  "<<type<<"height"<<height<<"txidx"<<txIdx  << endl;
+			cout << "hex" <<HexStr(scriptPubKey.begin(), scriptPubKey.end()) << endl;
+ 			//exit(1);
+ 		}
+    }
+	nCount=0;
+    for (const CTxDestination& addr : addresses)
+    {
+		if(nCount==0)
+            my_insert(CBitcoinAddress(addr).ToString().c_str() , nAmount,height,txIdx,type);
+    	else
+        {
+            LogPrintf("error Failed to extract multiaddr hei %d type %d  tx %d vdx %d amount %d addr  %s  \n",height,type,txIdx,vIdx,nAmount,CBitcoinAddress(addr).ToString()); 
+	    	cout <<"addr" <<nCount<<"type" <<type<<" "<< CBitcoinAddress(addr).ToString()<< endl;
+ 
+        }
+        nCount++;
+    }
+}
+#endif // ENABLE_ADDRSTAT
+//
+
+std::string GetAddrString(uint160 hash){ return CBitcoinAddress(CKeyID(hash)).ToString(); }
+
+
 // Protected by cs_main
 static ThresholdConditionCache warningcache[VERSIONBITS_NUM_BITS];
 
@@ -2835,6 +2947,9 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
                         // and to find the amount and address from an input
                         spentIndex.push_back(make_pair(CSpentIndexKey(input.prevout.hash, input.prevout.n), CSpentIndexValue(txhash, j, pindex->nHeight, prevout.nValue, addressType, hashBytes)));
                     }
+#ifdef ENABLE_ADDRSTAT
+					AddAddrMyDbIndex(prevout.scriptPubKey,prevout.nValue * -1,i,j,pindex->nHeight);
+#endif // ENABLE_ADDRSTAT
                 }
 
             }
@@ -2984,6 +3099,9 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
                     // record unspent output
                     addressUnspentIndex.push_back(make_pair(CAddressUnspentKey(addressType, hashBytes, txhash, k), CAddressUnspentValue(out.nValue, out.scriptPubKey, pindex->nHeight)));
 				}
+#ifdef ENABLE_ADDRSTAT
+				AddAddrMyDbIndex(out.scriptPubKey,out.nValue,i,k,pindex->nHeight);
+#endif // ENABLE_ADDRSTAT
             }
         }
 
@@ -3015,6 +3133,9 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
         vPos.push_back(std::make_pair(tx.GetHash(), pos));
         pos.nTxOffset += ::GetSerializeSize(tx, SER_DISK, CLIENT_VERSION);
     }
+#ifdef ENABLE_ADDRSTAT
+	UpdateAddrMyDb(pindex->nHeight);
+#endif // ENABLE_ADDRSTAT
 
     assert(trieCache.incrementBlock(blockundo.insertUndo, blockundo.expireUndo, blockundo.insertSupportUndo, blockundo.expireSupportUndo, blockundo.takeoverHeightUndo));
 
