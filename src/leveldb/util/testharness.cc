@@ -20,7 +20,7 @@ struct Test {
 };
 std::vector<Test>* tests;
 }
-
+// test fixture 
 bool RegisterTest(const char* base, const char* name, void (*func)()) {
   if (tests == NULL) {
     tests = new std::vector<Test>;
