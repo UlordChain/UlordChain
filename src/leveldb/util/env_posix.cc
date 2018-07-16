@@ -188,7 +188,7 @@ class PosixWritableFile : public WritableFile {
       fclose(file_);
     }
   }
-
+// append slice data ,if not equal length throw execption
   virtual Status Append(const Slice& data) {
     size_t r = fwrite_unlocked(data.data(), 1, data.size(), file_);
     if (r != data.size()) {
