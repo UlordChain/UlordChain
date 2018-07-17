@@ -93,7 +93,8 @@ Configure and build
 
 ### Run
 
-    cd src && ./ulordd -daemon # use ./ulord-cli to make rpc call
+    cd src && ./ulordd -daemon 
+    #You can use **./ulord-cli help** to obtain Ulord's commands.
 
 Development Process
 -------------------
