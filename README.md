@@ -94,7 +94,7 @@ Configure and build
 ### Run
 
     cd src && ./ulordd -daemon 
-    #You can use **./ulord-cli help** to obtain Ulord's commands.
+    #You can use ./ulord-cli help  to obtain Ulord's commands.
 
 Development Process
 -------------------
