@@ -177,7 +177,8 @@ enum opcodetype
     OP_UPDATE_CLAIM = OP_NOP8,
     OP_NOP9 = 0xb8,
     OP_NOP10 = 0xb9,
-
+    OP_NAME_TRIE = OP_NOP9,
+    OP_NAME_UPDATE = OP_NOP10,
 
     // template matching params
     OP_SMALLINTEGER = 0xfa,

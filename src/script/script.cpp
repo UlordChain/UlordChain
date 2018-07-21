@@ -137,8 +137,8 @@ const char* GetOpName(opcodetype opcode)
     case OP_CLAIM_NAME             : return "OP_CLAIM_NAME";                                                                                                                                                                                                                  
     case OP_SUPPORT_CLAIM          : return "OP_SUPPORT_CLAIM";
     case OP_UPDATE_CLAIM           : return "OP_UPDATE_CLAIM";
-    case OP_NOP9                   : return "OP_NOP9";
-    case OP_NOP10                  : return "OP_NOP10";
+    case OP_NAME_TRIE              : return "OP_NAME_TRIE";
+    case OP_NAME_UPDATE            : return "OP_NAME_UPDATE";
 
     case OP_INVALIDOPCODE          : return "OP_INVALIDOPCODE";
 

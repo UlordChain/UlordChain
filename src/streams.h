@@ -419,7 +419,12 @@ public:
         // Tells the size of the object if serialized to this stream
         return ::GetSerializeSize(obj, nType, nVersion);
     }
-
+    template<typename K, typename T>
+    unsigned int GetSerializeSize(const std::pair<K, T>& item)
+    {
+	// Tells the size of the object if serialized to this stream
+	return ::GetSerializeSize(item, nType, nVersion);
+    }
     template<typename T>
     CAutoFile& operator<<(const T& obj)
     {

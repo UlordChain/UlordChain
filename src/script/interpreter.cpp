@@ -374,6 +374,7 @@ bool EvalScript(vector<vector<unsigned char> >& stack, const CScript& script, un
                 }
 
                 case OP_CLAIM_NAME: case OP_SUPPORT_CLAIM: case OP_UPDATE_CLAIM:
+		case OP_NAME_TRIE:  case OP_NAME_UPDATE:
                 {
                     CScriptNum n(OP_0);
                     stack.push_back(vchZero);
@@ -418,7 +419,6 @@ bool EvalScript(vector<vector<unsigned char> >& stack, const CScript& script, un
                 }
 
                 case OP_NOP1: case OP_NOP4: case OP_NOP5:
-                case OP_NOP9: case OP_NOP10:
                 {
                     if (flags & SCRIPT_VERIFY_DISCOURAGE_UPGRADABLE_NOPS)
                         return set_error(serror, SCRIPT_ERR_DISCOURAGE_UPGRADABLE_NOPS);

@@ -11,6 +11,7 @@
 
 #include "init.h"
 #include "claimtrie.h"  // added opt
+#include "nametrie.h"	// name opt
 #include "crypto/common.h"
 #include "addrman.h"
 #include "amount.h"
@@ -260,7 +261,9 @@ void PrepareShutdown()
         pcoinsdbview = NULL;
         delete pblocktree;
         pblocktree = NULL;
-        delete pclaimTrie;                                                                                                                                                                                                                                                  
+	delete pnameTrie;
+	pnameTrie = NULL;
+        delete pclaimTrie;                                                      
         pclaimTrie = NULL;
     }
 #ifdef ENABLE_WALLET
@@ -1474,12 +1477,14 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
                 delete pcoinscatcher;
                 delete pblocktree;
 				delete pclaimTrie;  // claim opt
+		delete pnameTrie;   // name opt
 
                 pblocktree = new CBlockTreeDB(nBlockTreeDBCache, false, fReindex);
                 pcoinsdbview = new CCoinsViewDB(nCoinDBCache, false, fReindex);
                 pcoinscatcher = new CCoinsViewErrorCatcher(pcoinsdbview);
                 pcoinsTip = new CCoinsViewCache(pcoinscatcher);
 				pclaimTrie = new CClaimTrie(false, fReindex); // claim
+		pnameTrie = new CNameTrie(false,fReindex);    // name
 
                 if (fReindex) {
                     pblocktree->WriteReindexing(true);

@@ -318,6 +318,7 @@ BOOST_AUTO_TEST_CASE(claimtrie_insert_update_claim)
 
     CCoinsViewCache coins(pcoinsTip);
     CClaimTrieCache trieCache(pclaimTrie);
+    CNameTrieCache nameCache(pnameTrie);
     CBlockIndex* pindexState = chainActive.Tip();
     CValidationState state;
     CBlockIndex* pindex;
@@ -328,7 +329,7 @@ BOOST_AUTO_TEST_CASE(claimtrie_insert_update_claim)
         if (pindex == pindexState && (coins.DynamicMemoryUsage() + pcoinsTip->DynamicMemoryUsage()) <= nCoinCacheUsage)
         {
             bool fClean = true;
-            BOOST_CHECK(DisconnectBlock(block, state, pindex, coins, trieCache, &fClean));
+            BOOST_CHECK(DisconnectBlock(block, state, pindex, coins, trieCache,nameCache, &fClean));
             pindexState = pindex->pprev;
         }
     }
@@ -337,7 +338,7 @@ BOOST_AUTO_TEST_CASE(claimtrie_insert_update_claim)
         pindex = chainActive.Next(pindex);
         CBlock block;
         BOOST_CHECK(ReadBlockFromDisk(block, pindex, Params().GetConsensus()));
-        BOOST_CHECK(ConnectBlock(block, state, pindex, coins, trieCache));
+        BOOST_CHECK(ConnectBlock(block, state, pindex, coins, trieCache,nameCache));
     }
     
     // Roll back the last block, make sure tx1 and tx7 are put back in the trie
