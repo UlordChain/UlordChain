@@ -3583,7 +3583,7 @@ void ListNameTrie(const CWalletTx& wtx, const std::string &strAccount, int nMinD
         }
     }    
 }
-
+// list local account_name
 UniValue listnametrie(const UniValue &params, bool fHelp)
 {
 	 if ( !EnsureWalletIsAvailable(fHelp) )
