@@ -23,6 +23,8 @@ CMasternode::CMasternode() :
     pubKeyMasternode(),
     lastPing(),
     vchSig(),
+	certificate(),
+	validTimes(0),
     sigTime(GetAdjustedTime()),
     nLastDsq(0),
     nTimeLastChecked(0),
@@ -46,6 +48,8 @@ CMasternode::CMasternode(CService addrNew, CTxIn vinNew, CPubKey pubKeyCollatera
     pubKeyMasternode(pubKeyMasternodeNew),
     lastPing(),
     vchSig(),
+    certificate(),
+    validTimes(0),
     sigTime(GetAdjustedTime()),
     nLastDsq(0),
     nTimeLastChecked(0),
@@ -69,6 +73,8 @@ CMasternode::CMasternode(const CMasternode& other) :
     pubKeyMasternode(other.pubKeyMasternode),
     lastPing(other.lastPing),
     vchSig(other.vchSig),
+    certificate(other.certificate),
+    validTimes(other.validTimes),    
     sigTime(other.sigTime),
     nLastDsq(other.nLastDsq),
     nTimeLastChecked(other.nTimeLastChecked),
@@ -92,6 +98,8 @@ CMasternode::CMasternode(const CMasternodeBroadcast& mnb) :
     pubKeyMasternode(mnb.pubKeyMasternode),
     lastPing(mnb.lastPing),
     vchSig(mnb.vchSig),
+    certificate(mnb.certificate),
+    validTimes(mnb.validTimes),
     sigTime(mnb.sigTime),
     nLastDsq(0),
     nTimeLastChecked(0),
@@ -301,9 +309,9 @@ void CMasternode::Check(bool fForce)
 	{
 		nTimeLastCheckedRegistered = GetTime();
 		//CMasternode mn(*this);
-		if(!mnodeman.CheckActiveMaster(*this))
+		if(mnodeman.CheckCertificateIsExpire(*this))
 		{
-			nActiveState = MASTERNODE_NO_REGISTERED;
+			nActiveState = MASTERNODE_CERTIFICATE_FAILED;
 			LogPrint("masternode", "CMasternode::Check -- Masternode %s is in %s state now\n", vin.prevout.ToStringShort(), GetStateString());
 			return;
 		}
@@ -359,6 +367,7 @@ std::string CMasternode::StateToString(int nStateIn)
         case MASTERNODE_NEW_START_REQUIRED:     return "NEW_START_REQUIRED";
         case MASTERNODE_POSE_BAN:               return "POSE_BAN";
 		case MASTERNODE_NO_REGISTERED:          return "NO_REGISTERED";
+		case MASTERNODE_CERTIFICATE_FAILED:		return "CERTIFICATE_FAILD";
         default:                                return "UNKNOWN";
     }
 }
@@ -703,9 +712,10 @@ bool CMasternodeBroadcast::CheckOutpoint(int& nDos)
 
 	// check if it is registered on the Ulord center server
 	CMasternode mn(*this);
-	if(!mnodeman.CheckActiveMaster(mn))
+	if(!mnodeman.CheckRegisteredMaster(mn))
 	{
-		LogPrintf("CMasternodeBroadcast::CheckOutpoint -- Failed to find Masternode in the UlordCenter's masternode list, masternode=%s\n", mn.vin.prevout.ToStringShort());
+		nActiveState = MASTERNODE_CERTIFICATE_FAILED;
+		LogPrintf("CMasternodeBroadcast::CheckOutpoint -- Failed to check Masternode certificate, masternode=%s\n", mn.vin.prevout.ToStringShort());
 		return false;
 	}
 
@@ -814,6 +824,14 @@ CMasternodePing::CMasternodePing(CTxIn& vinNew)
     vin = vinNew;
     blockHash = chainActive[chainActive.Height() - 12]->GetBlockHash();
     sigTime = GetAdjustedTime();
+	
+	CMasternode* pmn = mnodeman.Find(vin);
+	if(pmn)
+	{
+	    validTimes = pmn->validTimes;
+	    certificate = pmn->certificate;
+		pubKeyMasternode = pmn->pubKeyMasternode;
+	}
     vchSig = std::vector<unsigned char>();
 }
 
@@ -944,6 +962,40 @@ bool CMasternodePing::CheckAndUpdate(CMasternode* pmn, bool fFromNewBroadcast, i
     Relay();
 
     return true;
+}
+
+bool CMasternodePing::CheckRegisteredMaster(CMasternodePing& mnp)
+{
+
+	CPubKey pubkeyFromSig;
+	std::vector<unsigned char> vchSigRcv;
+	vchSigRcv = ParseHex(mnp.certificate);
+		
+	CPubKey pubkeyLocal(ParseHex(mstnd_SigPubkey));	
+
+		
+	CHashWriter ss(SER_GETHASH, 0);
+	ss << strMessageMagic;
+	ss << mnp.vin.prevout.hash.GetHex();
+	ss << mnp.vin.prevout.n;
+	ss << mnp.pubKeyMasternode.GetID().ToString();
+	ss << mnp.validTimes;
+
+	uint256 reqhash = ss.GetHash();
+		
+	if(!pubkeyFromSig.RecoverCompact(reqhash, vchSigRcv)) {
+		LogPrintf("VerifymsnRes:Error recovering public key.");
+		return false;
+	}
+
+	if(pubkeyFromSig.GetID() != pubkeyLocal.GetID()) {
+		LogPrintf("Keys don't match: pubkey=%s, pubkeyFromSig=%s, hash=%s, vchSig=%s",
+					pubkeyLocal.GetID().ToString().c_str(), pubkeyFromSig.GetID().ToString().c_str(), ss.GetHash().ToString().c_str(),
+					EncodeBase64(&vchSigRcv[0], vchSigRcv.size()));
+		return false;
+	}
+	return true;
+
 }
 
 void CMasternodePing::Relay()

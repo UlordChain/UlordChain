@@ -19,7 +19,7 @@ CMasternodeMan mnodeman;
 CService ucenterservice;
 
 const std::string CMasternodeMan::SERIALIZATION_VERSION_STRING = "CMasternodeMan-Version-4";
-const int mstnd_iReqBufLen = 500;
+const int mstnd_iReqBufLen = 600;
 const int mstnd_iReqMsgHeadLen = 4;
 const int mstnd_iReqMsgTimeout = 10;
 const std::string mstnd_SigPubkey = "03e867486ebaeeadda25f1e47612cdaad3384af49fa1242c5821b424937f8ec1f5";
@@ -137,10 +137,9 @@ bool SendRequestNsg(SOCKET sock, CMasternode &mn, mstnodequest &mstquest)
 	memset(cbuf,0,sizeof(cbuf));
 	int buflength = 0;
 	
-	CBitcoinAddress address(mn.pubKeyCollateralAddress.GetID());
-	
-	mstquest.SetMasterAddr(address.ToString()/*std::string("uRr71rfTD1nvpmxaSxou5ATvqGriXCysrL")*/);
 	mstquest._timeStamps = GetTime();
+	mstquest._txid = mn.vin.prevout.hash.GetHex();
+	mstquest._voutid = mn.vin.prevout.n;
 	
 	//std::cout << "check masternode addr " << mstquest._masteraddr << std::endl;
 	LogPrintf("CheckActiveMaster: start check masternode %s\n", mstquest._masteraddr);
@@ -167,18 +166,22 @@ bool SendRequestNsg(SOCKET sock, CMasternode &mn, mstnodequest &mstquest)
 }
 
 extern const std::string strMessageMagic;
-bool VerifymsnRes(const mstnoderes & res, const mstnodequest & qst)
+bool VerifymsnRes(const CMasternode &mn)
 {
 	CPubKey pubkeyFromSig;
 	std::vector<unsigned char> vchSigRcv;
-	vchSigRcv = ParseHex(res._signstr);
+	vchSigRcv = ParseHex(mn.certificate);
 		
-	CPubKey pubkeyLocal(ParseHex(mstnd_SigPubkey));
+	CPubKey pubkeyLocal(ParseHex(mstnd_SigPubkey));	
 		
 	CHashWriter ss(SER_GETHASH, 0);
-    ss << strMessageMagic;
-    ss << qst._masteraddr;
-	ss << qst._timeStamps;
+        ss << strMessageMagic;
+        ss << mn.vin.prevout.hash.GetHex();
+	ss << mn.vin.prevout.n;
+	
+	ss << mn.pubKeyMasternode.GetID().ToString();
+	ss << mn.validTimes;
+	
 	uint256 reqhash = ss.GetHash();
 		
 	if(!pubkeyFromSig.RecoverCompact(reqhash, vchSigRcv)) {
@@ -190,13 +193,12 @@ bool VerifymsnRes(const mstnoderes & res, const mstnodequest & qst)
         LogPrintf("Keys don't match: pubkey=%s, pubkeyFromSig=%s, hash=%s, vchSig=%s",
                     pubkeyLocal.GetID().ToString().c_str(), pubkeyFromSig.GetID().ToString().c_str(), ss.GetHash().ToString().c_str(),
                     EncodeBase64(&vchSigRcv[0], vchSigRcv.size()));
-		/*std::cout << "Keys don't match: pubkey = " << pubkeyLocal.GetID().ToString() << " ,pubkeyFromSig = " << pubkeyFromSig.GetID().ToString()
-			<< std::endl << "wordHash = " << reqhash.ToString()
-			<< std::endl << "vchSig = " << EncodeBase64(&vchSigRcv[0], vchSigRcv.size()) << std::endl;*/
         return false;
     }
 	return true;
 }
+
+
 
 CMasternodeMan::CMasternodeMan()
 : cs(),
@@ -218,33 +220,33 @@ CMasternodeMan::CMasternodeMan()
   nDsqCount(0)
 {}
 
-bool CMasternodeMan::CheckActiveMaster(CMasternode &mn)
-{
-	//return false;
-    // Activation validation of the primary node.
-    // It is still in the testing phase, and the code will be developed after the test.
-
-	if (!sporkManager.IsSporkActive(SPORK_18_REQUIRE_MASTER_VERIFY_FLAG))
-	{
-		return true;
-	}
-
-    bool proxyConnectionFailed = false;
-    SOCKET hSocket;
-    if(ConnectSocket(ucenterservice, hSocket, DEFAULT_CONNECT_TIMEOUT, &proxyConnectionFailed))
-    {
-        if (!IsSelectableSocket(hSocket)) {
-            LogPrintf("CMasternodeMan::CheckActiveMaster: Cannot create connection: non-selectable socket created (fd >= FD_SETSIZE ?)\n");
-            CloseSocket(hSocket);
-            return /*false*/true;
-        }
-
-		mstnodequest mstquest(111,MST_QUEST_ONE);		
-		if(!SendRequestNsg(hSocket, mn, mstquest))
-		{
-			CloseSocket(hSocket);
-			return error("CMasternodeMan::CheckActiveMaster: send RequestMsgType error");
-		}
+  bool CMasternodeMan::GetCertificateFromUcenter(CMasternode &mn)
+  {
+	  //return false;
+	  // Activation validation of the primary node.
+	  // It is still in the testing phase, and the code will be developed after the test.
+  
+	  if (!sporkManager.IsSporkActive(SPORK_18_REQUIRE_MASTER_VERIFY_FLAG))
+	  {
+		  return true;
+	  }
+  
+	  bool proxyConnectionFailed = false;
+	  SOCKET hSocket;
+	  if(ConnectSocket(ucenterservice, hSocket, DEFAULT_CONNECT_TIMEOUT, &proxyConnectionFailed))
+	  {
+		  if (!IsSelectableSocket(hSocket)) {
+			  LogPrintf("CMasternodeMan::GetCertificateFromUcenter: Cannot create connection: non-selectable socket created (fd >= FD_SETSIZE ?)\n");
+			  CloseSocket(hSocket);
+			  return false/*true*/;
+		  }
+  
+		  mstnodequest mstquest(111,MST_QUEST_ONE); 	  
+		  if(!SendRequestNsg(hSocket, mn, mstquest))
+		  {
+			  CloseSocket(hSocket);
+			  return error("CMasternodeMan::GetCertificateFromUcenter: send RequestMsgType error");
+		  }
 
 		char cbuf[mstnd_iReqBufLen];
 		memset(cbuf,0,sizeof(cbuf));
@@ -257,24 +259,24 @@ bool CMasternodeMan::CheckActiveMaster(CMasternode &mn)
 			if((GetTime() - nTimeLast) >= mstnd_iReqMsgTimeout)
 			{
 				CloseSocket(hSocket);
-				LogPrintf("CMasternodeMan::CheckActiveMaster: Passed because wait for ack message timeout\n");
-				return /*error("CMasternodeMan::CheckActiveMaster: recv CMstNodeData timeout")*/true;
-			}
-		}
-		if(nBytes > mstnd_iReqBufLen)
-		{
-			CloseSocket(hSocket);
-			return error("CMasternodeMan::CheckActiveMaster: msg have too much bytes %d, need increase rcv buf size", nBytes);
-		}
-		
-		int msglen = 0;
-		memcpy(&msglen, cbuf, mstnd_iReqMsgHeadLen);
-		msglen = HNSwapl(msglen);
-
-		if(msglen != nBytes - mstnd_iReqMsgHeadLen)
-		{
-			CloseSocket(hSocket);
-			return error("CMasternodeMan::CheckActiveMaster: receive a error msg length is %d, recv bytes is %d", msglen, nBytes);
+				  LogPrintf("CMasternodeMan::GetCertificateFromUcenter: Passed because wait for ack message timeout\n");
+				  return error("CMasternodeMan::CheckActiveMaster: recv CMstNodeData timeout");
+			  }
+		  }
+		  if(nBytes > mstnd_iReqBufLen)
+		  {
+			  CloseSocket(hSocket);
+			  return error("CMasternodeMan::GetCertificateFromUcenter: msg have too much bytes %d, need increase rcv buf size", nBytes);
+		  }
+		  
+		  int msglen = 0;
+		  memcpy(&msglen, cbuf, mstnd_iReqMsgHeadLen);
+		  msglen = HNSwapl(msglen);
+  
+		  if(msglen != nBytes - mstnd_iReqMsgHeadLen)
+		  {
+			  CloseSocket(hSocket);
+			  return error("CMasternodeMan::GetCertificateFromUcenter: receive a error msg length is %d, recv bytes is %d", msglen, nBytes);
 		}
 		
 		std::string str(cbuf + mstnd_iReqMsgHeadLen, msglen);
@@ -286,36 +288,153 @@ bool CMasternodeMan::CheckActiveMaster(CMasternode &mn)
 
 		if(mstres._num > 0)
 		{
-			if(!VerifymsnRes(mstres, mstquest))
+			  std::vector<CMstNodeData> vecnode;
+			  CMstNodeData	mstnode;
+			  for (int i = 0; i < mstres._num; ++i)
+			  {
+				  ia >> mstnode;
+				  //std::cout << "mstnode "<<mstnode._masteraddr<< " validflag " << mstnode._validflag << " hostname  "<<mstnode._hostname << "  "<< mstnode._hostip << std::endl;
+				  if(mstnode._validflag <= 0)
+				  {
+					  CloseSocket(hSocket);
+					  return error("receive a invalid validflag validflag %d", mstnode._validflag);
+				  }
+				  mn.validTimes = mstnode._validTimes;
+				  mn.certificate = mstnode._certificate;
+				  LogPrintf("CMasternodeMan::GetCertificateFromUcenter: MasterNode certificate %s time = %d\n", mstnode._certificate, mstnode._validTimes);
+				  vecnode.push_back(mstnode);
+			  	  if(!VerifymsnRes(mn))
+				  {
+				      LogPrintf("CMasternodeMan::GetCertificateFromUcenter: connect to center server update certificate failed\n");
+					  return false;
+				  }
+			  }
+			  //std::cout << "MasterNode check success *********************" << std::endl;
+			  LogPrintf("CMasternodeMan::GetCertificateFromUcenter: MasterNode %s check success\n", mstquest._txid);
+			  CloseSocket(hSocket);
+			  return true;
+		  }
+		  else 
+		  {
+			  return false;
+		  }    
+	  }
+	  CloseSocket(hSocket);
+	  LogPrintf("CMasternodeMan::GetCertificateFromUcenter: Passed because could't connect to center server\n");
+	  return /*false*/true;
+  }
+
+ bool CMasternodeMan::CheckCertificateIsExpire(CMasternode &mn)
+{
+	//Request to update the certificate if the expiration time is less than 2 day
+	if(mn.validTimes <= 0 || mn.validTimes - Ahead_Update_Certificate < GetTime())
+	{
+		int loop_time = 3;
+		while(loop_time--)
+		{
+			if(!GetCertificateFromUcenter(mn))
 			{
-				CloseSocket(hSocket);
-				return error("CMasternodeMan::CheckActiveMaster: receive a error msg can't verify");;
+				LogPrintf("CMasternodeMan::CheckCertificateIsExpire: connect to center server update certificate failed\n");
+				sleep(2);
 			}
-			std::vector<CMstNodeData> vecnode;
-		    CMstNodeData  mstnode;
-			for (int i = 0; i < mstres._num; ++i)
-			{
-				ia >> mstnode;
-				//std::cout << "mstnode "<<mstnode._masteraddr<< " validflag " << mstnode._validflag << " hostname  "<<mstnode._hostname << "  "<< mstnode._hostip << std::endl;
-				if(mstnode._validflag <= 0)
-				{
-					CloseSocket(hSocket);
-					return error("receive a invalid validflag by mstnode %s, validflag %d", mstnode._masteraddr.c_str(), mstnode._validflag);
-				}
-				vecnode.push_back(mstnode);
-			}
-			//std::cout << "MasterNode check success *********************" << std::endl;
-			LogPrintf("CMasternodeMan::CheckActiveMaster: MasterNode %s check success\n", mstquest._masteraddr);
-			CloseSocket(hSocket);
-			return true;
+			else 
+				return false;
 		}
-        else 
-        {
-            return false;
-        }    
-    }
-	CloseSocket(hSocket);
-	LogPrintf("CMasternodeMan::CheckActiveMaster: Passed because could't connect to center server\n");
+		return true;		
+	}
+	
+	return false;
+}
+
+  bool CMasternodeMan::CheckRegisteredMaster(CMasternode &mn)
+ {
+	 //Certificate verify
+	 if(!VerifymsnRes(mn))
+	 {
+	 	 LogPrintf("CMasternodeMan::CheckRegisteredMaster -- Failed to check Masternode certificate, masternode=%s\n", mn.vin.prevout.ToStringShort());
+		 return false;
+	 }
+ 
+	 return true;
+ }
+
+ 
+bool CMasternodeMan::GetCertificate(CMasternode &mn)
+{
+    // Activation validation of the primary node.
+    // get certificate,make sure master had registered
+
+	if (!sporkManager.IsSporkActive(SPORK_18_REQUIRE_MASTER_VERIFY_FLAG))
+	{
+		return true;
+	}
+
+	char cbuf[mstnd_iReqBufLen];
+	memset(cbuf,0,sizeof(cbuf));
+	
+    bool ucenterfirst = GetBoolArg("-ucenterfirst", true);
+	if(!ucenterfirst)
+	{
+		
+		std::string strCettificate = GetArg("-certificate", "");
+		if(strCettificate.empty())
+		{
+			LogPrintf("CMasternodeMan::CheckActiveMaster -- Failed to find Masternode certificate\n");
+			return false;
+		}
+		
+		std::string strLastTime = GetArg("-lasttime", "");
+		if(strLastTime.empty())
+		{
+			LogPrintf("CMasternodeMan::CheckActiveMaster -- Failed to find Masternode strLastTime\n");
+			return false;
+		}
+		//Convert to timestamp
+		struct tm tmp_time;
+		strptime(strLastTime.c_str(), "%Y%m%d %H:%M:%S",&tmp_time);
+		time_t t = mktime(&tmp_time);
+		LogPrintf("CMasternodeMan::CheckActiveMaster -- strLastTime = %ld\n",t);
+		
+		if(t <= 0 || t - Ahead_Update_Certificate< GetAdjustedTime())
+		{
+			int loop_time = 3;
+			while(loop_time--)
+			{
+				if(!GetCertificateFromUcenter(mn))
+				{
+					LogPrintf("CMasternodeMan::GetCertificateFromUcenter -- check cetificate failed\n");
+					sleep(2);
+				}
+				else 
+					return true;
+			}
+			return false;
+
+		}
+		
+		mn.validTimes = t;
+		mn.certificate = strCettificate;
+		
+		if(!VerifymsnRes(mn))
+		{
+			return false;
+		}
+	}
+	else 
+	{
+		int loop_time = 3;
+		while(loop_time--)
+		{
+			if(!GetCertificateFromUcenter(mn))
+			{
+				LogPrintf("CMasternodeMan::GetCertificateFromUcenter -- check cetificate failed\n");
+				sleep(2);
+			}
+			else 
+				return true;
+		}
+		return false;
+	}
 	return /*false*/true;
 }
 
@@ -1077,6 +1196,16 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
 
         int nDos = 0;
         if(mnp.CheckAndUpdate(pmn, false, nDos)) return;
+
+		// check the certificate and make sure if the masternode had registered on the Ulord center server
+		if(!mnp.CheckRegisteredMaster(mnp))
+		{
+			if(pmn)
+				pmn->nActiveState = pmn->MASTERNODE_CERTIFICATE_FAILED;
+			
+			LogPrintf("CMasternodeMan::CheckRegisteredMaster -- Failed to check Masternode certificate, masternode=%s\n", mnp.vin.prevout.ToStringShort());
+			return ;
+		}
 
         if(nDos > 0) {
             // if anything significant failed, mark that node

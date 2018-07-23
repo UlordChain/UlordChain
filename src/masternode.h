@@ -31,15 +31,22 @@ class CMasternodePing
 {
 public:
     CTxIn vin;
+	CPubKey pubKeyMasternode;
     uint256 blockHash;
     int64_t sigTime; //mnb message times
+    	
+	int64_t validTimes;  //certificate available time
+	std::string certificate; //certificate证书
     std::vector<unsigned char> vchSig;
     //removed stop
 
     CMasternodePing() :
         vin(),
+		pubKeyMasternode(),
         blockHash(),
         sigTime(0),
+        validTimes(0),
+        certificate(),
         vchSig()
         {}
 
@@ -50,8 +57,11 @@ public:
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
         READWRITE(vin);
+		READWRITE(pubKeyMasternode);
         READWRITE(blockHash);
         READWRITE(sigTime);
+		READWRITE(validTimes);
+		READWRITE(certificate);
         READWRITE(vchSig);
     }
 
@@ -63,8 +73,11 @@ public:
         // by swapping the members of two classes,
         // the two classes are effectively swapped
         swap(first.vin, second.vin);
+		swap(first.pubKeyMasternode, second.pubKeyMasternode);
         swap(first.blockHash, second.blockHash);
         swap(first.sigTime, second.sigTime);
+		swap(first.validTimes, second.validTimes);
+		swap(first.certificate, second.certificate);
         swap(first.vchSig, second.vchSig);
     }
 
@@ -82,6 +95,7 @@ public:
     bool CheckSignature(CPubKey& pubKeyMasternode, int &nDos);
     bool SimpleCheck(int& nDos);
     bool CheckAndUpdate(CMasternode* pmn, bool fFromNewBroadcast, int& nDos);
+	bool CheckRegisteredMaster(CMasternodePing& mnp);
     void Relay();
 
     CMasternodePing& operator=(CMasternodePing from)
@@ -153,7 +167,8 @@ public:
         MASTERNODE_WATCHDOG_EXPIRED,
         MASTERNODE_NEW_START_REQUIRED,
         MASTERNODE_POSE_BAN,
-        MASTERNODE_NO_REGISTERED
+        MASTERNODE_NO_REGISTERED,
+        MASTERNODE_CERTIFICATE_FAILED
     };
 
     CTxIn vin;
@@ -162,6 +177,9 @@ public:
     CPubKey pubKeyMasternode;
     CMasternodePing lastPing;
     std::vector<unsigned char> vchSig;
+	
+	std::string certificate; //certificate证书
+	int64_t validTimes;  //certificate available time
     int64_t sigTime; //mnb message time
     int64_t nLastDsq; //the dsq count from the last dsq broadcast of this node
     int64_t nTimeLastChecked;
@@ -196,6 +214,8 @@ public:
         READWRITE(pubKeyMasternode);
         READWRITE(lastPing);
         READWRITE(vchSig);
+	READWRITE(certificate);
+	READWRITE(validTimes);
         READWRITE(sigTime);
         READWRITE(nLastDsq);
         READWRITE(nTimeLastChecked);
@@ -226,6 +246,8 @@ public:
         swap(first.pubKeyMasternode, second.pubKeyMasternode);
         swap(first.lastPing, second.lastPing);
         swap(first.vchSig, second.vchSig);
+	swap(first.certificate, second.certificate);
+	swap(first.validTimes, second.validTimes);
         swap(first.sigTime, second.sigTime);
         swap(first.nLastDsq, second.nLastDsq);
         swap(first.nTimeLastChecked, second.nTimeLastChecked);
@@ -365,6 +387,8 @@ public:
         READWRITE(pubKeyCollateralAddress);
         READWRITE(pubKeyMasternode);
         READWRITE(vchSig);
+		READWRITE(certificate);
+		READWRITE(validTimes);
         READWRITE(sigTime);
         READWRITE(nProtocolVersion);
         READWRITE(lastPing);
