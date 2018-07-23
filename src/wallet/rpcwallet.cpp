@@ -3339,7 +3339,9 @@ UniValue nametrie(const UniValue& params, bool fHelp)
     EnsureWalletIsUnlocked();
     CScript nameScript = CScript()<<OP_NAME_TRIE<<vchName<<vchAddr<<OP_2DROP<<OP_DROP;
     CreateNameTrie(nameScript,nAmount,wtx);
-    return wtx.GetHash().GetHex();
+    UniValue result(UniValue::VOBJ);
+    return result;
+    //return wtx.GetHash().GetHex();
 }
 void UpdateNameTrie(const std::vector<unsigned char>vchName, const uint160 claimId, const std::vector<unsigned char>vchValue, CAmount nAmount, CWalletTx& wtxNew, CWalletTx wtxIn, unsigned int nTxOut)
 {
