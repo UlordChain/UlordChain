@@ -3321,7 +3321,7 @@ UniValue nametrie(const UniValue& params, bool fHelp)
     );
     string sName = params[0].get_str();
 	const CNameTrieNode* current = pnameTrie->getNodeForName(sName);
-	if (!current)
+	if (current)
 	{
 		throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
 	}
