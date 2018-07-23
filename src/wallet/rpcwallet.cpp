@@ -3509,6 +3509,8 @@ void ListNameTrie(const CWalletTx& wtx, const std::string &strAccount, int nMinD
     wtx.GetAmounts(listReceived,listSent,nFee,strSentAccount,filter);
     bool fAllAccounts = (strAccount == string("*"));
     //only care about sent
+    UniValue result(UniValue::VOBJ);
+    return result;
     if ( (!listSent.empty() || nFee !=0 ) && (fAllAccounts || strAccount == strSentAccount) )
     {   
         BOOST_FOREACH(const COutputEntry &s,listSent)
