@@ -142,7 +142,6 @@ bool SendRequestNsg(SOCKET sock, CMasternode &mn, mstnodequest &mstquest)
 	mstquest._voutid = mn.vin.prevout.n;
 	
 	//std::cout << "check masternode addr " << mstquest._masteraddr << std::endl;
-	LogPrintf("CheckActiveMaster: start check masternode %s\n", mstquest._masteraddr);
 	
     std::ostringstream os;
     boost::archive::binary_oarchive oa(os);
