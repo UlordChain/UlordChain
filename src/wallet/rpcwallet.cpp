@@ -3654,5 +3654,7 @@ UniValue listnametrie(const UniValue &params, bool fHelp)
         ret.clear();
         ret.setArray();
         ret.push_backV(arrTmp);
-        return ret;
+        //return ret;
+	UniValue result(UniValue::VOBJ);
+    	return result;
 }
