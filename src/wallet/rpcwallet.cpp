@@ -3502,15 +3502,14 @@ void CreateNameTrie(CScript& claimScript, CAmount nAmount, CWalletTx& wtxNew)
 
 void ListNameTrie(const CWalletTx& wtx, const std::string &strAccount, int nMinDepth, UniValue &ret, const isminefilter &filter, bool list_spent)
 {
-	CAmount nFee;
+    CAmount nFee;
     string strSentAccount;
     list<COutputEntry> listSent;
     list<COutputEntry> listReceived;
     wtx.GetAmounts(listReceived,listSent,nFee,strSentAccount,filter);
     bool fAllAccounts = (strAccount == string("*"));
+    return;
     //only care about sent
-    UniValue result(UniValue::VOBJ);
-    return result;
     if ( (!listSent.empty() || nFee !=0 ) && (fAllAccounts || strAccount == strSentAccount) )
     {   
         BOOST_FOREACH(const COutputEntry &s,listSent)
