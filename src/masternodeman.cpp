@@ -2030,11 +2030,17 @@ bool CMstNodeData::VerifyLicense()
 {
     CPubKey pubkeyucenter(ParseHex(g_ucenterserverPubkey));
     CPubKey pubkeyFromSig;
-	std::vector<unsigned char> vchSigRcv;
-	vchSigRcv = ParseHex(_licence);
+	
+    bool fInvalid = false;
+    std::vector<unsigned char> vchSigRcv = DecodeBase64(_licence.c_str(), &fInvalid);
+
+    if (fInvalid) {
+        LogPrintf("CMstNodeData::VerifyLicense:masternode<%s:%d-%ld> license(%s) decode failed!", _txid.c_str(), _voutid, _licperiod, _licence.c_str());
+        return false;
+    }
 
     if(!pubkeyFromSig.RecoverCompact(GetLicenseWord(), vchSigRcv)) {
-		LogPrintf("CMstNodeData::VerifyLicense:masternode<%s:%d-%ld> license(%s) can not recover!", _txid.c_str(), _voutid, _licperiod, _licence.c_str());
+		LogPrintf("CMstNodeData::VerifyLicense:masternode<%s:%d-%ld> license(%s) recover pubkey failed!", _txid.c_str(), _voutid, _licperiod, _licence.c_str());
 		return false;
 	}
     if(pubkeyFromSig != pubkeyucenter) {
