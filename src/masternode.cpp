@@ -712,7 +712,7 @@ bool CMasternodeBroadcast::CheckOutpoint(int& nDos)
 
 	// check if it is registered on the Ulord center server
 	CMasternode mn(*this);
-	if(!mnodeman.CheckRegisteredMaster(mn))
+	if(!mnodeman.VerifyMasterCertificate(mn))
 	{
 		nActiveState = MASTERNODE_CERTIFICATE_FAILED;
 		LogPrintf("CMasternodeBroadcast::CheckOutpoint -- Failed to check Masternode certificate, masternode=%s\n", mn.vin.prevout.ToStringShort());
