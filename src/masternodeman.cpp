@@ -2058,6 +2058,8 @@ bool CMstNodeData::VerifyLicense()
 
 bool CMstNodeData::IsNeedUpdateLicense()
 {
+    if(_licperiod >= _nodeperiod)
+        return false;
     if(_licperiod <= 0 || _licperiod - LIMIT_MASTERNODE_LICENSE < GetTime())
         return true;
     return false;
