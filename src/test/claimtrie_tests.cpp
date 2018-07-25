@@ -338,7 +338,7 @@ BOOST_AUTO_TEST_CASE(claimtrie_insert_update_claim)
         pindex = chainActive.Next(pindex);
         CBlock block;
         BOOST_CHECK(ReadBlockFromDisk(block, pindex, Params().GetConsensus()));
-        BOOST_CHECK(ConnectBlock(block, state, pindex,trieCache,nameCache, coins));
+        BOOST_CHECK(ConnectBlock(block, state, pindex,coins,trieCache,nameCache));
     }
     
     // Roll back the last block, make sure tx1 and tx7 are put back in the trie
