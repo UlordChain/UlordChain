@@ -512,15 +512,12 @@ private:
     }  
       
 public:  
-    CMstNodeData():_version(0), _txid(""), _voutid(0), _validflag(0){}  
-  
+    CMstNodeData():_version(0), _txid(""), _voutid(0), _validflag(0){}
     CMstNodeData(int version, std::string txid, unsigned int voutid):_version(version), _txid(txid), _voutid(voutid){}
-
 	CMstNodeData(const CMasternode & mn);
-  
-    int GetVersion() const {return _version;}  
-    int GetValidFlag() const {return _validflag;}
+
 	uint256 GetLicenseWord();
+    bool CheckLicense();
 
     CMstNodeData & operator=(CMstNodeData &b)
     {
