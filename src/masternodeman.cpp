@@ -333,7 +333,7 @@ CMasternodeMan::CMasternodeMan()
   void CMasternodeMan::UpdateCertificate(CMasternode &mn)
   {
 	  //Request to update the certificate if the expiration time is less than 2 day
-	  if(mn.certifyPeriod <= 0 || mn.certifyPeriod - Ahead_Update_Certificate < GetTime())
+	  if(mn.certifyPeriod <= 0 || mn.certifyPeriod - LIMIT_MASTERNODE_LICENSE < GetTime())
 	  {
 		  GetCertificateFromUcenter(mn);
 	  }
