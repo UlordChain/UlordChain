@@ -383,13 +383,13 @@ public:
 // master node  quest  master register center  about master node info
 #define Center_Server_Version 7001
 #define Center_Server_VerFlag "ver"
-#define Center_Server_IP "118.190.150.58"
-#define Center_Server_Port "3009"
+//#define Center_Server_IP "118.190.150.58"
+//#define Center_Server_Port "3009"
 #define MasterNodeCoin 10000 
 #define WaitTimeOut (60*5)
 #define MAX_LENGTH 65536
 #define Length_Of_Char 5
-#define Ahead_Update_Certificate  172800  //Update the certificate two days in advance
+#define LIMIT_MASTERNODE_LICENSE  172800  //Update the certificate two days in advance
 
 /*extern bool CheckMasterInfoOfTx(CTxIn &vin);
 extern bool InitAndConnectOfSock(std::string&str);
@@ -518,6 +518,7 @@ public:
 
 	uint256 GetLicenseWord();
     bool VerifyLicense();
+    bool IsNeedUpdateLicense();
 
     CMstNodeData & operator=(CMstNodeData &b)
     {

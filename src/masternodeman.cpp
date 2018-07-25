@@ -325,7 +325,7 @@ CMasternodeMan::CMasternodeMan()
  bool CMasternodeMan::CheckCertificateIsExpire(CMasternode &mn)
 {
 	//Request to update the certificate if the expiration time is less than 2 day
-	if(mn.certifyPeriod <= 0 || mn.certifyPeriod - Ahead_Update_Certificate < GetTime())
+	if(mn.certifyPeriod <= 0 || mn.certifyPeriod - LIMIT_MASTERNODE_LICENSE < GetTime())
 	{
 		if(!GetCertificateFromUcenter(mn))
 		{
@@ -399,7 +399,7 @@ bool CMasternodeMan::GetCertificate(CMasternode &mn)
     bool ucenterfirst = GetBoolArg("-ucenterfirst", true);
 	if(!ucenterfirst)
 	{	
-		if(!GetCertificateFromConf(mn) || mn.certifyPeriod <= 0 || mn.certifyPeriod - Ahead_Update_Certificate< GetAdjustedTime())
+		if(!GetCertificateFromConf(mn) || mn.certifyPeriod <= 0 || mn.certifyPeriod - LIMIT_MASTERNODE_LICENSE< GetAdjustedTime())
 		{
 			if(!GetCertificateFromUcenter(mn))
 			{
@@ -2054,4 +2054,11 @@ bool CMstNodeData::VerifyLicense()
 		return false;
     }
     return true;
+}
+
+bool CMstNodeData::IsNeedUpdateLicense()
+{
+    if(_licperiod <= 0 || _licperiod - LIMIT_MASTERNODE_LICENSE < GetTime())
+        return true;
+    return false;
 }
