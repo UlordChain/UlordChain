@@ -2009,12 +2009,11 @@ void static InvalidBlockFound(CBlockIndex *pindex, const CValidationState &state
     }
 }
 
-void UpdateCoins(const CTransaction& tx, CValidationState &state, CCoinsViewCache &inputs, CTxUndo &txundo,CTxUndo& txundoname, int nHeight)
+void UpdateCoins(const CTransaction& tx, CValidationState &state, CCoinsViewCache &inputs, CTxUndo &txundo, int nHeight)
 {
     // mark inputs spent
     if (!tx.IsCoinBase()) {
         txundo.vprevout.reserve(tx.vin.size());
-        txundoname.vprevout.reserve(tx.vin.size());
         BOOST_FOREACH(const CTxIn &txin, tx.vin) {
             CCoinsModifier coins = inputs.ModifyCoins(txin.prevout.hash);
             unsigned nPos = txin.prevout.n;
@@ -2023,17 +2022,12 @@ void UpdateCoins(const CTransaction& tx, CValidationState &state, CCoinsViewCach
                 assert(false);
             // mark an outpoint spent, and construct undo information
             txundo.vprevout.push_back(CTxInUndo(coins->vout[nPos]));
-            txundoname.vprevout.push_back(CTxInUndo(coins->vout[nPos]));
             coins->Spend(nPos);
             if (coins->vout.size() == 0) {
                 CTxInUndo& undo = txundo.vprevout.back();
-                CTxInUndo& undoname = txundoname.vprevout.back();
                 undo.nHeight = coins->nHeight;
                 undo.fCoinBase = coins->fCoinBase;
                 undo.nVersion = coins->nVersion;
-                undoname.nHeight = coins->nHeight;
-                undoname.fCoinBase = coins->fCoinBase;
-                undoname.nVersion = coins->nVersion;
             }
         }
         // add outputs
@@ -2052,8 +2046,7 @@ void UpdateCoins(const CTransaction& tx, CValidationState &state, CCoinsViewCach
 void UpdateCoins(const CTransaction& tx, CValidationState &state, CCoinsViewCache &inputs, int nHeight)
 {
     CTxUndo txundo;
-    CTxUndo txundoname;
-    UpdateCoins(tx, state, inputs, txundo,txundoname, nHeight);
+    UpdateCoins(tx, state, inputs, txundo, nHeight);
 }
 
 bool CScriptCheck::operator()() {
@@ -2176,16 +2169,15 @@ bool CheckInputs(const CTransaction& tx, CValidationState &state, const CCoinsVi
 
 namespace {
 
-bool UndoWriteToDisk(const CBlockUndo& blockundo,CBlockUndoName& blockundoname, CDiskBlockPos& pos, const uint256& hashBlock, const CMessageHeader::MessageStartChars& messageStart)
+bool UndoWriteToDisk(const CBlockUndo& blockundo, CDiskBlockPos& pos, const uint256& hashBlock, const CMessageHeader::MessageStartChars& messageStart)
 {
     // Open history file to append
     CAutoFile fileout(OpenUndoFile(pos), SER_DISK, CLIENT_VERSION);
     if (fileout.IsNull())
         return error("%s: OpenUndoFile failed", __func__);
 
-    std::pair<CBlockUndo,CBlockUndoName> m_item;
     // Write index header
-    unsigned int nSize = fileout.GetSerializeSize(m_item);
+    unsigned int nSize = fileout.GetSerializeSize(blockundo);
     fileout << FLATDATA(messageStart) << nSize;
 
     // Write undo data
@@ -2194,19 +2186,17 @@ bool UndoWriteToDisk(const CBlockUndo& blockundo,CBlockUndoName& blockundoname, 
         return error("%s: ftell failed", __func__);
     pos.nPos = (unsigned int)fileOutPos;
     fileout << blockundo;
-    fileout << blockundoname;
 
     // calculate & write checksum
     CHashWriter hasher(SER_GETHASH, PROTOCOL_VERSION);
     hasher << hashBlock;
     hasher << blockundo;
-    hasher << blockundoname;
     fileout << hasher.GetHash();
 
     return true;
 }
 
-bool UndoReadFromDisk(CBlockUndo& blockundo,CBlockUndoName& blockundoname, const CDiskBlockPos& pos, const uint256& hashBlock)
+bool UndoReadFromDisk(CBlockUndo& blockundo, const CDiskBlockPos& pos, const uint256& hashBlock)
 {
     // Open history file to read
     CAutoFile filein(OpenUndoFile(pos, true), SER_DISK, CLIENT_VERSION);
@@ -2217,7 +2207,6 @@ bool UndoReadFromDisk(CBlockUndo& blockundo,CBlockUndoName& blockundoname, const
     uint256 hashChecksum;
     try {
         filein >> blockundo;
-	filein >> blockundoname;
         filein >> hashChecksum;
     }
     catch (const std::exception& e) {
@@ -2228,7 +2217,6 @@ bool UndoReadFromDisk(CBlockUndo& blockundo,CBlockUndoName& blockundoname, const
     CHashWriter hasher(SER_GETHASH, PROTOCOL_VERSION);
     hasher << hashBlock;
     hasher << blockundo;
-    hasher << blockundoname;
     if (hashChecksum != hasher.GetHash())
         return error("%s: Checksum mismatch", __func__);
 
@@ -2380,11 +2368,10 @@ bool DisconnectBlock(const CBlock& block, CValidationState& state, const CBlockI
     bool fClean = true;
 
     CBlockUndo blockUndo;
-    CBlockUndoName blockUndoName;
     CDiskBlockPos pos = pindex->GetUndoPos();
     if (pos.IsNull())
         return error("DisconnectBlock(): no undo data available");
-    if (!UndoReadFromDisk(blockUndo,blockUndoName, pos, pindex->pprev->GetBlockHash()))
+    if (!UndoReadFromDisk(blockUndo, pos, pindex->pprev->GetBlockHash()))
         return error("DisconnectBlock(): failure reading undo data");
 
     if (blockUndo.vtxundo.size() + 1 != block.vtx.size())
@@ -2395,7 +2382,7 @@ bool DisconnectBlock(const CBlock& block, CValidationState& state, const CBlockI
     std::vector<std::pair<CSpentIndexKey, CSpentIndexValue> > spentIndex;
 
     assert(trieCache.decrementBlock(blockUndo.insertUndo, blockUndo.expireUndo, blockUndo.insertSupportUndo, blockUndo.expireSupportUndo, blockUndo.takeoverHeightUndo));
-    assert(nameCache.decrementBlock(blockUndoName.insertUndo, blockUndoName.expireUndo, blockUndoName.insertSupportUndo, blockUndoName.expireSupportUndo, blockUndoName.takeoverHeightUndo));
+   // assert(nameCache.decrementBlock(blockUndoName.insertUndo, blockUndoName.expireUndo, blockUndoName.insertSupportUndo, blockUndoName.expireSupportUndo, blockUndoName.takeoverHeightUndo));
 
 
     // undo transactions in reverse order
@@ -2950,7 +2937,6 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
     LogPrint("bench", "    - Fork checks: %.2fms [%.2fs]\n", 0.001 * (nTime2 - nTime1), nTimeForks * 0.000001);
 
     CBlockUndo blockundo;
-    CBlockUndoName blockundoname;
 
     CCheckQueueControl<CScriptCheck> control(fScriptChecks && nScriptCheckThreads ? &scriptcheckqueue : NULL);
 
@@ -3241,19 +3227,15 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
         CTxUndo undoDummy;
         if (i > 0) {
             blockundo.vtxundo.push_back(CTxUndo());
-            blockundoname.vtxundo.push_back(CTxUndo());
         }
-        UpdateCoins(tx, state, view, i == 0 ? undoDummy : blockundo.vtxundo.back(),i == 0 ? undoDummy : blockundoname.vtxundo.back(), pindex->nHeight);
+        UpdateCoins(tx, state, view, i == 0 ? undoDummy : blockundo.vtxundo.back(), pindex->nHeight);
         if (i > 0 && !mClaimUndoHeights.empty())
         {   
             std::vector<CTxInUndo>& txinUndos = blockundo.vtxundo.back().vprevout;
-            std::vector<CTxInUndo>& txinUndosname = blockundoname.vtxundo.back().vprevout;
             for (std::map<unsigned int, unsigned int>::iterator itHeight = mClaimUndoHeights.begin(); itHeight != mClaimUndoHeights.end(); ++itHeight)
             {   
                 txinUndos[itHeight->first].nClaimValidHeight = itHeight->second;
                 txinUndos[itHeight->first].fIsClaim = true;
-                txinUndosname[itHeight->first].nClaimValidHeight = itHeight->second;
-                txinUndosname[itHeight->first].fIsClaim = true;
             }
         }
         // The CTxUndo vector contains the heights at which claims should be put into the trie.
@@ -3275,7 +3257,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
 #endif // ENABLE_ADDRSTAT
 
     assert(trieCache.incrementBlock(blockundo.insertUndo, blockundo.expireUndo, blockundo.insertSupportUndo, blockundo.expireSupportUndo, blockundo.takeoverHeightUndo));
-    assert(nameCache.incrementBlock(blockundoname.insertUndo, blockundoname.expireUndo, blockundoname.insertSupportUndo, blockundoname.expireSupportUndo, blockundoname.takeoverHeightUndo));
+   //assert(nameCache.incrementBlock(blockundoname.insertUndo, blockundoname.expireUndo, blockundoname.insertSupportUndo, blockundoname.expireSupportUndo, blockundoname.takeoverHeightUndo));
 
     /*if (trieCache.getMerkleHash() != block.hashClaimTrie)
     {
@@ -3323,7 +3305,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
             CDiskBlockPos pos;
             if (!FindUndoPos(state, pindex->nFile, pos, ::GetSerializeSize(blockundo, SER_DISK, CLIENT_VERSION) + 40))
                 return error("ConnectBlock(): FindUndoPos failed");
-            if (!UndoWriteToDisk(blockundo,blockundoname, pos, pindex->pprev->GetBlockHash(), chainparams.MessageStart()))
+            if (!UndoWriteToDisk(blockundo, pos, pindex->pprev->GetBlockHash(), chainparams.MessageStart()))
                 return AbortNode(state, "Failed to write undo data");
 
             // update nUndoPos in block index
@@ -4945,10 +4927,9 @@ bool CVerifyDB::VerifyDB(const CChainParams& chainparams, CCoinsView *coinsview,
         // check level 2: verify undo validity
         if (nCheckLevel >= 2 && pindex) {
             CBlockUndo undo;
-	    CBlockUndoName undoname;
             CDiskBlockPos pos = pindex->GetUndoPos();
             if (!pos.IsNull()) {
-                if (!UndoReadFromDisk(undo,undoname, pos, pindex->pprev->GetBlockHash()))
+                if (!UndoReadFromDisk(undo, pos, pindex->pprev->GetBlockHash()))
                     return error("VerifyDB(): *** found bad undo data at %d, hash=%s\n", pindex->nHeight, pindex->GetBlockHash().ToString());
             }
         }
