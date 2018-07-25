@@ -3236,8 +3236,6 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
             {   
                 txinUndos[itHeight->first].nClaimValidHeight = itHeight->second;
                 txinUndos[itHeight->first].fIsClaim = true;
-                txinUndosname[itHeight->first].nClaimValidHeight = itHeight->second;
-                txinUndosname[itHeight->first].fIsClaim = true;
             }
         }
         // The CTxUndo vector contains the heights at which claims should be put into the trie.
@@ -3307,7 +3305,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
             CDiskBlockPos pos;
             if (!FindUndoPos(state, pindex->nFile, pos, ::GetSerializeSize(blockundo, SER_DISK, CLIENT_VERSION) + 40))
                 return error("ConnectBlock(): FindUndoPos failed");
-            if (!UndoWriteToDisk(blockundo,blockundoname, pos, pindex->pprev->GetBlockHash(), chainparams.MessageStart()))
+            if (!UndoWriteToDisk(blockundo, pos, pindex->pprev->GetBlockHash(), chainparams.MessageStart()))
                 return AbortNode(state, "Failed to write undo data");
 
             // update nUndoPos in block index
