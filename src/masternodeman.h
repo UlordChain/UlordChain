@@ -210,6 +210,7 @@ public:
     /// Check and activate the master node.
     bool GetCertificate(CMasternode &mn);
 	bool GetCertificateFromUcenter(CMasternode &mn);
+	bool GetCertificateFromConf(CMasternode &mn);
 	bool CheckCertificateIsExpire(CMasternode &mn);
 	bool CheckRegisteredMaster(CMasternode &mn);
 
