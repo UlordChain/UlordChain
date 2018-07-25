@@ -517,7 +517,7 @@ public:
 	CMstNodeData(const CMasternode & mn);
 
 	uint256 GetLicenseWord();
-    bool CheckLicense();
+    bool VerifyLicense();
 
     CMstNodeData & operator=(CMstNodeData &b)
     {

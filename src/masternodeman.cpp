@@ -2026,7 +2026,7 @@ uint256 CMstNodeData::GetLicenseWord()
     return hash;
 }
 
-bool CMstNodeData::CheckLicense()
+bool CMstNodeData::VerifyLicense()
 {
     CPubKey pubkeyucenter(ParseHex(g_ucenterserverPubkey));
     CPubKey pubkeyFromSig;
@@ -2034,11 +2034,11 @@ bool CMstNodeData::CheckLicense()
 	vchSigRcv = ParseHex(_licence);
 
     if(!pubkeyFromSig.RecoverCompact(GetLicenseWord(), vchSigRcv)) {
-		LogPrintf("CMstNodeData::CheckLicense:masternode<%s:%d-%ld> license(%s) can not recover!", _txid.c_str(), _voutid, _licperiod, _licence.c_str());
+		LogPrintf("CMstNodeData::VerifyLicense:masternode<%s:%d-%ld> license(%s) can not recover!", _txid.c_str(), _voutid, _licperiod, _licence.c_str());
 		return false;
 	}
     if(pubkeyFromSig != pubkeyucenter) {
-        LogPrintf("CMstNodeData::CheckLicense:masternode<%s:%d-%ld> key don not match : rcv pubkey = %s, ucenter pubkey = %s, license = %s",
+        LogPrintf("CMstNodeData::VerifyLicense:masternode<%s:%d-%ld> key don not match : rcv pubkey = %s, ucenter pubkey = %s, license = %s",
                     _txid.c_str(),
                     _voutid,
                     _licperiod,
