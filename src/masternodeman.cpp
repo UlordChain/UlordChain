@@ -292,15 +292,14 @@ CMasternodeMan::CMasternodeMan()
 			  for (int i = 0; i < mstres._num; ++i)
 			  {
 				  ia >> mstnode;
-				  //std::cout << "mstnode "<<mstnode._masteraddr<< " validflag " << mstnode._validflag << " hostname  "<<mstnode._hostname << "  "<< mstnode._hostip << std::endl;
 				  if(mstnode._validflag <= 0)
 				  {
 					  CloseSocket(hSocket);
 					  return error("receive a invalid validflag validflag %d", mstnode._validflag);
 				  }
-				  mn.validTimes = mstnode._validTimes;
-				  mn.certificate = mstnode._certificate;
-				  LogPrintf("CMasternodeMan::GetCertificateFromUcenter: MasterNode certificate %s time = %d\n", mstnode._certificate, mstnode._validTimes);
+				  mn.validTimes = mstnode._licperiod;
+				  mn.certificate = mstnode._licence;
+				  LogPrintf("CMasternodeMan::GetCertificateFromUcenter: MasterNode certificate %s time = %d\n", mstnode._licence, mstnode._licperiod);
 				  vecnode.push_back(mstnode);
 			  	  if(!VerifymsnRes(mn))
 				  {
@@ -2017,4 +2016,13 @@ void CMasternodeMan::NotifyMasternodeUpdates()
     LOCK(cs);
     fMasternodesAdded = false;
     fMasternodesRemoved = false;
+}
+
+std::string CMstNodeData::GetLicenseSignMsg() 
+{
+    std::string strMessage = _txid + "|" +
+                            boost::lexical_cast<std::string>(_voutid) + "|" +
+                            _pubkey + "|" +
+                            boost::lexical_cast<std::string>(_licperiod);
+    return strMessage;
 }
