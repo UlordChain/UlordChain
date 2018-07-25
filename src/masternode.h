@@ -35,8 +35,8 @@ public:
     uint256 blockHash;
     int64_t sigTime; //mnb message times
     	
-	int64_t validTimes;  //certificate available time
-	std::string certificate; //certificate证书
+	int64_t certifyPeriod;  //certificate available time
+	std::string certificate; //certificate证
     std::vector<unsigned char> vchSig;
     //removed stop
 
@@ -45,7 +45,7 @@ public:
 		pubKeyMasternode(),
         blockHash(),
         sigTime(0),
-        validTimes(0),
+        certifyPeriod(0),
         certificate(),
         vchSig()
         {}
@@ -60,7 +60,7 @@ public:
 		READWRITE(pubKeyMasternode);
         READWRITE(blockHash);
         READWRITE(sigTime);
-		READWRITE(validTimes);
+		READWRITE(certifyPeriod);
 		READWRITE(certificate);
         READWRITE(vchSig);
     }
@@ -76,7 +76,7 @@ public:
 		swap(first.pubKeyMasternode, second.pubKeyMasternode);
         swap(first.blockHash, second.blockHash);
         swap(first.sigTime, second.sigTime);
-		swap(first.validTimes, second.validTimes);
+		swap(first.certifyPeriod, second.certifyPeriod);
 		swap(first.certificate, second.certificate);
         swap(first.vchSig, second.vchSig);
     }
@@ -178,8 +178,8 @@ public:
     CMasternodePing lastPing;
     std::vector<unsigned char> vchSig;
 	
-	std::string certificate; //certificate证书
-	int64_t validTimes;  //certificate available time
+	std::string certificate; //certificate证
+	int64_t certifyPeriod;  //certificate available time
     int64_t sigTime; //mnb message time
     int64_t nLastDsq; //the dsq count from the last dsq broadcast of this node
     int64_t nTimeLastChecked;
@@ -215,7 +215,7 @@ public:
         READWRITE(lastPing);
         READWRITE(vchSig);
 	READWRITE(certificate);
-	READWRITE(validTimes);
+	READWRITE(certifyPeriod);
         READWRITE(sigTime);
         READWRITE(nLastDsq);
         READWRITE(nTimeLastChecked);
@@ -247,7 +247,7 @@ public:
         swap(first.lastPing, second.lastPing);
         swap(first.vchSig, second.vchSig);
 	swap(first.certificate, second.certificate);
-	swap(first.validTimes, second.validTimes);
+	swap(first.certifyPeriod, second.certifyPeriod);
         swap(first.sigTime, second.sigTime);
         swap(first.nLastDsq, second.nLastDsq);
         swap(first.nTimeLastChecked, second.nTimeLastChecked);
@@ -388,7 +388,7 @@ public:
         READWRITE(pubKeyMasternode);
         READWRITE(vchSig);
 		READWRITE(certificate);
-		READWRITE(validTimes);
+		READWRITE(certifyPeriod);
         READWRITE(sigTime);
         READWRITE(nProtocolVersion);
         READWRITE(lastPing);

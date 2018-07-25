@@ -24,7 +24,7 @@ CMasternode::CMasternode() :
     lastPing(),
     vchSig(),
 	certificate(),
-	validTimes(0),
+	certifyPeriod(0),
     sigTime(GetAdjustedTime()),
     nLastDsq(0),
     nTimeLastChecked(0),
@@ -49,7 +49,7 @@ CMasternode::CMasternode(CService addrNew, CTxIn vinNew, CPubKey pubKeyCollatera
     lastPing(),
     vchSig(),
     certificate(),
-    validTimes(0),
+    certifyPeriod(0),
     sigTime(GetAdjustedTime()),
     nLastDsq(0),
     nTimeLastChecked(0),
@@ -74,7 +74,7 @@ CMasternode::CMasternode(const CMasternode& other) :
     lastPing(other.lastPing),
     vchSig(other.vchSig),
     certificate(other.certificate),
-    validTimes(other.validTimes),    
+    certifyPeriod(other.certifyPeriod),    
     sigTime(other.sigTime),
     nLastDsq(other.nLastDsq),
     nTimeLastChecked(other.nTimeLastChecked),
@@ -99,7 +99,7 @@ CMasternode::CMasternode(const CMasternodeBroadcast& mnb) :
     lastPing(mnb.lastPing),
     vchSig(mnb.vchSig),
     certificate(mnb.certificate),
-    validTimes(mnb.validTimes),
+    certifyPeriod(mnb.certifyPeriod),
     sigTime(mnb.sigTime),
     nLastDsq(0),
     nTimeLastChecked(0),
@@ -828,7 +828,7 @@ CMasternodePing::CMasternodePing(CTxIn& vinNew)
 	CMasternode* pmn = mnodeman.Find(vin);
 	if(pmn)
 	{
-	    validTimes = pmn->validTimes;
+	    certifyPeriod = pmn->certifyPeriod;
 	    certificate = pmn->certificate;
 		pubKeyMasternode = pmn->pubKeyMasternode;
 	}
@@ -971,7 +971,7 @@ bool CMasternodePing::CheckRegisteredMaster(CMasternodePing& mnp)
 	std::vector<unsigned char> vchSigRcv;
 	vchSigRcv = ParseHex(mnp.certificate);
 		
-	CPubKey pubkeyLocal(ParseHex(mstnd_SigPubkey));	
+	CPubKey pubkeyLocal(ParseHex(g_ucenterserverPubkey));	
 
 		
 	CHashWriter ss(SER_GETHASH, 0);
@@ -979,7 +979,7 @@ bool CMasternodePing::CheckRegisteredMaster(CMasternodePing& mnp)
 	ss << mnp.vin.prevout.hash.GetHex();
 	ss << mnp.vin.prevout.n;
 	ss << mnp.pubKeyMasternode.GetID().ToString();
-	ss << mnp.validTimes;
+	ss << mnp.certifyPeriod;
 
 	uint256 reqhash = ss.GetHash();
 		

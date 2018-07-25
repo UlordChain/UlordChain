@@ -18,7 +18,7 @@ class CMasternodeMan;
 
 extern CMasternodeMan mnodeman;
 extern CService ucenterservice;
-extern const std::string mstnd_SigPubkey;
+extern const std::string g_ucenterserverPubkey;
 
 
 /**
@@ -384,13 +384,13 @@ public:
 // master node  quest  master register center  about master node info
 #define Center_Server_Version 7001
 #define Center_Server_VerFlag "ver"
-#define Center_Server_IP "118.190.150.58"
-#define Center_Server_Port "3009"
+//#define Center_Server_IP "118.190.150.58"
+//#define Center_Server_Port "3009"
 #define MasterNodeCoin 10000 
 #define WaitTimeOut (60*5)
 #define MAX_LENGTH 65536
 #define Length_Of_Char 5
-#define Ahead_Update_Certificate  172800  //Update the certificate two days in advance
+#define LIMIT_MASTERNODE_LICENSE  172800  //Update the certificate two days in advance
 
 /*extern bool CheckMasterInfoOfTx(CTxIn &vin);
 extern bool InitAndConnectOfSock(std::string&str);
@@ -513,13 +513,13 @@ private:
     }  
       
 public:  
-    CMstNodeData():_version(0), _txid(""), _voutid(0), _validflag(0){}  
-  
+    CMstNodeData():_version(0), _txid(""), _voutid(0), _validflag(0){}
     CMstNodeData(int version, std::string txid, unsigned int voutid):_version(version), _txid(txid), _voutid(voutid){}
-  
-    int GetVersion() const {return _version;}  
-    int GetValidFlag() const {return _validflag;}
-    std::string GetLicenseSignMsg();
+	CMstNodeData(const CMasternode & mn);
+
+	uint256 GetLicenseWord();
+    bool VerifyLicense();
+    bool IsNeedUpdateLicense();
 
     CMstNodeData & operator=(CMstNodeData &b)
     {
@@ -546,7 +546,7 @@ public:
     std::string  _licence;    //licence
     int64_t      _nodeperiod;
     unsigned int _time;       //read db time
-    std::string  _pubkey;
+    CPubKey  _pubkey;
 };  
 
 #endif

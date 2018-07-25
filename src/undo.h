@@ -104,7 +104,7 @@ public:
         READWRITE(takeoverHeightUndo);
     }
 };
-
+/*
 class CBlockUndoName
 {
 public:
@@ -127,4 +127,5 @@ public:
         READWRITE(takeoverHeightUndo);
     }
 };
+*/
 #endif // BITCOIN_UNDO_H
