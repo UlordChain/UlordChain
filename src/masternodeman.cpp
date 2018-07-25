@@ -167,7 +167,7 @@ bool SendRequestNsg(SOCKET sock, CMasternode &mn, mstnodequest &mstquest)
 
 bool VerifymsnRes(const CMasternode &mn)
 {
-	if(mn.validTimes < GetTime())
+	if(mn.certifyPeriod < GetTime())
 	{
 		LogPrintf("VerifymsnRes:certificate is timeout.");
 		return false;
@@ -303,16 +303,16 @@ CMasternodeMan::CMasternodeMan()
 			  }
 			  
 			  CMasternode tmn(mn);
-			  tmn.validTimes = mstnode._validTimes;
-			  tmn.certificate = mstnode._certificate;
-			  LogPrintf("CMasternodeMan::GetCertificateFromUcenter: MasterNode certificate %s time = %d\n", mstnode._certificate, mstnode._validTimes);
+			  tmn.certifyPeriod = mstnode._licperiod;
+			  tmn.certificate = mstnode._licence;
+			  LogPrintf("CMasternodeMan::GetCertificateFromUcenter: MasterNode certificate %s time = %d\n", mstnode._licence, mstnode._licperiod);
 
 		  	  if(!VerifymsnRes(tmn))
 			  {
 			      LogPrintf("CMasternodeMan::GetCertificateFromUcenter: connect to center server update certificate failed\n");
 				  return false;
 			  }
-			  mn.validTimes = tmn.validTimes;
+			  mn.certifyPeriod = tmn.certifyPeriod;
 			  mn.certificate = tmn.certificate;
 	
 			  //std::cout << "MasterNode check success *********************" << std::endl;
@@ -333,7 +333,7 @@ CMasternodeMan::CMasternodeMan()
   void CMasternodeMan::UpdateCertificate(CMasternode &mn)
   {
 	  //Request to update the certificate if the expiration time is less than 2 day
-	  if(mn.validTimes <= 0 || mn.validTimes - Ahead_Update_Certificate < GetTime())
+	  if(mn.certifyPeriod <= 0 || mn.certifyPeriod - Ahead_Update_Certificate < GetTime())
 	  {
 		  GetCertificateFromUcenter(mn);
 	  }
@@ -342,7 +342,7 @@ CMasternodeMan::CMasternodeMan()
  bool CMasternodeMan::CheckCertificateIsExpire(CMasternode &mn)
 {
 	UpdateCertificate(mn);
-	if(mn.validTimes < GetTime())
+	if(mn.certifyPeriod < GetTime())
 		return true;
 	
 	return false;
@@ -382,7 +382,7 @@ bool CMasternodeMan::GetCertificateFromConf(CMasternode &mn)
 	LogPrintf("CMasternodeMan::GetCertificateFromConf -- strLastTime = %ld\n",t);	
 
 	CMasternode tmn(mn);
-    tmn.validTimes = t;
+    tmn.certifyPeriod = t;
     tmn.certificate = strCettificate;	
 	
 	if(!VerifymsnRes(tmn))
@@ -392,7 +392,7 @@ bool CMasternodeMan::GetCertificateFromConf(CMasternode &mn)
 	}
 
 	mn.certificate = strCettificate;
-	mn.validTimes = t;
+	mn.certifyPeriod = t;
 	return true;
 	
 }
