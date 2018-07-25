@@ -2281,22 +2281,27 @@ static bool ApplyTxInUndo(const CTxInUndo& undo, CCoinsViewCache& view, CClaimTr
         if(op == OP_CLAIM_NAME || op == OP_UPDATE_CLAIM)
         {   
             uint160 claimId;
+            std::string addr;
             if(op == OP_CLAIM_NAME)
             {   
                 assert(vvchParams.size() == 2 );
                 claimId = ClaimIdHash(out.hash,out.n);
+		std::string temp(vvchParams[1].begin(),vvchParams[1].end());
+		addr = temp;
             }
             else if( op == OP_UPDATE_CLAIM)
             {   
                 assert(vvchParams.size() == 3 );
                 claimId = uint160(vvchParams[1]);
+  		std::string temp(vvchParams[2].begin(),vvchParams[2].end());
+		addr = temp;
             }
             std::string name(vvchParams[0].begin(),vvchParams[0].end());
             int nValidHeight = undo.nClaimValidHeight;
             if(nValidHeight > 0 && nValidHeight >= coins->nHeight)
             {
                  LogPrintf("%s: (txid: %s, nOut: %d) Restoring %s to the claim trie due to a block being disconnected\n", __func__, out.hash.ToString(), out.n, name.c_str());
-                 if ( !trieCache.undoSpendClaim(name, COutPoint(out.hash, out.n), claimId, undo.txout.nValue, coins->nHeight, nValidHeight))
+                 if ( !trieCache.undoSpendClaim(name, COutPoint(out.hash, out.n), claimId, undo.txout.nValue, coins->nHeight, nValidHeight,addr))
                     LogPrintf("%s: Something went wrong inserting the claim\n", __func__);
                  else
                  {  
@@ -3127,8 +3132,9 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
                     {   
                         assert(vvchParams.size() == 2);
                         std::string name(vvchParams[0].begin(), vvchParams[0].end());
+			std::string addr(vvchParams[1].begin(),vvchParams[1].end());
                         LogPrintf("%s: Inserting %s into the claim trie. Tx: %s, nOut: %d\n", __func__, name, tx.GetHash().GetHex(), l);
-                        if (!trieCache.addClaim(name, COutPoint(tx.GetHash(), l), ClaimIdHash(tx.GetHash(), l), txout.nValue, pindex->nHeight))
+                        if (!trieCache.addClaim(name, COutPoint(tx.GetHash(), l), ClaimIdHash(tx.GetHash(), l), txout.nValue, pindex->nHeight,addr))
                         {
                             LogPrintf("%s: Something went wrong inserting the claim\n", __func__);
                         }
@@ -3137,6 +3143,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
                     {
                         assert(vvchParams.size() == 3);
                         std::string name(vvchParams[0].begin(), vvchParams[0].end());
+			std::string addr(vvchParams[2].begin(),vvchParams[2].end());
                         uint160 claimId(vvchParams[1]);
                         LogPrintf("%s: Got a claim update. Name: %s, claimId: %s, new txid: %s, nOut: %d\n", __func__, name, claimId.GetHex(), tx.GetHash().GetHex(), l);
                         spentClaimsType::iterator itSpent;
@@ -3150,7 +3157,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
                         if (itSpent != spentClaims.end())
                         {
                             spentClaims.erase(itSpent);
-                            if (!trieCache.addClaim(name, COutPoint(tx.GetHash(), l), claimId, txout.nValue, pindex->nHeight))
+                            if (!trieCache.addClaim(name, COutPoint(tx.GetHash(), l), claimId, txout.nValue, pindex->nHeight,addr))
                             {
                                 LogPrintf("%s: Something went wrong updating the claim\n", __func__);
                             }
