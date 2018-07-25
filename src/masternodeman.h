@@ -18,7 +18,7 @@ class CMasternodeMan;
 
 extern CMasternodeMan mnodeman;
 extern CService ucenterservice;
-extern const std::string mstnd_SigPubkey;
+extern const std::string g_ucenterserverPubkey;
 
 
 /**
@@ -515,10 +515,12 @@ public:
     CMstNodeData():_version(0), _txid(""), _voutid(0), _validflag(0){}  
   
     CMstNodeData(int version, std::string txid, unsigned int voutid):_version(version), _txid(txid), _voutid(voutid){}
+
+	CMstNodeData(const CMasternode & mn);
   
     int GetVersion() const {return _version;}  
     int GetValidFlag() const {return _validflag;}
-    std::string GetLicenseSignMsg();
+	uint256 GetLicenseWord();
 
     CMstNodeData & operator=(CMstNodeData &b)
     {
@@ -545,7 +547,7 @@ public:
     std::string  _licence;    //licence
     int64_t      _nodeperiod;
     unsigned int _time;       //read db time
-    std::string  _pubkey;
+    CPubKey  _pubkey;
 };  
 
 #endif

@@ -22,7 +22,8 @@ const std::string CMasternodeMan::SERIALIZATION_VERSION_STRING = "CMasternodeMan
 const int mstnd_iReqBufLen = 600;
 const int mstnd_iReqMsgHeadLen = 4;
 const int mstnd_iReqMsgTimeout = 10;
-const std::string mstnd_SigPubkey = "03e867486ebaeeadda25f1e47612cdaad3384af49fa1242c5821b424937f8ec1f5";
+const std::string g_ucenterserverPubkey = "03e867486ebaeeadda25f1e47612cdaad3384af49fa1242c5821b424937f8ec1f5";
+extern const std::string strMessageMagic;
 
 
 struct CompareLastPaidBlock
@@ -164,14 +165,13 @@ bool SendRequestNsg(SOCKET sock, CMasternode &mn, mstnodequest &mstquest)
 	return true;
 }
 
-extern const std::string strMessageMagic;
 bool VerifymsnRes(const CMasternode &mn)
 {
 	CPubKey pubkeyFromSig;
 	std::vector<unsigned char> vchSigRcv;
 	vchSigRcv = ParseHex(mn.certificate);
 		
-	CPubKey pubkeyLocal(ParseHex(mstnd_SigPubkey));	
+	CPubKey pubkeyLocal(ParseHex(g_ucenterserverPubkey));	
 		
 	CHashWriter ss(SER_GETHASH, 0);
         ss << strMessageMagic;
@@ -179,7 +179,7 @@ bool VerifymsnRes(const CMasternode &mn)
 	ss << mn.vin.prevout.n;
 	
 	ss << mn.pubKeyMasternode.GetID().ToString();
-	ss << mn.validTimes;
+	ss << mn.certifyPeriod;
 	
 	uint256 reqhash = ss.GetHash();
 		
@@ -297,7 +297,7 @@ CMasternodeMan::CMasternodeMan()
 					  CloseSocket(hSocket);
 					  return error("receive a invalid validflag validflag %d", mstnode._validflag);
 				  }
-				  mn.validTimes = mstnode._licperiod;
+				  mn.certifyPeriod = mstnode._licperiod;
 				  mn.certificate = mstnode._licence;
 				  LogPrintf("CMasternodeMan::GetCertificateFromUcenter: MasterNode certificate %s time = %d\n", mstnode._licence, mstnode._licperiod);
 				  vecnode.push_back(mstnode);
@@ -325,7 +325,7 @@ CMasternodeMan::CMasternodeMan()
  bool CMasternodeMan::CheckCertificateIsExpire(CMasternode &mn)
 {
 	//Request to update the certificate if the expiration time is less than 2 day
-	if(mn.validTimes <= 0 || mn.validTimes - Ahead_Update_Certificate < GetTime())
+	if(mn.certifyPeriod <= 0 || mn.certifyPeriod - Ahead_Update_Certificate < GetTime())
 	{
 		if(!GetCertificateFromUcenter(mn))
 		{
@@ -370,7 +370,7 @@ bool CMasternodeMan::GetCertificateFromConf(CMasternode &mn)
 	time_t t = mktime(&tmp_time);
 	LogPrintf("CMasternodeMan::GetCertificateFromConf -- strLastTime = %ld\n",t);	
 
-    mn.validTimes = t;
+    mn.certifyPeriod = t;
     mn.certificate = strCettificate;
 	
 	if(!VerifymsnRes(mn))
@@ -399,7 +399,7 @@ bool CMasternodeMan::GetCertificate(CMasternode &mn)
     bool ucenterfirst = GetBoolArg("-ucenterfirst", true);
 	if(!ucenterfirst)
 	{	
-		if(!GetCertificateFromConf(mn) || mn.validTimes <= 0 || mn.validTimes - Ahead_Update_Certificate< GetAdjustedTime())
+		if(!GetCertificateFromConf(mn) || mn.certifyPeriod <= 0 || mn.certifyPeriod - Ahead_Update_Certificate< GetAdjustedTime())
 		{
 			if(!GetCertificateFromUcenter(mn))
 			{
@@ -2004,11 +2004,24 @@ void CMasternodeMan::NotifyMasternodeUpdates()
     fMasternodesRemoved = false;
 }
 
-std::string CMstNodeData::GetLicenseSignMsg() 
+CMstNodeData::CMstNodeData(const CMasternode & mn) :
+	_version(0),
+	_txid(mn.vin.prevout.hash.GetHex()),
+	_voutid(mn.vin.prevout.n),
+	_licperiod(mn.certifyPeriod),
+	_licence(mn.certificate),
+	_pubkey(mn.pubKeyMasternode)
+{}
+
+uint256 CMstNodeData::GetLicenseWord() 
 {
-    std::string strMessage = _txid + "|" +
-                            boost::lexical_cast<std::string>(_voutid) + "|" +
-                            _pubkey + "|" +
-                            boost::lexical_cast<std::string>(_licperiod);
-    return strMessage;
+    CHashWriter ss(SER_GETHASH, 0);
+    ss << strMessageMagic;
+    ss << _txid;
+    ss << _voutid;
+    ss << _pubkey;
+    ss << _licperiod;
+
+    uint256 hash = ss.GetHash();
+    return hash;
 }
