@@ -3227,13 +3227,11 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
         CTxUndo undoDummy;
         if (i > 0) {
             blockundo.vtxundo.push_back(CTxUndo());
-            blockundoname.vtxundo.push_back(CTxUndo());
         }
-        UpdateCoins(tx, state, view, i == 0 ? undoDummy : blockundo.vtxundo.back(),i == 0 ? undoDummy : blockundoname.vtxundo.back(), pindex->nHeight);
+        UpdateCoins(tx, state, view, i == 0 ? undoDummy : blockundo.vtxundo.back(), pindex->nHeight);
         if (i > 0 && !mClaimUndoHeights.empty())
         {   
             std::vector<CTxInUndo>& txinUndos = blockundo.vtxundo.back().vprevout;
-            std::vector<CTxInUndo>& txinUndosname = blockundoname.vtxundo.back().vprevout;
             for (std::map<unsigned int, unsigned int>::iterator itHeight = mClaimUndoHeights.begin(); itHeight != mClaimUndoHeights.end(); ++itHeight)
             {   
                 txinUndos[itHeight->first].nClaimValidHeight = itHeight->second;
@@ -3261,7 +3259,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
 #endif // ENABLE_ADDRSTAT
 
     assert(trieCache.incrementBlock(blockundo.insertUndo, blockundo.expireUndo, blockundo.insertSupportUndo, blockundo.expireSupportUndo, blockundo.takeoverHeightUndo));
-    assert(nameCache.incrementBlock(blockundoname.insertUndo, blockundoname.expireUndo, blockundoname.insertSupportUndo, blockundoname.expireSupportUndo, blockundoname.takeoverHeightUndo));
+    //assert(nameCache.incrementBlock(blockundoname.insertUndo, blockundoname.expireUndo, blockundoname.insertSupportUndo, blockundoname.expireSupportUndo, blockundoname.takeoverHeightUndo));
 
     /*if (trieCache.getMerkleHash() != block.hashClaimTrie)
     {
