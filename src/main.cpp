@@ -2357,7 +2357,7 @@ static bool ApplyTxInUndo(const CTxInUndo& undo, CCoinsViewCache& view, CClaimTr
     return fClean;
 }
 
-bool DisconnectBlock(const CBlock& block, CValidationState& state, const CBlockIndex* pindex, CCoinsViewCache& view, CClaimTrieCache& trieCache, bool* pfClean)
+bool DisconnectBlock(const CBlock& block, CValidationState& state, const CBlockIndex* pindex, CCoinsViewCache& view, CClaimTrieCache& trieCache, CNameTrieCache& nameCache, bool* pfClean)
 {
     assert(pindex->GetBlockHash() == view.GetBestBlock());
     //assert(pindex->GetBlockHash() == trieCache.getBestBlock());
@@ -2831,7 +2831,7 @@ static int64_t nTimeCallbacks = 0;
 static int64_t nTimeTotal = 0;
 
 // added trieCache arg 
-bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pindex, CCoinsViewCache& view, CClaimTrieCache& trieCache, bool fJustCheck)
+bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pindex, CCoinsViewCache& view, CClaimTrieCache& trieCache,CNameTrieCache& nameCache, bool fJustCheck)
 {
     const CChainParams& chainparams = Params();
     AssertLockHeld(cs_main);
