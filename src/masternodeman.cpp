@@ -298,26 +298,8 @@ CMasternodeMan::CMasternodeMan()
 			  ia >> mstnode;
 			  if(mstnode._validflag <= 0)
 			  {
-<<<<<<< HEAD
 				  CloseSocket(hSocket);
 				  return error("receive a invalid validflag validflag %d", mstnode._validflag);
-=======
-				  ia >> mstnode;
-				  if(mstnode._validflag <= 0)
-				  {
-					  CloseSocket(hSocket);
-					  return error("receive a invalid validflag validflag %d", mstnode._validflag);
-				  }
-				  mn.certifyPeriod = mstnode._licperiod;
-				  mn.certificate = mstnode._licence;
-				  LogPrintf("CMasternodeMan::GetCertificateFromUcenter: MasterNode certificate %s time = %d\n", mstnode._licence, mstnode._licperiod);
-				  vecnode.push_back(mstnode);
-			  	  if(!VerifymsnRes(mn))
-				  {
-				      LogPrintf("CMasternodeMan::GetCertificateFromUcenter: connect to center server update certificate failed\n");
-					  return false;
-				  }
->>>>>>> 0daf11623bfe295ac7f7f1d624ac4da9d2eee20d
 			  }
 			  
 			  CMasternode tmn(mn);
@@ -359,21 +341,9 @@ CMasternodeMan::CMasternodeMan()
   
  bool CMasternodeMan::CheckCertificateIsExpire(CMasternode &mn)
 {
-<<<<<<< HEAD
 	UpdateCertificate(mn);
 	if(mn.validTimes < GetTime())
 		return true;
-=======
-	//Request to update the certificate if the expiration time is less than 2 day
-	if(mn.certifyPeriod <= 0 || mn.certifyPeriod - LIMIT_MASTERNODE_LICENSE < GetTime())
-	{
-		if(!GetCertificateFromUcenter(mn))
-		{
-			LogPrintf("CMasternodeMan::CheckCertificateIsExpire: connect to center server update certificate failed\n");
-			return true;
-		}		
-	}
->>>>>>> 0daf11623bfe295ac7f7f1d624ac4da9d2eee20d
 	
 	return false;
 }
@@ -411,15 +381,18 @@ bool CMasternodeMan::GetCertificateFromConf(CMasternode &mn)
 	time_t t = mktime(&tmp_time);
 	LogPrintf("CMasternodeMan::GetCertificateFromConf -- strLastTime = %ld\n",t);	
 
-    mn.certifyPeriod = t;
-    mn.certificate = strCettificate;
+	CMasternode tmn(mn);
+    tmn.validTimes = t;
+    tmn.certificate = strCettificate;	
 	
-	if(!VerifymsnRes(mn))
+	if(!VerifymsnRes(tmn))
 	{
 		LogPrintf("CMasternodeMan::VerifymsnRes -- check cetificate failed\n");
 		return false;
 	}
 
+	mn.certificate = strCettificate;
+	mn.validTimes = t;
 	return true;
 	
 }
@@ -440,7 +413,7 @@ bool CMasternodeMan::GetCertificate(CMasternode &mn)
     bool ucenterfirst = GetBoolArg("-ucenterfirst", true);
 	if(!ucenterfirst)
 	{	
-		if(!GetCertificateFromConf(mn) || mn.certifyPeriod <= 0 || mn.certifyPeriod - LIMIT_MASTERNODE_LICENSE< GetAdjustedTime())
+		if(!GetCertificateFromConf(mn))
 		{
 			if(!GetCertificateFromUcenter(mn))
 			{
