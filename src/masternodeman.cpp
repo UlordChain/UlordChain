@@ -167,6 +167,12 @@ bool SendRequestNsg(SOCKET sock, CMasternode &mn, mstnodequest &mstquest)
 extern const std::string strMessageMagic;
 bool VerifymsnRes(const CMasternode &mn)
 {
+	if(mn.validTimes < GetTime())
+	{
+		LogPrintf("VerifymsnRes:certificate is timeout.");
+		return false;
+	}
+		
 	CPubKey pubkeyFromSig;
 	std::vector<unsigned char> vchSigRcv;
 	vchSigRcv = ParseHex(mn.certificate);
@@ -285,28 +291,30 @@ CMasternodeMan::CMasternodeMan()
 		boost::archive::binary_iarchive ia(strstream);
 		ia >> mstres;
 
-		if(mstres._num > 0)
-		{
-			  std::vector<CMstNodeData> vecnode;
+		  if(mstres._num == 1)
+		  {  			  
 			  CMstNodeData	mstnode;
-			  for (int i = 0; i < mstres._num; ++i)
+
+			  ia >> mstnode;
+			  if(mstnode._validflag <= 0)
 			  {
-				  ia >> mstnode;
-				  if(mstnode._validflag <= 0)
-				  {
-					  CloseSocket(hSocket);
-					  return error("receive a invalid validflag validflag %d", mstnode._validflag);
-				  }
-				  mn.validTimes = mstnode._licperiod;
-				  mn.certificate = mstnode._licence;
-				  LogPrintf("CMasternodeMan::GetCertificateFromUcenter: MasterNode certificate %s time = %d\n", mstnode._licence, mstnode._licperiod);
-				  vecnode.push_back(mstnode);
-			  	  if(!VerifymsnRes(mn))
-				  {
-				      LogPrintf("CMasternodeMan::GetCertificateFromUcenter: connect to center server update certificate failed\n");
-					  return false;
-				  }
+				  CloseSocket(hSocket);
+				  return error("receive a invalid validflag validflag %d", mstnode._validflag);
 			  }
+			  
+			  CMasternode tmn(mn);
+			  tmn.validTimes = mstnode._validTimes;
+			  tmn.certificate = mstnode._certificate;
+			  LogPrintf("CMasternodeMan::GetCertificateFromUcenter: MasterNode certificate %s time = %d\n", mstnode._certificate, mstnode._validTimes);
+
+		  	  if(!VerifymsnRes(tmn))
+			  {
+			      LogPrintf("CMasternodeMan::GetCertificateFromUcenter: connect to center server update certificate failed\n");
+				  return false;
+			  }
+			  mn.validTimes = tmn.validTimes;
+			  mn.certificate = tmn.certificate;
+	
 			  //std::cout << "MasterNode check success *********************" << std::endl;
 			  LogPrintf("CMasternodeMan::GetCertificateFromUcenter: MasterNode %s check success\n", mstquest._txid);
 			  CloseSocket(hSocket);
@@ -321,23 +329,26 @@ CMasternodeMan::CMasternodeMan()
 	  LogPrintf("CMasternodeMan::GetCertificateFromUcenter: Passed because could't connect to center server\n");
 	  return false;
   }
-
+  
+  void CMasternodeMan::UpdateCertificate(CMasternode &mn)
+  {
+	  //Request to update the certificate if the expiration time is less than 2 day
+	  if(mn.validTimes <= 0 || mn.validTimes - Ahead_Update_Certificate < GetTime())
+	  {
+		  GetCertificateFromUcenter(mn);
+	  }
+  }
+  
  bool CMasternodeMan::CheckCertificateIsExpire(CMasternode &mn)
 {
-	//Request to update the certificate if the expiration time is less than 2 day
-	if(mn.validTimes <= 0 || mn.validTimes - Ahead_Update_Certificate < GetTime())
-	{
-		if(!GetCertificateFromUcenter(mn))
-		{
-			LogPrintf("CMasternodeMan::CheckCertificateIsExpire: connect to center server update certificate failed\n");
-			return true;
-		}		
-	}
+	UpdateCertificate(mn);
+	if(mn.validTimes < GetTime())
+		return true;
 	
 	return false;
 }
 
-  bool CMasternodeMan::CheckRegisteredMaster(CMasternode &mn)
+  bool CMasternodeMan::VerifyMasterCertificate(CMasternode &mn)
  {
 	 //Certificate verify
 	 if(!VerifymsnRes(mn))
