@@ -95,7 +95,7 @@ bool IsStandardTx(const CTransaction& tx, std::string& reason)
     unsigned int nDataOut = 0;
     txnouttype whichType;
     BOOST_FOREACH(const CTxOut& txout, tx.vout) {
-        const CScript scriptPubkey = StripClaimScriptPrefix(txout.scriptPubKey);
+        const CScript scriptPubkey = VerifyClaimScriptPrefix(txout.scriptPubKey,txout);
 		
 	    if (!::IsStandard(scriptPubkey, whichType)) {						
 			reason = "scriptpubkey";
@@ -156,3 +156,4 @@ bool AreInputsStandard(const CTransaction& tx, const CCoinsViewCache& mapInputs)
 
     return true;
 }
+

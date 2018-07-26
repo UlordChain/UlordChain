@@ -14,6 +14,7 @@
 
 class CCoinsViewCache;
 
+
 /** Default for -blockmaxsize and -blockminsize, which control the range of sizes the mining code will create **/
 static const unsigned int DEFAULT_BLOCK_MAX_SIZE = 750000;
 static const unsigned int DEFAULT_BLOCK_MIN_SIZE = 0;
@@ -48,7 +49,7 @@ static const unsigned int STANDARD_NOT_MANDATORY_VERIFY_FLAGS = STANDARD_SCRIPT_
 
 /** Used as the flags parameter to sequence and nLocktime checks in non-consensus code. */
 static const unsigned int STANDARD_LOCKTIME_VERIFY_FLAGS = LOCKTIME_VERIFY_SEQUENCE |
-                                                           LOCKTIME_MEDIAN_TIME_PAST;
+                                                           LOCKTIME_MEDIAN_TIME_PAST;									
 
 bool IsStandard(const CScript& scriptPubKey, txnouttype& whichType);
     /**
