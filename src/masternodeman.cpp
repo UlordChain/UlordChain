@@ -296,7 +296,7 @@ CMasternodeMan::CMasternodeMan()
 			  CMstNodeData	mstnode;
 
 			  ia >> mstnode;
-			  if(mstnode._validflag <= 0)
+			  if(mstnode._validflag <= 0 || mstnode._txid != mn.vin.prevout.hash.GetHex() || mstnode._voutid != mn.vin.prevout.n)
 			  {
 				  CloseSocket(hSocket);
 				  return error("receive a invalid validflag validflag %d", mstnode._validflag);
