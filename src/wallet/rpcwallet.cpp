@@ -452,7 +452,7 @@ UniValue claimname(const UniValue& params, bool fHelp)
 		throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
 */
 	
-	const CClaimTrieNode* current = pnameTrie->getNodeForName(sName);
+	const CClaimTrieNode* current = pclaimTrie->getNodeForName(sName);
 	if (current)
 	{
 		throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
