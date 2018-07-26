@@ -349,10 +349,10 @@ public:
     int nCurrentHeight;
     int nExpirationTime;
     int nProportionalDelayFactor;
+    const CClaimTrieNode* getNodeForName(const std::string& name) const;
 private:
     void clear(CClaimTrieNode* current);
 
-    const CClaimTrieNode* getNodeForName(const std::string& name) const;
     
     bool update(nodeCacheType& cache, hashMapType& hashes,
                 std::map<std::string, int>& takeoverHeights,
