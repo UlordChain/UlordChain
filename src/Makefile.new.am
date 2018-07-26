@@ -234,6 +234,20 @@ libbitcoin_server_a_SOURCES = \
   txdb.cpp \
   txmempool.cpp \
   validationinterface.cpp \
+  activemasternode.cpp \
+  privsend.cpp \
+  dsnotificationinterface.cpp \
+  governance.cpp \
+  governance-brain.cpp \ 
+  governance-classes.cpp \
+  governance-keys.cpp \
+  governance-vote.cpp \
+  instantx.cpp \
+  masternode.cpp \
+  masternodeconfig.cpp \
+  masternode-payments.cpp \
+  masternode-sync.cpp \
+  masternodeman.cpp \
   $(BITCOIN_CORE_H)
 
 if ENABLE_ZMQ
@@ -253,21 +267,7 @@ endif
 libbitcoin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libbitcoin_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libbitcoin_wallet_a_SOURCES = \
-  activemasternode.cpp \
-  privsend.cpp \
-  dsnotificationinterface.cpp \
   privsend-relay.cpp \
-  governance.cpp \
-  governance-brain.cpp \ 
-  governance-classes.cpp \
-  governance-keys.cpp \
-  governance-vote.cpp \
-  instantx.cpp \
-  masternode.cpp \
-  masternodeconfig.cpp \
-  masternode-payments.cpp \
-  masternode-sync.cpp \
-  masternodeman.cpp \
   keepass.cpp \
   wallet/crypter.cpp \
   wallet/db.cpp \
