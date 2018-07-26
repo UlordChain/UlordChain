@@ -52,14 +52,14 @@ CScript UpdateClaimScript(std::string name, uint160 claimId, std::string value)
 }
 
 
-bool DecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector<unsigned char> >& vvchParams,const CTxOut& txout)
+bool DecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector<unsigned char> >& vvchParams)
 {
     CScript::const_iterator pc = scriptIn.begin();
-    return DecodeClaimScript(scriptIn, op, vvchParams, pc,txout);
+    return DecodeClaimScript(scriptIn, op, vvchParams, pc);
 }
 
 
-bool DecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector<unsigned char> >& vvchParams, CScript::const_iterator& pc,const CTxOut& txout)
+bool DecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector<unsigned char> >& vvchParams, CScript::const_iterator& pc)
 {
     opcodetype opcode;
     if (!scriptIn.GetOp(pc, opcode))
@@ -72,10 +72,6 @@ bool DecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector
         return false;
     }
 
-	if  ( txout.nValue < 10 )
-	{
-	    return false;
-	}
     op = opcode;
 
     std::vector<unsigned char> vchParam1;
@@ -143,18 +139,18 @@ uint160 ClaimIdHash(const uint256& txhash, uint32_t nOut)
     return Hash160(claimToHash);
 }
 
-CScript StripClaimScriptPrefix(const CScript& scriptIn,const CTxOut& txout)
+CScript StripClaimScriptPrefix(const CScript& scriptIn)
 {
     int op;
-    return StripClaimScriptPrefix(scriptIn, op,txout);
+    return StripClaimScriptPrefix(scriptIn, op);
 }
 
-CScript StripClaimScriptPrefix(const CScript& scriptIn, int& op,const CTxOut& txout)
+CScript StripClaimScriptPrefix(const CScript& scriptIn, int& op)
 {
     std::vector<std::vector<unsigned char> > vvchParams;
     CScript::const_iterator pc = scriptIn.begin();
 
-    if (!DecodeClaimScript(scriptIn, op, vvchParams, pc,txout))
+    if (!DecodeClaimScript(scriptIn, op, vvchParams, pc))
     {
         return scriptIn;
     }
