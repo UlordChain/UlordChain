@@ -180,8 +180,8 @@ bool VerifymsnRes(const CMasternode &mn)
 	CPubKey pubkeyLocal(ParseHex(g_ucenterserverPubkey));	
 		
 	CHashWriter ss(SER_GETHASH, 0);
-        ss << strMessageMagic;
-        ss << mn.vin.prevout.hash.GetHex();
+    ss << strMessageMagic;
+    ss << mn.vin.prevout.hash.GetHex();
 	ss << mn.vin.prevout.n;
 	
 	ss << mn.pubKeyMasternode.GetID().ToString();
