@@ -178,3 +178,106 @@ size_t ClaimNameSize(const CScript& scriptIn)
         return vvchParams[0].size();
     }
 }
+
+
+CScript VerifyClaimScriptPrefix(const CScript& scriptIn,const CTxOut& txout)
+{
+    int op;
+    return VerifyClaimScriptPrefix(scriptIn, op,txout);
+}
+
+CScript VerifyClaimScriptPrefix(const CScript & scriptIn, int & op, const CTxOut & txout)
+{
+    std::vector<std::vector<unsigned char> > vvchParams;
+    CScript::const_iterator pc = scriptIn.begin();
+
+    if (!VerifyDecodeClaimScript(scriptIn, op, vvchParams, pc,txout))
+    {
+        return scriptIn;
+    }
+
+    return CScript(pc, scriptIn.end());
+}
+
+
+bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector<unsigned char> >& vvchParams,const CTxOut& txout)
+{
+    CScript::const_iterator pc = scriptIn.begin();
+    return VerifyDecodeClaimScript(scriptIn, op, vvchParams, pc,txout);
+}
+
+bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector<unsigned char> >& vvchParams, CScript::const_iterator& pc,const CTxOut& txout)
+{
+    opcodetype opcode;
+    if (!scriptIn.GetOp(pc, opcode))
+    {
+        return false;
+    }
+    
+    if (opcode != OP_CLAIM_NAME && opcode != OP_SUPPORT_CLAIM && opcode != OP_UPDATE_CLAIM)
+    {
+        return false;
+    }
+
+	if ( txout.nValue < MIN_VERIFY_ACCOUNTNAME )
+	{
+	    throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
+	}
+    op = opcode;
+
+    std::vector<unsigned char> vchParam1;
+    std::vector<unsigned char> vchParam2;
+    std::vector<unsigned char> vchParam3;
+    // Valid formats:
+    // OP_CLAIM_NAME vchName vchValue OP_2DROP OP_DROP pubkeyscript
+    // OP_UPDATE_CLAIM vchName vchClaimId vchValue OP_2DROP OP_2DROP pubkeyscript
+    // OP_SUPPORT_CLAIM vchName vchClaimId OP_2DROP OP_DROP pubkeyscript
+    // All others are invalid.
+
+    if (!scriptIn.GetOp(pc, opcode, vchParam1) || opcode < 0 || opcode > OP_PUSHDATA4)
+    {
+        return false;
+    }
+    if (!scriptIn.GetOp(pc, opcode, vchParam2) || opcode < 0 || opcode > OP_PUSHDATA4)
+    {
+        return false;
+    }
+    if (op == OP_UPDATE_CLAIM || op == OP_SUPPORT_CLAIM)
+    {
+        if (vchParam2.size() != 160/8)
+        {
+            return false;
+        }
+    }
+    if (op == OP_UPDATE_CLAIM)
+    {
+        if (!scriptIn.GetOp(pc, opcode, vchParam3) || opcode < 0 || opcode > OP_PUSHDATA4)
+        {
+            return false;
+        }
+    }
+    if (!scriptIn.GetOp(pc, opcode) || opcode != OP_2DROP)
+    {
+        return false;
+    }
+    if (!scriptIn.GetOp(pc, opcode))
+    {
+        return false;
+    }
+    if ((op == OP_CLAIM_NAME || op == OP_SUPPORT_CLAIM) && opcode != OP_DROP)
+    {
+        return false;
+    }
+    else if ((op == OP_UPDATE_CLAIM) && opcode != OP_2DROP)
+    {
+        return false;
+    }
+
+    vvchParams.push_back(vchParam1);
+    vvchParams.push_back(vchParam2);
+    if (op == OP_UPDATE_CLAIM)
+    {
+        vvchParams.push_back(vchParam3);
+    }
+    return true;
+}
