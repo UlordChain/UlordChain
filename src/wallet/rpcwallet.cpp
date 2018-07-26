@@ -377,7 +377,7 @@ UniValue getaddressesbyaccount(const UniValue& params, bool fHelp)
 void CreateClaim(CScript& claimScript,CAmount nAmount,CWalletTx& wtxNew)
 {
     //check amout
-    if ( nAmount <= 0 )
+    if ( nAmount <= 0 || nAmount < 10 )
         throw JSONRPCError(RPC_INVALID_PARAMETER,"Invalid amount");
 
     if ( nAmount > pwalletMain->GetBalance() )
@@ -433,7 +433,7 @@ UniValue claimname(const UniValue& params, bool fHelp)
         + HelpRequiringPassphrase() +
         "\nArguments:\n"
         "1. \"name\"  (string, required) The name to be assigned the value.\n"
-        "2. \"value\"  (string, required) The value to assign to the name.\n"
+        "2. \"ulordaddress\"  (string, required) The ulord address for bind accountname.\n"
         "3. \"amount\"  (numeric, required) The amount in Ulord to send. eg 0.1\n"
         "\nResult:\n"
         "\"transactionid\"  (string) The transaction id.\n"
@@ -442,6 +442,32 @@ UniValue claimname(const UniValue& params, bool fHelp)
     string sValue= params[1].get_str();
     std::vector<unsigned char>vchName(sName.begin(),sName.end());
     std::vector<unsigned char>vchValue(sValue.begin(),sValue.end());
+
+/*
+	CClaimValue claim;
+	if (!pclaimTrie->getInfoForName(sName, claim))
+	   throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
+	std::string sValue;
+	if (!getValueForClaim(claim.outPoint, sValue))
+		throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
+*/
+	
+	const CClaimTrieNode* current = pnameTrie->getNodeForName(sName);
+	if (current)
+	{
+		throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
+	}
+	
+	if ( vchName.size() > 15  || vchName.size() < 0)
+	{
+	    throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord account_name ,it is too long");
+	}
+	CBitcoinAddress address(params[0].get_str());
+	if (!address.IsValid())
+	{
+    	throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
+	}
+	
     CAmount nAmount = AmountFromValue(params[2]);
     CWalletTx wtx;
 
