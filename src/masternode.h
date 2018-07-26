@@ -95,7 +95,7 @@ public:
     bool CheckSignature(CPubKey& pubKeyMasternode, int &nDos);
     bool SimpleCheck(int& nDos);
     bool CheckAndUpdate(CMasternode* pmn, bool fFromNewBroadcast, int& nDos);
-	bool CheckRegisteredMaster(CMasternodePing& mnp);
+	bool VerifyMasterCertificate(CMasternodePing& mnp);
     void Relay();
 
     CMasternodePing& operator=(CMasternodePing from)

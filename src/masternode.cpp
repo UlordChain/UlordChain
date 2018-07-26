@@ -964,8 +964,13 @@ bool CMasternodePing::CheckAndUpdate(CMasternode* pmn, bool fFromNewBroadcast, i
     return true;
 }
 
-bool CMasternodePing::CheckRegisteredMaster(CMasternodePing& mnp)
+bool CMasternodePing::VerifyMasterCertificate(CMasternodePing& mnp)
 {
+	if(mnp.certifyPeriod < GetTime())
+	{
+		LogPrintf("VerifymsnRes:certificate is timeout.");
+		return false;
+	}	
 
 	CPubKey pubkeyFromSig;
 	std::vector<unsigned char> vchSigRcv;
@@ -978,7 +983,7 @@ bool CMasternodePing::CheckRegisteredMaster(CMasternodePing& mnp)
 	ss << strMessageMagic;
 	ss << mnp.vin.prevout.hash.GetHex();
 	ss << mnp.vin.prevout.n;
-	ss << mnp.pubKeyMasternode.GetID().ToString();
+	ss << mnp.pubKeyMasternode;
 	ss << mnp.certifyPeriod;
 
 	uint256 reqhash = ss.GetHash();
