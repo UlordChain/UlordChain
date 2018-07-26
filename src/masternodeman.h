@@ -516,6 +516,7 @@ public:
     CMstNodeData():_version(0), _txid(""), _voutid(0), _validflag(0){}
     CMstNodeData(int version, std::string txid, unsigned int voutid):_version(version), _txid(txid), _voutid(voutid){}
 	CMstNodeData(const CMasternode & mn);
+	CMstNodeData(const CMasternodePing & mn);
 
 	uint256 GetLicenseWord();
     bool VerifyLicense();

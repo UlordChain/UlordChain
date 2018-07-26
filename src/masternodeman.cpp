@@ -302,18 +302,15 @@ CMasternodeMan::CMasternodeMan()
 				  return error("receive a invalid validflag validflag %d", mstnode._validflag);
 			  }
 			  
-			  CMasternode tmn(mn);
-			  tmn.certifyPeriod = mstnode._licperiod;
-			  tmn.certificate = mstnode._licence;
 			  LogPrintf("CMasternodeMan::GetCertificateFromUcenter: MasterNode certificate %s time = %d\n", mstnode._licence, mstnode._licperiod);
-
-		  	  if(!VerifymsnRes(tmn))
+			  
+		  	  if(!mstnode.VerifyLicense())
 			  {
 			      LogPrintf("CMasternodeMan::GetCertificateFromUcenter: connect to center server update certificate failed\n");
 				  return false;
 			  }
-			  mn.certifyPeriod = tmn.certifyPeriod;
-			  mn.certificate = tmn.certificate;
+			  mn.certifyPeriod = mstnode._licperiod;
+			  mn.certificate = mstnode._licence;
 	
 			  //std::cout << "MasterNode check success *********************" << std::endl;
 			  LogPrintf("CMasternodeMan::GetCertificateFromUcenter: MasterNode %s check success\n", mstquest._txid);
@@ -351,7 +348,8 @@ CMasternodeMan::CMasternodeMan()
   bool CMasternodeMan::VerifyMasterCertificate(CMasternode &mn)
  {
 	 //Certificate verify
-	 if(!VerifymsnRes(mn))
+	 CMstNodeData verify(mn);
+	 if(!verify.VerifyLicense())
 	 {
 	 	 LogPrintf("CMasternodeMan::CheckRegisteredMaster -- Failed to check Masternode certificate, masternode=%s\n", mn.vin.prevout.ToStringShort());
 		 return false;
@@ -384,8 +382,9 @@ bool CMasternodeMan::GetCertificateFromConf(CMasternode &mn)
 	CMasternode tmn(mn);
     tmn.certifyPeriod = t;
     tmn.certificate = strCettificate;	
-	
-	if(!VerifymsnRes(tmn))
+
+	CMstNodeData verify(tmn);
+	if(!verify.VerifyLicense())
 	{
 		LogPrintf("CMasternodeMan::VerifymsnRes -- check cetificate failed\n");
 		return false;
@@ -1196,7 +1195,8 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
         if(mnp.CheckAndUpdate(pmn, false, nDos)) return;
 
 		// check the certificate and make sure if the masternode had registered on the Ulord center server
-		if(!mnp.VerifyMasterCertificate(mnp))
+		CMstNodeData verify(mnp);
+		if(!verify.VerifyLicense())
 		{
 			if(pmn)
 				pmn->nActiveState = pmn->MASTERNODE_CERTIFICATE_FAILED;
@@ -2025,6 +2025,15 @@ CMstNodeData::CMstNodeData(const CMasternode & mn) :
 	_licperiod(mn.certifyPeriod),
 	_licence(mn.certificate),
 	_pubkey(mn.pubKeyMasternode)
+{}
+
+CMstNodeData::CMstNodeData(const CMasternodePing & mnp) :
+	_version(0),
+	_txid(mnp.vin.prevout.hash.GetHex()),
+	_voutid(mnp.vin.prevout.n),
+	_licperiod(mnp.certifyPeriod),
+	_licence(mnp.certificate),
+	_pubkey(mnp.pubKeyMasternode)
 {}
 
 uint256 CMstNodeData::GetLicenseWord() 
