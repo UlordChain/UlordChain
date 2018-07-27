@@ -449,9 +449,11 @@ UniValue claimname(const UniValue& params, bool fHelp)
 	CClaimValue claim;
 	if (pclaimTrie->getInfoForName(sName, claim))
 	   throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
+	/*
 	std::string sValue;
 	if (getValueForClaim(claim.outPoint, sValue))
 		throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
+	*/
 	
 	if ( vchName.size() > 15  || vchName.size() < 0)
 	{
