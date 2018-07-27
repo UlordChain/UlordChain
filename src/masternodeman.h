@@ -550,4 +550,6 @@ public:
     CPubKey  _pubkey;
 };  
 
+bool SendRequestNsg(SOCKET sock, CMasternode &mn, mstnodequest &mstquest);
+
 #endif
