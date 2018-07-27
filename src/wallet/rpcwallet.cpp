@@ -380,7 +380,7 @@ UniValue getaddressesbyaccount(const UniValue& params, bool fHelp)
 void CreateClaim(CScript& claimScript,CAmount nAmount,CWalletTx& wtxNew)
 {
     //check amout
-    if ( nAmount <= 0 || nAmount < MAX_ACCOUNT_NAME )
+    if ( nAmount <= 0 || nAmount != MAX_ACCOUNT_NAME )
         throw JSONRPCError(RPC_INVALID_PARAMETER,"Invalid amount");
 
     if ( nAmount > pwalletMain->GetBalance() )
