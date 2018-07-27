@@ -3325,6 +3325,7 @@ UniValue fundrawtransaction(const UniValue& params, bool fHelp)
 
     return result;
 }
+#if 0
 UniValue nametrie(const UniValue& params, bool fHelp)
 {
 	if ( !EnsureWalletIsAvailable(fHelp) )
@@ -3678,3 +3679,4 @@ UniValue listnametrie(const UniValue &params, bool fHelp)
         ret.push_backV(arrTmp);
         return ret;
 }
+#endif
