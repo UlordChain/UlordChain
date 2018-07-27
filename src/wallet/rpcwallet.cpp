@@ -439,9 +439,9 @@ UniValue claimname(const UniValue& params, bool fHelp)
         "\"transactionid\"  (string) The transaction id.\n"
     );
     string sName = params[0].get_str();
-    string sValue= params[1].get_str();
+    string sAddress= params[1].get_str();
     std::vector<unsigned char>vchName(sName.begin(),sName.end());
-    std::vector<unsigned char>vchValue(sValue.begin(),sValue.end());
+    std::vector<unsigned char>vchValue(sAddress.begin(),sAddress.end());
 
 	CClaimValue claim;
 	if (!pclaimTrie->getInfoForName(sName, claim))
@@ -465,7 +465,7 @@ UniValue claimname(const UniValue& params, bool fHelp)
     CWalletTx wtx;
 
     EnsureWalletIsUnlocked();
-    CScript claimScript = CScript()<<OP_CLAIM_NAME<<vchName<<vchValue<<OP_2DROP<<OP_DROP;
+    CScript claimScript = CScript()<<OP_CLAIM_NAME<<vchName<<sAddress<<OP_2DROP<<OP_DROP;
     CreateClaim(claimScript,nAmount,wtx);
     return wtx.GetHash().GetHex();
 }
