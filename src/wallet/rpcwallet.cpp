@@ -465,7 +465,7 @@ UniValue claimname(const UniValue& params, bool fHelp)
     CWalletTx wtx;
 
     EnsureWalletIsUnlocked();
-    CScript claimScript = CScript()<<OP_CLAIM_NAME<<vchName<<sAddress<<OP_2DROP<<OP_DROP;
+    CScript claimScript = CScript()<<OP_CLAIM_NAME<<vchName<<vchValue<<OP_2DROP<<OP_DROP;
     CreateClaim(claimScript,nAmount,wtx);
     return wtx.GetHash().GetHex();
 }
