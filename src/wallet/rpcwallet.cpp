@@ -443,26 +443,19 @@ UniValue claimname(const UniValue& params, bool fHelp)
     std::vector<unsigned char>vchName(sName.begin(),sName.end());
     std::vector<unsigned char>vchValue(sValue.begin(),sValue.end());
 
-/*
 	CClaimValue claim;
 	if (!pclaimTrie->getInfoForName(sName, claim))
 	   throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
 	std::string sValue;
 	if (!getValueForClaim(claim.outPoint, sValue))
 		throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
-*/
-	
-	const CClaimTrieNode* current = pclaimTrie->getNodeForName(sName);
-	if (current)
-	{
-		throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
-	}
 	
 	if ( vchName.size() > 15  || vchName.size() < 0)
 	{
 	    throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord account_name ,it is too long");
 	}
-	CBitcoinAddress address(params[0].get_str());
+	
+	CBitcoinAddress address(params[1].get_str());
 	if (!address.IsValid())
 	{
     	throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
