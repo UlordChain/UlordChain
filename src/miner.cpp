@@ -333,7 +333,8 @@ CBlockTemplate* CreateNewBlock(const CChainParams& chainparams, const CScript& s
                     {
                         assert(vvchParams.size() == 2);
                         std::string name(vvchParams[0].begin(), vvchParams[0].end());
-                        if (!trieCache.addClaim(name, COutPoint(tx.GetHash(), i), ClaimIdHash(tx.GetHash(), i), txout.nValue, nHeight))
+			std::string addr(vvchParams[1].begin(), vvchParams[1].end());
+                        if (!trieCache.addClaim(name, COutPoint(tx.GetHash(), i), ClaimIdHash(tx.GetHash(), i), txout.nValue, nHeight,addr))
                         {
                             LogPrintf("%s: Something went wrong inserting the name\n", __func__);
                         }
@@ -342,6 +343,7 @@ CBlockTemplate* CreateNewBlock(const CChainParams& chainparams, const CScript& s
                     {
                         assert(vvchParams.size() == 3);
                         std::string name(vvchParams[0].begin(), vvchParams[0].end());
+			std::string addr(vvchParams[2].begin(), vvchParams[2].end());
                         uint160 claimId(vvchParams[1]);
                         spentClaimsType::iterator itSpent;
                         for (itSpent = spentClaims.begin(); itSpent != spentClaims.end(); ++itSpent)
@@ -354,7 +356,7 @@ CBlockTemplate* CreateNewBlock(const CChainParams& chainparams, const CScript& s
                         if (itSpent != spentClaims.end())
                         {
                             spentClaims.erase(itSpent);
-                            if (!trieCache.addClaim(name, COutPoint(tx.GetHash(), i), claimId, txout.nValue, nHeight))
+                            if (!trieCache.addClaim(name, COutPoint(tx.GetHash(), i), claimId, txout.nValue, nHeight,addr))
                             {
                                 LogPrintf("%s: Something went wrong updating a claim\n", __func__);
                             }

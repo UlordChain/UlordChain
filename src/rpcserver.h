@@ -333,14 +333,6 @@ extern UniValue getclaimsfortx(const UniValue& params, bool fHelp);
 extern UniValue proofToJSON(const CClaimTrieProof& proof);
 extern UniValue getnameproof(const UniValue& params, bool fHelp);
 
-/*nametrie*/
-extern UniValue nametrie(const UniValue& params, bool fHelp);    //in rpcwallet.cpp
-extern void UpdateNameTrie(const std::vector<unsigned char>vchName, const uint160 claimId, const std::vector<unsigned char>vchValue, CAmount nAmount, CWalletTx& wtxNew, CWalletTx wtxIn, unsigned int nTxOut);
-extern UniValue updatenametrie( const UniValue & params, bool fHelp);
-extern void CreateNameTrie(CScript& claimScript, CAmount nAmount, CWalletTx& wtxNew);
-extern void ListNameTrie(const CWalletTx& wtx, const std::string &strAccount, int nMinDepth, UniValue &ret, const isminefilter &filter, bool list_spent);
-extern UniValue listnametrie(const UniValue &params, bool fHelp);
-
 // atomic swap contract of transaction about RPC 
 extern UniValue crosschaininitial(const UniValue &params, bool fHelp);
 extern UniValue crosschainparticipate(const UniValue &params, bool fHelp);

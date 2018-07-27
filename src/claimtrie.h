@@ -14,6 +14,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 // leveldb keys
 #define HASH_BLOCK 'h'
@@ -38,15 +39,20 @@ public:
     CAmount nEffectiveAmount;
     int nHeight;
     int nValidAtHeight;
-
+	std::string saddr;
+	std::string sname;
+	std::map<std::string,std::string>m_NameAddress;
     CClaimValue() {};
 
     CClaimValue(COutPoint outPoint, uint160 claimId, CAmount nAmount, int nHeight,
-                int nValidAtHeight)
+                int nValidAtHeight,std::string addr,std::string name)
                 : outPoint(outPoint), claimId(claimId)
                 , nAmount(nAmount), nEffectiveAmount(nAmount)
                 , nHeight(nHeight), nValidAtHeight(nValidAtHeight)
-    {}
+                , saddr(addr),sname(name)
+    {
+		m_NameAddress[sname]=saddr;
+	}
 
     ADD_SERIALIZE_METHODS;
 
@@ -343,10 +349,10 @@ public:
     int nCurrentHeight;
     int nExpirationTime;
     int nProportionalDelayFactor;
+    const CClaimTrieNode* getNodeForName(const std::string& name) const;
 private:
     void clear(CClaimTrieNode* current);
 
-    const CClaimTrieNode* getNodeForName(const std::string& name) const;
     
     bool update(nodeCacheType& cache, hashMapType& hashes,
                 std::map<std::string, int>& takeoverHeights,
@@ -454,14 +460,14 @@ public:
     bool dirty() const { return !dirtyHashes.empty(); }
     
     bool addClaim(const std::string& name, const COutPoint& outPoint,
-                  uint160 claimId, CAmount nAmount, int nHeight) const;
+                  uint160 claimId, CAmount nAmount, int nHeight,std::string addr) const;
     bool undoAddClaim(const std::string& name, const COutPoint& outPoint,
                       int nHeight) const;
     bool spendClaim(const std::string& name, const COutPoint& outPoint,
                     int nHeight, int& nValidAtHeight) const;
     bool undoSpendClaim(const std::string& name, const COutPoint& outPoint,
                         uint160 claimId, CAmount nAmount, int nHeight,
-                        int nValidAtHeight) const;
+                        int nValidAtHeight,std::string addr) const;
     
     bool addSupport(const std::string& name, const COutPoint& outPoint,
                     CAmount nAmount, uint160 supportedClaimId,

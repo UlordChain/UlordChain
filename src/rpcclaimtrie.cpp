@@ -82,7 +82,7 @@ UniValue getclaimsintrie(const UniValue& params, bool fHelp)
                         LogPrintf("%s: the specified txout of %s does not have an claim command\n", __func__, itClaims->outPoint.hash.GetHex());
                     }
 	            // Add a layer of base58check encoding to the value
-		    std::string sValue = EncodeBase58Check(vvchParams[1]);
+		    std::string sValue(vvchParams[1].begin(), vvchParams[1].end());
                     claim.push_back(Pair("value", sValue));
                 }
                 claims.push_back(claim);
@@ -161,11 +161,11 @@ bool getValueForClaim(const COutPoint& out, std::string& sValue)
     if (op == OP_CLAIM_NAME)
     {
 	// Add a layer of base58check encoding to the value
-        sValue = EncodeBase58Check(vvchParams[1]);
+        sValue = std::string(vvchParams[1].begin(), vvchParams[1].end());
     }
     else if (op == OP_UPDATE_CLAIM)
     {
-        sValue = EncodeBase58Check(vvchParams[2]);
+        sValue = std::string(vvchParams[2].begin(), vvchParams[2].end());
     }
     return true;
 }
@@ -544,7 +544,7 @@ UniValue getclaimsfortx(const UniValue& params, bool fHelp)
                 if (op == OP_CLAIM_NAME)
                 {
 		    // Add a layer of base58check encoding to the value
-		    std::string sValue = EncodeBase58Check(vvchParams[1]);
+		    std::string sValue(vvchParams[1].begin(), vvchParams[1].end());
                     uint160 claimId = ClaimIdHash(hash, i);
                     o.push_back(Pair("claimId", claimId.GetHex()));
                     o.push_back(Pair("value", sValue));
@@ -553,7 +553,7 @@ UniValue getclaimsfortx(const UniValue& params, bool fHelp)
                 {
                     uint160 claimId(vvchParams[1]);
                     // Add a layer of base58check encoding to the value
-		    std::string sValue = EncodeBase58Check(vvchParams[2]);
+		    std::string sValue(vvchParams[2].begin(), vvchParams[2].end());
                     o.push_back(Pair("claimId", claimId.GetHex()));
                     o.push_back(Pair("value", sValue));
                 }

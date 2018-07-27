@@ -136,3 +136,6 @@ ulord-cli
 ulordd
 ulord-qt
 make
+
+#source insight dir
+si/

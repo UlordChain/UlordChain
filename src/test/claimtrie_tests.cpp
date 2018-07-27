@@ -19,7 +19,7 @@
 #include <boost/test/unit_test.hpp>
 #include <iostream>
 #include "test/test_ulord.h"
-
+#include <string>
 using namespace std;
 
 CScript scriptPubKey = CScript() << OP_TRUE;
@@ -318,7 +318,6 @@ BOOST_AUTO_TEST_CASE(claimtrie_insert_update_claim)
 
     CCoinsViewCache coins(pcoinsTip);
     CClaimTrieCache trieCache(pclaimTrie);
-    CNameTrieCache nameCache(pnameTrie);
     CBlockIndex* pindexState = chainActive.Tip();
     CValidationState state;
     CBlockIndex* pindex;
@@ -329,7 +328,7 @@ BOOST_AUTO_TEST_CASE(claimtrie_insert_update_claim)
         if (pindex == pindexState && (coins.DynamicMemoryUsage() + pcoinsTip->DynamicMemoryUsage()) <= nCoinCacheUsage)
         {
             bool fClean = true;
-            BOOST_CHECK(DisconnectBlock(block, state, pindex, coins, trieCache,nameCache, &fClean));
+            BOOST_CHECK(DisconnectBlock(block, state, pindex, coins, trieCache, &fClean));
             pindexState = pindex->pprev;
         }
     }
@@ -338,7 +337,7 @@ BOOST_AUTO_TEST_CASE(claimtrie_insert_update_claim)
         pindex = chainActive.Next(pindex);
         CBlock block;
         BOOST_CHECK(ReadBlockFromDisk(block, pindex, Params().GetConsensus()));
-        BOOST_CHECK(ConnectBlock(block, state, pindex, coins, trieCache,nameCache));
+        BOOST_CHECK(ConnectBlock(block, state, pindex,coins,trieCache));
     }
     
     // Roll back the last block, make sure tx1 and tx7 are put back in the trie
@@ -862,6 +861,8 @@ BOOST_AUTO_TEST_CASE(claimtrienode_serialize_unserialize)
     CDataStream ss(SER_DISK, 0);
 
     uint160 hash160;
+    std::string name="name";
+    std::string addr="addr";
 
     CClaimTrieNode n1;
     CClaimTrieNode n2;
@@ -883,8 +884,8 @@ BOOST_AUTO_TEST_CASE(claimtrienode_serialize_unserialize)
     ss >> n2;
     BOOST_CHECK(n1 == n2);
 
-    CClaimValue v1(COutPoint(uint256S("0000000000000000000000000000000000000000000000000000000000000001"), 0), hash160, 50, 0, 100);
-    CClaimValue v2(COutPoint(uint256S("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"), 1), hash160, 100, 1, 101);
+    CClaimValue v1(COutPoint(uint256S("0000000000000000000000000000000000000000000000000000000000000001"), 0), hash160, 50, 0, 100,addr,name);
+    CClaimValue v2(COutPoint(uint256S("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"), 1), hash160, 100, 1, 101,addr,name);
 
     n1.insertClaim(v1);
     BOOST_CHECK(n1 != n2);
