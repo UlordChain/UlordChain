@@ -6,13 +6,13 @@
 #include "primitives/transaction.h"
 #include <vector>
 #include "rpcprotocol.h"
+#include "amount.h"
 
 // This is the max claim script size in bytes, not including the script pubkey part of the script.
 // Scripts exceeding this size are rejected in CheckTransaction in main.cpp
 #define MAX_CLAIM_SCRIPT_SIZE 8192
 
-// this is the min number of account_name 
-#define MIN_VERIFY_ACCOUNTNAME 10
+
 
 // This is the max claim name size in bytes, for all claim trie transactions. 
 // Scripts exceeding this size are rejected in CheckTransaction in main.cpp

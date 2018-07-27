@@ -35,6 +35,9 @@ using namespace std;
 int64_t nWalletUnlockTime;
 static CCriticalSection cs_nWalletUnlockTime;
 
+// ACCOUNT_NAME DEPOSIT
+#define MAX_ACCOUNT_MONEY 10 * COIN
+
 std::string HelpRequiringPassphrase()
 {
     return pwalletMain && pwalletMain->IsCrypted()
@@ -377,7 +380,7 @@ UniValue getaddressesbyaccount(const UniValue& params, bool fHelp)
 void CreateClaim(CScript& claimScript,CAmount nAmount,CWalletTx& wtxNew)
 {
     //check amout
-    if ( nAmount <= 0 || nAmount < 10 )
+    if ( nAmount <= 0 && nAmount < MAX_ACCOUNT_NAME )
         throw JSONRPCError(RPC_INVALID_PARAMETER,"Invalid amount");
 
     if ( nAmount > pwalletMain->GetBalance() )
@@ -444,10 +447,10 @@ UniValue claimname(const UniValue& params, bool fHelp)
     std::vector<unsigned char>vchValue(sAddress.begin(),sAddress.end());
 
 	CClaimValue claim;
-	if (!pclaimTrie->getInfoForName(sName, claim))
+	if (pclaimTrie->getInfoForName(sName, claim))
 	   throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
 	std::string sValue;
-	if (!getValueForClaim(claim.outPoint, sValue))
+	if (getValueForClaim(claim.outPoint, sValue))
 		throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
 	
 	if ( vchName.size() > 15  || vchName.size() < 0)
