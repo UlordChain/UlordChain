@@ -139,3 +139,6 @@ make
 
 #source insight dir
 si/
+
+#vscode
+.vscode/

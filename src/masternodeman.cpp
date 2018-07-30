@@ -302,8 +302,15 @@ CMasternodeMan::CMasternodeMan()
 				  return error("receive a invalid validflag validflag %d", mstnode._validflag);
 			  }
 			  
-			  LogPrintf("CMasternodeMan::GetCertificateFromUcenter: MasterNode certificate %s time = %d\n", mstnode._licence, mstnode._licperiod);
-			  
+              mstnode._pubkey = mn.pubKeyMasternode;
+
+			  LogPrintf("CMasternodeMan::GetCertificateFromUcenter: Masternode<%s:%d-%s> certificate %s time = %d\n",
+                    mstnode._txid.c_str(),
+                    mstnode._voutid,
+                    HexStr(mstnode._pubkey).c_str(),
+                    mstnode._licence.c_str(),
+                    mstnode._licperiod);
+
 		  	  if(!mstnode.VerifyLicense())
 			  {
 			      LogPrintf("CMasternodeMan::GetCertificateFromUcenter: connect to center server update certificate failed\n");
@@ -2058,19 +2065,20 @@ bool CMstNodeData::VerifyLicense()
     std::vector<unsigned char> vchSigRcv = DecodeBase64(_licence.c_str(), &fInvalid);
 
     if (fInvalid) {
-        LogPrintf("CMstNodeData::VerifyLicense:masternode<%s:%d-%ld> license(%s) decode failed!", _txid.c_str(), _voutid, _licperiod, _licence.c_str());
+        LogPrintf("CMstNodeData::VerifyLicense:masternode<%s:%d-%ld> license(%s) decode failed!\n", _txid.c_str(), _voutid, _licperiod, _licence.c_str());
         return false;
     }
 
     if(!pubkeyFromSig.RecoverCompact(GetLicenseWord(), vchSigRcv)) {
-		LogPrintf("CMstNodeData::VerifyLicense:masternode<%s:%d-%ld> license(%s) recover pubkey failed!", _txid.c_str(), _voutid, _licperiod, _licence.c_str());
+		LogPrintf("CMstNodeData::VerifyLicense:masternode<%s:%d-%ld> license(%s) recover pubkey failed!\n", _txid.c_str(), _voutid, _licperiod, _licence.c_str());
 		return false;
 	}
     if(pubkeyFromSig != pubkeyucenter) {
-        LogPrintf("CMstNodeData::VerifyLicense:masternode<%s:%d-%ld> key don not match : rcv pubkey = %s, ucenter pubkey = %s, license = %s",
+        LogPrintf("CMstNodeData::VerifyLicense:masternode<%s:%d-%ld-%s> key don not match : rcv pubkey = %s, ucenter pubkey = %s, license = %s\n",
                     _txid.c_str(),
                     _voutid,
                     _licperiod,
+                    HexStr(_pubkey).c_str(),
                     HexStr(pubkeyFromSig).c_str(),
                     g_ucenterserverPubkey.c_str(),
                     _licence.c_str());
