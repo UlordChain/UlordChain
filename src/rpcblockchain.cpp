@@ -147,6 +147,31 @@ UniValue getblockcount(const UniValue& params, bool fHelp)
     return chainActive.Height();
 }
 
+UniValue getsuperblock(const UniValue& params, bool fHelp)
+{
+    if (fHelp || params.size() != 0)
+        throw runtime_error(
+            "getsuperblock\n"
+            "\nReturns the height of the next supur block in the longest block chain.\n"
+            "\nResult:\n"
+            "n    (numeric) The next super block height\n"
+            "\nExamples:\n"
+            + HelpExampleCli("getsuperblock", "")
+            + HelpExampleRpc("getsuperblock", "")
+        );
+
+    LOCK(cs_main);
+    int nBlockHeight = chainActive.Height();
+    while(true)
+	{
+		if( nBlockHeight >= Params().GetConsensus().nSuperblockStartBlock &&
+            ((nBlockHeight % Params().GetConsensus().nSuperblockCycle) == 0) )
+			break;
+		nBlockHeight++;
+	}
+    return nBlockHeight;
+}
+
 UniValue getbestblockhash(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() != 0)
