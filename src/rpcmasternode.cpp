@@ -391,7 +391,6 @@ UniValue masternode(const UniValue& params, bool fHelp)
 
         mnObj.push_back(Pair("vin", activeMasternode.vin.ToString()));
         mnObj.push_back(Pair("service", activeMasternode.service.ToString()));
-        mnObj.push_back(Pair("privkey", CBitcoinSecret(activeMasternode.keyMasternode).ToString()));
         mnObj.push_back(Pair("publickey", HexStr(activeMasternode.pubKeyMasternode).c_str()));
 
         CMasternode mn;
