@@ -1965,18 +1965,18 @@ bool CMasternodeCenter::RequestLicense(CMasternode &mn)
 			nBytes = recv(hSocket, cbuf, sizeof(cbuf), 0);
 			if((GetTime() - nTimeLast) >= mstnd_iReqMsgTimeout) {
 				CloseSocket(hSocket);
-                return error("CMasternodeMan::CheckActiveMaster: recv CMstNodeData timeout");
+                return error("CMasternodeCenter::RequestLicense: recv CMstNodeData timeout");
 			}
 		}
         if(nBytes > mstnd_iReqBufLen) {
             CloseSocket(hSocket);
-            return error("CMasternodeMan::GetCertificateFromUcenter: msg have too much bytes %d, need increase rcv buf size", nBytes);
+            return error("CMasternodeCenter::RequestLicense: msg have too much bytes %d, need increase rcv buf size", nBytes);
         }
         memcpy(&buflength, cbuf, mstnd_iReqMsgHeadLen);
         buflength = HNSwapl(buflength);
         if(buflength != nBytes - mstnd_iReqMsgHeadLen) {
             CloseSocket(hSocket);
-            return error("CMasternodeMan::GetCertificateFromUcenter: receive a error msg length is %d, recv bytes is %d", buflength, nBytes);
+            return error("CMasternodeCenter::RequestLicense: receive a error msg length is %d, recv bytes is %d", buflength, nBytes);
         }
 
         std::string str(cbuf + mstnd_iReqMsgHeadLen, buflength);
@@ -1989,14 +1989,14 @@ bool CMasternodeCenter::RequestLicense(CMasternode &mn)
             ia >> mstnode;
             if(mstnode._txid != mn.vin.prevout.hash.GetHex() || mstnode._voutid != mn.vin.prevout.n) {
                 CloseSocket(hSocket);
-                return error("receive a invalid msg to masternode<%s:%d>", mstnode._txid.c_str(), mstnode._voutid);
+                return error("CMasternodeCenter::RequestLicense:receive a invalid msg to masternode<%s:%d>", mstnode._txid.c_str(), mstnode._voutid);
             }
             if(nTimeLast >= mstnode._licperiod) {
                 CloseSocket(hSocket);
-                return error("receive a invalid license for masternode<%s:%d> license period is %ld, now is %ld", mstnode._txid.c_str(), mstnode._voutid, mstnode._licperiod, nTimeLast);
+                return error("CMasternodeCenter::RequestLicense:receive a invalid license for masternode<%s:%d> license period is %ld, now is %ld", mstnode._txid.c_str(), mstnode._voutid, mstnode._licperiod, nTimeLast);
             }
             mstnode._pubkey = mn.pubKeyMasternode;
-            LogPrintf("CMasternodeMan::GetCertificateFromUcenter: Masternode<%s:%d-%s> certificate %s time = %d\n",
+            LogPrintf("CMasternodeCenter::RequestLicense: Masternode<%s:%d-%s> certificate %s time = %d\n",
                     mstnode._txid.c_str(),
                     mstnode._voutid,
                     HexStr(mstnode._pubkey).c_str(),
@@ -2004,22 +2004,22 @@ bool CMasternodeCenter::RequestLicense(CMasternode &mn)
                     mstnode._licperiod);
 
             if(!mstnode.VerifyLicense()) {
-                LogPrintf("CMasternodeMan::GetCertificateFromUcenter: connect to center server update certificate failed\n");
+                LogPrintf("CMasternodeCenter::RequestLicense: connect to center server update certificate failed\n");
                 return false;
             }
             mn.certifyPeriod = mstnode._licperiod;
             mn.certificate = mstnode._licence;
             mn.certifyVersion = mstnode._licversion;
-            LogPrintf("CMasternodeMan::GetCertificateFromUcenter: MasterNode %s check success\n", mstquest._txid);
+            LogPrintf("CMasternodeCenter::RequestLicense: MasterNode %s check success\n", mstquest._txid);
             CloseSocket(hSocket);
             return true;
         } else {
             CloseSocket(hSocket);
-            return error("receive a invalid msg to with %d nodes infomation", mstres._num);
+            return error("CMasternodeCenter::RequestLicense:receive a invalid msg to with %d nodes infomation", mstres._num);
         }
     }
     CloseSocket(hSocket);
-    LogPrintf("CMasternodeMan::GetCertificateFromUcenter:Could't connect to center server\n");
+    LogPrintf("CMasternodeCenter::RequestLicense:Could't connect to center server\n");
     return false;
 }
 
