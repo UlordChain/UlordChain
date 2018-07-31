@@ -34,7 +34,8 @@ public:
 	CPubKey pubKeyMasternode;
     uint256 blockHash;
     int64_t sigTime; //mnb message times
-    	
+
+	int certifyVersion;    	
 	int64_t certifyPeriod;  //certificate available time
 	std::string certificate; //certificate֤
     std::vector<unsigned char> vchSig;
@@ -45,6 +46,7 @@ public:
 		pubKeyMasternode(),
         blockHash(),
         sigTime(0),
+		certifyVersion(0),
         certifyPeriod(0),
         certificate(),
         vchSig()
@@ -60,6 +62,7 @@ public:
 		READWRITE(pubKeyMasternode);
         READWRITE(blockHash);
         READWRITE(sigTime);
+		READWRITE(certifyVersion);
 		READWRITE(certifyPeriod);
 		READWRITE(certificate);
         READWRITE(vchSig);
@@ -76,6 +79,7 @@ public:
 		swap(first.pubKeyMasternode, second.pubKeyMasternode);
         swap(first.blockHash, second.blockHash);
         swap(first.sigTime, second.sigTime);
+		swap(first.certifyVersion, second.certifyVersion);
 		swap(first.certifyPeriod, second.certifyPeriod);
 		swap(first.certificate, second.certificate);
         swap(first.vchSig, second.vchSig);
@@ -95,7 +99,6 @@ public:
     bool CheckSignature(CPubKey& pubKeyMasternode, int &nDos);
     bool SimpleCheck(int& nDos);
     bool CheckAndUpdate(CMasternode* pmn, bool fFromNewBroadcast, int& nDos);
-	bool VerifyMasterCertificate(CMasternodePing& mnp);
     void Relay();
 
     CMasternodePing& operator=(CMasternodePing from)
@@ -178,6 +181,7 @@ public:
     CMasternodePing lastPing;
     std::vector<unsigned char> vchSig;
 	
+    int certifyVersion;
 	std::string certificate; //certificate֤
 	int64_t certifyPeriod;  //certificate available time
     int64_t sigTime; //mnb message time
@@ -214,6 +218,7 @@ public:
         READWRITE(pubKeyMasternode);
         READWRITE(lastPing);
         READWRITE(vchSig);
+        READWRITE(certifyVersion);
 	    READWRITE(certificate);
 	    READWRITE(certifyPeriod);
         READWRITE(sigTime);
@@ -387,6 +392,7 @@ public:
         READWRITE(pubKeyCollateralAddress);
         READWRITE(pubKeyMasternode);
         READWRITE(vchSig);
+        READWRITE(certifyVersion);
 		READWRITE(certificate);
 		READWRITE(certifyPeriod);
         READWRITE(sigTime);

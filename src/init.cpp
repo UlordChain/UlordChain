@@ -1822,27 +1822,12 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     }
 
 	// resolve ucenter domain to ip
-    if (Params().NetworkIDString() == CBaseChainParams::MAIN)
-    {
-        std::vector<CNetAddr> vIPs;
-
-        if (LookupHost(Params().ucenter().c_str(), vIPs))
-        {
-        	if (vIPs.empty())
-                return InitError(_("ucenter ip resolving failed, IPs empty."));
-
-            for (const CNetAddr &ip : vIPs)
-            {
-                LogPrintf("\t\t\t--------------%s==============\t\t\n", ip.ToString());
-				ucenterservice = CService(ip, 5009);
-            }
+    if (Params().NetworkIDString() == CBaseChainParams::MAIN) {
+        std::string err;
+        if(!mnodecenter.InitCenter(err)) {
+            return InitError(_(err.c_str()));
         }
-		else
-            return InitError(_("ucenter ip resolving failed, LookupHost returned false."));
     }
-	else
-		ucenterservice = CService("10.175.0.147:5009");
-	LogPrintf("Ulord center service: %s \n", ucenterservice.ToStringIPPort());
 
     LogPrintf("Using masternode config file %s\n", GetMasternodeConfigFile().string());
 

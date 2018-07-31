@@ -312,7 +312,7 @@ void CActiveMasternode::ManageStateLocal()
 
 		// check if it is registered on the Ulord center server
 		CMasternode mn(mnb);
-		if(!mnodeman.GetCertificate(mn))
+		if(!mnodecenter.LoadLicense(mn))
 		{
 			nState = ACTIVE_MASTERNODE_NOT_CAPABLE;
 			strNotCapableReason = strprintf(_("%s didn't registered on Ulord Center"), mn.vin.prevout.ToStringShort());

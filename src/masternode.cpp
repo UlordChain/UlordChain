@@ -309,10 +309,14 @@ void CMasternode::Check(bool fForce)
 	{
 		nTimeLastCheckedRegistered = GetTime();
 		//CMasternode mn(*this);
-		if(mnodeman.CheckCertificateIsExpire(*this))
+		if(!mnodecenter.CheckLicense(*this))
 		{
 			nActiveState = MASTERNODE_CERTIFICATE_FAILED;
-			LogPrint("masternode", "CMasternode::Check -- Masternode %s is in %s state now\n", vin.prevout.ToStringShort(), GetStateString());
+			LogPrint("masternode", "CMasternode::Check -- Masternode %s is in %s state now. Reasean time is %ld, license period is %ld\n",
+                        vin.prevout.ToStringShort(),
+                        GetStateString(),
+                        nTimeLastCheckedRegistered,
+                        certifyPeriod);
 			return;
 		}
 	}
@@ -711,11 +715,11 @@ bool CMasternodeBroadcast::CheckOutpoint(int& nDos)
     }
 
 	// check if it is registered on the Ulord center server
-	CMasternode mn(*this);
-	if(!mnodeman.VerifyMasterCertificate(mn))
+	CMstNodeData mn(*this);
+	if(!mn.VerifyLicense())
 	{
 		nActiveState = MASTERNODE_CERTIFICATE_FAILED;
-		LogPrintf("CMasternodeBroadcast::CheckOutpoint -- Failed to check Masternode certificate, masternode=%s\n", mn.vin.prevout.ToStringShort());
+		LogPrintf("CMasternodeBroadcast::CheckOutpoint -- Failed to check Masternode certificate, masternode=%s\n", vin.prevout.ToStringShort());
 		return false;
 	}
 
@@ -828,6 +832,7 @@ CMasternodePing::CMasternodePing(CTxIn& vinNew)
 	CMasternode* pmn = mnodeman.Find(vin);
 	if(pmn)
 	{
+		certifyVersion = pmn->certifyVersion;
 	    certifyPeriod = pmn->certifyPeriod;
 	    certificate = pmn->certificate;
 		pubKeyMasternode = pmn->pubKeyMasternode;
@@ -962,45 +967,6 @@ bool CMasternodePing::CheckAndUpdate(CMasternode* pmn, bool fFromNewBroadcast, i
     Relay();
 
     return true;
-}
-
-bool CMasternodePing::VerifyMasterCertificate(CMasternodePing& mnp)
-{
-	if(mnp.certifyPeriod < GetTime())
-	{
-		LogPrintf("VerifymsnRes:certificate is timeout.");
-		return false;
-	}	
-
-	CPubKey pubkeyFromSig;
-	std::vector<unsigned char> vchSigRcv;
-	vchSigRcv = ParseHex(mnp.certificate);
-		
-	CPubKey pubkeyLocal(ParseHex(g_ucenterserverPubkey));	
-
-		
-	CHashWriter ss(SER_GETHASH, 0);
-	ss << strMessageMagic;
-	ss << mnp.vin.prevout.hash.GetHex();
-	ss << mnp.vin.prevout.n;
-	ss << mnp.pubKeyMasternode;
-	ss << mnp.certifyPeriod;
-
-	uint256 reqhash = ss.GetHash();
-		
-	if(!pubkeyFromSig.RecoverCompact(reqhash, vchSigRcv)) {
-		LogPrintf("VerifymsnRes:Error recovering public key.");
-		return false;
-	}
-
-	if(pubkeyFromSig.GetID() != pubkeyLocal.GetID()) {
-		LogPrintf("Keys don't match: pubkey=%s, pubkeyFromSig=%s, hash=%s, vchSig=%s",
-					pubkeyLocal.GetID().ToString().c_str(), pubkeyFromSig.GetID().ToString().c_str(), ss.GetHash().ToString().c_str(),
-					EncodeBase64(&vchSigRcv[0], vchSigRcv.size()));
-		return false;
-	}
-	return true;
-
 }
 
 void CMasternodePing::Relay()

@@ -16,13 +16,12 @@
 #include <sstream>
 /** Masternode manager */
 CMasternodeMan mnodeman;
-CService ucenterservice;
+CMasternodeCenter mnodecenter;
 
 const std::string CMasternodeMan::SERIALIZATION_VERSION_STRING = "CMasternodeMan-Version-4";
 const int mstnd_iReqBufLen = 600;
 const int mstnd_iReqMsgHeadLen = 4;
 const int mstnd_iReqMsgTimeout = 10;
-const std::string g_ucenterserverPubkey = "03e867486ebaeeadda25f1e47612cdaad3384af49fa1242c5821b424937f8ec1f5";
 extern const std::string strMessageMagic;
 
 
@@ -165,46 +164,6 @@ bool SendRequestNsg(SOCKET sock, CMasternode &mn, mstnodequest &mstquest)
 	return true;
 }
 
-bool VerifymsnRes(const CMasternode &mn)
-{
-	if(mn.certifyPeriod < GetTime())
-	{
-		LogPrintf("VerifymsnRes:certificate is timeout.");
-		return false;
-	}
-		
-	CPubKey pubkeyFromSig;
-	std::vector<unsigned char> vchSigRcv;
-	vchSigRcv = ParseHex(mn.certificate);
-		
-	CPubKey pubkeyLocal(ParseHex(g_ucenterserverPubkey));	
-		
-	CHashWriter ss(SER_GETHASH, 0);
-    ss << strMessageMagic;
-    ss << mn.vin.prevout.hash.GetHex();
-	ss << mn.vin.prevout.n;
-	
-	ss << mn.pubKeyMasternode;
-	ss << mn.certifyPeriod;
-	
-	uint256 reqhash = ss.GetHash();
-		
-	if(!pubkeyFromSig.RecoverCompact(reqhash, vchSigRcv)) {
-		LogPrintf("VerifymsnRes:Error recovering public key.");
-		return false;
-	}
-	
-	if(pubkeyFromSig.GetID() != pubkeyLocal.GetID()) {
-        LogPrintf("Keys don't match: pubkey=%s, pubkeyFromSig=%s, hash=%s, vchSig=%s",
-                    pubkeyLocal.GetID().ToString().c_str(), pubkeyFromSig.GetID().ToString().c_str(), ss.GetHash().ToString().c_str(),
-                    EncodeBase64(&vchSigRcv[0], vchSigRcv.size()));
-        return false;
-    }
-	return true;
-}
-
-
-
 CMasternodeMan::CMasternodeMan()
 : cs(),
   vMasternodes(),
@@ -224,223 +183,6 @@ CMasternodeMan::CMasternodeMan()
   mapSeenMasternodePing(),
   nDsqCount(0)
 {}
-
-  bool CMasternodeMan::GetCertificateFromUcenter(CMasternode &mn)
-  {
-	  //return false;
-	  // Activation validation of the primary node.
-	  // It is still in the testing phase, and the code will be developed after the test.
-  
-	  if (!sporkManager.IsSporkActive(SPORK_18_REQUIRE_MASTER_VERIFY_FLAG))
-	  {
-		  return true;
-	  }
-  
-	  bool proxyConnectionFailed = false;
-	  SOCKET hSocket;
-	  if(ConnectSocket(ucenterservice, hSocket, DEFAULT_CONNECT_TIMEOUT, &proxyConnectionFailed))
-	  {
-		  if (!IsSelectableSocket(hSocket)) {
-			  LogPrintf("CMasternodeMan::GetCertificateFromUcenter: Cannot create connection: non-selectable socket created (fd >= FD_SETSIZE ?)\n");
-			  CloseSocket(hSocket);
-			  return false/*true*/;
-		  }
-  
-		  mstnodequest mstquest(111,MST_QUEST_ONE); 	  
-		  if(!SendRequestNsg(hSocket, mn, mstquest))
-		  {
-			  CloseSocket(hSocket);
-			  return error("CMasternodeMan::GetCertificateFromUcenter: send RequestMsgType error");
-		  }
-
-		char cbuf[mstnd_iReqBufLen];
-		memset(cbuf,0,sizeof(cbuf));
-		int nBytes = 0;
-
-		int64_t nTimeLast = GetTime();
-		while(nBytes <= 0)
-		{
-			nBytes = recv(hSocket, cbuf, sizeof(cbuf), 0);
-			if((GetTime() - nTimeLast) >= mstnd_iReqMsgTimeout)
-			{
-				CloseSocket(hSocket);
-				  LogPrintf("CMasternodeMan::GetCertificateFromUcenter: Passed because wait for ack message timeout\n");
-				  return error("CMasternodeMan::CheckActiveMaster: recv CMstNodeData timeout");
-			  }
-		  }
-		  if(nBytes > mstnd_iReqBufLen)
-		  {
-			  CloseSocket(hSocket);
-			  return error("CMasternodeMan::GetCertificateFromUcenter: msg have too much bytes %d, need increase rcv buf size", nBytes);
-		  }
-		  
-		  int msglen = 0;
-		  memcpy(&msglen, cbuf, mstnd_iReqMsgHeadLen);
-		  msglen = HNSwapl(msglen);
-  
-		  if(msglen != nBytes - mstnd_iReqMsgHeadLen)
-		  {
-			  CloseSocket(hSocket);
-			  return error("CMasternodeMan::GetCertificateFromUcenter: receive a error msg length is %d, recv bytes is %d", msglen, nBytes);
-		}
-		
-		std::string str(cbuf + mstnd_iReqMsgHeadLen, msglen);
-
-		mstnoderes  mstres;
-		std::istringstream strstream(str);
-		boost::archive::binary_iarchive ia(strstream);
-		ia >> mstres;
-
-		  if(mstres._num == 1)
-		  {  			  
-			  CMstNodeData	mstnode;
-
-			  ia >> mstnode;
-			  if(mstnode._validflag <= 0 || mstnode._txid != mn.vin.prevout.hash.GetHex() || mstnode._voutid != mn.vin.prevout.n)
-			  {
-				  CloseSocket(hSocket);
-				  return error("receive a invalid validflag validflag %d", mstnode._validflag);
-			  }
-			  
-              mstnode._pubkey = mn.pubKeyMasternode;
-
-			  LogPrintf("CMasternodeMan::GetCertificateFromUcenter: Masternode<%s:%d-%s> certificate %s time = %d\n",
-                    mstnode._txid.c_str(),
-                    mstnode._voutid,
-                    HexStr(mstnode._pubkey).c_str(),
-                    mstnode._licence.c_str(),
-                    mstnode._licperiod);
-
-		  	  if(!mstnode.VerifyLicense())
-			  {
-			      LogPrintf("CMasternodeMan::GetCertificateFromUcenter: connect to center server update certificate failed\n");
-				  return false;
-			  }
-			  mn.certifyPeriod = mstnode._licperiod;
-			  mn.certificate = mstnode._licence;
-	
-			  //std::cout << "MasterNode check success *********************" << std::endl;
-			  LogPrintf("CMasternodeMan::GetCertificateFromUcenter: MasterNode %s check success\n", mstquest._txid);
-			  CloseSocket(hSocket);
-			  return true;
-		  }
-		  else 
-		  {
-			  return false;
-		  }    
-	  }
-	  CloseSocket(hSocket);
-	  LogPrintf("CMasternodeMan::GetCertificateFromUcenter: Passed because could't connect to center server\n");
-	  return false;
-  }
-  
-  void CMasternodeMan::UpdateCertificate(CMasternode &mn)
-  {
-	  //Request to update the certificate if the expiration time is less than 2 day
-	  if(mn.certifyPeriod <= 0 || mn.certifyPeriod - LIMIT_MASTERNODE_LICENSE < GetTime())
-	  {
-		  GetCertificateFromUcenter(mn);
-	  }
-  }
-  
- bool CMasternodeMan::CheckCertificateIsExpire(CMasternode &mn)
-{
-	UpdateCertificate(mn);
-	if(mn.certifyPeriod < GetTime())
-		return true;
-	
-	return false;
-}
-
-  bool CMasternodeMan::VerifyMasterCertificate(CMasternode &mn)
- {
-	 //Certificate verify
-	 CMstNodeData verify(mn);
-	 if(!verify.VerifyLicense())
-	 {
-	 	 LogPrintf("CMasternodeMan::CheckRegisteredMaster -- Failed to check Masternode certificate, masternode=%s\n", mn.vin.prevout.ToStringShort());
-		 return false;
-	 }
- 
-	 return true;
- }
-
-bool CMasternodeMan::GetCertificateFromConf(CMasternode &mn)
-{
-	std::string strCettificate = GetArg("-certificate", "");
-	if(strCettificate.empty())
-	{
-		LogPrintf("CMasternodeMan::GetCertificateFromConf -- Failed to read Masternode certificate from conf\n");
-		return false;
-	}
-	
-	std::string strLastTime = GetArg("-lasttime", "");
-	if(strLastTime.empty())
-	{
-		LogPrintf("CMasternodeMan::GetCertificateFromConf -- Failed to read Masternode lasttime from conf\n");
-		return false;
-	}
-	//Convert to timestamp
-	struct tm tmp_time;
-	strptime(strLastTime.c_str(), "%Y%m%d %H:%M:%S",&tmp_time);
-	time_t t = mktime(&tmp_time);
-	LogPrintf("CMasternodeMan::GetCertificateFromConf -- strLastTime = %ld\n",t);	
-
-	CMasternode tmn(mn);
-    tmn.certifyPeriod = t;
-    tmn.certificate = strCettificate;	
-
-	CMstNodeData verify(tmn);
-	if(!verify.VerifyLicense())
-	{
-		LogPrintf("CMasternodeMan::VerifymsnRes -- check cetificate failed\n");
-		return false;
-	}
-
-	mn.certificate = strCettificate;
-	mn.certifyPeriod = t;
-	return true;
-	
-}
- 
-bool CMasternodeMan::GetCertificate(CMasternode &mn)
-{
-    // Activation validation of the primary node.
-    // get certificate,make sure master had registered
-
-	if (!sporkManager.IsSporkActive(SPORK_18_REQUIRE_MASTER_VERIFY_FLAG))
-	{
-		return true;
-	}
-
-	char cbuf[mstnd_iReqBufLen];
-	memset(cbuf,0,sizeof(cbuf));
-	
-    bool ucenterfirst = GetBoolArg("-ucenterfirst", true);
-	if(!ucenterfirst)
-	{	
-		if(!GetCertificateFromConf(mn))
-		{
-			if(!GetCertificateFromUcenter(mn))
-			{
-				LogPrintf("CMasternodeMan::GetCertificateFromUcenter -- check cetificate failed\n");
-				return false;
-			}
-		}
-	}
-	else 
-	{
-		if(!GetCertificateFromUcenter(mn))
-		{	
-			if(!GetCertificateFromConf(mn))
-			{
-				LogPrintf("CMasternodeMan::GetCertificateFromUcenter -- check cetificate failed\n");
-				return false;
-			}
-		}
-	}
-	return true;
-}
 
 bool CMasternodeMan::Add(CMasternode &mn)
 {
@@ -2026,9 +1768,10 @@ void CMasternodeMan::NotifyMasternodeUpdates()
 }
 
 CMstNodeData::CMstNodeData(const CMasternode & mn) :
-	_version(0),
+	_version(0),	
 	_txid(mn.vin.prevout.hash.GetHex()),
 	_voutid(mn.vin.prevout.n),
+	_licversion(mn.certifyVersion),
 	_licperiod(mn.certifyPeriod),
 	_licence(mn.certificate),
 	_pubkey(mn.pubKeyMasternode)
@@ -2038,6 +1781,7 @@ CMstNodeData::CMstNodeData(const CMasternodePing & mnp) :
 	_version(0),
 	_txid(mnp.vin.prevout.hash.GetHex()),
 	_voutid(mnp.vin.prevout.n),
+	_licversion(mnp.certifyVersion),
 	_licperiod(mnp.certifyPeriod),
 	_licence(mnp.certificate),
 	_pubkey(mnp.pubKeyMasternode)
@@ -2051,6 +1795,7 @@ uint256 CMstNodeData::GetLicenseWord()
     ss << _voutid;
     ss << _pubkey;
     ss << _licperiod;
+    ss << _licversion;
 
     uint256 hash = ss.GetHash();
     return hash;
@@ -2058,7 +1803,6 @@ uint256 CMstNodeData::GetLicenseWord()
 
 bool CMstNodeData::VerifyLicense()
 {
-    CPubKey pubkeyucenter(ParseHex(g_ucenterserverPubkey));
     CPubKey pubkeyFromSig;
 	
     bool fInvalid = false;
@@ -2068,19 +1812,24 @@ bool CMstNodeData::VerifyLicense()
         LogPrintf("CMstNodeData::VerifyLicense:masternode<%s:%d-%ld> license(%s) decode failed!\n", _txid.c_str(), _voutid, _licperiod, _licence.c_str());
         return false;
     }
-
     if(!pubkeyFromSig.RecoverCompact(GetLicenseWord(), vchSigRcv)) {
 		LogPrintf("CMstNodeData::VerifyLicense:masternode<%s:%d-%ld> license(%s) recover pubkey failed!\n", _txid.c_str(), _voutid, _licperiod, _licence.c_str());
 		return false;
 	}
+    std::string strPub = mnodecenter.GetCenterPubKey(_licversion);
+    if(strPub.empty()) {
+        LogPrintf("CMstNodeData::VerifyLicense:license version(%d) no match center public key\n", _licversion);
+        return false;
+    }
+    CPubKey pubkeyucenter(ParseHex(strPub));
     if(pubkeyFromSig != pubkeyucenter) {
-        LogPrintf("CMstNodeData::VerifyLicense:masternode<%s:%d-%ld-%s> key don not match : rcv pubkey = %s, ucenter pubkey = %s, license = %s\n",
+        LogPrintf("CMstNodeData::VerifyLicense:masternode<%s:%d-%ld-%s> key do not match : rcv pubkey = %s, ucenter pubkey = %s, license = %s\n",
                     _txid.c_str(),
                     _voutid,
                     _licperiod,
                     HexStr(_pubkey).c_str(),
                     HexStr(pubkeyFromSig).c_str(),
-                    g_ucenterserverPubkey.c_str(),
+                    strPub.c_str(),
                     _licence.c_str());
 		return false;
     }
@@ -2094,4 +1843,220 @@ bool CMstNodeData::IsNeedUpdateLicense()
     if(_licperiod <= 0 || _licperiod - LIMIT_MASTERNODE_LICENSE < GetTime())
         return true;
     return false;
+}
+
+bool CMasternodeCenter::InitCenter(std::string strError)
+{
+    std::vector<CNetAddr> vIPs;
+
+    if (LookupHost(Params().ucenter().c_str(), vIPs)) {
+        if (vIPs.empty()) {
+            strError = "ucenter ip resolving failed, IPs empty.";
+            return false;
+        }
+        for (const CNetAddr &ip : vIPs)
+        {
+            service_ = CService(ip, 5009);
+        }
+    } else {
+        strError = "ucenter ip resolving failed, LookupHost returned false.";
+        return false;
+    }
+    LogPrintf("Ulord center service: %s \n", service_.ToStringIPPort());
+
+    char uctPubkeyVersion[20];
+    int licenseVersion = 1;
+    licenseVersion_ = licenseVersion;
+    mapVersionPubkey_.insert(std::pair<int, std::string>(licenseVersion, GetArg("-uctpubkey1", "03e867486ebaeeadda25f1e47612cdaad3384af49fa1242c5821b424937f8ec1f5")));
+    LogPrintf("Load ucenter pubkey <%d: %s>\n", licenseVersion, GetArg("-uctpubkey1", "03e867486ebaeeadda25f1e47612cdaad3384af49fa1242c5821b424937f8ec1f5"));
+    std::string strUctPubkey;
+    licenseVersion++;
+    while(true)
+    {
+        memset(uctPubkeyVersion, 0, sizeof(uctPubkeyVersion));
+        sprintf(uctPubkeyVersion, "-uctpubkey%d", licenseVersion);
+        strUctPubkey = GetArg(std::string(uctPubkeyVersion), "");
+        if(strUctPubkey.empty()) {
+            break;
+        }
+        mapVersionPubkey_.insert(std::pair<int, std::string>(licenseVersion, strUctPubkey));
+        licenseVersion_ = licenseVersion;
+        LogPrintf("Load ucenter pubkey <%d: %s>\n", licenseVersion, strUctPubkey);
+        licenseVersion++;
+    }
+
+    isUse_ = true;
+    return true;
+}
+
+std::string CMasternodeCenter::GetCenterPubKey(int version)
+{
+    map_it it = mapVersionPubkey_.find(version);
+    if(it != mapVersionPubkey_.end()) {
+        return it->second;
+    }
+    /*requst from ucenter*/
+    return "";
+}
+
+bool CMasternodeCenter::IsUse()
+{
+    if (!sporkManager.IsSporkActive(SPORK_18_REQUIRE_MASTER_VERIFY_FLAG)) {
+        return false;
+    }
+    return isUse_;
+}
+
+bool CMasternodeCenter::RequestLicense(CMasternode &mn)
+{
+    std::string strReq;
+	char cbuf[mstnd_iReqBufLen];
+	memset(cbuf,0,sizeof(cbuf));
+	int buflength = 0;
+    mstnodequest mstquest(111,MST_QUEST_ONE);
+    mstquest._timeStamps = GetTime();
+	mstquest._txid = mn.vin.prevout.hash.GetHex();
+	mstquest._voutid = mn.vin.prevout.n;
+    std::ostringstream os;
+    boost::archive::binary_oarchive oa(os);
+    oa<<mstquest;
+	strReq = os.str();
+    buflength = strReq.length();
+	if(buflength + mstnd_iReqMsgHeadLen > mstnd_iReqBufLen)
+		return error("CMasternodeCenter::RequestLicense : buff size error, string length is %d, need to increase buff size", buflength + mstnd_iReqMsgHeadLen);
+	unsigned int n = HNSwapl(buflength);
+	memcpy(cbuf, &n, mstnd_iReqMsgHeadLen);
+	memcpy(cbuf + mstnd_iReqMsgHeadLen, strReq.c_str(), buflength);
+	buflength += mstnd_iReqMsgHeadLen;
+
+    bool proxyConnectionFailed = false;
+    SOCKET hSocket;
+    if(ConnectSocket(service_, hSocket, DEFAULT_CONNECT_TIMEOUT, &proxyConnectionFailed)) {
+        int nBytes = send(hSocket, cbuf, buflength, 0);
+	    if(nBytes != buflength) {
+            CloseSocket(hSocket);
+            return error("CMasternodeCenter::RequestLicense: send msg %d, expect %d", nBytes, buflength);
+        }
+
+        /*recive message*/
+        memset(cbuf,0,sizeof(cbuf));
+		buflength = 0;
+        nBytes = 0;
+
+        int64_t nTimeLast = GetTime();
+		while(nBytes <= 0)
+		{
+			nBytes = recv(hSocket, cbuf, sizeof(cbuf), 0);
+			if((GetTime() - nTimeLast) >= mstnd_iReqMsgTimeout) {
+				CloseSocket(hSocket);
+                return error("CMasternodeMan::CheckActiveMaster: recv CMstNodeData timeout");
+			}
+		}
+        if(nBytes > mstnd_iReqBufLen) {
+            CloseSocket(hSocket);
+            return error("CMasternodeMan::GetCertificateFromUcenter: msg have too much bytes %d, need increase rcv buf size", nBytes);
+        }
+        memcpy(&buflength, cbuf, mstnd_iReqMsgHeadLen);
+        buflength = HNSwapl(buflength);
+        if(buflength != nBytes - mstnd_iReqMsgHeadLen) {
+            CloseSocket(hSocket);
+            return error("CMasternodeMan::GetCertificateFromUcenter: receive a error msg length is %d, recv bytes is %d", buflength, nBytes);
+        }
+
+        std::string str(cbuf + mstnd_iReqMsgHeadLen, buflength);
+        mstnoderes  mstres;
+		std::istringstream strstream(str);
+		boost::archive::binary_iarchive ia(strstream);
+		ia >> mstres;
+        if(mstres._num == 1) {
+            CMstNodeData mstnode;
+            ia >> mstnode;
+            if(mstnode._txid != mn.vin.prevout.hash.GetHex() || mstnode._voutid != mn.vin.prevout.n) {
+                CloseSocket(hSocket);
+                return error("receive a invalid msg to masternode<%s:%d>", mstnode._txid.c_str(), mstnode._voutid);
+            }
+            if(nTimeLast >= mstnode._licperiod) {
+                CloseSocket(hSocket);
+                return error("receive a invalid license for masternode<%s:%d> license period is %ld, now is %ld", mstnode._txid.c_str(), mstnode._voutid, mstnode._licperiod, nTimeLast);
+            }
+            mstnode._pubkey = mn.pubKeyMasternode;
+            LogPrintf("CMasternodeMan::GetCertificateFromUcenter: Masternode<%s:%d-%s> certificate %s time = %d\n",
+                    mstnode._txid.c_str(),
+                    mstnode._voutid,
+                    HexStr(mstnode._pubkey).c_str(),
+                    mstnode._licence.c_str(),
+                    mstnode._licperiod);
+
+            if(!mstnode.VerifyLicense()) {
+                LogPrintf("CMasternodeMan::GetCertificateFromUcenter: connect to center server update certificate failed\n");
+                return false;
+            }
+            mn.certifyPeriod = mstnode._licperiod;
+            mn.certificate = mstnode._licence;
+            mn.certifyVersion = mstnode._licversion;
+            LogPrintf("CMasternodeMan::GetCertificateFromUcenter: MasterNode %s check success\n", mstquest._txid);
+            CloseSocket(hSocket);
+            return true;
+        } else {
+            CloseSocket(hSocket);
+            return error("receive a invalid msg to with %d nodes infomation", mstres._num);
+        }
+    }
+    CloseSocket(hSocket);
+    LogPrintf("CMasternodeMan::GetCertificateFromUcenter:Could't connect to center server\n");
+    return false;
+}
+
+bool CMasternodeCenter::ReadLicense(CMasternode &mn)
+{
+    std::string strCettificate = GetArg("-certificate", "");
+	if(strCettificate.empty()) {
+		LogPrintf("CMasternodeCenter::ReadLicense -- Failed to read Masternode certificate from conf\n");
+		return false;
+	}
+	
+	int64_t nPeriod = GetArg("-certifiperiod", 0);
+	if(0 == nPeriod) {
+		LogPrintf("CMasternodeCenter::ReadLicense -- Failed to read Masternode lasttime from conf\n");
+		return false;
+	}
+    if(nPeriod <= GetTime()) {
+        return error("CMasternodeCenter::ReadLicense -- Configure license(%ld) is overtime", nPeriod);
+    }
+
+	CMstNodeData verify(mn);
+    verify._licence = strCettificate;
+    verify._licperiod = nPeriod;
+    verify._licversion = GetArg("-certifiversion", 0);
+	if(!verify.VerifyLicense()) {
+		LogPrintf("CMasternodeCenter::ReadLicense -- verify cetificate failed\n");
+		return false;
+	}
+
+	mn.certificate = strCettificate;
+	mn.certifyPeriod = nPeriod;
+    mn.certifyVersion = verify._licversion;
+	return true;
+}
+
+bool CMasternodeCenter::LoadLicense(CMasternode &mn)
+{
+    if(!IsUse())
+        return true;
+    
+    if(!ReadLicense(mn)) {
+        if(!RequestLicense(mn))
+            return false;
+    }
+    return true;
+}
+
+bool CMasternodeCenter::CheckLicense(CMasternode &mn)
+{
+    if(!IsUse())
+        return true;
+    
+    if(mn.certifyPeriod <= 0 || mn.certifyPeriod - LIMIT_MASTERNODE_LICENSE < GetTime())
+        return RequestLicense(mn);
+    return mn.certifyPeriod > GetTime();
 }
