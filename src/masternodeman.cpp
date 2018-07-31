@@ -1937,10 +1937,17 @@ bool CMasternodeCenter::RequestLicense(CMasternode &mn)
 	mstquest._voutid = mn.vin.prevout.n;
     
 	buflength = mstquest.GetMsgBuf(cbuf);
+    if(0 == buflength)
+        return error("CMasternodeCenter::RequestLicense: get mstquest msg failed!!!!!!!!!");
 
     bool proxyConnectionFailed = false;
     SOCKET hSocket;
     if(ConnectSocket(service_, hSocket, DEFAULT_CONNECT_TIMEOUT, &proxyConnectionFailed)) {
+        if (!IsSelectableSocket(hSocket)) {
+            CloseSocket(hSocket);
+            return error("CMasternodeCenter::RequestLicense:Cannot create connection: non-selectable socket created (fd >= FD_SETSIZE ?)");
+        }
+
         int nBytes = send(hSocket, cbuf, buflength, 0);
 	    if(nBytes != buflength) {
             CloseSocket(hSocket);
