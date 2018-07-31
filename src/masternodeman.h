@@ -428,8 +428,9 @@ public:
         //ar & _masteraddr;
         //ar & _llAmount;  
     }  
-    int GetVersion() const {return _msgversion;}  
-    int GetQuestType() const {return _questtype;}  
+    int GetVersion() const {return _msgversion;}
+    int GetQuestType() const {return _questtype;}
+	int GetMsgBuf(char * buf);
 };
 
 //extern mstnodequest RequestMsgType(Center_Server_Version,MST_QUEST::MST_QUEST_ONE);

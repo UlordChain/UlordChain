@@ -1845,6 +1845,24 @@ bool CMstNodeData::IsNeedUpdateLicense()
     return false;
 }
 
+int mstnodequest::GetMsgBuf(char * buf)
+{
+	std::ostringstream os;
+    boost::archive::binary_oarchive oa(os);
+    oa << *this;
+	std::string strReq = os.str();
+	int buflength = strReq.length();
+	if(buflength + mstnd_iReqMsgHeadLen > mstnd_iReqBufLen) {
+		LogPrintf("mstnodequest::GetMsgBuf: buff size error, string length is %d, need to increase buff size", buflength + mstnd_iReqMsgHeadLen);
+		return 0;
+	}
+	unsigned int n = HNSwapl(buflength);
+	memcpy(buf, &n, mstnd_iReqMsgHeadLen);
+	memcpy(buf + mstnd_iReqMsgHeadLen, strReq.c_str(), buflength);
+	buflength += mstnd_iReqMsgHeadLen;
+	return buflength;
+}
+
 bool CMasternodeCenter::InitCenter(std::string strError)
 {
     std::vector<CNetAddr> vIPs;
@@ -1917,17 +1935,8 @@ bool CMasternodeCenter::RequestLicense(CMasternode &mn)
     mstquest._timeStamps = GetTime();
 	mstquest._txid = mn.vin.prevout.hash.GetHex();
 	mstquest._voutid = mn.vin.prevout.n;
-    std::ostringstream os;
-    boost::archive::binary_oarchive oa(os);
-    oa<<mstquest;
-	strReq = os.str();
-    buflength = strReq.length();
-	if(buflength + mstnd_iReqMsgHeadLen > mstnd_iReqBufLen)
-		return error("CMasternodeCenter::RequestLicense : buff size error, string length is %d, need to increase buff size", buflength + mstnd_iReqMsgHeadLen);
-	unsigned int n = HNSwapl(buflength);
-	memcpy(cbuf, &n, mstnd_iReqMsgHeadLen);
-	memcpy(cbuf + mstnd_iReqMsgHeadLen, strReq.c_str(), buflength);
-	buflength += mstnd_iReqMsgHeadLen;
+    
+	buflength = mstquest.GetMsgBuf(cbuf);
 
     bool proxyConnectionFailed = false;
     SOCKET hSocket;
@@ -2060,3 +2069,4 @@ bool CMasternodeCenter::CheckLicense(CMasternode &mn)
         return RequestLicense(mn);
     return mn.certifyPeriod > GetTime();
 }
+
