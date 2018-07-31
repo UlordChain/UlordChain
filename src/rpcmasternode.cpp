@@ -17,6 +17,8 @@
 #include <fstream>
 #include <iomanip>
 #include <univalue.h>
+#include <boost/lexical_cast.hpp>
+#include "privsend.h"
 
 void EnsureWalletIsUnlocked();
 
@@ -815,3 +817,85 @@ UniValue masternodebroadcast(const UniValue& params, bool fHelp)
 
     return NullUniValue;
 }
+
+// sign mnp message 
+UniValue signmnpmessage(const UniValue& params, bool fHelp)
+{
+    
+    if (fHelp || params.size() != 4)
+        throw runtime_error(
+            "signmessage \"privatekey\" \"masterkey\"  \"addr\"  \"port\" \n"
+            "\nSign a message with the private key of an address"
+            + HelpRequiringPassphrase() + "\n"
+            "\nArguments:\n"
+            "1. \"privatekey\"      (string, required) The collate key  to use for the private key.\n"
+            "2. \"masterkey\"       (string, required) The master key to create a signature of.\n"
+            "3. \"straddr\"         (string, required) The IPaddr to create a signature of.\n"
+            "4. \"strPort\"         (string, required) The strPort to create a signature of.\n"
+            "\nResult:\n"
+            "\"signature\"          (string) The signature of the message encoded in base 64\n"
+            "\nExamples:\n"
+            "\nCreate the signature\n"
+            + HelpExampleCli("signmessage", "\"privatekey\"   \"masterkey\"  \"addr\"  \"port\"  ")
+
+        );
+		
+
+    std::string strMessage;
+    std::string strError = "";
+
+    string strPrivkey = params[0].get_str();
+    string strMasterKey = params[1].get_str();
+    string straddr = params[2].get_str();
+	string strPort = params[3].get_str();
+
+	unsigned short masterport = boost::lexical_cast<unsigned short>(strPort);
+	
+	CNetAddr netAddr(straddr);
+    CService Ipaddr(netAddr,masterport);
+
+	CKey         keyCollate; 
+	CPubKey      pubkeyCollate; 
+
+	CKey         keyMaster; 
+	CPubKey      pubkeyMaster; 
+	// std::string  privstr;
+	//std::string	 pubkeystr;
+
+	if(!privSendSigner.GetKeysFromSecret(strPrivkey,  keyCollate, pubkeyCollate))
+		throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid strPrivkey  . Please useing the correct Key.");
+
+
+	if(!privSendSigner.GetKeysFromSecret(strMasterKey,  keyMaster, pubkeyMaster))
+		throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid strPrivkey  . Please useing the correct Key.");
+
+	 
+
+   /* CBitcoinAddress addr(strAddress);
+    if (!addr.IsValid())
+        throw JSONRPCError(RPC_TYPE_ERROR, "Invalid address");
+ 
+    CKeyID keyID;
+    if (!addr.GetKeyID(keyID))
+        throw JSONRPCError(RPC_TYPE_ERROR, "Address does not refer to key");
+    */
+    
+    strMessage = Ipaddr.ToString(false) + pubkeyCollate.GetID().ToString() + pubkeyMaster.GetID().ToString() +
+			boost::lexical_cast<std::string>(PROTOCOL_VERSION);
+   
+    cout<< strMessage<< endl;
+
+    CHashWriter ss(SER_GETHASH, 0);
+    ss << strMessageMagic;
+    ss << strMessage;
+
+    vector<unsigned char> vchSig;
+    if (!keyCollate.SignCompact(ss.GetHash(), vchSig))
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Sign failed");
+
+    return EncodeBase64(&vchSig[0], vchSig.size());
+
+
+}
+
+
