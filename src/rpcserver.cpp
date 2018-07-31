@@ -356,6 +356,7 @@ static const CRPCCommand vRPCCommands[] =
     { "ulord",               "mnsync",                 &mnsync,                 true  },
     { "ulord",               "spork",                  &spork,                  true  },
     { "ulord",               "getpoolinfo",            &getpoolinfo,            true  },
+    { "ulord",               "signmnpmessage",         &signmnpmessage,         true  },
 #ifdef ENABLE_WALLET
     { "ulord",               "privatesend",            &privatesend,            false },
 
