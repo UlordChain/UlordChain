@@ -862,24 +862,21 @@ UniValue signmnpmessage(const UniValue& params, bool fHelp)
 	// std::string  privstr;
 	//std::string	 pubkeystr;
 
-	if(!privSendSigner.GetKeysFromSecret(strPrivkey,  keyCollate, pubkeyCollate))
+    if(!privSendSigner.GetKeysFromSecret(strPrivkey,  keyCollate, pubkeyCollate))
 		throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid strPrivkey  . Please useing the correct Key.");
 
 
-	if(!privSendSigner.GetKeysFromSecret(strMasterKey,  keyMaster, pubkeyMaster))
+    if(!privSendSigner.GetKeysFromSecret(strMasterKey,  keyMaster, pubkeyMaster))
 		throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid strPrivkey  . Please useing the correct Key.");
 
-	 
+	
+    CBitcoinSecret vchSecret;
+    vchSecret.SetKey(keyMaster);
+    //if(!vchSecret.SetString(strMasterKey)) return false;
+    //cout<<  vchSecret.ToString()<<endl ; 
 
-   /* CBitcoinAddress addr(strAddress);
-    if (!addr.IsValid())
-        throw JSONRPCError(RPC_TYPE_ERROR, "Invalid address");
- 
-    CKeyID keyID;
-    if (!addr.GetKeyID(keyID))
-        throw JSONRPCError(RPC_TYPE_ERROR, "Address does not refer to key");
-    */
-    
+    //cout << CBitcoinAddress(pubkeyCollate.GetID()).ToString() <<endl;
+         
     strMessage = Ipaddr.ToString(false) + pubkeyCollate.GetID().ToString() + pubkeyMaster.GetID().ToString() +
 			boost::lexical_cast<std::string>(PROTOCOL_VERSION);
    
