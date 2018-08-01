@@ -3,7 +3,6 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 // claimtrie file
-
 #include "main.h"
 #include "nameclaim.h"
 #include "univalue.h"
@@ -14,6 +13,8 @@
 #include "init.h"
 #include "utilmoneystr.h"
 #include <map>
+#include <boost/assign/list_of.hpp>
+#include "script/stand.h"
 
 using namespace std;
 
@@ -817,6 +818,5 @@ UniValue sendtoaccountname(const UniValue &params, bool fHelp)
 	}
 	if ( !pwalletMain->CommitTransaction(wtxNew,reservekey) )
 		throw JSONRPCError(RPC_WALLET_ERROR, "Error: The transaction was rejected! This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.");
-    return wtx.GetHash().GetHex();	
+    return wtxNew.GetHash().GetHex();	
 }
-
