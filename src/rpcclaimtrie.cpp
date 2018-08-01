@@ -12,8 +12,14 @@
 #include "rpcprotocol.h"
 #include "init.h"
 #include "utilmoneystr.h"
-#include <map>
+
+#include "script/script.h"
+#include "script/script_error.h"
+#include "script/sign.h"
 #include "script/standard.h"
+#include "txmempool.h"
+
+#include <map>
 #include <boost/variant.hpp>
 
 #include <boost/assign/list_of.hpp>
