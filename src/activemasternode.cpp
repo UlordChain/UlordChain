@@ -311,16 +311,16 @@ void CActiveMasternode::ManageStateLocal()
         }
 
 		// check if it is registered on the Ulord center server
-		CMasternode mn(mnb);
-		if(!mnodecenter.LoadLicense(mn))
+		//CMasternode mn(mnb);
+		if(!mnodecenter.LoadLicense(mnb))
 		{
 			nState = ACTIVE_MASTERNODE_NOT_CAPABLE;
-			strNotCapableReason = strprintf(_("%s didn't registered on Ulord Center"), mn.vin.prevout.ToStringShort());
-			LogPrintf("CMasternodeBroadcast::ManageStateLocal -- Didn't registered on Ulord Center, masternode=%s\n", mn.vin.prevout.ToStringShort());
+			strNotCapableReason = strprintf(_("%s didn't registered on Ulord Center"), mnb.vin.prevout.ToStringShort());
+			LogPrintf("CMasternodeBroadcast::ManageStateLocal -- Didn't registered on Ulord Center, masternode=%s\n", mnb.vin.prevout.ToStringShort());
 			return;
 		}
-		mnb.certifyPeriod = mn.certifyPeriod;
-		mnb.certificate = mn.certificate;
+		//mnb.certifyPeriod = mn.certifyPeriod;
+		//mnb.certificate = mn.certificate;
 		
         fPingerEnabled = true;
         nState = ACTIVE_MASTERNODE_STARTED;

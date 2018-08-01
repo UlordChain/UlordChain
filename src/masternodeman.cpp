@@ -944,8 +944,7 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
         if(mnp.CheckAndUpdate(pmn, false, nDos)) return;
 
 		// check the certificate and make sure if the masternode had registered on the Ulord center server
-		CMstNodeData verify(mnp);
-		if(!verify.VerifyLicense())
+		if(mnodecenter.VerifyLicense(mnp))
 		{
 			if(pmn)
 				pmn->nActiveState = pmn->MASTERNODE_CERTIFICATE_FAILED;
@@ -2040,18 +2039,18 @@ bool CMasternodeCenter::ReadLicense(CMasternode &mn)
         return error("CMasternodeCenter::ReadLicense -- Configure license(%ld) is overtime", nPeriod);
     }
 
-	CMstNodeData verify(mn);
-    verify._licence = strCettificate;
-    verify._licperiod = nPeriod;
-    verify._licversion = GetArg("-certifiversion", 0);
-	if(!verify.VerifyLicense()) {
+	CMstNodeData mnData(mn);
+    mnData._licence = strCettificate;
+    mnData._licperiod = nPeriod;
+    mnData._licversion = GetArg("-certifiversion", 0);
+	if(!mnData.VerifyLicense()) {
 		LogPrintf("CMasternodeCenter::ReadLicense -- verify cetificate failed\n");
 		return false;
 	}
 
 	mn.certificate = strCettificate;
 	mn.certifyPeriod = nPeriod;
-    mn.certifyVersion = verify._licversion;
+    mn.certifyVersion = mnData._licversion;
 	return true;
 }
 
@@ -2067,7 +2066,7 @@ bool CMasternodeCenter::LoadLicense(CMasternode &mn)
     return true;
 }
 
-bool CMasternodeCenter::CheckLicense(CMasternode &mn)
+bool CMasternodeCenter::CheckLicensePeriod(CMasternode &mn)
 {
     if(!IsUse())
         return true;
@@ -2077,3 +2076,20 @@ bool CMasternodeCenter::CheckLicense(CMasternode &mn)
     return mn.certifyPeriod > GetTime();
 }
 
+bool CMasternodeCenter::VerifyLicense(const CMasternode &mn)
+{
+    if(!IsUse())
+        return true;
+    
+    CMstNodeData mnData(mn);
+    return mnData.VerifyLicense();
+}
+
+bool CMasternodeCenter::VerifyLicense(const CMasternodePing &mnp)
+{
+    if(!IsUse())
+        return true;
+    
+    CMstNodeData mnData(mnp);
+    return mnData.VerifyLicense();
+}

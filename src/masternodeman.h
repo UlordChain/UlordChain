@@ -561,7 +561,9 @@ public:
     std::string GetCenterPubKey(int version);
     bool IsUse();
     bool LoadLicense(CMasternode &mn);
-    bool CheckLicense(CMasternode &mn);
+    bool CheckLicensePeriod(CMasternode &mn);
+    bool VerifyLicense(const CMasternode &mn);
+    bool VerifyLicense(const CMasternodePing &mnp);
 private:
     bool RequestLicense(CMasternode &mn);
     bool ReadLicense(CMasternode &mn);

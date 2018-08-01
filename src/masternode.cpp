@@ -309,7 +309,7 @@ void CMasternode::Check(bool fForce)
 	{
 		nTimeLastCheckedRegistered = GetTime();
 		//CMasternode mn(*this);
-		if(!mnodecenter.CheckLicense(*this))
+		if(!mnodecenter.CheckLicensePeriod(*this))
 		{
 			nActiveState = MASTERNODE_CERTIFICATE_FAILED;
 			LogPrint("masternode", "CMasternode::Check -- Masternode %s is in %s state now. Reasean time is %ld, license period is %ld\n",
@@ -715,8 +715,7 @@ bool CMasternodeBroadcast::CheckOutpoint(int& nDos)
     }
 
 	// check if it is registered on the Ulord center server
-	CMstNodeData mn(*this);
-	if(!mn.VerifyLicense())
+	if(mnodecenter.VerifyLicense(*this))
 	{
 		nActiveState = MASTERNODE_CERTIFICATE_FAILED;
 		LogPrintf("CMasternodeBroadcast::CheckOutpoint -- Failed to check Masternode certificate, masternode=%s\n", vin.prevout.ToStringShort());
