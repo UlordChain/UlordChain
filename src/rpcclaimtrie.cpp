@@ -13,8 +13,10 @@
 #include "init.h"
 #include "utilmoneystr.h"
 #include <map>
-#include <boost/assign/list_of.hpp>
 #include "script/standard.h"
+
+#include <boost/assign/list_of.hpp>
+#include <boost/algorithm/string.hpp>
 
 using namespace std;
 
