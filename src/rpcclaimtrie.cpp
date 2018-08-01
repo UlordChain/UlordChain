@@ -11,8 +11,9 @@
 #include "rpcserver.h"
 #include "base58.h"
 #include "rpcprotocol.h"
-
-#include <vector>
+#include "init.h"
+#include "utilmoneystr.h"
+#include <map>
 
 using namespace std;
 
@@ -781,7 +782,7 @@ UniValue sendtoaccountname(const UniValue &params, bool fHelp)
     UniValue ret(UniValue::VOBJ);
     if (!pclaimTrie->getInfoForName(sName, claim))
         return ret;
-    std::string sAddress = claim[sName];
+    std::string sAddress = claim.m_NameAddress[sName];
 
 	LOCK2(cs_main, pwalletMain->cs_wallet);
 	CBitcoinAddress address(sAddress);
@@ -807,9 +808,12 @@ UniValue sendtoaccountname(const UniValue &params, bool fHelp)
 	vecSend.push_back(recipient);
 	CWalletTx wtxNew;
 	if (!pwalletMain->CreateTransaction(vecSend, wtxNew, reservekey, nFeeRequired, nChangePosRet, strError)) {
-		if (!fSubtractFeeFromAmount && nValue + nFeeRequired > pwalletMain->GetBalance())
-			strError = strprintf("Error: This transaction requires a transaction fee of at least %s because of its amount, complexity, or use of recently received funds!", FormatMoney(nFeeRequired));
-		throw JSONRPCError(RPC_WALLET_ERROR, strError);
+		if ( nAmount + nFeeRequired > pwalletMain->GetBalance() )
+        {
+            strError = strprintf("Error: This transaction requires a transaction fee of at leasst %s because if its amount, complex, or use of recently received funds!",FormatMoney(nFeeRequired));
+        }
+        LogPrintf("%s() : %s\n",__func__,strError);
+        throw JSONRPCError(RPC_WALLET_ERROR,strError);
 	}
 	if ( !pwalletMain->CommitTransaction(wtxNew,reservekey) )
 		throw JSONRPCError(RPC_WALLET_ERROR, "Error: The transaction was rejected! This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.");
