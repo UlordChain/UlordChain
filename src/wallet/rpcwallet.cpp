@@ -455,7 +455,7 @@ UniValue claimname(const UniValue& params, bool fHelp)
 		throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
 	*/
 	
-	if ( vchName.size() > 15  || vchName.size() < 0)
+	if ( vchName.size() > 15)
 	{
 	    throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord account_name ,it is too long");
 	}
