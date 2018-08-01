@@ -19,12 +19,25 @@
 #include "script/standard.h"
 #include "txmempool.h"
 
+#include "amount.h"
+#include "chain.h"
+#include "core_io.h"
+#include "net.h"
+#include "netbase.h"
+#include "policy/rbf.h"
+#include "timedata.h"
+#include "util.h"
+#include "wallet/wallet.h"
+#include "wallet/walletdb.h"
+#include "keepass.h"
+
+#include <stdint.h>
 #include <map>
 #include <boost/variant.hpp>
-
 #include <boost/assign/list_of.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/foreach.hpp>
+#include <univalue.h>
 
 using namespace std;
 
