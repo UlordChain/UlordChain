@@ -14,9 +14,11 @@
 #include "utilmoneystr.h"
 #include <map>
 #include "script/standard.h"
+#include <boost/variant.hpp>
 
 #include <boost/assign/list_of.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/foreach.hpp>
 
 using namespace std;
 
