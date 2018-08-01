@@ -14,7 +14,7 @@
 #include "utilmoneystr.h"
 #include <map>
 #include <boost/assign/list_of.hpp>
-#include "script/stand.h"
+#include "script/standard.h"
 
 using namespace std;
 
