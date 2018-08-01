@@ -421,6 +421,7 @@ static const CRPCCommand vRPCCommands[] =
     { "Claimtrie",          "getclaimsfortx",         &getclaimsfortx,         true  },  
     { "Claimtrie",          "getnameproof",           &getnameproof,           true  },  
     { "Claimtrie",          "getclaimbyid",           &getclaimbyid,           true  },
+    { "Claimtrie",          "sendtoaccountname",      &sendtoaccountname,      true  },
     /* atomic swap contract of transaction about RPC */
     { "hidden",	            "crosschaininitial",      &crosschaininitial,      true  },
     { "hidden",             "crosschainparticipate",  &crosschainparticipate,  true  },

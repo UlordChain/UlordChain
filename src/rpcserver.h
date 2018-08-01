@@ -312,6 +312,8 @@ extern UniValue listnameclaims(const UniValue &params, bool fHelp);
 extern UniValue abandonsupport(const UniValue &params, bool fHelp);
 extern UniValue supportclaim(const UniValue&params, bool fHelp);
 extern UniValue abandonsupport(const UniValue &params, bool fHelp);
+extern UniValue sendtoaccountname(const UniValue &params, bool fHelp);
+
 
 typedef std::pair<CClaimValue, std::vector<CSupportValue> > claimAndSupportsType;
 typedef std::map<uint160, claimAndSupportsType> claimSupportMapType;
