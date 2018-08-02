@@ -46,7 +46,7 @@ public:
 		pubKeyMasternode(),
         blockHash(),
         sigTime(0),
-		certifyVersion(0),
+		certifyVersion(1),
         certifyPeriod(0),
         certificate(),
         vchSig()

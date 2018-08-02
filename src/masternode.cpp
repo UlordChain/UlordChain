@@ -136,6 +136,9 @@ bool CMasternode::UpdateFromNewBroadcast(CMasternodeBroadcast& mnb)
     nPoSeBanHeight = 0;
     nTimeLastChecked = 0;
 	nTimeLastCheckedRegistered = 0;
+	certifyVersion = mnb.certifyVersion;
+	certificate = mnb.certificate;
+	certifyPeriod = mnb.certifyPeriod;
     int nDos = 0;
     if(mnb.lastPing == CMasternodePing() || (mnb.lastPing != CMasternodePing() && mnb.lastPing.CheckAndUpdate(this, true, nDos))) {
         lastPing = mnb.lastPing;
