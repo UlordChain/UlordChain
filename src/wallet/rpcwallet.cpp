@@ -5,7 +5,6 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-//#include "sodium.h"
 #include "amount.h"
 #include "base58.h"
 #include "chain.h"
@@ -3325,3 +3324,63 @@ UniValue fundrawtransaction(const UniValue& params, bool fHelp)
 
     return result;
 }
+
+UniValue sendtoaccountname(const UniValue &params, bool fHelp)
+{
+	 if (fHelp ||  params.size() != 2)
+        throw std::runtime_error(
+        "sendtoaccountname \"name\" \"amount\n"
+        "\nSend an amount to a given account name.\n"
+        + HelpRequiringPassphrase() +
+        "\nArguments:\n"
+        "1. \"name\"  (string, required) The name to be assigned the value.\n"
+        "2. \"amount\"  (numeric, required) The amount in Ulord to send. eg 0.1\n"
+        "\nResult:\n"
+        "\"transactionid\"  (string) The transaction id.\n"
+        "\nExamples:\n"
+        + HelpExampleCli("sendtoaccountname", "\"AlfredZKY\" 0.1")
+    );
+
+    std::string sName = params[0].get_str();
+    CClaimValue claim;
+    UniValue ret(UniValue::VOBJ);
+    if (!pclaimTrie->getInfoForName(sName, claim))
+        return ret;
+    std::string sAddress = claim.m_NameAddress[sName];
+
+	LOCK2(cs_main, pwalletMain->cs_wallet);
+	CBitcoinAddress address(sAddress);
+	if (!address.IsValid())
+		throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
+
+	// Amount
+	CAmount nAmount = AmountFromValue(params[1]);
+	if (nAmount <= 0)
+		throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
+    
+	EnsureWalletIsUnlocked();
+	// Parse Ulord address
+	CScript scriptPubKey = GetScriptForDestination(address.Get());
+
+	// Create and send the transaction
+	CReserveKey reservekey(pwalletMain);
+	CAmount nFeeRequired;
+	std::string strError;
+	vector<CRecipient> vecSend;
+	int nChangePosRet = -1;
+	CRecipient recipient = {scriptPubKey, nAmount, false};
+	vecSend.push_back(recipient);
+	CWalletTx wtxNew;
+	if (!pwalletMain->CreateTransaction(vecSend, wtxNew, reservekey, nFeeRequired, nChangePosRet, strError)) {
+		if ( nAmount + nFeeRequired > pwalletMain->GetBalance() )
+        {
+            strError = strprintf("Error: This transaction requires a transaction fee of at leasst %s because if its amount, complex, or use of recently received funds!",FormatMoney(nFeeRequired));
+        }
+        LogPrintf("%s() : %s\n",__func__,strError);
+        throw JSONRPCError(RPC_WALLET_ERROR,strError);
+	}
+	if ( !pwalletMain->CommitTransaction(wtxNew,reservekey) )
+		throw JSONRPCError(RPC_WALLET_ERROR, "Error: The transaction was rejected! This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.");
+    return wtxNew.GetHash().GetHex();	
+}
+
