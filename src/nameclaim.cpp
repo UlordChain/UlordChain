@@ -219,7 +219,8 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
         return false;
     }
 
-	if ( txout.nValue < MAX_ACCOUNT_NAME )
+	LogPrintf("txout.nValue is %d.%08d\n",txout.nValue/COIN,txout.nValue % COIN);
+	if ( txout.nValue != MAX_ACCOUNT_NAME )
 	{
 	    throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
 	}
