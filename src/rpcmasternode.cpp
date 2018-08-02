@@ -824,7 +824,7 @@ UniValue signmnpmessage(const UniValue& params, bool fHelp)
     
     if (fHelp || params.size() != 4)
         throw runtime_error(
-            "signmessage \"privatekey\" \"masterkey\"  \"addr\"  \"port\" \n"
+            "signmnpmessage \"privatekey\" \"masterkey\"  \"addr\"  \"port\" \n"
             "\nSign a message with the private key of an address"
             + HelpRequiringPassphrase() + "\n"
             "\nArguments:\n"
