@@ -409,7 +409,7 @@ static const CRPCCommand vRPCCommands[] =
     { "Claimtrie",          "updateclaim",            &updateclaim,            true  },  
     { "Claimtrie",          "abandonclaim",           &abandonclaim,           true  },  
     { "Claimtrie",          "listnameclaims",         &listnameclaims,         true  },  
-    { "Claimtrie",          "supportclaim",           &supportclaim,           true  },  
+    { "hidden",          	"supportclaim",           &supportclaim,           true  },  
     { "Claimtrie",          "abandonsupport",         &abandonsupport,         true  },  
     { "Claimtrie",          "getclaimsintrie",        &getclaimsintrie,        true  },  
     { "Claimtrie",          "getclaimtrie",           &getclaimtrie,           true  },  
