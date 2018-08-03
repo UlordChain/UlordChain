@@ -11,7 +11,6 @@
 
 #include "init.h"
 #include "claimtrie.h"  // added opt
-#include "nametrie.h"	// name opt
 #include "crypto/common.h"
 #include "addrman.h"
 #include "amount.h"

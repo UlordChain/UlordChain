@@ -3,7 +3,7 @@
 #include "hash.h"
 #include "util.h"
 #include <string>
-
+#include "claimtrie.h"
 using namespace std;
 
 std::vector<unsigned char> uint32_t_to_vch(uint32_t n)
@@ -277,9 +277,9 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
         return false;
     }
 	std::string sName(vchParam1.begin(),vchParam1.end());
-	CClaimValue claim;
-	if (pclaimTrie->getInfoForName(sName, claim))
-	   throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
+	//CClaimValue claim;
+	//if (pclaimTrie->getInfoForName(sName, claim))
+	   //throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
 	
     vvchParams.push_back(vchParam1);
     vvchParams.push_back(vchParam2);

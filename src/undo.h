@@ -9,7 +9,6 @@
 
 #include "compressor.h" 
 #include "claimtrie.h"
-#include "nametrie.h"
 #include "primitives/transaction.h"
 #include "serialize.h"
 

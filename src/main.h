@@ -18,7 +18,6 @@
 #include "coins.h"
 #include "net.h"
 #include "claimtrie.h"
-#include "nametrie.h"
 #include "script/script_error.h"
 #include "sync.h"
 #include "versionbits.h"
