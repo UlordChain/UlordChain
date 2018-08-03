@@ -1810,11 +1810,11 @@ bool CMstNodeData::VerifyLicense()
     std::vector<unsigned char> vchSigRcv = DecodeBase64(_licence.c_str(), &fInvalid);
 
     if (fInvalid) {
-        LogPrintf(" license(%s) decode failed!\n", _licence.c_str());
+        LogPrintf(" decode failed license = %s\n", _licence.c_str());
         return false;
     }
     if(!pubkeyFromSig.RecoverCompact(GetLicenseWord(), vchSigRcv)) {
-		LogPrintf(" license(%s) recover pubkey failed!\n", _licence.c_str());
+		LogPrintf(" recover pubkey failed license = %s\n", _licence.c_str());
 		return false;
 	}
     std::string strPub = mnodecenter.GetCenterPubKey(_licversion);
