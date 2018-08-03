@@ -1,9 +1,9 @@
 #include "nameclaim.h"
+#include "main.h"
 #include "hash.h"
 #include "util.h"
 #include <string>
-#include "claimtrie.h"
-#include "main.h"
+
 
 using namespace std;
 
