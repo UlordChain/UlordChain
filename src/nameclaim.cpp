@@ -1,8 +1,11 @@
+#include "main.h"
 #include "nameclaim.h"
 #include "hash.h"
+
 #include "util.h"
 #include <string>
 #include "claimtrie.h"
+
 using namespace std;
 
 std::vector<unsigned char> uint32_t_to_vch(uint32_t n)
@@ -208,7 +211,7 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
     return VerifyDecodeClaimScript(scriptIn, op, vvchParams, pc,txout);
 }
 
-#include "./main.h"
+
 bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector<unsigned char> >& vvchParams, CScript::const_iterator& pc,const CTxOut& txout)
 {
     opcodetype opcode;
