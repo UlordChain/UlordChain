@@ -1,6 +1,5 @@
 #include "nameclaim.h"
-#include "./main.h"
-#include "./claimtrie.h"
+#include "main.h"
 #include "hash.h"
 #include "util.h"
 #include <string>

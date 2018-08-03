@@ -82,7 +82,6 @@ BITCOIN_CORE_H = \
   cachemap.h \
   cachemultimap.h \
   chain.h \
-  claimtrie.h \
   chainparams.h \
   chainparamsbase.h \
   chainparamsseeds.h \

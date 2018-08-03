@@ -840,7 +840,7 @@ extern CChain chainActive;
 extern CCoinsViewCache *pcoinsTip;
 
 /** Global variable that points to the active CClaimTrie (protected by cs_main) */                                                                                                                                                                                            
-extern CClaimTrie *pclaimTrie;
+//extern CClaimTrie *pclaimTrie;
 
 /** Global variable that points to the active block tree (protected by cs_main) */
 extern CBlockTreeDB *pblocktree;
