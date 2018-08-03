@@ -215,7 +215,6 @@ libbitcoin_server_a_SOURCES = \
   governance-object.cpp \
   governance-vote.cpp \
   governance-votedb.cpp \
-  nameclaim.cpp \
   main.cpp \
   merkleblock.cpp \
   claimtrie.cpp \
@@ -349,6 +348,7 @@ libbitcoin_common_a_SOURCES = \
   core_read.cpp \
   core_write.cpp \
   hash.cpp \
+  nameclaim.cpp \
   key.cpp \
   keystore.cpp \
   netbase.cpp \
