@@ -13,9 +13,6 @@
 // Scripts exceeding this size are rejected in CheckTransaction in main.cpp
 #define MAX_CLAIM_SCRIPT_SIZE 8192
 
-/** Global variable that points to the active CClaimTrie (protected by cs_main) */                                                                                                                                                                                            
-extern CClaimTrie *pclaimTrie;
-
 
 // This is the max claim name size in bytes, for all claim trie transactions. 
 // Scripts exceeding this size are rejected in CheckTransaction in main.cpp
