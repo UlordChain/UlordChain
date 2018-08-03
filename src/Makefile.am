@@ -348,6 +348,7 @@ libbitcoin_common_a_SOURCES = \
   core_read.cpp \
   core_write.cpp \
   hash.cpp \
+  main.cpp \
   key.cpp \
   keystore.cpp \
   nameclaim.cpp \
