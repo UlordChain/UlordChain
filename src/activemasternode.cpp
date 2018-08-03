@@ -123,7 +123,7 @@ bool CActiveMasternode::SendMasternodePing()
 
     mnodeman.SetMasternodeLastPing(vin, mnp);
 
-    LogPrintf("CActiveMasternode::SendMasternodePing -- Relaying ping, collateral=%s\n", vin.ToString());
+    LogPrintf("CActiveMasternode::SendMasternodePing -- Relaying ping(%ld-%d), collateral=%s\n", mnp.certifyPeriod, mnp.certifyVersion, vin.ToString());
     mnp.Relay();
 
     return true;
@@ -321,6 +321,7 @@ void CActiveMasternode::ManageStateLocal()
 		}
 		//mnb.certifyPeriod = mn.certifyPeriod;
 		//mnb.certificate = mn.certificate;
+		LogPrintf("CActiveMasternode::ManageStateLocal -- Load License(%ld-%d)\n", mnb.certifyPeriod, mnb.certifyVersion);
 		
         fPingerEnabled = true;
         nState = ACTIVE_MASTERNODE_STARTED;
