@@ -208,7 +208,7 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
     return VerifyDecodeClaimScript(scriptIn, op, vvchParams, pc,txout);
 }
 
-#include "main.h"
+#include "./main.h"
 bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector<unsigned char> >& vvchParams, CScript::const_iterator& pc,const CTxOut& txout)
 {
     opcodetype opcode;
