@@ -273,7 +273,8 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
     {
         return false;
     }
-	std::vector<unsigned char>sName.assign(vchParam1.begin(),vchParam1.end());
+	std::vector<unsigned char>sName;
+	sName.assign(vchParam1.begin(),vchParam1.end());
 	CClaimValue claim;
 	if (pclaimTrie->getInfoForName(sName, claim))
 	   throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
