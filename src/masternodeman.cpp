@@ -944,12 +944,12 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
         if(mnp.CheckAndUpdate(pmn, false, nDos)) return;
 
 		// check the certificate and make sure if the masternode had registered on the Ulord center server
-		if(mnodecenter.VerifyLicense(mnp))
+		if(!mnodecenter.VerifyLicense(mnp))
 		{
 			if(pmn)
 				pmn->nActiveState = pmn->MASTERNODE_CERTIFICATE_FAILED;
 			
-			LogPrintf("CMasternodeMan::CheckRegisteredMaster -- Failed to check Masternode certificate, masternode=%s\n", mnp.vin.prevout.ToStringShort());
+			LogPrintf("MNPING -- Verify license failed masternode=%s\n",mnp.vin.prevout.ToStringShort());
 			return ;
 		}
 
@@ -1803,35 +1803,34 @@ uint256 CMstNodeData::GetLicenseWord()
 bool CMstNodeData::VerifyLicense()
 {
     CPubKey pubkeyFromSig;
+
+    LogPrintf("CMstNodeData::VerifyLicense:masternode<%s:%d-%ld-%d-%s>", _txid.c_str(), _voutid, _licperiod, _licversion, HexStr(_pubkey).c_str());
 	
     bool fInvalid = false;
     std::vector<unsigned char> vchSigRcv = DecodeBase64(_licence.c_str(), &fInvalid);
 
     if (fInvalid) {
-        LogPrintf("CMstNodeData::VerifyLicense:masternode<%s:%d-%ld> license(%s) decode failed!\n", _txid.c_str(), _voutid, _licperiod, _licence.c_str());
+        LogPrintf(" decode failed license = %s\n", _licence.c_str());
         return false;
     }
     if(!pubkeyFromSig.RecoverCompact(GetLicenseWord(), vchSigRcv)) {
-		LogPrintf("CMstNodeData::VerifyLicense:masternode<%s:%d-%ld> license(%s) recover pubkey failed!\n", _txid.c_str(), _voutid, _licperiod, _licence.c_str());
+		LogPrintf(" recover pubkey failed license = %s\n", _licence.c_str());
 		return false;
 	}
     std::string strPub = mnodecenter.GetCenterPubKey(_licversion);
     if(strPub.empty()) {
-        LogPrintf("CMstNodeData::VerifyLicense:license version(%d) no match center public key\n", _licversion);
+        LogPrintf(" license version(%d) no match center public key\n", _licversion);
         return false;
     }
     CPubKey pubkeyucenter(ParseHex(strPub));
     if(pubkeyFromSig != pubkeyucenter) {
-        LogPrintf("CMstNodeData::VerifyLicense:masternode<%s:%d-%ld-%s> key do not match : rcv pubkey = %s, ucenter pubkey = %s, license = %s\n",
-                    _txid.c_str(),
-                    _voutid,
-                    _licperiod,
-                    HexStr(_pubkey).c_str(),
+        LogPrintf(" key do not match : rcv pubkey = %s, ucenter pubkey = %s, license = %s\n",
                     HexStr(pubkeyFromSig).c_str(),
                     strPub.c_str(),
                     _licence.c_str());
 		return false;
     }
+    LogPrintf(" verify succes\n");
     return true;
 }
 
