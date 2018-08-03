@@ -5,6 +5,25 @@
 #include "util.h"
 #include <string>
 
+#include "amount.h"
+#include "base58.h"
+#include "chain.h"
+#include "core_io.h"
+#include "init.h"
+#include "net.h"
+#include "netbase.h"
+#include "policy/rbf.h"
+#include "rpcserver.h"
+#include "timedata.h"
+#include "utilmoneystr.h"
+#include "walletdb.h"
+#include "keepass.h"
+
+#include <stdint.h>
+
+#include <boost/assign/list_of.hpp>
+
+#include <univalue.h>
 
 using namespace std;
 
