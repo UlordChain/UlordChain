@@ -337,6 +337,7 @@ crypto_libbitcoin_crypto_a_SOURCES = \
 # common: shared between ulordd, and ulord-qt and non-server tools
 libbitcoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libbitcoin_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libbitcoin_common_a_LDFLAGS = $(LIBBITCOIN_SERVER)
 libbitcoin_common_a_SOURCES = \
   amount.cpp \
   arith_uint256.cpp \
@@ -348,7 +349,6 @@ libbitcoin_common_a_SOURCES = \
   core_read.cpp \
   core_write.cpp \
   hash.cpp \
-  main.cpp \
   nameclaim.cpp \
   key.cpp \
   keystore.cpp \
