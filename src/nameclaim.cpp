@@ -1,7 +1,7 @@
 #include "nameclaim.h"
 #include "hash.h"
 #include "util.h"
-
+#include "claimtrie.h"
 
 std::vector<unsigned char> uint32_t_to_vch(uint32_t n)
 {
@@ -218,11 +218,11 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
     {
         return false;
     }
-
+	
 	LogPrintf("txout.nValue is %d.%08d\n",txout.nValue/COIN,txout.nValue % COIN);
 	if ( txout.nValue != MAX_ACCOUNT_NAME )
 	{
-	    throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
+		throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
 	}
     op = opcode;
 
@@ -273,7 +273,11 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
     {
         return false;
     }
-
+	std::vector<unsigned char>sName.assign(vchParam1.begin(),vchParam1.end());
+	CClaimValue claim;
+	if (pclaimTrie->getInfoForName(sName, claim))
+	   throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
+	
     vvchParams.push_back(vchParam1);
     vvchParams.push_back(vchParam2);
     if (op == OP_UPDATE_CLAIM)
