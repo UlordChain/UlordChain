@@ -809,8 +809,7 @@ bool CMasternodeBroadcast::CheckSignature(int& nDos)
     //
     // END REMOVE
     //
-        strMessage = addr.ToString(false) + boost::lexical_cast<std::string>(sigTime) +
-                        pubKeyCollateralAddress.GetID().ToString() + pubKeyMasternode.GetID().ToString() +
+        strMessage = addr.ToString(false) + pubKeyCollateralAddress.GetID().ToString() + pubKeyMasternode.GetID().ToString() +
                         boost::lexical_cast<std::string>(nProtocolVersion);
 
         LogPrint("masternode", "CMasternodeBroadcast::CheckSignature -- strMessage: %s  pubKeyCollateralAddress address: %s  sig: %s\n", strMessage, CBitcoinAddress(pubKeyCollateralAddress.GetID()).ToString(), EncodeBase64(&vchSig[0], vchSig.size()));
