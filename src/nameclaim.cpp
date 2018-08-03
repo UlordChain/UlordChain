@@ -1,8 +1,9 @@
 #include "nameclaim.h"
 #include "hash.h"
 #include "util.h"
-#include "claimtrie.h"
-#include "main.h"
+
+using namespace std;
+
 std::vector<unsigned char> uint32_t_to_vch(uint32_t n)
 {
     std::vector<unsigned char> vchN;

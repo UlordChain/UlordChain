@@ -7,6 +7,9 @@
 #include <vector>
 #include "rpcprotocol.h"
 #include "amount.h"
+#include <string>
+#include "claimtrie.h"
+#include "main.h"
 
 // This is the max claim script size in bytes, not including the script pubkey part of the script.
 // Scripts exceeding this size are rejected in CheckTransaction in main.cpp
