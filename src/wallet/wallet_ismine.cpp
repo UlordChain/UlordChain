@@ -54,10 +54,6 @@ isminetype IsMine(const CKeyStore &keystore, const CScript& scriptPubKey)
         {   
             spendable_type = ISMINE_SUPPORT;
         }
-		else if (opcode == OP_NAME_TRIE | opcode == OP_NAME_UPDATE) // added to  claim name and address opt
-    	{
-    		spendable_type = ISMINE_NAME;
-    	}
         else
         {   
             spendable_type = ISMINE_NO;
