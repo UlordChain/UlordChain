@@ -3537,7 +3537,15 @@ bool static ConnectTip(CValidationState& state, const CChainParams& chainparams,
     BOOST_FOREACH(const CTransaction &tx, pblock->vtx) {
         SyncWithWallets(tx, pblock);
     }
-	//m_vStringName.clear();
+
+	BOOST_FOREACH(std::map<std::string,int> &v_sNameHeight, m_vStringName) {
+        if ( chainActive.Height() - v_sNameHeight.second >= MIN_ACCOUNT_NAME_NUMBER )
+        {
+            v_sNameHeight.first="";
+			v_sNameHeight.second=0;
+        }
+    }
+	
     int64_t nTime6 = GetTimeMicros(); nTimePostConnect += nTime6 - nTime5; nTimeTotal += nTime6 - nTime1;
     LogPrint("bench", "  - Connect postprocess: %.2fms [%.2fs]\n", (nTime6 - nTime5) * 0.001, nTimePostConnect * 0.000001);
     LogPrint("bench", "- Connect block: %.2fms [%.2fs]\n", (nTime6 - nTime1) * 0.001, nTimeTotal * 0.000001);

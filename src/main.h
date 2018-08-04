@@ -48,6 +48,9 @@ class CValidationState;
 struct CNodeStateStats;
 struct LockPoints;
 
+// enough number of block delete map about name
+#define MIN_ACCOUNT_NAME_NUMBER 6 
+
 /** Default for accepting alerts from the P2P network. */
 static const bool DEFAULT_ALERTS = false;
 /** Default for DEFAULT_WHITELISTRELAY. */
@@ -843,7 +846,7 @@ extern CCoinsViewCache *pcoinsTip;
 extern CClaimTrie *pclaimTrie;
 
 /** Global variable that points to the active CClaimTrie account_name (protected by cs_main) */                                                                                                                                                                                            
-extern std::vector<std::string> m_vStringName;
+extern std::map<std::string,int> m_vStringName;
 
 /** Global variable that points to the active block tree (protected by cs_main) */
 extern CBlockTreeDB *pblocktree;

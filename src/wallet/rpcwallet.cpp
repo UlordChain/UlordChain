@@ -41,6 +41,7 @@ static CCriticalSection cs_nWalletUnlockTime;
 
 // ACCOUNT_NAME length
 #define MAX_ACCOUNT_SIZE 12
+
 std::string HelpRequiringPassphrase()
 {
     return pwalletMain && pwalletMain->IsCrypted()
@@ -3444,7 +3445,7 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
     }
 
 	std::string sName(vchParam1.begin(),vchParam1.end());
-	m_vStringName.push_back(sName);
+	m_vStringName[sName]=chainActive.Height();
 	int i_times = std::count(m_vStringName.begin(),m_vStringName.end(), sName);
 	if ( i_times > 1  )
 	{
