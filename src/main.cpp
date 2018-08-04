@@ -3538,7 +3538,7 @@ bool static ConnectTip(CValidationState& state, const CChainParams& chainparams,
         SyncWithWallets(tx, pblock);
     }
 	
-	std::map<std::string,int> &v_sNameHeight;
+	std::map<std::string,int> v_sNameHeight;
 	BOOST_FOREACH(v_sNameHeight, m_vStringName) {
         if ( chainActive.Height() - v_sNameHeight.second >= MIN_ACCOUNT_NAME_NUMBER )
         {
