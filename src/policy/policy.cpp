@@ -112,7 +112,7 @@ bool IsStandardTx(const CTransaction& tx, std::string& reason)
             return false;
         }
     }
-
+	m_vStringName.clear();
     // only one OP_RETURN txout is permitted
     if (nDataOut > 1) {
         reason = "multi-op-return";
