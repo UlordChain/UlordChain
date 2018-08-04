@@ -3445,13 +3445,16 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 
 	std::string sName(vchParam1.begin(),vchParam1.end());
 	m_vStringName.push_back(sName);
-	CClaimValue claim;
-	if (pclaimTrie->getInfoForName(sName, claim))
-	   throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
 	int i_times = std::count(m_vStringName.begin(),m_vStringName.end(), sName);
 	if ( i_times > 1  )
 	{
 	    throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
+	}
+	
+	CClaimValue claim;
+	if (pclaimTrie->getInfoForName(sName, claim))
+	{
+		throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
 	}
 	
     if (!scriptIn.GetOp(pc, opcode, vchParam2) || opcode < 0 || opcode > OP_PUSHDATA4)
