@@ -30,7 +30,7 @@
 #include <univalue.h>
 
 using namespace std;
-std::vector<std::string> m_vStringName;
+std::map<std::string,int> m_vStringName;
 
 
 int64_t nWalletUnlockTime;
