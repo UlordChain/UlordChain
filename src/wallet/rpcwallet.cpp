@@ -3495,7 +3495,7 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
     {
         vvchParams.push_back(vchParam3);
     }
-	m_vStringName.erase(sName);
+	m_vStringName.pop_back();
     return true;
 }
 
