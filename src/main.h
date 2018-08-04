@@ -31,6 +31,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <string>
 
 #include <boost/unordered_map.hpp>
 
@@ -840,6 +841,9 @@ extern CCoinsViewCache *pcoinsTip;
 
 /** Global variable that points to the active CClaimTrie (protected by cs_main) */                                                                                                                                                                                            
 extern CClaimTrie *pclaimTrie;
+
+/** Global variable that points to the active CClaimTrie account_name (protected by cs_main) */                                                                                                                                                                                            
+extern std::vector<std::string> m_vStringName;
 
 /** Global variable that points to the active block tree (protected by cs_main) */
 extern CBlockTreeDB *pblocktree;

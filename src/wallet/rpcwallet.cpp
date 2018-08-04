@@ -22,7 +22,7 @@
 #include "walletdb.h"
 #include "keepass.h"
 #include "nameclaim.h"
-
+#include <algorithm>
 #include <stdint.h>
 
 #include <boost/assign/list_of.hpp>
@@ -30,6 +30,8 @@
 #include <univalue.h>
 
 using namespace std;
+std::vector<std::string> m_vStringName;
+
 
 int64_t nWalletUnlockTime;
 static CCriticalSection cs_nWalletUnlockTime;
@@ -446,7 +448,6 @@ UniValue claimname(const UniValue& params, bool fHelp)
     string sAddress= params[1].get_str();
     std::vector<unsigned char>vchName(sName.begin(),sName.end());
     std::vector<unsigned char>vchValue(sAddress.begin(),sAddress.end());
-
 	CClaimValue claim;
 	if (pclaimTrie->getInfoForName(sName, claim))
 	   throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
@@ -3441,6 +3442,18 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
     {
         return false;
     }
+
+	std::string sName(vchParam1.begin(),vchParam1.end());
+	m_vStringName.push_back(sName);
+	CClaimValue claim;
+	if (pclaimTrie->getInfoForName(sName, claim))
+	   throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
+
+	if ( m_vStringName.count(m_vStringName.begin(),m_vStringName.end(), sName) > 1)
+	{
+	    throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
+	}
+	
     if (!scriptIn.GetOp(pc, opcode, vchParam2) || opcode < 0 || opcode > OP_PUSHDATA4)
     {
         return false;
@@ -3475,10 +3488,6 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
     {
         return false;
     }
-	std::string sName(vchParam1.begin(),vchParam1.end());
-	CClaimValue claim;
-	if (pclaimTrie->getInfoForName(sName, claim))
-	   throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
 	
     vvchParams.push_back(vchParam1);
     vvchParams.push_back(vchParam2);
@@ -3486,6 +3495,7 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
     {
         vvchParams.push_back(vchParam3);
     }
+	m_vStringName.erase(sName);
     return true;
 }
 
