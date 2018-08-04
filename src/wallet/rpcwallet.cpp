@@ -24,7 +24,7 @@
 #include "nameclaim.h"
 #include <algorithm>
 #include <stdint.h>
-
+#include <vector>
 #include <boost/assign/list_of.hpp>
 
 #include <univalue.h>
@@ -3448,8 +3448,8 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 	CClaimValue claim;
 	if (pclaimTrie->getInfoForName(sName, claim))
 	   throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
-
-	if ( m_vStringName.count(m_vStringName.begin(),m_vStringName.end(), sName) > 1)
+	int i_times = std::count(m_vStringName.begin(),m_vStringName.end(), sName);
+	if ( i_times > 1  )
 	{
 	    throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
 	}
