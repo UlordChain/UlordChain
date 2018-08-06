@@ -3454,7 +3454,7 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 	
 	for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; ++m_it )
 	{
-	    LogPrintf("account_name  is %s store block height is %d\n",m_it->fisrst,m_it->second);
+	    LogPrintf("account_name  is %s store block height is %d\n",m_it->first,m_it->second);
 	}
 	if ( i_times > 1  )
 	{
