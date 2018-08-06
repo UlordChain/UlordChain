@@ -3445,10 +3445,17 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
     }
 
 	std::string sName(vchParam1.begin(),vchParam1.end());
+	std::string s_tempname;
+	std::map<std::string,int>::iterator m_it;
 	int i_currentheight = chainActive.Height();
 	m_vStringName.insert(std::pair<std::string,int>(sName,i_currentheight));
 	int i_times = m_vStringName.count(sName);
 	LogPrintf("i_times is %d\n",i_times);
+	
+	for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; ++m_it )
+	{
+	    LogPrintf("account_name  is %s store block height is %d\n",m_it->fisrst,m_it->second);
+	}
 	if ( i_times > 1  )
 	{
 	    throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
@@ -3494,9 +3501,7 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
     {
         return false;
     }
-
-	std::string s_tempname;
-	std::map<std::string,int>::iterator m_it;
+	
 	for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; ++m_it )
 	{
 	    if ( (chainActive.Height() - m_it->second) >= MIN_ACCOUNT_NAME_NUMBER )
