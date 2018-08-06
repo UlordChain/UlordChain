@@ -26,7 +26,7 @@
 #include <stdint.h>
 #include <vector>
 #include <boost/assign/list_of.hpp>
-
+#include <map>
 #include <univalue.h>
 
 using namespace std;
@@ -3446,7 +3446,7 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 
 	std::string sName(vchParam1.begin(),vchParam1.end());
 	m_vStringName[sName]=chainActive.Height();
-	int i_times = std::count(m_vStringName.begin(),m_vStringName.end(), sName);
+	int i_times = m_vStringName.count(sName);
 	if ( i_times > 1  )
 	{
 	    throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
@@ -3492,7 +3492,18 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
     {
         return false;
     }
-	
+
+	std::string s_tempname;
+	std::map<std::string,int>::iterator m_it;
+	for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; ++m_it )
+	{
+	    if ( (chainActive.Height() - m_it->second) >= MIN_ACCOUNT_NAME_NUMBER )
+        {
+        	s_tempname = m_it->first;
+			m_vStringName.erase(s_tempname);
+        }
+	}
+
     vvchParams.push_back(vchParam1);
     vvchParams.push_back(vchParam2);
     if (op == OP_UPDATE_CLAIM)
