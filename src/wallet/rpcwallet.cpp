@@ -3447,6 +3447,7 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 	std::string sName(vchParam1.begin(),vchParam1.end());
 	m_vStringName[sName]=chainActive.Height();
 	int i_times = m_vStringName.count(sName);
+	LogPrintf("i_times is %d\n",i_times);
 	if ( i_times > 1  )
 	{
 	    throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
