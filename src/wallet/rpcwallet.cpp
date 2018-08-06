@@ -3445,7 +3445,8 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
     }
 
 	std::string sName(vchParam1.begin(),vchParam1.end());
-	m_vStringName[sName]=chainActive.Height();
+	int i_currentheight = chainActive.Height();
+	m_vStringName.insert(std::pair<std::string,int>(sName,i_currentheight));
 	int i_times = m_vStringName.count(sName);
 	LogPrintf("i_times is %d\n",i_times);
 	if ( i_times > 1  )
