@@ -916,6 +916,84 @@ UniValue abandonsupport(const UniValue &params,bool fHelp)
         return wtxNew.GetHash().GetHex();
 }
 
+static void SendInformation(CScript& msgScript, CAmount nValue, CWalletTx& wtxNew)
+{
+    CAmount curBalance = pwalletMain->GetBalance();
+
+    //if(curBalance <= ::minRelayTxFee)
+    //  throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS,"Insufficient funds")
+    // Check amount
+    if (nValue < 0)
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid amount");
+
+    if (nValue > curBalance)
+        throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Insufficient funds");
+    //get new address
+    /*CPubKey newKey;
+    if ( !pwalletMain->GetKeyFromPool(newKey) )
+        throw JSONRPCError(RPC_WALLET_KEYPOOL_RAN_OUT,"Error: Keypool ran out,please call keypoolrefill first");
+
+    CScript scriptPubkey = GetScriptForDestination( CTxDestination(newKey.GetID()));*/
+
+    // Create and send the transaction
+    vector<CRecipient> vecSend;
+    CReserveKey reservekey(pwalletMain);
+    CAmount nFeeRequired;
+    std::string strError;
+    int nChangePosRet = -1;
+    CRecipient msgrecipient = {msgScript, nValue, false};
+    vecSend.push_back(msgrecipient);
+    if (!pwalletMain->CreateTransaction(vecSend, wtxNew, reservekey, nFeeRequired, nChangePosRet,
+                                         strError)) {
+        if (nValue + nFeeRequired > pwalletMain->GetBalance())
+            strError = strprintf("Error: This transaction requires a transaction fee of at least %s because of its amount, complexity, or use of recently received funds!", FormatMoney(nFeeRequired));
+        throw JSONRPCError(RPC_WALLET_ERROR, strError);
+    }
+    if (!pwalletMain->CommitTransaction(wtxNew, reservekey))
+        throw JSONRPCError(RPC_WALLET_ERROR, "Error: The transaction was rejected! This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.");
+}
+
+UniValue uploadmessage(const UniValue& params, bool fHelp)
+{
+    if (!EnsureWalletIsAvailable(fHelp))
+        return NullUniValue;
+    
+    if (fHelp || params.size() < 1 || params.size() > 2)
+        throw runtime_error(
+            "uploadmessage \"message\"\n"
+            "\nSend an amount to a given address.\n"
+            + HelpRequiringPassphrase() +
+            "\nArguments:\n"
+            "1. \"message\"  (string, required) The message to send to chain.\n"
+            "\nResult:\n"
+            "\"transactionid\"  (string) The transaction id.\n"
+            "\nExamples:\n"
+            + HelpExampleCli("uploadmessage", "\"ulordchain\"")
+        );
+
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+
+    std::string sMessage = params[0].get_str();
+    if (sMessage.size() <= 0)
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid message");
+    if (2*sMessage.size() > MAX_MESSAGE_SIZE)
+        throw JSONRPCError(RPC_INVALID_PARAMETER,"Message is too much for send");           
+    std::vector<unsigned char> vchMessage(sMessage.begin(),sMessage.end());
+
+    // Amount
+    /*CAmount nAmount = AmountFromValue(params[1]);
+    if (nAmount <= 0)
+        throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");*/
+
+    CWalletTx wtx;
+    
+    EnsureWalletIsUnlocked();
+    CScript msgScript = CScript()<<OP_RETURN<<vchMessage;
+    SendInformation(msgScript, 0, wtx);
+
+    return wtx.GetHash().GetHex();
+}
+
 static void SendMoney(const CTxDestination &address, CAmount nValue, bool fSubtractFeeFromAmount, CWalletTx& wtxNew, bool fUseInstantSend=false, bool fUsePrivateSend=false)
 {
     CAmount curBalance = pwalletMain->GetBalance();
