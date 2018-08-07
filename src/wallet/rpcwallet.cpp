@@ -3465,7 +3465,7 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 		{
 			throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
 		}
-		else if(i_times != 1)
+		else if(i_times == 1)
 		{
 			cout << "inter itimes != 0 " << endl;
 		    throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
