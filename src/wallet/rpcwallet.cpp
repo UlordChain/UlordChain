@@ -3456,10 +3456,6 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 	{
 		m_vStringName.insert(std::pair<std::string,int>(sName,i_currentheight));
 	}
-	else if(i_times == 1)
-	{
-		
-	}
 	else
 	{
 	    throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
