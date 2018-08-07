@@ -3450,10 +3450,10 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 
 	if ( !is_Init )
 	{
-		is_Init = true;
 		if ( i_times == 0  )
 		{
 			LogPrintf("txout.nValue is %d.%08d\n",txout.nValue/COIN,txout.nValue % COIN);
+			cout << "inter itimes == 0 " << is_Init << endl;
 			if ( txout.nValue != MAX_ACCOUNT_NAME )
 			{
 				throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
@@ -3464,11 +3464,18 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 			}
 			m_vStringName.insert(std::pair<std::string,int>(sName,i_currentheight));
 		}
+		else if(i_times != 0)
+		{
+			cout << "inter itimes != 0 " << endl;
+		    throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
+		}
 		else
 		{
+			cout << "inter else " << endl;
 			throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
 		}
-	}
+		is_Init = true;
+	} 
 	
 	for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; ++m_it )
 	{
