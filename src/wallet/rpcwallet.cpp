@@ -22,6 +22,7 @@
 #include "walletdb.h"
 #include "keepass.h"
 #include "nameclaim.h"
+#include "rpcprotocol.h"
 #include <algorithm>
 #include <stdint.h>
 #include <vector>
@@ -3455,6 +3456,10 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 	{
 		m_vStringName.insert(std::pair<std::string,int>(sName,i_currentheight));
 	}
+	else if(i_times == 1)
+	{
+		
+	}
 	else
 	{
 	    throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
@@ -3514,7 +3519,7 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 			m_vStringName.erase(s_tempname);
         }
 	}
-
+	
     vvchParams.push_back(vchParam1);
     vvchParams.push_back(vchParam2);
     if (op == OP_UPDATE_CLAIM)
