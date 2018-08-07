@@ -10,6 +10,7 @@
 #include "net.h"
 #include "spork.h"
 #include "timedata.h"
+#include "base58.h"
 
 class CMasternode;
 class CMasternodeBroadcast;
@@ -350,6 +351,8 @@ public:
     void RemoveGovernanceObject(uint256 nGovernanceObjectHash);
 
     void UpdateWatchdogVoteTime();
+
+	CTxDestination GetPayeeDestination();
 
     CMasternode& operator=(CMasternode from)
     {

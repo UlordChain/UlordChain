@@ -1805,7 +1805,7 @@ bool CMstNodeData::VerifyLicense()
     CPubKey pubkeyFromSig;
 
     LogPrintf("CMstNodeData::VerifyLicense:masternode<%s:%d-%ld-%d-%s>", _txid.c_str(), _voutid, _licperiod, _licversion, HexStr(_pubkey).c_str());
-	
+
     bool fInvalid = false;
     std::vector<unsigned char> vchSigRcv = DecodeBase64(_licence.c_str(), &fInvalid);
 
@@ -1814,9 +1814,9 @@ bool CMstNodeData::VerifyLicense()
         return false;
     }
     if(!pubkeyFromSig.RecoverCompact(GetLicenseWord(), vchSigRcv)) {
-		LogPrintf(" recover pubkey failed license = %s\n", _licence.c_str());
-		return false;
-	}
+        LogPrintf(" recover pubkey failed license = %s\n", _licence.c_str());
+        return false;
+    }
     std::string strPub = mnodecenter.GetCenterPubKey(_licversion);
     if(strPub.empty()) {
         LogPrintf(" license version(%d) no match center public key\n", _licversion);
@@ -1828,7 +1828,7 @@ bool CMstNodeData::VerifyLicense()
                     HexStr(pubkeyFromSig).c_str(),
                     strPub.c_str(),
                     _licence.c_str());
-		return false;
+        return false;
     }
     LogPrintf(" verify succes\n");
     return true;
@@ -1845,20 +1845,20 @@ bool CMstNodeData::IsNeedUpdateLicense()
 
 int mstnodequest::GetMsgBuf(char * buf)
 {
-	std::ostringstream os;
+    std::ostringstream os;
     boost::archive::binary_oarchive oa(os);
     oa << *this;
-	std::string strReq = os.str();
-	int buflength = strReq.length();
-	if(buflength + mstnd_iReqMsgHeadLen > mstnd_iReqBufLen) {
-		LogPrintf("mstnodequest::GetMsgBuf: buff size error, string length is %d, need to increase buff size", buflength + mstnd_iReqMsgHeadLen);
-		return 0;
-	}
-	unsigned int n = HNSwapl(buflength);
-	memcpy(buf, &n, mstnd_iReqMsgHeadLen);
-	memcpy(buf + mstnd_iReqMsgHeadLen, strReq.c_str(), buflength);
-	buflength += mstnd_iReqMsgHeadLen;
-	return buflength;
+    std::string strReq = os.str();
+    int buflength = strReq.length();
+    if(buflength + mstnd_iReqMsgHeadLen > mstnd_iReqBufLen) {
+        LogPrintf("mstnodequest::GetMsgBuf: buff size error, string length is %d, need to increase buff size", buflength + mstnd_iReqMsgHeadLen);
+        return 0;
+    }
+    unsigned int n = HNSwapl(buflength);
+    memcpy(buf, &n, mstnd_iReqMsgHeadLen);
+    memcpy(buf + mstnd_iReqMsgHeadLen, strReq.c_str(), buflength);
+    buflength += mstnd_iReqMsgHeadLen;
+    return buflength;
 }
 
 bool CMasternodeCenter::InitCenter(std::string strError)
@@ -1926,15 +1926,15 @@ bool CMasternodeCenter::IsUse()
 bool CMasternodeCenter::RequestLicense(CMasternode &mn)
 {
     std::string strReq;
-	char cbuf[mstnd_iReqBufLen];
-	memset(cbuf,0,sizeof(cbuf));
-	int buflength = 0;
+    char cbuf[mstnd_iReqBufLen];
+    memset(cbuf,0,sizeof(cbuf));
+    int buflength = 0;
     mstnodequest mstquest(111,MST_QUEST_ONE);
     mstquest._timeStamps = GetTime();
-	mstquest._txid = mn.vin.prevout.hash.GetHex();
-	mstquest._voutid = mn.vin.prevout.n;
-    
-	buflength = mstquest.GetMsgBuf(cbuf);
+    mstquest._txid = mn.vin.prevout.hash.GetHex();
+    mstquest._voutid = mn.vin.prevout.n;
+
+    buflength = mstquest.GetMsgBuf(cbuf);
     if(0 == buflength)
         return error("CMasternodeCenter::RequestLicense: get mstquest msg failed!!!!!!!!!");
 
@@ -1947,25 +1947,25 @@ bool CMasternodeCenter::RequestLicense(CMasternode &mn)
         }
 
         int nBytes = send(hSocket, cbuf, buflength, 0);
-	    if(nBytes != buflength) {
+        if(nBytes != buflength) {
             CloseSocket(hSocket);
             return error("CMasternodeCenter::RequestLicense: send msg %d, expect %d", nBytes, buflength);
         }
 
         /*recive message*/
         memset(cbuf,0,sizeof(cbuf));
-		buflength = 0;
+        buflength = 0;
         nBytes = 0;
 
         int64_t nTimeLast = GetTime();
-		while(nBytes <= 0)
-		{
-			nBytes = recv(hSocket, cbuf, sizeof(cbuf), 0);
-			if((GetTime() - nTimeLast) >= mstnd_iReqMsgTimeout) {
-				CloseSocket(hSocket);
+        while(nBytes <= 0)
+        {
+            nBytes = recv(hSocket, cbuf, sizeof(cbuf), 0);
+            if((GetTime() - nTimeLast) >= mstnd_iReqMsgTimeout) {
+                CloseSocket(hSocket);
                 return error("CMasternodeCenter::RequestLicense: recv CMstNodeData timeout");
-			}
-		}
+            }
+        }
         if(nBytes > mstnd_iReqBufLen) {
             CloseSocket(hSocket);
             return error("CMasternodeCenter::RequestLicense: msg have too much bytes %d, need increase rcv buf size", nBytes);
@@ -1979,9 +1979,9 @@ bool CMasternodeCenter::RequestLicense(CMasternode &mn)
 
         std::string str(cbuf + mstnd_iReqMsgHeadLen, buflength);
         mstnoderes  mstres;
-		std::istringstream strstream(str);
-		boost::archive::binary_iarchive ia(strstream);
-		ia >> mstres;
+        std::istringstream strstream(str);
+        boost::archive::binary_iarchive ia(strstream);
+        ia >> mstres;
         if(mstres._num == 1) {
             CMstNodeData mstnode;
             ia >> mstnode;
@@ -1995,11 +1995,11 @@ bool CMasternodeCenter::RequestLicense(CMasternode &mn)
             }
             mstnode._pubkey = mn.pubKeyMasternode;
             LogPrintf("CMasternodeCenter::RequestLicense: Masternode<%s:%d-%s> certificate %s time = %d\n",
-                    mstnode._txid.c_str(),
-                    mstnode._voutid,
-                    HexStr(mstnode._pubkey).c_str(),
-                    mstnode._licence.c_str(),
-                    mstnode._licperiod);
+                        mstnode._txid.c_str(),
+                        mstnode._voutid,
+                        HexStr(mstnode._pubkey).c_str(),
+                        mstnode._licence.c_str(),
+                        mstnode._licperiod);
 
             if(!mstnode.VerifyLicense()) {
                 LogPrintf("CMasternodeCenter::RequestLicense: connect to center server update certificate failed\n");
@@ -2024,37 +2024,37 @@ bool CMasternodeCenter::RequestLicense(CMasternode &mn)
 bool CMasternodeCenter::ReadLicense(CMasternode &mn)
 {
     std::string strCettificate = GetArg("-certificate", "");
-	if(strCettificate.empty()) {
-		LogPrintf("CMasternodeCenter::ReadLicense -- Failed to read Masternode certificate from conf\n");
-		return false;
-	}
-	
-	std::string sPeriod = GetArg("-certifiperiod", "");
+    if(strCettificate.empty()) {
+        LogPrintf("CMasternodeCenter::ReadLicense -- Failed to read Masternode certificate from conf\n");
+        return false;
+    }
+
+    std::string sPeriod = GetArg("-certifiperiod", "");
     //Convert to timestamp
     struct tm tmp_time;
     strptime(sPeriod.c_str(), "%Y%m%d %H:%M:%S",&tmp_time);
     time_t t = mktime(&tmp_time);	
-	if(0 == t) {
-		LogPrintf("CMasternodeCenter::ReadLicense -- Failed to read Masternode lasttime from conf\n");
-		return false;
-	}
+    if(0 == t) {
+        LogPrintf("CMasternodeCenter::ReadLicense -- Failed to read Masternode lasttime from conf\n");
+        return false;
+    }
     if(t <= GetTime()) {
         return error("CMasternodeCenter::ReadLicense -- Configure license(%ld) is overtime", t);
     }
 
-	CMstNodeData mnData(mn);
+    CMstNodeData mnData(mn);
     mnData._licence = strCettificate;
     mnData._licperiod = t;
     mnData._licversion = GetArg("-certifiversion", 0);
-	if(!mnData.VerifyLicense()) {
-		LogPrintf("CMasternodeCenter::ReadLicense -- verify cetificate failed\n");
-		return false;
-	}
+    if(!mnData.VerifyLicense()) {
+        LogPrintf("CMasternodeCenter::ReadLicense -- verify cetificate failed\n");
+        return false;
+    }
 
-	mn.certificate = strCettificate;
-	mn.certifyPeriod = t;
+    mn.certificate = strCettificate;
+    mn.certifyPeriod = t;
     mn.certifyVersion = mnData._licversion;
-	return true;
+    return true;
 }
 
 bool CMasternodeCenter::LoadLicense(CMasternode &mn)

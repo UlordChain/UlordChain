@@ -310,18 +310,25 @@ void CActiveMasternode::ManageStateLocal()
             return;
         }
 
-		// check if it is registered on the Ulord center server
-		//CMasternode mn(mnb);
-		if(!mnodecenter.LoadLicense(mnb))
-		{
-			nState = ACTIVE_MASTERNODE_NOT_CAPABLE;
-			strNotCapableReason = strprintf(_("%s didn't registered on Ulord Center"), mnb.vin.prevout.ToStringShort());
-			LogPrintf("CMasternodeBroadcast::ManageStateLocal -- Didn't registered on Ulord Center, masternode=%s\n", mnb.vin.prevout.ToStringShort());
-			return;
-		}
-		//mnb.certifyPeriod = mn.certifyPeriod;
-		//mnb.certificate = mn.certificate;
-		LogPrintf("CActiveMasternode::ManageStateLocal -- Load License(%ld-%d)\n", mnb.certifyPeriod, mnb.certifyVersion);
+        if(!CBitcoinAddress().Set(mnb.GetPayeeDestination())) {
+            nState = ACTIVE_MASTERNODE_NOT_CAPABLE;
+            strNotCapableReason = "Error Collateral transaction without change address, can't design a payee address!";
+            LogPrintf("CActiveMasternode::ManageStateLocal -- %s: %s\n", GetStateString(), strNotCapableReason);
+            return;
+        }
+
+        // check if it is registered on the Ulord center server
+        //CMasternode mn(mnb);
+        if(!mnodecenter.LoadLicense(mnb))
+        {
+            nState = ACTIVE_MASTERNODE_NOT_CAPABLE;
+            strNotCapableReason = strprintf(_("%s didn't registered on Ulord Center"), mnb.vin.prevout.ToStringShort());
+            LogPrintf("CMasternodeBroadcast::ManageStateLocal -- Didn't registered on Ulord Center, masternode=%s\n", mnb.vin.prevout.ToStringShort());
+            return;
+        }
+        //mnb.certifyPeriod = mn.certifyPeriod;
+        //mnb.certificate = mn.certificate;
+        LogPrintf("CActiveMasternode::ManageStateLocal -- Load License(%ld-%d)\n", mnb.certifyPeriod, mnb.certifyVersion);
 		
         fPingerEnabled = true;
         nState = ACTIVE_MASTERNODE_STARTED;
