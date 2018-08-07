@@ -469,7 +469,7 @@ UniValue claimname(const UniValue& params, bool fHelp)
 	
     CAmount nAmount = AmountFromValue(params[2]);
     CWalletTx wtx;
-
+	is_Init = false;
     EnsureWalletIsUnlocked();
     CScript claimScript = CScript()<<OP_CLAIM_NAME<<vchName<<vchValue<<OP_2DROP<<OP_DROP;
     CreateClaim(claimScript,nAmount,wtx);
@@ -3468,7 +3468,11 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 			throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
 		}
 	}
-	is_Init = false;
+	else
+	{
+	   	is_Init = true;
+	}
+	
 	
 	for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; ++m_it )
 	{
