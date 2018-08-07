@@ -473,7 +473,6 @@ UniValue claimname(const UniValue& params, bool fHelp)
     EnsureWalletIsUnlocked();
     CScript claimScript = CScript()<<OP_CLAIM_NAME<<vchName<<vchValue<<OP_2DROP<<OP_DROP;
     CreateClaim(claimScript,nAmount,wtx);
-	is_Init = false;
     return wtx.GetHash().GetHex();
 }
 
@@ -3448,28 +3447,28 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 	int i_times = m_vStringName.count(sName);
 	LogPrintf("i_times is %d\n",i_times);
 	CClaimValue claim;
-	
-	if ( i_times == 0  )
+
+	if ( !is_Init )
 	{
-		LogPrintf("txout.nValue is %d.%08d\n",txout.nValue/COIN,txout.nValue % COIN);
-		if ( txout.nValue != MAX_ACCOUNT_NAME )
+		if ( i_times == 0  )
 		{
-			throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
+			LogPrintf("txout.nValue is %d.%08d\n",txout.nValue/COIN,txout.nValue % COIN);
+			if ( txout.nValue != MAX_ACCOUNT_NAME )
+			{
+				throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
+			}
+			if (pclaimTrie->getInfoForName(sName, claim))
+			{
+				throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
+			}
+			m_vStringName.insert(std::pair<std::string,int>(sName,i_currentheight));
 		}
-		if (pclaimTrie->getInfoForName(sName, claim))
+		else
 		{
 			throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
 		}
-		m_vStringName.insert(std::pair<std::string,int>(sName,i_currentheight));
 	}
-	else
-	{
-		if ( !is_Init )
-		{
-			is_Init = true;
-		    throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
-		}
-	}
+	is_Init = false;
 	
 	for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; ++m_it )
 	{
