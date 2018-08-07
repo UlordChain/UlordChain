@@ -3450,6 +3450,7 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 
 	if ( !is_Init )
 	{
+		is_Init = true;
 		if ( i_times == 0  )
 		{
 			LogPrintf("txout.nValue is %d.%08d\n",txout.nValue/COIN,txout.nValue % COIN);
@@ -3468,11 +3469,6 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 			throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
 		}
 	}
-	else
-	{
-	   	is_Init = true;
-	}
-	
 	
 	for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; ++m_it )
 	{
