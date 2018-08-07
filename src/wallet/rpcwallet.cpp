@@ -3450,14 +3450,12 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 	if ( i_times == 0  )
 	{
 		LogPrintf("txout.nValue is %d.%08d\n",txout.nValue/COIN,txout.nValue % COIN);
-		cout << "inter itimes == 0 " << is_Init << endl;
 		m_vStringName.insert(std::pair<std::string,int>(sName,i_currentheight));
 	}
 	else 
 	{
 		if ( !is_Init )
 		{
-			cout << "inter itimes is " << i_times << "\tis_Init is "<<  is_Init << endl;
 			if ( txout.nValue != MAX_ACCOUNT_NAME )
 			{
 				throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
