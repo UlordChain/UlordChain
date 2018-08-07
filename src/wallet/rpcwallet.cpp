@@ -3447,36 +3447,34 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 	int i_times = m_vStringName.count(sName);
 	LogPrintf("i_times is %d\n",i_times);
 	CClaimValue claim;
-
 	if ( i_times == 0  )
 	{
 		LogPrintf("txout.nValue is %d.%08d\n",txout.nValue/COIN,txout.nValue % COIN);
 		cout << "inter itimes == 0 " << is_Init << endl;
 		m_vStringName.insert(std::pair<std::string,int>(sName,i_currentheight));
 	}
-
-	if ( !is_Init )
+	else 
 	{
-		if ( txout.nValue != MAX_ACCOUNT_NAME )
+		if ( !is_Init )
 		{
-			throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
+			cout << "inter itimes is " << i_times << "\tis_Init is "<<  is_Init << endl;
+			if ( txout.nValue != MAX_ACCOUNT_NAME )
+			{
+				throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
+			}
+			if (pclaimTrie->getInfoForName(sName, claim))
+			{
+				throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
+			}
+			for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; ++m_it )
+			{
+				if ( !m_it.compare(sName) )
+				{
+					throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
+				}
+			}
 		}
-		if (pclaimTrie->getInfoForName(sName, claim))
-		{
-			throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
-		}
-		else if(i_times == 1)
-		{
-			cout << "inter itimes != 0 " << endl;
-		    throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
-		}
-		is_Init = true;
 	} 
-	
-	for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; ++m_it )
-	{
-	    LogPrintf("account_name  is %s store block height is %d\n",m_it->first,m_it->second);
-	}
 	
     if (!scriptIn.GetOp(pc, opcode, vchParam2) || opcode < 0 || opcode > OP_PUSHDATA4)
     {
