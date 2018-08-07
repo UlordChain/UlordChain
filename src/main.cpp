@@ -612,6 +612,8 @@ CBlockIndex* FindForkInGlobalIndex(const CChain& chain, const CBlockLocator& loc
 CCoinsViewCache *pcoinsTip = NULL;
 CClaimTrie *pclaimTrie = NULL; // claim operation
 CBlockTreeDB *pblocktree = NULL;
+bool is_Init = false;
+
 
 //////////////////////////////////////////////////////////////////////////////
 //

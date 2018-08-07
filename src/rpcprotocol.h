@@ -75,6 +75,7 @@ enum RPCErrorCode
     RPC_WALLET_ENCRYPTION_FAILED    = -16, //! Failed to encrypt the wallet
     RPC_WALLET_ALREADY_UNLOCKED     = -17, //! Wallet is already unlocked
     RPC_NAME_TRIE_EXITS		        = -31, //! The account name already exists
+    RPC_NAME_TRIE_NOEXITS			= -32, //! The account name in not exists
 };
 
 std::string JSONRPCRequest(const std::string& strMethod, const UniValue& params, const UniValue& id);

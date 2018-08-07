@@ -434,7 +434,7 @@ UniValue claimname(const UniValue& params, bool fHelp)
     {
         return NullUniValue;
     }
-    if ( fHelp || params.size() != 3 )
+    if (fHelp || params.size() < 2 || params.size() > 3)
     throw runtime_error(
         "claimname \"name\" \"value\" amount\n"
         "\nCreate a transaction which issues a claim assigning a value to a name. The claim will be authoritative if the transaction amount is greater than the transaction amount of all other unspent transactions which issue a claim over the same name, and it will remain authoritative as long as it remains unspent and there are no other greater unspent transactions issuing a claim over the same name. The amount is a real and is rounded to the nearest 0.00000001\n"
@@ -445,6 +445,8 @@ UniValue claimname(const UniValue& params, bool fHelp)
         "3. \"amount\"  (numeric, required) The amount in Ulord to send. eg 0.1\n"
         "\nResult:\n"
         "\"transactionid\"  (string) The transaction id.\n"
+		"\nExamples:\n"
+		+ HelpExampleCli("sendtoaddress", "\"AlfredZKY\" \"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" 0.1")
     );
     string sName = params[0].get_str();
     string sAddress= params[1].get_str();
@@ -471,6 +473,7 @@ UniValue claimname(const UniValue& params, bool fHelp)
     EnsureWalletIsUnlocked();
     CScript claimScript = CScript()<<OP_CLAIM_NAME<<vchName<<vchValue<<OP_2DROP<<OP_DROP;
     CreateClaim(claimScript,nAmount,wtx);
+	is_Init = false;
     return wtx.GetHash().GetHex();
 }
 
@@ -3333,7 +3336,7 @@ UniValue sendtoaccountname(const UniValue &params, bool fHelp)
         "\nSend an amount to a given account name.\n"
         + HelpRequiringPassphrase() +
         "\nArguments:\n"
-        "1. \"name\"  (string, required) The name to be assigned the value.\n"
+        "1. \"accountname\"  (string, required) The accountname of ulord chain.\n"
         "2. \"amount\"  (numeric, required) The amount in Ulord to send. eg 0.1\n"
         "\nResult:\n"
         "\"transactionid\"  (string) The transaction id.\n"
@@ -3343,11 +3346,9 @@ UniValue sendtoaccountname(const UniValue &params, bool fHelp)
 
     std::string sName = params[0].get_str();
     CClaimValue claim;
-    UniValue ret(UniValue::VOBJ);
     if (!pclaimTrie->getInfoForName(sName, claim))
-        return ret;
+	   throw JSONRPCError(RPC_NAME_TRIE_NOEXITS, "The account name in not exists");
     std::string sAddress = claim.m_NameAddress[sName];
-
 	LOCK2(cs_main, pwalletMain->cs_wallet);
 	CBitcoinAddress address(sAddress);
 	if (!address.IsValid())
@@ -3458,7 +3459,11 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 	}
 	else
 	{
-	    throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
+		if ( !is_Init )
+		{
+			is_Init = true;
+		    throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
+		}
 	}
 	
 	for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; ++m_it )
