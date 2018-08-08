@@ -533,7 +533,7 @@ CMasternode* CMasternodeMan::Find(const CScript &payee)
 
     BOOST_FOREACH(CMasternode& mn, vMasternodes)
     {
-        if(GetScriptForDestination(mn.pubKeyCollateralAddress.GetID()) == payee)
+        if(GetScriptForDestination(mn.GetPayeeDestination()) == payee)
             return &mn;
     }
     return NULL;

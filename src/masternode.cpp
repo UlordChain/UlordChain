@@ -421,7 +421,7 @@ void CMasternode::UpdateLastPaid(const CBlockIndex *pindex, int nMaxBlocksToScan
 
     const CBlockIndex *BlockReading = pindex;
 
-    CScript mnpayee = GetScriptForDestination(pubKeyCollateralAddress.GetID());
+    CScript mnpayee = GetScriptForDestination(GetPayeeDestination());
     // LogPrint("masternode", "CMasternode::UpdateLastPaidBlock -- searching for block with payment to %s\n", vin.prevout.ToStringShort());
 
     LOCK(cs_mapMasternodeBlocks);
@@ -594,6 +594,14 @@ bool CMasternodeBroadcast::SimpleCheck(int& nDos)
 
     if(pubkeyScript.size() != 25) {
         LogPrintf("CMasternodeBroadcast::SimpleCheck -- pubKeyCollateralAddress has the wrong size\n");
+        nDos = 100;
+        return false;
+    }
+
+    CScript pubkeyPayeeScript;
+    pubkeyPayeeScript = GetScriptForDestination(GetPayeeDestination());
+    if(pubkeyPayeeScript.size() != 25) {
+        LogPrintf("CMasternodeBroadcast::SimpleCheck -- pubKeyPayeeAddress has the wrong size\n");
         nDos = 100;
         return false;
     }
