@@ -291,8 +291,6 @@ void CActiveMasternode::ManageStateLocal()
     }
 
     // Choose coins to use
-    CPubKey pubKeyCollateral;
-    CKey keyCollateral;
 
     if(pwalletMain->GetMasternodeVinAndKeys(vin)) {
         int nInputAge = GetInputAge(vin);

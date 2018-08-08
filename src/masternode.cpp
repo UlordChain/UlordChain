@@ -482,8 +482,6 @@ CTxDestination CMasternode::GetPayeeDestination()
 bool CMasternodeBroadcast::Create(std::string strService, std::string strKeyMasternode, std::string strTxHash, std::string strOutputIndex, std::string& strErrorRet, CMasternodeBroadcast &mnbRet, bool fOffline)
 {
     CTxIn txin;
-    CPubKey pubKeyCollateralAddressNew;
-    CKey keyCollateralAddressNew;
     CPubKey pubKeyMasternodeNew;
     CKey keyMasternodeNew;
 
