@@ -3466,7 +3466,7 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 			{
 				throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
 			}
-			for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; ++m_it )
+			for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; m_it++ )
 			{
 				if ( !m_it->first.compare(sName) )
 				{

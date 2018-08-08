@@ -49,7 +49,7 @@ struct CNodeStateStats;
 struct LockPoints;
 
 // enough number of block delete map about name
-#define MIN_ACCOUNT_NAME_NUMBER 6 
+#define MIN_ACCOUNT_NAME_NUMBER 100 
 
 /** Default for accepting alerts from the P2P network. */
 static const bool DEFAULT_ALERTS = false;
