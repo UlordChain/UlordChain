@@ -435,7 +435,7 @@ public:
     bool CheckSignature(int& nDos);
     void Relay();
 
-	bool getPubKeyId(CKeyID& pubKeyId)
+	bool getPubKeyId(CKeyID& pubKeyId);
 };
 
 class CMasternodeVerification
