@@ -217,7 +217,7 @@ UniValue masternode(const UniValue& params, bool fHelp)
         CPubKey pubkey;
         CKey key;
 
-        if(!pwalletMain || !pwalletMain->GetMasternodeVinAndKeys(vin, pubkey, key))
+        if(!pwalletMain || !pwalletMain->GetMasternodeVinAndKeys(vin))
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Missing masternode input, please look at the documentation for instructions on masternode creation");
 
         return activeMasternode.GetStatus();

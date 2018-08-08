@@ -294,7 +294,7 @@ void CActiveMasternode::ManageStateLocal()
     CPubKey pubKeyCollateral;
     CKey keyCollateral;
 
-    if(pwalletMain->GetMasternodeVinAndKeys(vin, pubKeyCollateral, keyCollateral)) {
+    if(pwalletMain->GetMasternodeVinAndKeys(vin)) {
         int nInputAge = GetInputAge(vin);
         if(nInputAge < Params().GetConsensus().nMasternodeMinimumConfirmations){
             nState = ACTIVE_MASTERNODE_INPUT_TOO_NEW;
