@@ -520,18 +520,17 @@ bool CMasternodeBroadcast::Create(std::string strService, std::string strKeyMast
         return false;
     }
 
-    return Create(txin, CService(strService), keyCollateralAddressNew, pubKeyCollateralAddressNew, keyMasternodeNew, pubKeyMasternodeNew, strErrorRet, mnbRet);
+    return Create(txin, CService(strService),  keyMasternodeNew, pubKeyMasternodeNew, strErrorRet, mnbRet);
 }
 
-bool CMasternodeBroadcast::Create(CTxIn txin, CService service, CKey keyCollateralAddressNew, CPubKey pubKeyCollateralAddressNew, CKey keyMasternodeNew, CPubKey pubKeyMasternodeNew, std::string &strErrorRet, CMasternodeBroadcast &mnbRet)
+bool CMasternodeBroadcast::Create(CTxIn txin, CService service,  CKey keyMasternodeNew, CPubKey pubKeyMasternodeNew, std::string &strErrorRet, CMasternodeBroadcast &mnbRet)
 {
     // wait for reindex and/or import to finish
     if (fImporting || fReindex) return false;
 
-    LogPrint("masternode", "CMasternodeBroadcast::Create -- pubKeyCollateralAddressNew = %s, pubKeyMasternodeNew.GetID() = %s\n",
-             CBitcoinAddress(pubKeyCollateralAddressNew.GetID()).ToString(),
+   LogPrint("masternode", "CMasternodeBroadcast::Create --  pubKeyMasternodeNew.GetID() = %s\n",
              pubKeyMasternodeNew.GetID().ToString());
-
+   CPubKey pubKeyCollateralAddressNew; //  pubKeyCollateralAddressNew   is null
 
     CMasternodePing mnp(txin);
     if(!mnp.Sign(keyMasternodeNew, pubKeyMasternodeNew)) {

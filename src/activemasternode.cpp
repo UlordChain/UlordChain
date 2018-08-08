@@ -310,7 +310,7 @@ void CActiveMasternode::ManageStateLocal()
 
         CMasternodeBroadcast mnb;
         std::string strError;
-        if(!CMasternodeBroadcast::Create(vin, service, keyCollateral, pubKeyCollateral, keyMasternode, pubKeyMasternode, strError, mnb)) {
+        if(!CMasternodeBroadcast::Create(vin, service,  keyMasternode, pubKeyMasternode, strError, mnb)) {
             nState = ACTIVE_MASTERNODE_NOT_CAPABLE;
             strNotCapableReason = "Error creating mastenode broadcast: " + strError;
             LogPrintf("CActiveMasternode::ManageStateLocal -- %s: %s\n", GetStateString(), strNotCapableReason);
