@@ -412,7 +412,7 @@ static const CRPCCommand vRPCCommands[] =
     { "Claimtrie",          "updateclaim",            &updateclaim,            true  },  
     { "Claimtrie",          "abandonclaim",           &abandonclaim,           true  },  
     { "Claimtrie",          "listnameclaims",         &listnameclaims,         true  },  
-    { "Claimtrie",          "supportclaim",           &supportclaim,           true  },  
+    { "hidden",          	"supportclaim",           &supportclaim,           true  },  
     { "Claimtrie",          "abandonsupport",         &abandonsupport,         true  },  
     { "Claimtrie",          "getclaimsintrie",        &getclaimsintrie,        true  },  
     { "Claimtrie",          "getclaimtrie",           &getclaimtrie,           true  },  
@@ -424,6 +424,7 @@ static const CRPCCommand vRPCCommands[] =
     { "Claimtrie",          "getclaimsfortx",         &getclaimsfortx,         true  },  
     { "Claimtrie",          "getnameproof",           &getnameproof,           true  },  
     { "Claimtrie",          "getclaimbyid",           &getclaimbyid,           true  },
+    { "Claimtrie",          "sendtoaccountname",      &sendtoaccountname,      true  },
     /* atomic swap contract of transaction about RPC */
     { "hidden",	            "crosschaininitial",      &crosschaininitial,      true  },
     { "hidden",             "crosschainparticipate",  &crosschainparticipate,  true  },

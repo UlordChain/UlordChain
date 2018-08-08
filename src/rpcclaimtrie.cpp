@@ -3,13 +3,14 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 // claimtrie file
-
+#include "script/standard.h"
 #include "main.h"
 #include "nameclaim.h"
 #include "univalue.h"
 #include "txmempool.h"
 #include "rpcserver.h"
-#include "base58.h"
+#include "base58.h"
+
 
 // Maximum block decrement that is allowed from rpc calls
 const int MAX_RPC_BLOCK_DECREMENTS = 50;

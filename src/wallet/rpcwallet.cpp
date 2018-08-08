@@ -5,7 +5,6 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-//#include "sodium.h"
 #include "amount.h"
 #include "base58.h"
 #include "chain.h"
@@ -23,20 +22,26 @@
 #include "walletdb.h"
 #include "keepass.h"
 #include "nameclaim.h"
-
+#include "rpcprotocol.h"
+#include <algorithm>
 #include <stdint.h>
-
+#include <vector>
 #include <boost/assign/list_of.hpp>
-
+#include <map>
 #include <univalue.h>
 
 using namespace std;
+std::map<std::string,int> m_vStringName;
+
 
 int64_t nWalletUnlockTime;
 static CCriticalSection cs_nWalletUnlockTime;
 
 // ACCOUNT_NAME DEPOSIT
 #define MAX_ACCOUNT_MONEY 10 * COIN
+
+// ACCOUNT_NAME length
+#define MAX_ACCOUNT_SIZE 12
 
 std::string HelpRequiringPassphrase()
 {
@@ -429,7 +434,7 @@ UniValue claimname(const UniValue& params, bool fHelp)
     {
         return NullUniValue;
     }
-    if ( fHelp || params.size() != 3 )
+    if (fHelp || params.size() < 2 || params.size() > 3)
     throw runtime_error(
         "claimname \"name\" \"value\" amount\n"
         "\nCreate a transaction which issues a claim assigning a value to a name. The claim will be authoritative if the transaction amount is greater than the transaction amount of all other unspent transactions which issue a claim over the same name, and it will remain authoritative as long as it remains unspent and there are no other greater unspent transactions issuing a claim over the same name. The amount is a real and is rounded to the nearest 0.00000001\n"
@@ -440,22 +445,18 @@ UniValue claimname(const UniValue& params, bool fHelp)
         "3. \"amount\"  (numeric, required) The amount in Ulord to send. eg 0.1\n"
         "\nResult:\n"
         "\"transactionid\"  (string) The transaction id.\n"
+		"\nExamples:\n"
+		+ HelpExampleCli("sendtoaddress", "\"AlfredZKY\" \"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" 0.1")
     );
     string sName = params[0].get_str();
     string sAddress= params[1].get_str();
     std::vector<unsigned char>vchName(sName.begin(),sName.end());
     std::vector<unsigned char>vchValue(sAddress.begin(),sAddress.end());
-
 	CClaimValue claim;
 	if (pclaimTrie->getInfoForName(sName, claim))
 	   throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
-	/*
-	std::string sValue;
-	if (getValueForClaim(claim.outPoint, sValue))
-		throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
-	*/
 	
-	if ( vchName.size() > 15)
+	if ( vchName.size() > MAX_ACCOUNT_SIZE)
 	{
 	    throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord account_name ,it is too long");
 	}
@@ -468,7 +469,7 @@ UniValue claimname(const UniValue& params, bool fHelp)
 	
     CAmount nAmount = AmountFromValue(params[2]);
     CWalletTx wtx;
-
+	is_Init = false;
     EnsureWalletIsUnlocked();
     CScript claimScript = CScript()<<OP_CLAIM_NAME<<vchName<<vchValue<<OP_2DROP<<OP_DROP;
     CreateClaim(claimScript,nAmount,wtx);
@@ -3403,3 +3404,205 @@ UniValue fundrawtransaction(const UniValue& params, bool fHelp)
 
     return result;
 }
+
+UniValue sendtoaccountname(const UniValue &params, bool fHelp)
+{
+	 if (fHelp ||  params.size() != 2)
+        throw std::runtime_error(
+        "sendtoaccountname \"name\" \"amount\n"
+        "\nSend an amount to a given account name.\n"
+        + HelpRequiringPassphrase() +
+        "\nArguments:\n"
+        "1. \"accountname\"  (string, required) The accountname of ulord chain.\n"
+        "2. \"amount\"  (numeric, required) The amount in Ulord to send. eg 0.1\n"
+        "\nResult:\n"
+        "\"transactionid\"  (string) The transaction id.\n"
+        "\nExamples:\n"
+        + HelpExampleCli("sendtoaccountname", "\"AlfredZKY\" 0.1")
+    );
+
+    std::string sName = params[0].get_str();
+    CClaimValue claim;
+    if (!pclaimTrie->getInfoForName(sName, claim))
+	   throw JSONRPCError(RPC_NAME_TRIE_NOEXITS, "The account name in not exists");
+    std::string sAddress = claim.m_NameAddress[sName];
+	LOCK2(cs_main, pwalletMain->cs_wallet);
+	CBitcoinAddress address(sAddress);
+	if (!address.IsValid())
+		throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
+
+	// Amount
+	CAmount nAmount = AmountFromValue(params[1]);
+	if (nAmount <= 0)
+		throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
+    
+	EnsureWalletIsUnlocked();
+	// Parse Ulord address
+	CScript scriptPubKey = GetScriptForDestination(address.Get());
+
+	// Create and send the transaction
+	CReserveKey reservekey(pwalletMain);
+	CAmount nFeeRequired;
+	std::string strError;
+	vector<CRecipient> vecSend;
+	int nChangePosRet = -1;
+	CRecipient recipient = {scriptPubKey, nAmount, false};
+	vecSend.push_back(recipient);
+	CWalletTx wtxNew;
+	if (!pwalletMain->CreateTransaction(vecSend, wtxNew, reservekey, nFeeRequired, nChangePosRet, strError)) {
+		if ( nAmount + nFeeRequired > pwalletMain->GetBalance() )
+        {
+            strError = strprintf("Error: This transaction requires a transaction fee of at leasst %s because if its amount, complex, or use of recently received funds!",FormatMoney(nFeeRequired));
+        }
+        LogPrintf("%s() : %s\n",__func__,strError);
+        throw JSONRPCError(RPC_WALLET_ERROR,strError);
+	}
+	if ( !pwalletMain->CommitTransaction(wtxNew,reservekey) )
+		throw JSONRPCError(RPC_WALLET_ERROR, "Error: The transaction was rejected! This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.");
+    return wtxNew.GetHash().GetHex();	
+}
+
+CScript VerifyClaimScriptPrefix(const CScript& scriptIn,const CTxOut& txout)
+{
+    int op;
+    return VerifyClaimScriptPrefix(scriptIn, op,txout);
+}
+
+CScript VerifyClaimScriptPrefix(const CScript & scriptIn, int & op, const CTxOut & txout)
+{
+    std::vector<std::vector<unsigned char> > vvchParams;
+    CScript::const_iterator pc = scriptIn.begin();
+
+    if (!VerifyDecodeClaimScript(scriptIn, op, vvchParams, pc,txout))
+    {
+        return scriptIn;
+    }
+
+    return CScript(pc, scriptIn.end());
+}
+
+
+bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector<unsigned char> >& vvchParams,const CTxOut& txout)
+{
+    CScript::const_iterator pc = scriptIn.begin();
+    return VerifyDecodeClaimScript(scriptIn, op, vvchParams, pc,txout);
+}
+
+
+bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector<unsigned char> >& vvchParams, CScript::const_iterator& pc,const CTxOut& txout)
+{
+    opcodetype opcode;
+    if (!scriptIn.GetOp(pc, opcode))
+    {
+        return false;
+    }
+    
+    if (opcode != OP_CLAIM_NAME && opcode != OP_SUPPORT_CLAIM && opcode != OP_UPDATE_CLAIM)
+    {
+        return false;
+    }
+	
+    op = opcode;
+
+    std::vector<unsigned char> vchParam1;
+    std::vector<unsigned char> vchParam2;
+    std::vector<unsigned char> vchParam3;
+    // Valid formats:
+    // OP_CLAIM_NAME vchName vchValue OP_2DROP OP_DROP pubkeyscript
+    // OP_UPDATE_CLAIM vchName vchClaimId vchValue OP_2DROP OP_2DROP pubkeyscript
+    // OP_SUPPORT_CLAIM vchName vchClaimId OP_2DROP OP_DROP pubkeyscript
+    // All others are invalid.
+
+    if (!scriptIn.GetOp(pc, opcode, vchParam1) || opcode < 0 || opcode > OP_PUSHDATA4)
+    {
+        return false;
+    }
+
+	std::string sName(vchParam1.begin(),vchParam1.end());
+	std::string s_tempname;
+	std::map<std::string,int>::iterator m_it;
+	int i_currentheight = chainActive.Height();
+	int i_times = m_vStringName.count(sName);
+	LogPrintf("i_times is %d\n",i_times);
+	CClaimValue claim;
+	if ( i_times == 0  )
+	{
+		LogPrintf("txout.nValue is %d.%08d\n",txout.nValue/COIN,txout.nValue % COIN);
+		m_vStringName.insert(std::pair<std::string,int>(sName,i_currentheight));
+	}
+	else 
+	{
+		if ( !is_Init )
+		{
+			if ( txout.nValue != MAX_ACCOUNT_NAME )
+			{
+				throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
+			}
+			if (pclaimTrie->getInfoForName(sName, claim))
+			{
+				throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
+			}
+			for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; m_it++ )
+			{
+				if ( !m_it->first.compare(sName) )
+				{
+					throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
+				}
+			}
+		}
+	} 
+	
+    if (!scriptIn.GetOp(pc, opcode, vchParam2) || opcode < 0 || opcode > OP_PUSHDATA4)
+    {
+        return false;
+    }
+    if (op == OP_UPDATE_CLAIM || op == OP_SUPPORT_CLAIM)
+    {
+        if (vchParam2.size() != 160/8)
+        {
+            return false;
+        }
+    }
+    if (op == OP_UPDATE_CLAIM)
+    {
+        if (!scriptIn.GetOp(pc, opcode, vchParam3) || opcode < 0 || opcode > OP_PUSHDATA4)
+        {
+            return false;
+        }
+    }
+    if (!scriptIn.GetOp(pc, opcode) || opcode != OP_2DROP)
+    {
+        return false;
+    }
+    if (!scriptIn.GetOp(pc, opcode))
+    {
+        return false;
+    }
+    if ((op == OP_CLAIM_NAME || op == OP_SUPPORT_CLAIM) && opcode != OP_DROP)
+    {
+        return false;
+    }
+    else if ((op == OP_UPDATE_CLAIM) && opcode != OP_2DROP)
+    {
+        return false;
+    }
+	
+	for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; ++m_it )
+	{
+	    if ( (chainActive.Height() - m_it->second) >= MIN_ACCOUNT_NAME_NUMBER )
+        {
+        	s_tempname = m_it->first;
+			m_vStringName.erase(s_tempname);
+        }
+	}
+	
+    vvchParams.push_back(vchParam1);
+    vvchParams.push_back(vchParam2);
+    if (op == OP_UPDATE_CLAIM)
+    {
+        vvchParams.push_back(vchParam3);
+    }
+    return true;
+}
+
+

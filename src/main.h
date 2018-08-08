@@ -18,7 +18,6 @@
 #include "coins.h"
 #include "net.h"
 #include "claimtrie.h"
-#include "nametrie.h"
 #include "script/script_error.h"
 #include "sync.h"
 #include "versionbits.h"
@@ -32,6 +31,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <string>
 
 #include <boost/unordered_map.hpp>
 
@@ -47,6 +47,9 @@ class CValidationState;
 
 struct CNodeStateStats;
 struct LockPoints;
+
+// enough number of block delete map about name
+#define MIN_ACCOUNT_NAME_NUMBER 100 
 
 /** Default for accepting alerts from the P2P network. */
 static const bool DEFAULT_ALERTS = false;
@@ -843,7 +846,13 @@ extern CCoinsViewCache *pcoinsTip;
 /** Global variable that points to the active CClaimTrie (protected by cs_main) */                                                                                                                                                                                            
 extern CClaimTrie *pclaimTrie;
 
-extern CNameTrie *pnameTrie;
+/** Global variable that points to the active CClaimTrie account_name (protected by cs_main) */                                                                                                                                                                                            
+extern std::map<std::string,int> m_vStringName;
+
+/** Global variable that points to the active CClaimTrie Create account_name for ulord */                                                                                                                                                                                            
+extern bool is_Init;
+
+
 /** Global variable that points to the active block tree (protected by cs_main) */
 extern CBlockTreeDB *pblocktree;
 

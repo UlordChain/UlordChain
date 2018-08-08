@@ -8,10 +8,10 @@
 #include "rpcprotocol.h"
 #include "amount.h"
 
+
 // This is the max claim script size in bytes, not including the script pubkey part of the script.
 // Scripts exceeding this size are rejected in CheckTransaction in main.cpp
 #define MAX_CLAIM_SCRIPT_SIZE 8192
-
 
 
 // This is the max claim name size in bytes, for all claim trie transactions. 
