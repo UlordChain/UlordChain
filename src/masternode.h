@@ -431,7 +431,7 @@ public:
     bool Update(CMasternode* pmn, int& nDos);
     bool CheckOutpoint(int& nDos);
 
-    bool Sign(CKey& keyCollateralAddress);
+    bool Sign();
     bool CheckSignature(int& nDos);
     void Relay();
 
