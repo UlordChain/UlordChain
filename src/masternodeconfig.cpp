@@ -103,3 +103,18 @@ CMasternodeConfig::CMasternodeEntry CMasternodeConfig::GetLocalEntry()
 	return CMasternodeEntry();
 }
 
+bool CMasternodeConfig::IsLocalEntry()
+{
+	if(fMasterNode)
+	{
+		for(auto & mn : entries)
+		{
+			if(mn.getPrivKey() == GetArg("-masternodeprivkey", "") && GetArg("-masternodeprivkey", "") != "" 
+				&& GetArg("-broadcastSign", "") != "")
+				return true;
+		}
+	}
+	return false;
+}
+
+

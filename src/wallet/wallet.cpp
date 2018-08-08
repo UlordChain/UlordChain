@@ -2828,7 +2828,7 @@ bool CWallet::GetMasternodeVinAndKeys(CTxIn& txinRet, CPubKey& pubKeyRet, CKey& 
 			CCoins coins;
         	pcoinsTip->GetCoins(txHash, coins);
 		
-            return GetVinAndKeysFromOutput(coins.vout[index],txinRet, pubKeyRet, keyRet);
+            return true;
 			#endif
 	    }
 	    LogPrintf("CWallet::GetMasternodeVinAndKeys -- Could not locate the masternode configure vin, please check the masternode.conf\n");
@@ -2843,7 +2843,7 @@ bool CWallet::GetMasternodeVinAndKeys(CTxIn& txinRet, CPubKey& pubKeyRet, CKey& 
     CCoins coins;
     pcoinsTip->GetCoins(txHash, coins);
 		
-    return GetVinAndKeysFromOutput(coins.vout[nOutputIndex],txinRet, pubKeyRet, keyRet);
+    return true;
 
     LogPrintf("CWallet::GetMasternodeVinAndKeys -- Could not locate specified masternode vin\n");
     return false;

@@ -12,6 +12,7 @@
 #include "masternode-sync.h"
 #include "masternodeman.h"
 #include "util.h"
+#include "masternodeconfig.h"
 
 #include <boost/lexical_cast.hpp>
 
@@ -422,6 +423,7 @@ void CMasternode::UpdateLastPaid(const CBlockIndex *pindex, int nMaxBlocksToScan
     const CBlockIndex *BlockReading = pindex;
 
     CScript mnpayee = GetScriptForDestination(GetPayeeDestination());
+
     // LogPrint("masternode", "CMasternode::UpdateLastPaidBlock -- searching for block with payment to %s\n", vin.prevout.ToStringShort());
 
     LOCK(cs_mapMasternodeBlocks);
@@ -764,17 +766,41 @@ bool CMasternodeBroadcast::CheckOutpoint(int& nDos)
     return true;
 }
 
+bool CMasternodeBroadcast::getPubKeyId(CKeyID& pubKeyId)
+{
+	CMasternodeConfig::CMasternodeEntry mne = masternodeConfig.GetLocalEntry();
+	int index = atoi(mne.getOutputIndex().c_str());
+	uint256 txHash = uint256S(mne.getTxHash());
+	
+    CCoins coins;
+    pcoinsTip->GetCoins(txHash, coins);
+	
+    CTxDestination address1;
+    ExtractDestination(coins.vout[index].scriptPubKey, address1);
+    CBitcoinAddress address2(address1);
+
+    if (!address2.GetKeyID(pubKeyId)) {
+        LogPrintf("CMasternodeBroadcast::getPubKeyId -- Address does not refer to a key\n");
+        return false;
+    }
+	
+	return true;
+}
+
 bool CMasternodeBroadcast::Sign(CKey& keyCollateralAddress)
 {
     std::string strError;
     std::string strMessage;
 
     sigTime = GetAdjustedTime();
+
+	CKeyID pubKeyId;
+	getPubKeyId(pubKeyId);
 	
-    strMessage = addr.ToString(false) + pubKeyCollateralAddress.GetID().ToString() + pubKeyMasternode.GetID().ToString() +
+    strMessage = addr.ToString(false) + pubKeyId.ToString() + pubKeyMasternode.GetID().ToString() +
                     boost::lexical_cast<std::string>(nProtocolVersion);
 	
-	LogPrintf("CMasternodeBroadcast::strMessage1=%s\n", strMessage);
+	LogPrintf("CMasternodeBroadcast::strMessage=%s\n", strMessage);
 	
 	std::string broadcastSign = GetArg("-broadcastSign", "");
 	if(broadcastSign.empty())
@@ -785,10 +811,24 @@ bool CMasternodeBroadcast::Sign(CKey& keyCollateralAddress)
 	
     bool fInvalid = false;
     vchSig = DecodeBase64(broadcastSign.c_str(), &fInvalid);
-    if(!privSendSigner.VerifyMessage(pubKeyCollateralAddress, vchSig, strMessage, strError)) {
-        LogPrintf("CMasternodeBroadcast::Sign -- VerifyMessage() failed, error: %s\n", strError);
+
+    CHashWriter ss(SER_GETHASH, 0);
+    ss << strMessageMagic;
+    ss << strMessage;
+
+    CPubKey pubkeyFromSig;
+    if(!pubkeyFromSig.RecoverCompact(ss.GetHash(), vchSig)) {
+        LogPrintf("CMasternodeBroadcast::Sign -- Error recovering public key.");
         return false;
     }
+
+    if(pubkeyFromSig.GetID() != pubKeyId) {
+        LogPrintf("CMasternodeBroadcast::Sign -- Keys don't match: pubkey=%s, pubkeyFromSig=%s, strMessage=%s, vchSig=%s",
+                    pubKeyId.ToString(), pubkeyFromSig.GetID().ToString(), strMessage,
+                    EncodeBase64(&vchSig[0], vchSig.size()));
+        return false;
+    }
+	pubKeyCollateralAddress = pubkeyFromSig;
 
     return true;
 }

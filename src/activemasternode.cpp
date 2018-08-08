@@ -7,6 +7,7 @@
 #include "masternode-sync.h"
 #include "masternodeman.h"
 #include "protocol.h"
+#include "masternodeconfig.h"
 
 extern CWallet* pwalletMain;
 
@@ -202,7 +203,7 @@ LogPrintf("GetLocal() = %c, IsValidNetAddr = %c \n", GetLocal(service, &pnode->a
 
     // Default to REMOTE
     eType = MASTERNODE_REMOTE;
-
+#if 0
 #ifdef ENABLE_WALLET
     const CAmount ct = Params().GetConsensus().colleteral;
     // Check if wallet funds are available
@@ -230,6 +231,12 @@ LogPrintf("GetLocal() = %c, IsValidNetAddr = %c \n", GetLocal(service, &pnode->a
         eType = MASTERNODE_LOCAL;
     }
 #endif // ENABLE_WALLET
+#endif
+
+	if(masternodeConfig.IsLocalEntry())
+	{
+		eType = MASTERNODE_LOCAL;
+	}
 
     LogPrint("masternode", "CActiveMasternode::ManageStateInitial -- End status = %s, type = %s, pinger enabled = %d\n", GetStatus(), GetTypeString(), fPingerEnabled);
 }

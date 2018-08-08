@@ -434,6 +434,8 @@ public:
     bool Sign(CKey& keyCollateralAddress);
     bool CheckSignature(int& nDos);
     void Relay();
+
+	bool getPubKeyId(CKeyID& pubKeyId)
 };
 
 class CMasternodeVerification
