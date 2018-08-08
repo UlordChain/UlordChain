@@ -132,7 +132,6 @@ BITCOIN_CORE_H = \
   miner.h \
   nameclaim.h \
   claimtrie.h \
-  nametrie.h \
   net.h \
   netbase.h \
   netfulfilledman.h \
@@ -227,7 +226,6 @@ libbitcoin_server_a_SOURCES = \
   main.cpp \
   merkleblock.cpp \
   claimtrie.cpp \
-  nametrie.cpp \
   miner.cpp \
   net.cpp \
   netfulfilledman.cpp \
