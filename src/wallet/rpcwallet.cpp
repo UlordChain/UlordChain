@@ -30,6 +30,8 @@
 #include <map>
 #include <univalue.h>
 
+#include <boost/regex.hpp>
+
 using namespace std;
 std::map<std::string,int> m_vStringName;
 
@@ -442,16 +444,25 @@ UniValue claimname(const UniValue& params, bool fHelp)
         "\nArguments:\n"
         "1. \"name\"  (string, required) The name to be assigned the value.\n"
         "2. \"ulordaddress\"  (string, required) The ulord address for bind accountname.\n"
-        "3. \"amount\"  (numeric, required) The amount in Ulord to send. eg 0.1\n"
+        "3. \"amount\"  (numeric, required) The amount in Ulord to send. eg 10\n"
         "\nResult:\n"
         "\"transactionid\"  (string) The transaction id.\n"
 		"\nExamples:\n"
-		+ HelpExampleCli("sendtoaddress", "\"AlfredZKY\" \"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" 0.1")
+		+ HelpExampleCli("sendtoaddress", "\"AlfredZKY\" \"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" 10")
     );
     string sName = params[0].get_str();
     string sAddress= params[1].get_str();
     std::vector<unsigned char>vchName(sName.begin(),sName.end());
     std::vector<unsigned char>vchValue(sAddress.begin(),sAddress.end());
+	
+	std::string szReg = "^[a-z0-5]+[a-z0-5]$";
+	boost::regex reg( szReg );
+	bool b_r = boost::regex_match( sName,reg);
+	if ( !b_r )
+	{
+	    throw JSONRPCError(RPC_ACCOUNTNAME_ILLEGAL, "The account name is illegal");
+	}
+	
 	CClaimValue claim;
 	if (pclaimTrie->getInfoForName(sName, claim))
 	   throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
