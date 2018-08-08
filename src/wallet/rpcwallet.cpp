@@ -977,7 +977,7 @@ UniValue uploadmessage(const UniValue& params, bool fHelp)
     std::string sMessage = params[0].get_str();
     if (sMessage.size() <= 0)
         throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid message");
-    if (2*sMessage.size() > MAX_MESSAGE_SIZE)
+    if (sMessage.size() > MAX_MESSAGE_SIZE)
         throw JSONRPCError(RPC_INVALID_PARAMETER,"Message is too much for send");           
     std::vector<unsigned char> vchMessage(sMessage.begin(),sMessage.end());
 
