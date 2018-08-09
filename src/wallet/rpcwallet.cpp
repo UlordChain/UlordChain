@@ -30,7 +30,8 @@
 #include <map>
 #include <univalue.h>
 
-#include <boost/regex.hpp>
+//#include <boost/regex.hpp>
+#include <regex>
 
 using namespace std;
 std::map<std::string,int> m_vStringName;
@@ -454,10 +455,11 @@ UniValue claimname(const UniValue& params, bool fHelp)
     string sAddress= params[1].get_str();
     std::vector<unsigned char>vchName(sName.begin(),sName.end());
     std::vector<unsigned char>vchValue(sAddress.begin(),sAddress.end());
+
 	
 	std::string szReg = "^[a-z0-5]+[a-z0-5]$";
-	boost::regex reg( szReg );
-	bool b_r = boost::regex_match( sName,reg);
+	std::regex reg( szReg );
+	bool b_r = std::regex_match( sName,reg);
 	if ( !b_r )
 	{
 	    throw JSONRPCError(RPC_ACCOUNTNAME_ILLEGAL, "The account name is illegal");
