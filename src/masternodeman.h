@@ -394,7 +394,6 @@ enum MST_QUEST
 {
     MST_QUEST_ONE=1,
     MST_QUEST_KEY=2
-
 };
 
 // master node quest version The type of message requested to the central server.
@@ -448,6 +447,7 @@ public:
 
     int             _msgversion;
     int             _num;
+    int             _nodetype;
     friend class boost::serialization::access;
 
     template<class Archive>
@@ -456,6 +456,7 @@ public:
         //ar & _verfyflag;
         ar & _msgversion;
         ar & _num;
+        ar & _nodetype;
     }
     int GetVersion() const {return _msgversion;}
     int GetNum() const {return _num;}
