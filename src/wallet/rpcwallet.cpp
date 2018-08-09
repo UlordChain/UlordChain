@@ -389,7 +389,7 @@ void CreateClaim(CScript& claimScript,CAmount nAmount,CWalletTx& wtxNew)
 {
     //check amout
     if ( nAmount <= 0 || nAmount != MAX_ACCOUNT_NAME )
-        throw JSONRPCError(RPC_INVALID_PARAMETER,"Invalid amount");
+        throw JSONRPCError(RPC_INVALID_PARAMETER,"Invalid amount or deposit must be 10UT");
 
     if ( nAmount > pwalletMain->GetBalance() )
         throw JSONRPCError( RPC_WALLET_INSUFFICIENT_FUNDS,"Insufficient funds" );
@@ -3349,7 +3349,7 @@ UniValue sendtoaccountname(const UniValue &params, bool fHelp)
         + HelpRequiringPassphrase() +
         "\nArguments:\n"
         "1. \"accountname\"  (string, required) The accountname of ulord chain.\n"
-        "2. \"amount\"  (numeric, required) The amount in Ulord to send. eg 0.1\n"
+        "2. \"amount\"  (numeric, required) The amount in Ulord to send. eg less than 1000UT\n"
         "\nResult:\n"
         "\"transactionid\"  (string) The transaction id.\n"
         "\nExamples:\n"
@@ -3368,8 +3368,8 @@ UniValue sendtoaccountname(const UniValue &params, bool fHelp)
 
 	// Amount
 	CAmount nAmount = AmountFromValue(params[1]);
-	if (nAmount <= 0)
-		throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
+	if (nAmount <= 0 || nAmount > MAX_ACCOUNT_NAME_SEND )
+		throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send,eg amount must be in 1000UT");
     
 	EnsureWalletIsUnlocked();
 	// Parse Ulord address
@@ -3457,12 +3457,36 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 	std::string s_tempname;
 	std::map<std::string,int>::iterator m_it;
 	int i_currentheight = chainActive.Height();
+	CClaimValue claim;
+	std::string szReg = "^[a-z0-5]+[a-z0-5]$";
+	std::regex reg( szReg );
+	bool b_r;
 	int i_times = m_vStringName.count(sName);
 	LogPrintf("i_times is %d\n",i_times);
-	CClaimValue claim;
+
 	if ( i_times == 0  )
 	{
 		LogPrintf("txout.nValue is %d.%08d\n",txout.nValue/COIN,txout.nValue % COIN);
+		b_r = std::regex_match( sName,reg);
+		if ( !b_r )
+		{
+			throw JSONRPCError(RPC_ACCOUNTNAME_ILLEGAL, "The account name is illegal");
+		}
+		if ( txout.nValue != MAX_ACCOUNT_NAME )
+		{
+			throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
+		}
+		if (pclaimTrie->getInfoForName(sName, claim))
+		{
+			throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
+		}
+		for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; m_it++ )
+		{
+			if ( !m_it->first.compare(sName) )
+			{
+				throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
+			}
+		}
 		m_vStringName.insert(std::pair<std::string,int>(sName,i_currentheight));
 	}
 	else 
