@@ -586,6 +586,7 @@ public:
 private:
     bool RequestLicense(CMasternode &mn);
     bool ReadLicense(CMasternode &mn);
+    bool RequestCenterKey();
 };
 
 #endif
