@@ -2029,22 +2029,18 @@ bool CMasternodeCenter::ReadLicense(CMasternode &mn)
         return false;
     }
 
-    std::string sPeriod = GetArg("-certifiperiod", "");
-    //Convert to timestamp
-    struct tm tmp_time;
-    strptime(sPeriod.c_str(), "%Y%m%d %H:%M:%S",&tmp_time);
-    time_t t = mktime(&tmp_time);	
-    if(0 == t) {
+    int64_t nPeriod = GetArg("-certifiperiod", 0);	
+    if(0 == nPeriod) {
         LogPrintf("CMasternodeCenter::ReadLicense -- Failed to read Masternode lasttime from conf\n");
         return false;
     }
-    if(t <= GetTime()) {
-        return error("CMasternodeCenter::ReadLicense -- Configure license(%ld) is overtime", t);
+    if(nPeriod <= GetTime()) {
+        return error("CMasternodeCenter::ReadLicense -- Configure license(%ld) is overtime", nPeriod);
     }
 
     CMstNodeData mnData(mn);
     mnData._licence = strCettificate;
-    mnData._licperiod = t;
+    mnData._licperiod = nPeriod;
     mnData._licversion = GetArg("-certifiversion", 0);
     if(!mnData.VerifyLicense()) {
         LogPrintf("CMasternodeCenter::ReadLicense -- verify cetificate failed\n");
@@ -2052,7 +2048,7 @@ bool CMasternodeCenter::ReadLicense(CMasternode &mn)
     }
 
     mn.certificate = strCettificate;
-    mn.certifyPeriod = t;
+    mn.certifyPeriod = nPeriod;
     mn.certifyVersion = mnData._licversion;
     return true;
 }
