@@ -455,14 +455,22 @@ UniValue claimname(const UniValue& params, bool fHelp)
     string sAddress= params[1].get_str();
     std::vector<unsigned char>vchName(sName.begin(),sName.end());
     std::vector<unsigned char>vchValue(sAddress.begin(),sAddress.end());
-
-	
+	std::map<std::string,int>::iterator m_it;
 	std::string szReg = "^[a-z0-5]+[a-z0-5]$";
 	std::regex reg( szReg );
 	bool b_r = std::regex_match( sName,reg);
+	
 	if ( !b_r )
 	{
 	    throw JSONRPCError(RPC_ACCOUNTNAME_ILLEGAL, "The account name is illegal");
+	}
+	
+	for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; m_it++ )
+	{
+		if ( !m_it->first.compare(sName) )
+		{
+			throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
+		}
 	}
 	
 	CClaimValue claim;
@@ -3487,12 +3495,21 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 				throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
 			}
 		}
+		for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; m_it++ )
+		{
+			if ( (chainActive.Height() - m_it->second) >= MIN_ACCOUNT_NAME_NUMBER )
+			{
+				s_tempname = m_it->first;
+				m_vStringName.erase(s_tempname);
+			}
+		}
 		m_vStringName.insert(std::pair<std::string,int>(sName,i_currentheight));
 	}
 	else 
 	{
 		if ( !is_Init )
 		{
+			is_Init = true;
 			if ( txout.nValue != MAX_ACCOUNT_NAME )
 			{
 				throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
@@ -3546,15 +3563,6 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
         return false;
     }
 	
-	for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; ++m_it )
-	{
-	    if ( (chainActive.Height() - m_it->second) >= MIN_ACCOUNT_NAME_NUMBER )
-        {
-        	s_tempname = m_it->first;
-			m_vStringName.erase(s_tempname);
-        }
-	}
-	
     vvchParams.push_back(vchParam1);
     vvchParams.push_back(vchParam2);
     if (op == OP_UPDATE_CLAIM)
@@ -3563,5 +3571,3 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
     }
     return true;
 }
-
-
