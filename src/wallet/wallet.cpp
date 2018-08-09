@@ -2831,7 +2831,7 @@ bool CWallet::GetMasternodeVinAndKeys(CTxIn& txinRet,  std::string strTxHash, st
             return true;
 			#endif
 	    }
-	    LogPrintf("CWallet::GetMasternodeVinAndKeys -- Could not locate the masternode configure vin, please check the masternode.conf\n");
+	    LogPrintf("CWallet::GetMasternodeVinAndKeys -- Could not locate the masternode configure vin, please check the ulord.conf\n");
 	    return false;
     }
 
