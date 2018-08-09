@@ -393,12 +393,12 @@ static bool b_Used= false;*/
 enum MST_QUEST  
 {
     MST_QUEST_ONE=1,
-    MST_QUEST_ALL=2
+    MST_QUEST_KEY=2
 
 };
 
 // master node quest version The type of message requested to the central server.
-class  mstnodequest
+class mstnodequest
 {
 public:
     mstnodequest(int version, MST_QUEST  type  ):_msgversion(version), _questtype(type)
@@ -436,7 +436,7 @@ public:
 //extern mstnodequest RequestMsgType(Center_Server_Version,MST_QUEST::MST_QUEST_ONE);
 
 // master node quest version 
-class  mstnoderes
+class mstnoderes
 {
 public:
     mstnoderes(int version  ):_msgversion(version)
@@ -461,6 +461,24 @@ public:
     int GetNum() const {return _num;}
 };
 //extern mstnoderes RetMsgType;
+class CcenterKeyData
+{
+public:
+    CcenterKeyData(){}
+    CcenterKeyData(int version, std::string strkey):_keyversion(version),_key(strkey){}
+
+    int             _keyversion;
+    std::string     _key;
+    
+    friend class boost::serialization::access;
+
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int version)
+    {
+        ar & _keyversion;
+        ar & _key;
+    }
+};
 
 //Data used to receive the central server.
 /*
