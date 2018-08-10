@@ -827,7 +827,7 @@ UniValue signmnpmessage(const UniValue& params, bool fHelp)
     
     if (fHelp || params.size() != 3)
         throw runtime_error(
-            "signmnpmessage \"privatekey\" \"masterkey\"  \"addr\"  \"port\" \n"
+            "signmnpmessage \"privatekey\" \"masterkey\"  \"addr\" \n"
             "\nSign a message with the private key of an address"
             + HelpRequiringPassphrase() + "\n"
             "\nArguments:\n"
@@ -838,7 +838,7 @@ UniValue signmnpmessage(const UniValue& params, bool fHelp)
             "\"signature\"          (string) The signature of the message encoded in base 64\n"
             "\nExamples:\n"
             "\nCreate the signature\n"
-            + HelpExampleCli("signmessage", "\"privatekey\"   \"masterkey\"  \"addr\"  \"port\"  ")
+            + HelpExampleCli("signmnpmessage", "\"privatekey\"   \"masterkey\"  \"addr\"  ")
 
         );
 		
