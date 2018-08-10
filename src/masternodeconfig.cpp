@@ -17,13 +17,14 @@ void CMasternodeConfig::add(std::string alias, std::string ip, std::string privK
 bool CMasternodeConfig::read(std::string& strErr) {
 
     std::string alias, ip, privKey, txHash, outputIndex;
+    int64_t masternodecout = GetArg("-masternode", 0);  
     alias = GetArg("-alias", "mnl");
-    if(alias.empty())
+    if(alias.empty() && masternodecout)
     {
         strErr = _("please add your masternode name into ulord.conf; for example: alias=mynode\n");
     }
     ip = GetArg("-externalip", "");
-    if(ip.empty())
+    if(ip.empty() && masternodecout)
     {
         strErr = _("Invalid masternode ip, please add your ip into ulord.conf; for example: externalip=0.0.0.0\n");
         return false;
@@ -31,22 +32,22 @@ bool CMasternodeConfig::read(std::string& strErr) {
     ip = ip + ":" + std::to_string(Params().GetDefaultPort());
     
     privKey = GetArg("-masternodeprivkey", "");
-    if(privKey.empty())
+    if(privKey.empty() && masternodecout)
     {
         strErr = _("Invalid masternode privKey, please add your privKey into ulord.conf; for example: masternodeprivkey=***\n");
         return false;
     }
-    txHash = GetArg("-collateral_output_txid", "");
-    if(txHash.empty())
+    txHash = GetArg("-collateraloutputtxid", "");
+    if(txHash.empty() && masternodecout)
     {
-        strErr = _("Invalid masternode collateral txid, please add your collateral txid into ulord.conf; for example: collateral_output_txid=***\n");
+        strErr = _("Invalid masternode collateral txid, please add your collateral txid into ulord.conf; for example: collateraloutputtxid=***\n");
         return false;
     }
 
-    outputIndex = GetArg("-collateral_output_index", "");
-    if(outputIndex.empty())
+    outputIndex = GetArg("-collateraloutputindex", "");
+    if(outputIndex.empty() && masternodecout)
     {
-        strErr = _("Invalid masternode collateral Index, please add your collateral Index into ulord.conf; for example: collateral_output_index=0\n");
+        strErr = _("Invalid masternode collateral Index, please add your collateral Index into ulord.conf; for example: collateraloutputindex=0\n");
         return false;
     }
     
@@ -95,8 +96,8 @@ bool CMasternodeConfig::IsLocalEntry()
 	{
 		for(auto & mn : entries)
 		{
-			if(mn.getPrivKey() == GetArg("-masternodeprivkey", "") && GetArg("-masternodeprivkey", "") != "" 
-				&& GetArg("-broadcastSign", "") != "")
+			if(mn.getPrivKey() == GetArg("-masternodeprivkey", "") && GetArg("-collateraloutputtxid", "") != "" 
+				&& GetArg("-broadcastsign", "") != "")
 				return true;
 		}
 	}
