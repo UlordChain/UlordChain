@@ -825,7 +825,7 @@ UniValue masternodebroadcast(const UniValue& params, bool fHelp)
 UniValue signmnpmessage(const UniValue& params, bool fHelp)
 {
     
-    if (fHelp || params.size() != 4)
+    if (fHelp || params.size() != 3)
         throw runtime_error(
             "signmnpmessage \"privatekey\" \"masterkey\"  \"addr\"  \"port\" \n"
             "\nSign a message with the private key of an address"
@@ -834,7 +834,6 @@ UniValue signmnpmessage(const UniValue& params, bool fHelp)
             "1. \"privatekey\"      (string, required) The collate key  to use for the private key.\n"
             "2. \"masterkey\"       (string, required) The master key to create a signature of.\n"
             "3. \"straddr\"         (string, required) The IPaddr to create a signature of.\n"
-            "4. \"strPort\"         (string, required) The strPort to create a signature of.\n"
             "\nResult:\n"
             "\"signature\"          (string) The signature of the message encoded in base 64\n"
             "\nExamples:\n"
@@ -850,12 +849,9 @@ UniValue signmnpmessage(const UniValue& params, bool fHelp)
     string strPrivkey = params[0].get_str();
     string strMasterKey = params[1].get_str();
     string straddr = params[2].get_str();
-	string strPort = params[3].get_str();
-
-	unsigned short masterport = boost::lexical_cast<unsigned short>(strPort);
 	
 	CNetAddr netAddr(straddr);
-    CService Ipaddr(netAddr,masterport);
+    CService Ipaddr(netAddr,0);
 
 	CKey         keyCollate; 
 	CPubKey      pubkeyCollate; 
@@ -880,7 +876,7 @@ UniValue signmnpmessage(const UniValue& params, bool fHelp)
 
     //cout << CBitcoinAddress(pubkeyCollate.GetID()).ToString() <<endl;
          
-    strMessage = Ipaddr.ToString(false) + pubkeyCollate.GetID().ToString() + pubkeyMaster.GetID().ToString() +
+    strMessage = Ipaddr.ToStringIP(false) + pubkeyCollate.GetID().ToString() + pubkeyMaster.GetID().ToString() +
 			boost::lexical_cast<std::string>(PROTOCOL_VERSION);
    
     cout<< strMessage<< endl;
