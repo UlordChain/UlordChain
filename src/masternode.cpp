@@ -799,10 +799,10 @@ bool CMasternodeBroadcast::Sign()
 	
 	LogPrintf("CMasternodeBroadcast::strMessage=%s\n", strMessage);
 	
-	std::string broadcastSign = GetArg("-broadcastSign", "");
+	std::string broadcastSign = GetArg("-broadcastsign", "");
 	if(broadcastSign.empty())
 	{
-		LogPrintf("CMasternodeBroadcast::Sign -- read broadcastSign Failed from conf\n");
+		LogPrintf("CMasternodeBroadcast::sign -- read broadcastsign Failed from conf\n");
 		return false;
 	}
 	
@@ -815,12 +815,12 @@ bool CMasternodeBroadcast::Sign()
 
     CPubKey pubkeyFromSig;
     if(!pubkeyFromSig.RecoverCompact(ss.GetHash(), vchSig)) {
-        LogPrintf("CMasternodeBroadcast::Sign -- Error recovering public key.");
+        LogPrintf("CMasternodeBroadcast::sign -- Error recovering public key.");
         return false;
     }
 
     if(pubkeyFromSig.GetID() != pubKeyId) {
-        LogPrintf("CMasternodeBroadcast::Sign -- Keys don't match: pubkey=%s, pubkeyFromSig=%s, strMessage=%s, vchSig=%s",
+        LogPrintf("CMasternodeBroadcast::sign -- Keys don't match: pubkey=%s, pubkeyFromSig=%s, strMessage=%s, vchSig=%s",
                     pubKeyId.ToString(), pubkeyFromSig.GetID().ToString(), strMessage,
                     EncodeBase64(&vchSig[0], vchSig.size()));
         return false;
