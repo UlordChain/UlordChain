@@ -975,11 +975,11 @@ UniValue uploadmessage(const UniValue& params, bool fHelp)
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     std::string sMessage = params[0].get_str();
-    if (sMessage.size() <= 0)
-        throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid message");
-    if (sMessage.size() > MAX_MESSAGE_SIZE)
+    if (sMessage.size() <= 0 || !IsHex(sMessage))
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid hexmessage");
+    if (sMessage.size() > (2*MAX_MESSAGE_SIZE))
         throw JSONRPCError(RPC_INVALID_PARAMETER,"Message is too much for send");           
-    std::vector<unsigned char> vchMessage(sMessage.begin(),sMessage.end());
+    std::vector<unsigned char> vchMessage = ParseHex(sMessage);
 
     // Amount
     /*CAmount nAmount = AmountFromValue(params[1]);
