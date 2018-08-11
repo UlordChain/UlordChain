@@ -48,6 +48,7 @@
 #include "masternodeman.h"
 
 #include <sstream>
+#include <regex>
 
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
