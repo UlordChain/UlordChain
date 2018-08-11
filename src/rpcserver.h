@@ -303,6 +303,8 @@ extern UniValue getchaintips(const UniValue& params, bool fHelp);
 extern UniValue invalidateblock(const UniValue& params, bool fHelp);
 extern UniValue reconsiderblock(const UniValue& params, bool fHelp);
 extern UniValue getspentinfo(const UniValue& params, bool fHelp);
+extern UniValue getcointip(const UniValue& params, bool fHelp);
+
 
 /*claimtrie*/
 extern UniValue claimname(const UniValue& params, bool fHelp);    //in rpcwallet.cpp
