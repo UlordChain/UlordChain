@@ -1020,17 +1020,19 @@ UniValue getcointip(const UniValue& params, bool fHelp)
     uint256 txid = ParseHashV(txidValue, "txid");
     int outputIndex = indexValue.get_int();
 
-    CSpentIndexKey key(txid, outputIndex);
-    CSpentIndexValue value;
-
-    if (!GetSpentIndex(key, value)) {
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Unable to get spent info");
+    CCoins coins;
+    if(!pcoinsTip->GetCoins(txid, coins) ||
+       (unsigned int)outputIndex>=coins.vout.size() ||
+       coins.vout[outputIndex].IsNull()) {
+        LogPrint("masternode", "CMasternodeBroadcast::CheckOutpoint -- Failed to find Masternode UTXO, masternode=%s\n", txid.ToString());
+        return false;
     }
 
+
     UniValue obj(UniValue::VOBJ);
-    obj.push_back(Pair("txid", value.txid.GetHex()));
-    obj.push_back(Pair("index", (int)value.inputIndex));
-    obj.push_back(Pair("height", value.blockHeight));
+    obj.push_back(Pair("txid", txid.GetHex()));
+    obj.push_back(Pair("index", (int)outputIndex));
+
 
     return obj;
 }
