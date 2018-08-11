@@ -7375,6 +7375,15 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 	int i_times = m_vStringName.count(sName);
 	LogPrintf("i_times is %d\n",i_times);
 
+	for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; m_it++ )
+	{
+		if ( (chainActive.Height() - m_it->second) >= MIN_ACCOUNT_NAME_NUMBER )
+		{
+			s_tempname = m_it->first;
+			m_vStringName.erase(s_tempname);
+		}
+	}
+	
 	if ( i_times == 0  )
 	{
 		LogPrintf("txout.nValue is %d.%08d\n",txout.nValue/COIN,txout.nValue % COIN);
@@ -7398,14 +7407,6 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 				throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
 			}
 		}
-		for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; m_it++ )
-		{
-			if ( (chainActive.Height() - m_it->second) >= MIN_ACCOUNT_NAME_NUMBER )
-			{
-				s_tempname = m_it->first;
-				m_vStringName.erase(s_tempname);
-			}
-		}
 		m_vStringName.insert(std::pair<std::string,int>(sName,i_currentheight));
 	}
 	else 
@@ -7413,6 +7414,11 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 		if ( !is_Init )
 		{
 			is_Init = true;
+			b_r = std::regex_match( sName,reg);
+			if ( !b_r )
+			{
+				throw JSONRPCError(RPC_ACCOUNTNAME_ILLEGAL, "The account name is illegal");
+			}
 			if ( txout.nValue != MAX_ACCOUNT_NAME )
 			{
 				throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
