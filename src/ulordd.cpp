@@ -47,8 +47,6 @@ static const char* banname[] = { "dengxiaoping","maozedong","xijinping",
 						  "wangqishan","pengliyuan","falonggong","taiwanduli",
 						  "xizangduli","taidu","zangdu"};
 
-std::vector<std::string> v_banname;
-
 void WaitForShutdown(boost::thread_group* threadGroup)
 {
     bool fShutdown = ShutdownRequested();

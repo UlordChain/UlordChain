@@ -18,9 +18,6 @@ class thread_group;
 } // namespace boost
 
 extern CWallet* pwalletMain;
-/** Global variable that points to the active banned account_name (protected by cs_main) */                                                                                                                                                                                            
-extern std::vector<std::string> v_banname;
-
 void StartShutdown();
 bool ShutdownRequested();
 /** Interrupt threads */

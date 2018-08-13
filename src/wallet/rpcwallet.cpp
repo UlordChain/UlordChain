@@ -456,7 +456,6 @@ UniValue claimname(const UniValue& params, bool fHelp)
     std::vector<unsigned char>vchValue(sAddress.begin(),sAddress.end());
 	std::map<std::string,int>::iterator m_it;
 	std::vector<std::string>:: iterator m_strit;
-	int index = 0;
 	std::string szReg = "^[a-z0-5]+[a-z0-5]$";
 	std::regex reg( szReg );
 	

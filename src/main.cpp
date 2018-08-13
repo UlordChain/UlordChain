@@ -614,6 +614,7 @@ CCoinsViewCache *pcoinsTip = NULL;
 CClaimTrie *pclaimTrie = NULL; // claim operation
 CBlockTreeDB *pblocktree = NULL;
 bool is_Init = true;
+std::vector<std::string> v_banname;
 
 
 //////////////////////////////////////////////////////////////////////////////
