@@ -63,7 +63,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
-#include <vector>
+
 
 #ifndef WIN32
 #include <signal.h>

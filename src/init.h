@@ -7,6 +7,7 @@
 #define BITCOIN_INIT_H
 
 #include <string>
+#include <vector>
 
 class CScheduler;
 class CWallet;
