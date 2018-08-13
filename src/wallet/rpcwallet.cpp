@@ -1094,6 +1094,88 @@ UniValue sendtoaddress(const UniValue& params, bool fHelp)
     return wtx.GetHash().GetHex();
 }
 
+static void SendAllMoney(const CTxDestination &address, CAmount nValue, bool fSubtractFeeFromAmount, CWalletTx& wtxNew, bool fUseInstantSend=false, bool fUsePrivateSend=false)
+{
+    // Parse Ulord address
+    CScript scriptPubKey = GetScriptForDestination(address);
+
+    // Create and send the transaction
+    CReserveKey reservekey(pwalletMain);
+    CAmount nFeeRequired;
+    std::string strError;
+    vector<CRecipient> vecSend;
+    int nChangePosRet = -1;
+    CRecipient recipient = {scriptPubKey, nValue, fSubtractFeeFromAmount};
+    vecSend.push_back(recipient);
+    if (!pwalletMain->CreateTransaction(vecSend, wtxNew, reservekey, nFeeRequired, nChangePosRet,
+                                         strError, NULL, true, fUsePrivateSend ? ONLY_DENOMINATED : ALL_COINS, fUseInstantSend)) {
+        if (!fSubtractFeeFromAmount && nValue + nFeeRequired > pwalletMain->GetBalance())
+            strError = strprintf("Error: This transaction requires a transaction fee of at least %s because of its amount, complexity, or use of recently received funds!", FormatMoney(nFeeRequired));
+        throw JSONRPCError(RPC_WALLET_ERROR, strError);
+    }
+    if (!pwalletMain->CommitTransaction(wtxNew, reservekey, fUseInstantSend ? NetMsgType::TXLOCKREQUEST : NetMsgType::TX))
+        throw JSONRPCError(RPC_WALLET_ERROR, "Error: The transaction was rejected! This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.");
+}
+
+UniValue sendalltoaddress(const UniValue& params, bool fHelp)
+{
+    if (!EnsureWalletIsAvailable(fHelp))
+        return NullUniValue;
+    
+    if (fHelp || params.size() < 1 || params.size() > 5)
+        throw runtime_error(
+            "sendalltoaddress \"ulordaddress\" ( \"comment\" \"comment-to\" use_is use_ps )\n"
+            "\nSend an amount to a given address.\n"
+            + HelpRequiringPassphrase() +
+            "\nArguments:\n"
+            "1. \"ulordaddress\"  (string, required) The ulord address to send to.\n"
+            "2. \"comment\"     (string, optional) A comment used to store what the transaction is for. \n"
+            "                             This is not part of the transaction, just kept in your wallet.\n"
+            "3. \"comment-to\"  (string, optional) A comment to store the name of the person or organization \n"
+            "                             to which you're sending the transaction. This is not part of the \n"
+            "                             transaction, just kept in your wallet.\n"
+            "                             The recipient will receive less bitcoins than you enter in the amount field.\n"
+            "4. \"use_is\"      (bool, optional) Send this transaction as InstantSend (default: false)\n"
+            "5. \"use_ps\"      (bool, optional) Use anonymized funds only (default: false)\n"
+            "\nResult:\n"
+            "\"transactionid\"  (string) The transaction id.\n"
+            "\nExamples:\n"
+            + HelpExampleCli("sendalltoaddress", "\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" ")
+            + HelpExampleCli("sendalltoaddress", "\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\"  \"donation\" \"seans outpost\"")
+            + HelpExampleCli("sendalltoaddress", "\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\"  \"\" \"\" true")
+            + HelpExampleRpc("sendalltoaddress", "\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\", \"donation\", \"seans outpost\"")
+        );
+
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+
+    CBitcoinAddress address(params[0].get_str());
+    if (!address.IsValid())
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
+
+    // Wallet comments
+    CWalletTx wtx;
+    if (params.size() > 1 && !params[1].isNull() && !params[1].get_str().empty())
+        wtx.mapValue["comment"] = params[1].get_str();
+    if (params.size() > 2 && !params[2].isNull() && !params[2].get_str().empty())
+        wtx.mapValue["to"]      = params[2].get_str();
+
+    bool fUseInstantSend = false;
+    bool fUsePrivateSend = false;
+    if (params.size() > 3)
+        fUseInstantSend = params[3].get_bool();
+    if (params.size() > 4)
+        fUsePrivateSend = params[4].get_bool();
+
+    EnsureWalletIsUnlocked();
+    CAmount curBalance = pwalletMain->GetBalance();
+    if (curBalance <= 0)
+        throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Insufficient funds");
+    bool fSubtractFeeFromAmount = true;
+    SendAllMoney(address.Get(), curBalance, fSubtractFeeFromAmount, wtx, fUseInstantSend, fUsePrivateSend);
+
+    return wtx.GetHash().GetHex();
+}
+
 UniValue sendfromAtoB(const UniValue &params, bool fHelp)
 {
     if (!EnsureWalletIsAvailable(fHelp))
@@ -1216,6 +1298,123 @@ UniValue sendfromAtoB(const UniValue &params, bool fHelp)
 
     return wtx.GetHash().GetHex();
 }
+
+static bool getAllCoinsFromAddr(std::string fromaddr,  CAmount &nValueRet)
+{
+    std::vector<COutput> vAvailableCoins;
+    pwalletMain->AvailableCoins(vAvailableCoins, true, fromaddr);
+    //std::vector<COutput> vCoins(vAvailableCoins);
+
+    // return all outpus, used for send from specified address to given address.
+    for (const COutput &out : vAvailableCoins)
+    {
+        if (!out.fSpendable)
+        {
+            continue;
+        }
+
+        nValueRet += out.tx->vout[out.i].nValue;
+    }
+
+    return (nValueRet > 0);
+}
+
+UniValue sendallfromAtoB(const UniValue &params, bool fHelp)
+{
+    if (!EnsureWalletIsAvailable(fHelp))
+        return NullUniValue;
+    if (fHelp || params.size() < 2 || params.size() > 4)
+        throw std::runtime_error(
+            "sendallfromAtoB \"from\" \"to\" ( "
+            "\"comment\" \"comment_to\")\n"
+            "\nSend an amount from specified address to another one.\n" +
+            HelpRequiringPassphrase() + "\nArguments:\n"
+            "1. \"from\"                (string,"
+            "required) The ulord address to send"
+            "from.\n"
+            "2. \"to\"                  (string,"
+            "required) The ulord address to send"
+            "to.\n"
+            "3. \"comment\"             (string, optional) A comment used to "
+            "store what the transaction is for. \n"
+            "   This is not part of transaction, "
+            "just kept in your wallet. \n"
+            "4. \"comment_to\"          (string, optional) A comment to store "
+            "the name of the person or organization \n"
+            "to which you're sending the "
+            "transaction. This is not part of the transaction, just kept in your "
+            "wallet.\n"
+            "nResult:\n"
+            "\"txid\"                   (string) The transaction id.\n"
+            "\nExamples:\n" +
+            HelpExampleCli("sendallfromAtoB",
+                    "\"NM72Sfpbz1BPpXFHz9m3CdqATR44Jvayd3\" "
+                    "\"NM72Sfpbz1BPpXFHz9m3CdqATR44Jvaydd\" ") +
+            HelpExampleRpc("sendallfromAtoB",
+                    "\"NM72Sfpbz1BPpXFHz9m3CdqATR44Jvexdd\" \"NM72Sfpbz1BPpXFHz9m3CdqATR44Jvay\" \"donation\" "
+                    "\"seans\" " )
+        );
+
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+
+    std::string src = params[0].get_str();
+    CAmount nAmount = 0;
+    if (!getAllCoinsFromAddr(src, nAmount)){
+        throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Insufficient funds");
+    }
+    
+    CWalletTx wtx;
+    CTxDestination dest = DecodeDestination(params[1].get_str());
+    if (!IsValidDestination(dest) ||
+        !IsValidDestination(DecodeDestination(src))) {
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid address");
+    }
+
+    // Wallet comments
+    if (params.size() > 2 && !params[2].isNull() &&
+        !params[2].get_str().empty()) {
+        wtx.mapValue["comment"] = params[2].get_str();
+    }
+    if (params.size() > 3 && !params[3].isNull() &&
+        !params[3].get_str().empty()) {
+        wtx.mapValue["to"] = params[3].get_str();
+    }
+
+    EnsureWalletIsUnlocked();
+
+    //SendMoney(dest, nAmount, fSubtractFeeFromAmount, wtx);
+    CAmount curBalance = pwalletMain->GetBalance();
+    if (nAmount > curBalance) {
+        throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Insufficient funds");
+    }
+    // Parse ulord address
+    CScript scriptPubKey = GetScriptForDestination(dest);
+
+    // Create and send the transaction
+    CReserveKey reservekey(pwalletMain);
+    CAmount nFeeRequired;
+    std::string strError;
+    std::vector<CRecipient> vecSend;
+    int nChangePosRet = -1;
+    CRecipient recipient = {scriptPubKey, nAmount, true};
+    vecSend.push_back(recipient);
+    if (!pwalletMain->CreateTheAddrTrans(vecSend, wtx, reservekey,
+                nFeeRequired, nChangePosRet,
+                strError, src)) {
+        if (nAmount + nFeeRequired > curBalance) {
+            strError = strprintf("Error: This transaction requires a "
+                    "transaction fee of at least %s",
+                    FormatMoney(nFeeRequired));
+        }
+        throw JSONRPCError(RPC_WALLET_ERROR, strError);
+    }
+
+    if (!pwalletMain->CommitTransaction(wtx, reservekey, NetMsgType::TX))
+        throw JSONRPCError(RPC_WALLET_ERROR, "commit failed."); 
+
+    return wtx.GetHash().GetHex();
+}
+
 
 UniValue instantsendtoaddress(const UniValue& params, bool fHelp)
 {
