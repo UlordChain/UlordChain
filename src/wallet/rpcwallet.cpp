@@ -45,10 +45,6 @@ static CCriticalSection cs_nWalletUnlockTime;
 // ACCOUNT_NAME length
 #define MAX_ACCOUNT_SIZE 12
 
-static const char* banname[] = { "maozedong","zhude","zhouenlai","liushaoqi","dengxiaoping","xijinping","wenjiabao","likeqiang",
-									};
-const std::vector<std::string> v_banname();
-
 std::string HelpRequiringPassphrase()
 {
     return pwalletMain && pwalletMain->IsCrypted()
@@ -464,13 +460,14 @@ UniValue claimname(const UniValue& params, bool fHelp)
 	std::string szReg = "^[a-z0-5]+[a-z0-5]$";
 	std::regex reg( szReg );
 	
-/*
-	for ( index = 0; index < sizeof(banname); index++)
+	for (m_strit = v_banname.begin(); m_strit != v_banname.end(); m_strit++)
 	{
-		v_banname.pushback(banname[i]);
+		if (!m_strit->compare(sName))
+		{
+			throw JSONRPCError(RPC_ACCOUNTNAME_ILLEGAL, "The account name is illegal");
+		}
 	}
-*/
-	
+
 	bool b_r = std::regex_match( sName,reg);
 	if ( !b_r )
 	{

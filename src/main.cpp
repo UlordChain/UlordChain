@@ -7367,6 +7367,7 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 	std::string sName(vchParam1.begin(),vchParam1.end());
 	std::string s_tempname;
 	std::map<std::string,int>::iterator m_it;
+	std::vector<std::string>::iterator m_strit;
 	int i_currentheight = chainActive.Height();
 	CClaimValue claim;
 	std::string szReg = "^[a-z0-5]+[a-z0-5]$";
@@ -7391,6 +7392,13 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 		if ( !b_r )
 		{
 			throw JSONRPCError(RPC_ACCOUNTNAME_ILLEGAL, "The account name is illegal");
+		}
+		for (m_strit = v_banname.begin(); m_strit != v_banname.end(); m_strit++)
+		{
+			if (!m_strit->compare(sName))
+			{
+				throw JSONRPCError(RPC_ACCOUNTNAME_ILLEGAL, "The account name is illegal");
+			}
 		}
 		if ( txout.nValue != MAX_ACCOUNT_NAME )
 		{
@@ -7418,6 +7426,13 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 			if ( !b_r )
 			{
 				throw JSONRPCError(RPC_ACCOUNTNAME_ILLEGAL, "The account name is illegal");
+			}
+			for (m_strit = v_banname.begin(); m_strit != v_banname.end(); m_strit++)
+			{
+				if (!m_strit->compare(sName))
+				{
+					throw JSONRPCError(RPC_ACCOUNTNAME_ILLEGAL, "The account name is illegal");
+				}
 			}
 			if ( txout.nValue != MAX_ACCOUNT_NAME )
 			{

@@ -848,6 +848,7 @@ extern CClaimTrie *pclaimTrie;
 /** Global variable that points to the active CClaimTrie account_name (protected by cs_main) */                                                                                                                                                                                            
 extern std::map<std::string,int> m_vStringName;
 
+
 /** Global variable that points to the active CClaimTrie Create account_name for ulord */                                                                                                                                                                                            
 extern bool is_Init;
 

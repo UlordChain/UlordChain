@@ -63,6 +63,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <vector>
 
 #ifndef WIN32
 #include <signal.h>
@@ -84,6 +85,16 @@
 #endif
 
 using namespace std;
+
+static const char* banname[] = { "dengxiaoping","maozedong","xijinping",
+						  "hujingtao","wenjiabao","zhurongji","liruihuan",
+						  "likeqiang","zhude","songqingling","zhouenlai",
+						  "liushaoqi","dongbiwu","sunzhongshan","lixiangnian",
+						  "huaguofeng","yangshangkun","jiangzemin","lipeng",
+						  "wangqishan","pengliyuan","falonggong","taiwanduli",
+						  "xizangduli","taidu","zangdu"};
+std::vector<std::string> v_banname();
+
 
 #ifdef ENABLE_WALLET
 CWallet* pwalletMain = NULL;
@@ -1988,6 +1999,12 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     SetRPCWarmupFinished();
     uiInterface.InitMessage(_("Done loading"));
 	is_Init = true;
+	for (int index = 0; index < sizeof(banname) / sizeof(char*); index++)
+	{
+		
+		std::string tempstr(banname[index]);
+		v_banname.push_back(tempstr);
+	}
 #ifdef ENABLE_WALLET
     if (pwalletMain) {
         // Add wallet transactions that aren't already in a block to mapTransactions
