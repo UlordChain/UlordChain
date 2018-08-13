@@ -93,7 +93,7 @@ static const char* banname[] = { "dengxiaoping","maozedong","xijinping",
 						  "huaguofeng","yangshangkun","jiangzemin","lipeng",
 						  "wangqishan","pengliyuan","falonggong","taiwanduli",
 						  "xizangduli","taidu","zangdu"};
-std::vector<std::string> v_banname();
+std::vector<std::string> v_banname;
 
 
 #ifdef ENABLE_WALLET
