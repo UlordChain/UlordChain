@@ -39,13 +39,7 @@
  */
 
 static bool fDaemon;
-static const char* banname[] = { "dengxiaoping","maozedong","xijinping",
-						  "hujingtao","wenjiabao","zhurongji","liruihuan",
-						  "likeqiang","zhude","songqingling","zhouenlai",
-						  "liushaoqi","dongbiwu","sunzhongshan","lixiangnian",
-						  "huaguofeng","yangshangkun","jiangzemin","lipeng",
-						  "wangqishan","pengliyuan","falonggong","taiwanduli",
-						  "xizangduli","taidu","zangdu"};
+static const char* banname[] = {};
 
 void WaitForShutdown(boost::thread_group* threadGroup)
 {
