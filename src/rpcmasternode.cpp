@@ -398,6 +398,7 @@ UniValue masternode(const UniValue& params, bool fHelp)
             mnObj.push_back(Pair("payee", CBitcoinAddress(mn.GetPayeeDestination()).ToString()));
             mnObj.push_back(Pair("license version", mn.certifyVersion));
             mnObj.push_back(Pair("license period", mn.certifyPeriod));
+            mnObj.push_back(Pair("license data", mn.certificate));
         }
 
         mnObj.push_back(Pair("status", activeMasternode.GetStatus()));
