@@ -39,6 +39,15 @@
  */
 
 static bool fDaemon;
+static const char* banname[] = { "dengxiaoping","maozedong","xijinping",
+						  "hujingtao","wenjiabao","zhurongji","liruihuan",
+						  "likeqiang","zhude","songqingling","zhouenlai",
+						  "liushaoqi","dongbiwu","sunzhongshan","lixiangnian",
+						  "huaguofeng","yangshangkun","jiangzemin","lipeng",
+						  "wangqishan","pengliyuan","falonggong","taiwanduli",
+						  "xizangduli","taidu","zangdu"};
+
+std::vector<std::string> v_banname;
 
 void WaitForShutdown(boost::thread_group* threadGroup)
 {
@@ -188,7 +197,12 @@ bool AppInit(int argc, char* argv[])
 int main(int argc, char* argv[])
 {
     SetupEnvironment();
-
+	unsigned int index = 0;
+	for ( index = 0; index < sizeof(banname) / sizeof(char*); index++)
+	{
+		std::string tempstr(banname[index]);
+		v_banname.push_back(tempstr);
+	}
     // Connect ulordd signal handlers
     noui_connect();
 
