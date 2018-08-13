@@ -9,7 +9,7 @@
 #include "protocol.h"
 #include "masternodeconfig.h"
 
-extern CWallet* pwalletMain;
+
 
 // Keep track of the active Masternode
 CActiveMasternode activeMasternode;
@@ -292,18 +292,13 @@ void CActiveMasternode::ManageStateLocal()
 
     // Choose coins to use
 
-    if(pwalletMain->GetMasternodeVinAndKeys(vin)) {
+    if(masternodeConfig.GetMasternodeVin(vin)) {
         int nInputAge = GetInputAge(vin);
         if(nInputAge < Params().GetConsensus().nMasternodeMinimumConfirmations){
             nState = ACTIVE_MASTERNODE_INPUT_TOO_NEW;
             strNotCapableReason = strprintf(_("%s - %d confirmations"), GetStatus(), nInputAge);
             LogPrintf("CActiveMasternode::ManageStateLocal -- %s: %s\n", GetStateString(), strNotCapableReason);
             return;
-        }
-
-        {
-            LOCK(pwalletMain->cs_wallet);
-            pwalletMain->LockCoin(vin.prevout);
         }
 
         CMasternodeBroadcast mnb;

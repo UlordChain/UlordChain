@@ -6,6 +6,8 @@
 #ifndef SRC_MASTERNODECONFIG_H_
 #define SRC_MASTERNODECONFIG_H_
 
+#include "primitives/transaction.h"
+
 class CMasternodeConfig;
 extern CMasternodeConfig masternodeConfig;
 
@@ -97,8 +99,9 @@ public:
         return (int)entries.size();
     }
 
-	CMasternodeConfig::CMasternodeEntry GetLocalEntry();
-	bool IsLocalEntry();
+    CMasternodeConfig::CMasternodeEntry GetLocalEntry();
+    bool IsLocalEntry();
+    bool GetMasternodeVin(CTxIn& txinRet,  std::string strTxHash = "", std::string strOutputIndex = "");
 
 private:
     std::vector<CMasternodeEntry> entries;

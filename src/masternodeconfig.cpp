@@ -4,6 +4,10 @@
 #include "util.h"
 #include "chainparams.h"
 
+#include "coins.h"
+#include "main.h"
+
+
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
 
@@ -107,4 +111,37 @@ bool CMasternodeConfig::IsLocalEntry()
 	return false;
 }
 
+bool CMasternodeConfig::GetMasternodeVin(CTxIn& txinRet,  std::string strTxHash, std::string strOutputIndex)
+{
+    // wait for reindex and/or import to finish
+    if (fImporting || fReindex) return false;
 
+
+    if(strTxHash.empty()) // No output specified, select the one specified by masternodeConfig
+    {
+        if(masternodeConfig.IsLocalEntry())
+        {
+            CMasternodeConfig::CMasternodeEntry mne = masternodeConfig.GetLocalEntry();
+            int index = atoi(mne.getOutputIndex().c_str());
+            uint256 txHash = uint256S(mne.getTxHash());
+            txinRet = CTxIn(txHash, index);
+            return true;
+        }
+        LogPrintf("CMasternodeConfig::GetMasternodeVin -- Could not locate the masternode configure vin, please check the ulord.conf\n");
+        return false;
+    }
+
+    // Find specific vin
+    uint256 txHash = uint256S(strTxHash);
+    int nOutputIndex = atoi(strOutputIndex.c_str());
+
+    txinRet = CTxIn(txHash,nOutputIndex);
+    CCoins coins;
+    if(pcoinsTip->GetCoins(txHash, coins))	
+    {
+        return true;
+    }
+    
+    LogPrintf("CMasternodeConfig::GetMasternodeVin -- Could not locate specified masternode vin\n");
+    return false;    
+}
