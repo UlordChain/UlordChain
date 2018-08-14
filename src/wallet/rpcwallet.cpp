@@ -30,9 +30,11 @@
 #include <map>
 #include <univalue.h>
 
+//#include <boost/regex.hpp>
+#include <regex>
+
 using namespace std;
 std::map<std::string,int> m_vStringName;
-
 
 int64_t nWalletUnlockTime;
 static CCriticalSection cs_nWalletUnlockTime;
@@ -386,7 +388,7 @@ void CreateClaim(CScript& claimScript,CAmount nAmount,CWalletTx& wtxNew)
 {
     //check amout
     if ( nAmount <= 0 || nAmount != MAX_ACCOUNT_NAME )
-        throw JSONRPCError(RPC_INVALID_PARAMETER,"Invalid amount");
+        throw JSONRPCError(RPC_INVALID_PARAMETER,"Invalid amount or deposit must be 10UT");
 
     if ( nAmount > pwalletMain->GetBalance() )
         throw JSONRPCError( RPC_WALLET_INSUFFICIENT_FUNDS,"Insufficient funds" );
@@ -442,16 +444,43 @@ UniValue claimname(const UniValue& params, bool fHelp)
         "\nArguments:\n"
         "1. \"name\"  (string, required) The name to be assigned the value.\n"
         "2. \"ulordaddress\"  (string, required) The ulord address for bind accountname.\n"
-        "3. \"amount\"  (numeric, required) The amount in Ulord to send. eg 0.1\n"
+        "3. \"amount\"  (numeric, required) The amount in Ulord to send. eg 10\n"
         "\nResult:\n"
         "\"transactionid\"  (string) The transaction id.\n"
 		"\nExamples:\n"
-		+ HelpExampleCli("sendtoaddress", "\"AlfredZKY\" \"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" 0.1")
+		+ HelpExampleCli("sendtoaddress", "\"AlfredZKY\" \"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" 10")
     );
     string sName = params[0].get_str();
     string sAddress= params[1].get_str();
     std::vector<unsigned char>vchName(sName.begin(),sName.end());
     std::vector<unsigned char>vchValue(sAddress.begin(),sAddress.end());
+	std::map<std::string,int>::iterator m_it;
+	std::vector<std::string>:: iterator m_strit;
+	std::string szReg = "^[a-z0-5]+[a-z0-5]$";
+	std::regex reg( szReg );
+	
+	for (m_strit = v_banname.begin(); m_strit != v_banname.end(); m_strit++)
+	{
+		if (!m_strit->compare(sName))
+		{
+			throw JSONRPCError(RPC_ACCOUNTNAME_ILLEGAL, "The account name is illegal");
+		}
+	}
+
+	bool b_r = std::regex_match( sName,reg);
+	if ( !b_r )
+	{
+	    throw JSONRPCError(RPC_ACCOUNTNAME_ILLEGAL, "The account name is illegal");
+	}
+	
+	for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; m_it++ )
+	{
+		if ( !m_it->first.compare(sName) )
+		{
+			throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
+		}
+	}
+	
 	CClaimValue claim;
 	if (pclaimTrie->getInfoForName(sName, claim))
 	   throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
@@ -3613,7 +3642,7 @@ UniValue sendtoaccountname(const UniValue &params, bool fHelp)
         + HelpRequiringPassphrase() +
         "\nArguments:\n"
         "1. \"accountname\"  (string, required) The accountname of ulord chain.\n"
-        "2. \"amount\"  (numeric, required) The amount in Ulord to send. eg 0.1\n"
+        "2. \"amount\"  (numeric, required) The amount in Ulord to send. eg less than 1000UT\n"
         "\nResult:\n"
         "\"transactionid\"  (string) The transaction id.\n"
         "\nExamples:\n"
@@ -3632,8 +3661,8 @@ UniValue sendtoaccountname(const UniValue &params, bool fHelp)
 
 	// Amount
 	CAmount nAmount = AmountFromValue(params[1]);
-	if (nAmount <= 0)
-		throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
+	if (nAmount <= 0 || nAmount > MAX_ACCOUNT_NAME_SEND )
+		throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send,eg amount must be in 1000UT");
     
 	EnsureWalletIsUnlocked();
 	// Parse Ulord address
@@ -3660,148 +3689,3 @@ UniValue sendtoaccountname(const UniValue &params, bool fHelp)
 		throw JSONRPCError(RPC_WALLET_ERROR, "Error: The transaction was rejected! This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.");
     return wtxNew.GetHash().GetHex();	
 }
-
-CScript VerifyClaimScriptPrefix(const CScript& scriptIn,const CTxOut& txout)
-{
-    int op;
-    return VerifyClaimScriptPrefix(scriptIn, op,txout);
-}
-
-CScript VerifyClaimScriptPrefix(const CScript & scriptIn, int & op, const CTxOut & txout)
-{
-    std::vector<std::vector<unsigned char> > vvchParams;
-    CScript::const_iterator pc = scriptIn.begin();
-
-    if (!VerifyDecodeClaimScript(scriptIn, op, vvchParams, pc,txout))
-    {
-        return scriptIn;
-    }
-
-    return CScript(pc, scriptIn.end());
-}
-
-
-bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector<unsigned char> >& vvchParams,const CTxOut& txout)
-{
-    CScript::const_iterator pc = scriptIn.begin();
-    return VerifyDecodeClaimScript(scriptIn, op, vvchParams, pc,txout);
-}
-
-
-bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector<unsigned char> >& vvchParams, CScript::const_iterator& pc,const CTxOut& txout)
-{
-    opcodetype opcode;
-    if (!scriptIn.GetOp(pc, opcode))
-    {
-        return false;
-    }
-    
-    if (opcode != OP_CLAIM_NAME && opcode != OP_SUPPORT_CLAIM && opcode != OP_UPDATE_CLAIM)
-    {
-        return false;
-    }
-	
-    op = opcode;
-
-    std::vector<unsigned char> vchParam1;
-    std::vector<unsigned char> vchParam2;
-    std::vector<unsigned char> vchParam3;
-    // Valid formats:
-    // OP_CLAIM_NAME vchName vchValue OP_2DROP OP_DROP pubkeyscript
-    // OP_UPDATE_CLAIM vchName vchClaimId vchValue OP_2DROP OP_2DROP pubkeyscript
-    // OP_SUPPORT_CLAIM vchName vchClaimId OP_2DROP OP_DROP pubkeyscript
-    // All others are invalid.
-
-    if (!scriptIn.GetOp(pc, opcode, vchParam1) || opcode < 0 || opcode > OP_PUSHDATA4)
-    {
-        return false;
-    }
-
-	std::string sName(vchParam1.begin(),vchParam1.end());
-	std::string s_tempname;
-	std::map<std::string,int>::iterator m_it;
-	int i_currentheight = chainActive.Height();
-	int i_times = m_vStringName.count(sName);
-	LogPrintf("i_times is %d\n",i_times);
-	CClaimValue claim;
-	if ( i_times == 0  )
-	{
-		LogPrintf("txout.nValue is %d.%08d\n",txout.nValue/COIN,txout.nValue % COIN);
-		m_vStringName.insert(std::pair<std::string,int>(sName,i_currentheight));
-	}
-	else 
-	{
-		if ( !is_Init )
-		{
-			if ( txout.nValue != MAX_ACCOUNT_NAME )
-			{
-				throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
-			}
-			if (pclaimTrie->getInfoForName(sName, claim))
-			{
-				throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
-			}
-			for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; m_it++ )
-			{
-				if ( !m_it->first.compare(sName) )
-				{
-					throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
-				}
-			}
-		}
-	} 
-	
-    if (!scriptIn.GetOp(pc, opcode, vchParam2) || opcode < 0 || opcode > OP_PUSHDATA4)
-    {
-        return false;
-    }
-    if (op == OP_UPDATE_CLAIM || op == OP_SUPPORT_CLAIM)
-    {
-        if (vchParam2.size() != 160/8)
-        {
-            return false;
-        }
-    }
-    if (op == OP_UPDATE_CLAIM)
-    {
-        if (!scriptIn.GetOp(pc, opcode, vchParam3) || opcode < 0 || opcode > OP_PUSHDATA4)
-        {
-            return false;
-        }
-    }
-    if (!scriptIn.GetOp(pc, opcode) || opcode != OP_2DROP)
-    {
-        return false;
-    }
-    if (!scriptIn.GetOp(pc, opcode))
-    {
-        return false;
-    }
-    if ((op == OP_CLAIM_NAME || op == OP_SUPPORT_CLAIM) && opcode != OP_DROP)
-    {
-        return false;
-    }
-    else if ((op == OP_UPDATE_CLAIM) && opcode != OP_2DROP)
-    {
-        return false;
-    }
-	
-	for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; ++m_it )
-	{
-	    if ( (chainActive.Height() - m_it->second) >= MIN_ACCOUNT_NAME_NUMBER )
-        {
-        	s_tempname = m_it->first;
-			m_vStringName.erase(s_tempname);
-        }
-	}
-	
-    vvchParams.push_back(vchParam1);
-    vvchParams.push_back(vchParam2);
-    if (op == OP_UPDATE_CLAIM)
-    {
-        vvchParams.push_back(vchParam3);
-    }
-    return true;
-}
-
-
