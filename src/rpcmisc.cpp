@@ -987,3 +987,53 @@ UniValue getspentinfo(const UniValue& params, bool fHelp)
     return obj;
 }
 
+UniValue getcointip(const UniValue& params, bool fHelp)
+{
+
+    if (fHelp || params.size() != 1 || !params[0].isObject())
+        throw runtime_error(
+            "getcointip\n"
+            "\nReturns the txid and index where an output is spent.\n"
+            "\nArguments:\n"
+            "{\n"
+            "  \"txid\" (string) The hex string of the txid\n"
+            "  \"index\" (number) The start block height\n"
+            "}\n"
+            "\nResult:\n"
+            "{\n"
+            "  \"txid\"  (string) The transaction id\n"
+            "  \"index\"  (number) The spending input index\n"
+            "  ,...\n"
+            "}\n"
+            "\nExamples:\n"
+            + HelpExampleCli("getcointip", "'{\"txid\": \"0437cd7f8525ceed2324359c2d0ba26006d92d856a9c20fa0241106ee5a597c9\", \"index\": 0}'")
+            + HelpExampleRpc("getcointip", "{\"txid\": \"0437cd7f8525ceed2324359c2d0ba26006d92d856a9c20fa0241106ee5a597c9\", \"index\": 0}")
+        );
+
+    UniValue txidValue = find_value(params[0].get_obj(), "txid");
+    UniValue indexValue = find_value(params[0].get_obj(), "index");
+
+    if (!txidValue.isStr() || !indexValue.isNum()) {
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid txid or index");
+    }
+
+    uint256 txid = ParseHashV(txidValue, "txid");
+    int outputIndex = indexValue.get_int();
+
+    CCoins coins;
+    if(!pcoinsTip->GetCoins(txid, coins) ||
+       (unsigned int)outputIndex>=coins.vout.size() ||
+       coins.vout[outputIndex].IsNull()) {
+        LogPrint("masternode", "CMasternodeBroadcast::CheckOutpoint -- Failed to find Masternode UTXO, masternode=%s\n", txid.ToString());
+        return false;
+    }
+
+
+    UniValue obj(UniValue::VOBJ);
+    obj.push_back(Pair("txid", txid.GetHex()));
+    obj.push_back(Pair("index", (int)outputIndex));
+
+
+    return obj;
+}
+

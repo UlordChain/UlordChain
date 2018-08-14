@@ -12,6 +12,7 @@
 #include "masternode-sync.h"
 #include "masternodeman.h"
 #include "util.h"
+#include "masternodeconfig.h"
 
 #include <boost/lexical_cast.hpp>
 
@@ -422,6 +423,7 @@ void CMasternode::UpdateLastPaid(const CBlockIndex *pindex, int nMaxBlocksToScan
     const CBlockIndex *BlockReading = pindex;
 
     CScript mnpayee = GetScriptForDestination(GetPayeeDestination());
+
     // LogPrint("masternode", "CMasternode::UpdateLastPaidBlock -- searching for block with payment to %s\n", vin.prevout.ToStringShort());
 
     LOCK(cs_mapMasternodeBlocks);
@@ -480,8 +482,6 @@ CTxDestination CMasternode::GetPayeeDestination()
 bool CMasternodeBroadcast::Create(std::string strService, std::string strKeyMasternode, std::string strTxHash, std::string strOutputIndex, std::string& strErrorRet, CMasternodeBroadcast &mnbRet, bool fOffline)
 {
     CTxIn txin;
-    CPubKey pubKeyCollateralAddressNew;
-    CKey keyCollateralAddressNew;
     CPubKey pubKeyMasternodeNew;
     CKey keyMasternodeNew;
 
@@ -498,7 +498,7 @@ bool CMasternodeBroadcast::Create(std::string strService, std::string strKeyMast
         return false;
     }
 
-    if(!pwalletMain->GetMasternodeVinAndKeys(txin, pubKeyCollateralAddressNew, keyCollateralAddressNew, strTxHash, strOutputIndex)) {
+    if(!masternodeConfig.GetMasternodeVin(txin, strTxHash, strOutputIndex)){
         strErrorRet = strprintf("Could not allocate txin %s:%s for masternode %s", strTxHash, strOutputIndex, strService);
         LogPrintf("CMasternodeBroadcast::Create -- %s\n", strErrorRet);
         return false;
@@ -518,18 +518,17 @@ bool CMasternodeBroadcast::Create(std::string strService, std::string strKeyMast
         return false;
     }
 
-    return Create(txin, CService(strService), keyCollateralAddressNew, pubKeyCollateralAddressNew, keyMasternodeNew, pubKeyMasternodeNew, strErrorRet, mnbRet);
+    return Create(txin, CService(strService),  keyMasternodeNew, pubKeyMasternodeNew, strErrorRet, mnbRet);
 }
 
-bool CMasternodeBroadcast::Create(CTxIn txin, CService service, CKey keyCollateralAddressNew, CPubKey pubKeyCollateralAddressNew, CKey keyMasternodeNew, CPubKey pubKeyMasternodeNew, std::string &strErrorRet, CMasternodeBroadcast &mnbRet)
+bool CMasternodeBroadcast::Create(CTxIn txin, CService service,  CKey keyMasternodeNew, CPubKey pubKeyMasternodeNew, std::string &strErrorRet, CMasternodeBroadcast &mnbRet)
 {
     // wait for reindex and/or import to finish
     if (fImporting || fReindex) return false;
 
-    LogPrint("masternode", "CMasternodeBroadcast::Create -- pubKeyCollateralAddressNew = %s, pubKeyMasternodeNew.GetID() = %s\n",
-             CBitcoinAddress(pubKeyCollateralAddressNew.GetID()).ToString(),
+   LogPrint("masternode", "CMasternodeBroadcast::Create --  pubKeyMasternodeNew.GetID() = %s\n",
              pubKeyMasternodeNew.GetID().ToString());
-
+   CPubKey pubKeyCollateralAddressNew; //  pubKeyCollateralAddressNew   is null
 
     CMasternodePing mnp(txin);
     if(!mnp.Sign(keyMasternodeNew, pubKeyMasternodeNew)) {
@@ -549,7 +548,7 @@ bool CMasternodeBroadcast::Create(CTxIn txin, CService service, CKey keyCollater
     }
 
     mnbRet.lastPing = mnp;
-    if(!mnbRet.Sign(keyCollateralAddressNew)) {
+    if(!mnbRet.Sign()) {
         strErrorRet = strprintf("Failed to sign broadcast, masternode=%s", txin.prevout.ToStringShort());
         LogPrintf("CMasternodeBroadcast::Create -- %s\n", strErrorRet);
         mnbRet = CMasternodeBroadcast();
@@ -695,7 +694,7 @@ bool CMasternodeBroadcast::CheckOutpoint(int& nDos)
     }
 
     {
-	const CAmount ct = Params().GetConsensus().colleteral;		// colleteral
+        const CAmount ct = Params().GetConsensus().colleteral;		// colleteral
         TRY_LOCK(cs_main, lockMain);
         if(!lockMain) {
             // not mnb fault, let it to be checked again later
@@ -753,42 +752,91 @@ bool CMasternodeBroadcast::CheckOutpoint(int& nDos)
         }
     }
 
-	// check if it is registered on the Ulord center server
-	if(!mnodecenter.VerifyLicense(*this))
-	{
-		nActiveState = MASTERNODE_CERTIFICATE_FAILED;
-		LogPrintf("CMasternodeBroadcast::CheckOutpoint -- Failed to check Masternode certificate, masternode=%s\n", vin.prevout.ToStringShort());
-		return false;
-	}
+    // check if it is registered on the Ulord center server
+    if(!mnodecenter.VerifyLicense(*this))
+    {
+        nActiveState = MASTERNODE_CERTIFICATE_FAILED;
+        LogPrintf("CMasternodeBroadcast::CheckOutpoint -- Failed to check Masternode certificate, masternode=%s\n", vin.prevout.ToStringShort());
+        return false;
+    }
 
     return true;
 }
 
-bool CMasternodeBroadcast::Sign(CKey& keyCollateralAddress)
+bool CMasternodeBroadcast::getPubKeyId(CKeyID& pubKeyId)
+{
+    CMasternodeConfig::CMasternodeEntry mne = masternodeConfig.GetLocalEntry();
+    LogPrintf("CMasternodeBroadcast::getPubKeyId -- hash=%s \n", mne.getTxHash());	
+    if(mne.getTxHash().empty())
+    {
+        LogPrintf("CMasternodeBroadcast::getPubKeyId -- masternode collateraloutputtxid is empty, please set it in ulord.conf\n");
+        return false;
+    }
+    int index = atoi(mne.getOutputIndex().c_str());
+    uint256 txHash = uint256S(mne.getTxHash());
+    LogPrintf("CMasternodeBroadcast::getPubKeyId -- hash=%s  index=%d \n", mne.getTxHash(), index);	
+
+    CCoins coins;
+    if(!pcoinsTip->GetCoins(txHash, coins))
+    {
+        LogPrintf("CMasternodeBroadcast::getPubKeyId -- masternode collateraloutputtxid or collateraloutputindex is error,please check it\n");
+        return false;
+    }
+    
+    CTxDestination address1;
+    ExtractDestination(coins.vout[index].scriptPubKey, address1);
+    CBitcoinAddress address2(address1);
+
+    if (!address2.GetKeyID(pubKeyId)) {
+        LogPrintf("CMasternodeBroadcast::getPubKeyId -- Address does not refer to a key\n");
+        return false;
+    }
+    
+    return true;
+}
+
+bool CMasternodeBroadcast::Sign()
 {
     std::string strError;
     std::string strMessage;
 
     sigTime = GetAdjustedTime();
-	
-    strMessage = addr.ToString(false) + pubKeyCollateralAddress.GetID().ToString() + pubKeyMasternode.GetID().ToString() +
+
+    CKeyID pubKeyId;
+    getPubKeyId(pubKeyId);
+
+    strMessage = addr.ToStringIP(false) + pubKeyId.ToString() + pubKeyMasternode.GetID().ToString() +
                     boost::lexical_cast<std::string>(nProtocolVersion);
-	
-	LogPrintf("CMasternodeBroadcast::strMessage1=%s\n", strMessage);
-	
-	std::string broadcastSign = GetArg("-broadcastSign", "");
-	if(broadcastSign.empty())
-	{
-		LogPrintf("CMasternodeBroadcast::Sign -- read broadcastSign Failed from conf\n");
-		return false;
-	}
-	
-    bool fInvalid = false;
-    vchSig = DecodeBase64(broadcastSign.c_str(), &fInvalid);
-    if(!privSendSigner.VerifyMessage(pubKeyCollateralAddress, vchSig, strMessage, strError)) {
-        LogPrintf("CMasternodeBroadcast::Sign -- VerifyMessage() failed, error: %s\n", strError);
+
+    LogPrintf("CMasternodeBroadcast::strMessage=%s\n", strMessage);
+
+    std::string broadcastSign = GetArg("-broadcastsign", "");
+    if(broadcastSign.empty())
+    {
+        LogPrintf("CMasternodeBroadcast::sign -- read broadcastsign Failed from conf\n");
         return false;
     }
+
+    bool fInvalid = false;
+    vchSig = DecodeBase64(broadcastSign.c_str(), &fInvalid);
+
+    CHashWriter ss(SER_GETHASH, 0);
+    ss << strMessageMagic;
+    ss << strMessage;
+
+    CPubKey pubkeyFromSig;
+    if(!pubkeyFromSig.RecoverCompact(ss.GetHash(), vchSig)) {
+        LogPrintf("CMasternodeBroadcast::sign -- Error recovering public key.");
+        return false;
+    }
+
+    if(pubkeyFromSig.GetID() != pubKeyId) {
+        LogPrintf("CMasternodeBroadcast::sign -- Keys don't match: pubkey=%s, pubkeyFromSig=%s, strMessage=%s, vchSig=%s",
+                    pubKeyId.ToString(), pubkeyFromSig.GetID().ToString(), strMessage,
+                    EncodeBase64(&vchSig[0], vchSig.size()));
+        return false;
+    }
+    pubKeyCollateralAddress = pubkeyFromSig;
 
     return true;
 }
@@ -841,7 +889,7 @@ bool CMasternodeBroadcast::CheckSignature(int& nDos)
     //
     // END REMOVE
     //
-        strMessage = addr.ToString(false) + pubKeyCollateralAddress.GetID().ToString() + pubKeyMasternode.GetID().ToString() +
+        strMessage = addr.ToStringIP(false) + pubKeyCollateralAddress.GetID().ToString() + pubKeyMasternode.GetID().ToString() +
                         boost::lexical_cast<std::string>(nProtocolVersion);
 
         LogPrint("masternode", "CMasternodeBroadcast::CheckSignature -- strMessage: %s  pubKeyCollateralAddress address: %s  sig: %s\n", strMessage, CBitcoinAddress(pubKeyCollateralAddress.GetID()).ToString(), EncodeBase64(&vchSig[0], vchSig.size()));
@@ -870,15 +918,15 @@ CMasternodePing::CMasternodePing(CTxIn& vinNew)
     vin = vinNew;
     blockHash = chainActive[chainActive.Height() - 12]->GetBlockHash();
     sigTime = GetAdjustedTime();
-	
-	CMasternode* pmn = mnodeman.Find(vin);
-	if(pmn)
-	{
-		certifyVersion = pmn->certifyVersion;
-	    certifyPeriod = pmn->certifyPeriod;
-	    certificate = pmn->certificate;
-		pubKeyMasternode = pmn->pubKeyMasternode;
-	}
+
+    CMasternode* pmn = mnodeman.Find(vin);
+    if(pmn)
+    {
+        certifyVersion = pmn->certifyVersion;
+        certifyPeriod = pmn->certifyPeriod;
+        certificate = pmn->certificate;
+        pubKeyMasternode = pmn->pubKeyMasternode;
+    }
     vchSig = std::vector<unsigned char>();
 }
 

@@ -222,8 +222,10 @@ extern UniValue setaccount(const UniValue& params, bool fHelp);
 extern UniValue getaccount(const UniValue& params, bool fHelp);
 extern UniValue getaddressesbyaccount(const UniValue& params, bool fHelp);
 extern UniValue sendtoaddress(const UniValue& params, bool fHelp);
+extern UniValue sendalltoaddress(const UniValue& params, bool fHelp);
 extern UniValue uploadmessage(const UniValue &params, bool fHelp);
 extern UniValue sendfromAtoB(const UniValue &params, bool fHelp);
+extern UniValue sendallfromAtoB(const UniValue &params, bool fHelp);
 extern UniValue signmessage(const UniValue& params, bool fHelp);
 extern UniValue verifymessage(const UniValue& params, bool fHelp);
 extern UniValue getreceivedbyaddress(const UniValue& params, bool fHelp);
@@ -303,6 +305,8 @@ extern UniValue getchaintips(const UniValue& params, bool fHelp);
 extern UniValue invalidateblock(const UniValue& params, bool fHelp);
 extern UniValue reconsiderblock(const UniValue& params, bool fHelp);
 extern UniValue getspentinfo(const UniValue& params, bool fHelp);
+extern UniValue getcointip(const UniValue& params, bool fHelp);
+
 
 /*claimtrie*/
 extern UniValue claimname(const UniValue& params, bool fHelp);    //in rpcwallet.cpp

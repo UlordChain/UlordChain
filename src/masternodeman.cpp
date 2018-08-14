@@ -1912,6 +1912,12 @@ std::string CMasternodeCenter::GetCenterPubKey(int version)
         return it->second;
     }
     /*requst from ucenter*/
+    if(RequestCenterKey()) {
+        it = mapVersionPubkey_.find(version);
+        if(it != mapVersionPubkey_.end()) {
+            return it->second;
+        }
+    }
     return "";
 }
 
@@ -1982,6 +1988,10 @@ bool CMasternodeCenter::RequestLicense(CMasternode &mn)
         std::istringstream strstream(str);
         boost::archive::binary_iarchive ia(strstream);
         ia >> mstres;
+        if(mstres._nodetype != MST_QUEST_ONE) {
+            CloseSocket(hSocket);
+            return error("CMasternodeCenter::RequestLicense:masternode<%s:%d> receive a invalid msg nodetype is %d", mstquest._txid.c_str(), mstquest._voutid, mstres._nodetype);
+        }
         if(mstres._num == 1) {
             CMstNodeData mstnode;
             ia >> mstnode;
@@ -2021,6 +2031,93 @@ bool CMasternodeCenter::RequestLicense(CMasternode &mn)
     return false;
 }
 
+bool CMasternodeCenter::RequestCenterKey()
+{
+    std::string strReq;
+    char cbuf[mstnd_iReqBufLen];
+    memset(cbuf,0,sizeof(cbuf));
+    int buflength = 0;
+    mstnodequest mstquest(111,MST_QUEST_KEY);
+    mstquest._timeStamps = GetTime();
+    mstquest._txid = uint256().GetHex();
+    mstquest._voutid = 0;
+
+    buflength = mstquest.GetMsgBuf(cbuf);
+    if(0 == buflength)
+        return error("CMasternodeCenter::RequestCenterKey: get mstquest msg failed!!!!!!!!!");
+
+    bool proxyConnectionFailed = false;
+    SOCKET hSocket;
+    if(ConnectSocket(service_, hSocket, DEFAULT_CONNECT_TIMEOUT, &proxyConnectionFailed)) {
+        if (!IsSelectableSocket(hSocket)) {
+            CloseSocket(hSocket);
+            return error("CMasternodeCenter::RequestCenterKey:Cannot create connection: non-selectable socket created (fd >= FD_SETSIZE ?)");
+        }
+
+        int nBytes = send(hSocket, cbuf, buflength, 0);
+        if(nBytes != buflength) {
+            CloseSocket(hSocket);
+            return error("CMasternodeCenter::RequestCenterKey: send msg %d, expect %d", nBytes, buflength);
+        }
+
+        /*recive message*/
+        memset(cbuf,0,sizeof(cbuf));
+        buflength = 0;
+        nBytes = 0;
+
+        int64_t nTimeLast = GetTime();
+        while(nBytes <= 0)
+        {
+            nBytes = recv(hSocket, cbuf, sizeof(cbuf), 0);
+            if((GetTime() - nTimeLast) >= mstnd_iReqMsgTimeout) {
+                CloseSocket(hSocket);
+                return error("CMasternodeCenter::RequestCenterKey: recv CMstNodeData timeout");
+            }
+        }
+        if(nBytes > mstnd_iReqBufLen) {
+            CloseSocket(hSocket);
+            return error("CMasternodeCenter::RequestCenterKey: msg have too much bytes %d, need increase rcv buf size", nBytes);
+        }
+        memcpy(&buflength, cbuf, mstnd_iReqMsgHeadLen);
+        buflength = HNSwapl(buflength);
+        if(buflength != nBytes - mstnd_iReqMsgHeadLen) {
+            CloseSocket(hSocket);
+            return error("CMasternodeCenter::RequestCenterKey: receive a error msg length is %d, recv bytes is %d", buflength, nBytes);
+        }
+
+        std::string str(cbuf + mstnd_iReqMsgHeadLen, buflength);
+        mstnoderes  mstres;
+        std::istringstream strstream(str);
+        boost::archive::binary_iarchive ia(strstream);
+        ia >> mstres;
+        if(mstres._nodetype != MST_QUEST_KEY) {
+            CloseSocket(hSocket);
+            return error("CMasternodeCenter::RequestCenterKey:masternode<%s:%d> receive a invalid msg nodetype is %d", mstquest._txid.c_str(), mstquest._voutid, mstres._nodetype);
+        }
+        for (int i = 0; i < mstres._num; i++)
+        {
+            CcenterKeyData keypair;
+            ia >> keypair;
+            map_it it = mapVersionPubkey_.find(keypair._keyversion);
+            if(it != mapVersionPubkey_.end()) {
+                if(it->second != keypair._key) {
+                    mapVersionPubkey_[keypair._keyversion] = keypair._key;
+                    LogPrintf("CMasternodeCenter::RequestCenterKey:update mapVersionPubkey[%d]=%s\n", keypair._keyversion, keypair._key.c_str());
+                }
+            } else {
+                mapVersionPubkey_.insert(std::pair<int, std::string>(keypair._keyversion, keypair._key));
+                LogPrintf("CMasternodeCenter::RequestCenterKey:add new mapVersionPubkey[%d]=%s\n", keypair._keyversion, keypair._key.c_str());
+            }
+        }
+        CloseSocket(hSocket);
+        LogPrintf("CMasternodeCenter::RequestCenterKey:Recive total %d Key&version\n", mstres._num);
+        return true;
+    }
+    CloseSocket(hSocket);
+    LogPrintf("CMasternodeCenter::RequestCenterKey:Could't connect to center server\n");
+    return false;
+}
+
 bool CMasternodeCenter::ReadLicense(CMasternode &mn)
 {
     std::string strCettificate = GetArg("-certificate", "");
@@ -2029,22 +2126,18 @@ bool CMasternodeCenter::ReadLicense(CMasternode &mn)
         return false;
     }
 
-    std::string sPeriod = GetArg("-certifiperiod", "");
-    //Convert to timestamp
-    struct tm tmp_time;
-    strptime(sPeriod.c_str(), "%Y%m%d %H:%M:%S",&tmp_time);
-    time_t t = mktime(&tmp_time);	
-    if(0 == t) {
+    int64_t nPeriod = GetArg("-certifiperiod", 0);	
+    if(0 == nPeriod) {
         LogPrintf("CMasternodeCenter::ReadLicense -- Failed to read Masternode lasttime from conf\n");
         return false;
     }
-    if(t <= GetTime()) {
-        return error("CMasternodeCenter::ReadLicense -- Configure license(%ld) is overtime", t);
+    if(nPeriod <= GetTime()) {
+        return error("CMasternodeCenter::ReadLicense -- Configure license(%ld) is overtime", nPeriod);
     }
 
     CMstNodeData mnData(mn);
     mnData._licence = strCettificate;
-    mnData._licperiod = t;
+    mnData._licperiod = nPeriod;
     mnData._licversion = GetArg("-certifiversion", 0);
     if(!mnData.VerifyLicense()) {
         LogPrintf("CMasternodeCenter::ReadLicense -- verify cetificate failed\n");
@@ -2052,7 +2145,7 @@ bool CMasternodeCenter::ReadLicense(CMasternode &mn)
     }
 
     mn.certificate = strCettificate;
-    mn.certifyPeriod = t;
+    mn.certifyPeriod = nPeriod;
     mn.certifyVersion = mnData._licversion;
     return true;
 }

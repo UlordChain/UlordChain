@@ -567,7 +567,7 @@ std::string HelpMessage(HelpMessageMode mode)
 
     strUsage += HelpMessageGroup(_("Masternode options:"));
     strUsage += HelpMessageOpt("-masternode=<n>", strprintf(_("Enable the client to act as a masternode (0-1, default: %u)"), 0));
-    strUsage += HelpMessageOpt("-mnconf=<file>", strprintf(_("Specify masternode configuration file (default: %s)"), "masternode.conf"));
+   
     strUsage += HelpMessageOpt("-mnconflock=<n>", strprintf(_("Lock masternodes from masternode configuration file (default: %u)"), 1));
     strUsage += HelpMessageOpt("-masternodeprivkey=<n>", _("Set the masternode private key"));
 
@@ -1807,7 +1807,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
         if(!GetArg("-masternodeaddr", "").empty()) {
             // Hot masternode (either local or remote) should get its address in
             // CActiveMasternode::ManageState() automatically and no longer relies on masternodeaddr.
-            return InitError(_("masternodeaddr option is deprecated. Please use masternode.conf to manage your remote masternodes."));
+            return InitError(_("masternodeaddr option is deprecated. Please use ulord.conf to manage your remote masternodes."));
         }
 
         std::string strMasterNodePrivKey = GetArg("-masternodeprivkey", "");
@@ -1829,7 +1829,6 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
         }
     }
 
-    LogPrintf("Using masternode config file %s\n", GetMasternodeConfigFile().string());
 
     #ifdef ENABLE_WALLET
     if(GetBoolArg("-mnconflock", true) && pwalletMain && (masternodeConfig.getCount() > 0)) {

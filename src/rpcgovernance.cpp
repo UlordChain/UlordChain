@@ -43,9 +43,9 @@ UniValue gobject(const UniValue& params, bool fHelp)
                 "  getcurrentvotes    - Get only current (tallying) votes for a governance object hash (does not include old votes)\n"
                 "  list               - List governance objects (can be filtered by validity and/or object type)\n"
                 "  diff               - List differences since last diff\n"
-                "  vote-alias         - Vote on a governance object by masternode alias (using masternode.conf setup)\n"
+                "  vote-alias         - Vote on a governance object by masternode alias (using ulord.conf setup)\n"
                 "  vote-conf          - Vote on a governance object by masternode configured in ulord.conf\n"
-                "  vote-many          - Vote on a governance object by all masternodes (using masternode.conf setup)\n"
+                "  vote-many          - Vote on a governance object by all masternodes (using ulord.conf setup)\n"
                 );
 
 

@@ -7,8 +7,9 @@
 #include "masternode-sync.h"
 #include "masternodeman.h"
 #include "protocol.h"
+#include "masternodeconfig.h"
 
-extern CWallet* pwalletMain;
+
 
 // Keep track of the active Masternode
 CActiveMasternode activeMasternode;
@@ -202,7 +203,7 @@ LogPrintf("GetLocal() = %c, IsValidNetAddr = %c \n", GetLocal(service, &pnode->a
 
     // Default to REMOTE
     eType = MASTERNODE_REMOTE;
-
+#if 0
 #ifdef ENABLE_WALLET
     const CAmount ct = Params().GetConsensus().colleteral;
     // Check if wallet funds are available
@@ -230,6 +231,12 @@ LogPrintf("GetLocal() = %c, IsValidNetAddr = %c \n", GetLocal(service, &pnode->a
         eType = MASTERNODE_LOCAL;
     }
 #endif // ENABLE_WALLET
+#endif
+
+	if(masternodeConfig.IsLocalEntry())
+	{
+		eType = MASTERNODE_LOCAL;
+	}
 
     LogPrint("masternode", "CActiveMasternode::ManageStateInitial -- End status = %s, type = %s, pinger enabled = %d\n", GetStatus(), GetTypeString(), fPingerEnabled);
 }
@@ -284,10 +291,8 @@ void CActiveMasternode::ManageStateLocal()
     }
 
     // Choose coins to use
-    CPubKey pubKeyCollateral;
-    CKey keyCollateral;
 
-    if(pwalletMain->GetMasternodeVinAndKeys(vin, pubKeyCollateral, keyCollateral)) {
+    if(masternodeConfig.GetMasternodeVin(vin)) {
         int nInputAge = GetInputAge(vin);
         if(nInputAge < Params().GetConsensus().nMasternodeMinimumConfirmations){
             nState = ACTIVE_MASTERNODE_INPUT_TOO_NEW;
@@ -296,14 +301,9 @@ void CActiveMasternode::ManageStateLocal()
             return;
         }
 
-        {
-            LOCK(pwalletMain->cs_wallet);
-            pwalletMain->LockCoin(vin.prevout);
-        }
-
         CMasternodeBroadcast mnb;
         std::string strError;
-        if(!CMasternodeBroadcast::Create(vin, service, keyCollateral, pubKeyCollateral, keyMasternode, pubKeyMasternode, strError, mnb)) {
+        if(!CMasternodeBroadcast::Create(vin, service,  keyMasternode, pubKeyMasternode, strError, mnb)) {
             nState = ACTIVE_MASTERNODE_NOT_CAPABLE;
             strNotCapableReason = "Error creating mastenode broadcast: " + strError;
             LogPrintf("CActiveMasternode::ManageStateLocal -- %s: %s\n", GetStateString(), strNotCapableReason);

@@ -117,11 +117,11 @@ UniValue masternode(const UniValue& params, bool fHelp)
                 "  genkey       - Generate new masternodeprivkey\n"
                 "  outputs      - Print masternode compatible outputs\n"
                 "  start        - Start local Hot masternode configured in ulord.conf\n"
-                "  start-alias  - Start single remote masternode by assigned alias configured in masternode.conf\n"
-                "  start-<mode> - Start remote masternodes configured in masternode.conf (<mode>: 'all', 'missing', 'disabled')\n"
+                "  start-alias  - Start single remote masternode by assigned alias configured in ulord.conf\n"
+                "  start-<mode> - Start remote masternodes configured in ulord.conf (<mode>: 'all', 'missing', 'disabled')\n"
                 "  status       - Print masternode status information\n"
                 "  list         - Print list of all known masternodes (see masternodelist for more info)\n"
-                "  list-conf    - Print masternode.conf in JSON format\n"
+                "  list-conf    - Print ulord.conf in JSON format\n"
                 "  winner       - Print info on next masternode winner to vote for\n"
                 "  winners      - Print list of masternode winners\n"
                 "  certificate  - Print masternode register certificate\n"
@@ -217,8 +217,6 @@ UniValue masternode(const UniValue& params, bool fHelp)
         CPubKey pubkey;
         CKey key;
 
-        if(!pwalletMain || !pwalletMain->GetMasternodeVinAndKeys(vin, pubkey, key))
-            throw JSONRPCError(RPC_INVALID_PARAMETER, "Missing masternode input, please look at the documentation for instructions on masternode creation");
 
         return activeMasternode.GetStatus();
     }
@@ -400,6 +398,7 @@ UniValue masternode(const UniValue& params, bool fHelp)
             mnObj.push_back(Pair("payee", CBitcoinAddress(mn.GetPayeeDestination()).ToString()));
             mnObj.push_back(Pair("license version", mn.certifyVersion));
             mnObj.push_back(Pair("license period", mn.certifyPeriod));
+            mnObj.push_back(Pair("license data", mn.certificate));
         }
 
         mnObj.push_back(Pair("status", activeMasternode.GetStatus()));
@@ -605,8 +604,8 @@ UniValue masternodebroadcast(const UniValue& params, bool fHelp)
                 "1. \"command\"        (string or set of strings, required) The command to execute\n"
                 "2. \"passphrase\"     (string, optional) The wallet passphrase\n"
                 "\nAvailable commands:\n"
-                "  create-alias  - Create single remote masternode broadcast message by assigned alias configured in masternode.conf\n"
-                "  create-all    - Create remote masternode broadcast messages for all masternodes configured in masternode.conf\n"
+                "  create-alias  - Create single remote masternode broadcast message by assigned alias configured in ulord.conf\n"
+                "  create-all    - Create remote masternode broadcast messages for all masternodes configured in ulord.conf\n"
                 "  decode        - Decode masternode broadcast message\n"
                 "  relay         - Relay masternode broadcast message to the network\n"
                 + HelpRequiringPassphrase());
@@ -825,21 +824,20 @@ UniValue masternodebroadcast(const UniValue& params, bool fHelp)
 UniValue signmnpmessage(const UniValue& params, bool fHelp)
 {
     
-    if (fHelp || params.size() != 4)
+    if (fHelp || params.size() != 3)
         throw runtime_error(
-            "signmnpmessage \"privatekey\" \"masterkey\"  \"addr\"  \"port\" \n"
+            "signmnpmessage \"privatekey\" \"masterkey\"  \"addr\" \n"
             "\nSign a message with the private key of an address"
             + HelpRequiringPassphrase() + "\n"
             "\nArguments:\n"
             "1. \"privatekey\"      (string, required) The collate key  to use for the private key.\n"
             "2. \"masterkey\"       (string, required) The master key to create a signature of.\n"
             "3. \"straddr\"         (string, required) The IPaddr to create a signature of.\n"
-            "4. \"strPort\"         (string, required) The strPort to create a signature of.\n"
             "\nResult:\n"
             "\"signature\"          (string) The signature of the message encoded in base 64\n"
             "\nExamples:\n"
             "\nCreate the signature\n"
-            + HelpExampleCli("signmessage", "\"privatekey\"   \"masterkey\"  \"addr\"  \"port\"  ")
+            + HelpExampleCli("signmnpmessage", "\"privatekey\"   \"masterkey\"  \"addr\"  ")
 
         );
 		
@@ -850,12 +848,9 @@ UniValue signmnpmessage(const UniValue& params, bool fHelp)
     string strPrivkey = params[0].get_str();
     string strMasterKey = params[1].get_str();
     string straddr = params[2].get_str();
-	string strPort = params[3].get_str();
-
-	unsigned short masterport = boost::lexical_cast<unsigned short>(strPort);
 	
 	CNetAddr netAddr(straddr);
-    CService Ipaddr(netAddr,masterport);
+    CService Ipaddr(netAddr,0);
 
 	CKey         keyCollate; 
 	CPubKey      pubkeyCollate; 
@@ -880,7 +875,7 @@ UniValue signmnpmessage(const UniValue& params, bool fHelp)
 
     //cout << CBitcoinAddress(pubkeyCollate.GetID()).ToString() <<endl;
          
-    strMessage = Ipaddr.ToString(false) + pubkeyCollate.GetID().ToString() + pubkeyMaster.GetID().ToString() +
+    strMessage = Ipaddr.ToStringIP(false) + pubkeyCollate.GetID().ToString() + pubkeyMaster.GetID().ToString() +
 			boost::lexical_cast<std::string>(PROTOCOL_VERSION);
    
     cout<< strMessage<< endl;
