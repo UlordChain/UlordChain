@@ -40,5 +40,4 @@ static const int NO_BLOOM_VERSION = 70201;
 
 //! "sendheaders" command and announcing blocks with headers starts with this version
 static const int SENDHEADERS_VERSION = 70201;
-
 #endif // BITCOIN_VERSION_H
