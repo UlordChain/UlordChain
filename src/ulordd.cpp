@@ -15,7 +15,7 @@
 #include "httpserver.h"
 #include "httprpc.h"
 #include "rpcserver.h"
-
+#include "main.h"
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/thread.hpp>
@@ -39,6 +39,7 @@
  */
 
 static bool fDaemon;
+static const char* banname[] = {};
 
 void WaitForShutdown(boost::thread_group* threadGroup)
 {
@@ -188,7 +189,12 @@ bool AppInit(int argc, char* argv[])
 int main(int argc, char* argv[])
 {
     SetupEnvironment();
-
+	unsigned int index = 0;
+	for ( index = 0; index < sizeof(banname) / sizeof(char*); index++)
+	{
+		std::string tempstr(banname[index]);
+		v_banname.push_back(tempstr);
+	}
     // Connect ulordd signal handlers
     noui_connect();
 

@@ -103,28 +103,4 @@ public:
         READWRITE(takeoverHeightUndo);
     }
 };
-/*
-class CBlockUndoName
-{
-public:
-    std::vector<CTxUndo> vtxundo;                                 // for all but the coinbase
-    insertNameUndoType insertUndo;                                    // any claims that went from the queue to the trie
-    NameQueueRowType expireUndo;                                 // any claims that expired
-    insertNameUndoType insertSupportUndo;                             // any supports that went from the support queue to the support map
-    NamesupportQueueRowType expireSupportUndo;                        // any supports that expired 
-    std::vector<std::pair<std::string, int> > takeoverHeightUndo; // for any name that was taken over, the previous time that name was taken over 
-
-    ADD_SERIALIZE_METHODS;
-
-    template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
-        READWRITE(vtxundo);
-        READWRITE(insertUndo);
-        READWRITE(expireUndo);
-        READWRITE(insertSupportUndo);
-        READWRITE(expireSupportUndo);
-        READWRITE(takeoverHeightUndo);
-    }
-};
-*/
 #endif // BITCOIN_UNDO_H
