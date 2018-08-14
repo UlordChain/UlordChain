@@ -772,12 +772,12 @@ bool CMasternodeBroadcast::getPubKeyId(CKeyID& pubKeyId)
         LogPrintf("CMasternodeBroadcast::getPubKeyId -- masternode collateraloutputtxid is empty, please set it in ulord.conf\n");
         return false;
     }
-    int index = atoi(mne.getOutputIndex().c_str());
+    unsigned int index = atoi(mne.getOutputIndex().c_str());
     uint256 txHash = uint256S(mne.getTxHash());
     LogPrintf("CMasternodeBroadcast::getPubKeyId -- hash=%s  index=%d \n", mne.getTxHash(), index);	
 
     CCoins coins;
-    if(!pcoinsTip->GetCoins(txHash, coins))
+    if(!pcoinsTip->GetCoins(txHash, coins) || index >=coins.vout.size() || coins.vout[index].IsNull())
     {
         LogPrintf("CMasternodeBroadcast::getPubKeyId -- masternode collateraloutputtxid or collateraloutputindex is error,please check it\n");
         return false;
