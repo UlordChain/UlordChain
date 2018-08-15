@@ -1988,7 +1988,6 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 
     SetRPCWarmupFinished();
     uiInterface.InitMessage(_("Done loading"));
-	is_Init = true;
 
 #ifdef ENABLE_WALLET
     if (pwalletMain) {

@@ -498,7 +498,6 @@ UniValue claimname(const UniValue& params, bool fHelp)
 	
     CAmount nAmount = AmountFromValue(params[2]);
     CWalletTx wtx;
-	is_Init = false;
     EnsureWalletIsUnlocked();
     CScript claimScript = CScript()<<OP_CLAIM_NAME<<vchName<<vchValue<<OP_2DROP<<OP_DROP;
     CreateClaim(claimScript,nAmount,wtx);
