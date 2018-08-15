@@ -613,7 +613,6 @@ CBlockIndex* FindForkInGlobalIndex(const CChain& chain, const CBlockLocator& loc
 CCoinsViewCache *pcoinsTip = NULL;
 CClaimTrie *pclaimTrie = NULL; // claim operation
 CBlockTreeDB *pblocktree = NULL;
-bool is_Init = true;
 std::vector<std::string> v_banname;
 
 
@@ -1086,8 +1085,15 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
     // Rather not work on nonstandard transactions (unless -testnet/-regtest)
     string reason;
     if (fRequireStandard && !IsStandardTx(tx, reason))
+	{
         return state.DoS(0, false, REJECT_NONSTANDARD, reason);
+	}
 
+	if ( !VerifyAccountName(tx) )
+	{
+	    return state.DoS(0, false, REJECT_ACOOUNTNAME_CREATE, "reject accountname is created");
+	}
+	
     // Don't relay version 2 transactions until CSV is active, and we can be
     // sure that such transactions will be mined (unless we're on
     // -testnet/-regtest).
@@ -7309,44 +7315,58 @@ public:
 } instance_of_cmaincleanup;
 
 // verify special transaction about OP_CLAIM_NAME
-CScript VerifyClaimScriptPrefix(const CScript& scriptIn,const CTxOut& txout)
+bool VerifyAccountName(const CTransaction& tx)
+{
+	int i_ret;
+	BOOST_FOREACH(const CTxOut& txout, tx.vout) {
+   		i_ret = VerifyClaimScriptPrefix(txout.scriptPubKey,txout);
+		switch (i_ret)
+		{
+			case STAND_SCRIPT_OR_SPECIAL_SCRIPT:
+				break;
+			case ACCOUNTNAME_EXISTS:
+			case ACCOUNTNAME_ILLEGAL:
+			case ACCOUNTNAME_INVAILDCASH:
+			default:
+				return false;
+		}
+    }
+	return true;
+}
+
+int VerifyClaimScriptPrefix(const CScript& scriptIn,const CTxOut& txout)
 {
     int op;
     return VerifyClaimScriptPrefix(scriptIn, op,txout);
 }
 
-CScript VerifyClaimScriptPrefix(const CScript & scriptIn, int & op, const CTxOut & txout)
+int VerifyClaimScriptPrefix(const CScript & scriptIn, int & op, const CTxOut & txout)
 {
     std::vector<std::vector<unsigned char> > vvchParams;
     CScript::const_iterator pc = scriptIn.begin();
 
-    if (!VerifyDecodeClaimScript(scriptIn, op, vvchParams, pc,txout))
-    {
-        return scriptIn;
-    }
-
-    return CScript(pc, scriptIn.end());
+    return VerifyDecodeClaimScript(scriptIn, op, vvchParams, pc,txout);
 }
 
 
-bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector<unsigned char> >& vvchParams,const CTxOut& txout)
+int VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector<unsigned char> >& vvchParams,const CTxOut& txout)
 {
     CScript::const_iterator pc = scriptIn.begin();
     return VerifyDecodeClaimScript(scriptIn, op, vvchParams, pc,txout);
 }
 
 
-bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector<unsigned char> >& vvchParams, CScript::const_iterator& pc,const CTxOut& txout)
+int VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector<unsigned char> >& vvchParams, CScript::const_iterator& pc,const CTxOut& txout)
 {
     opcodetype opcode;
     if (!scriptIn.GetOp(pc, opcode))
     {
-        return false;
+        return STAND_SCRIPT_OR_SPECIAL_SCRIPT;
     }
     
     if (opcode != OP_CLAIM_NAME && opcode != OP_SUPPORT_CLAIM && opcode != OP_UPDATE_CLAIM)
     {
-        return false;
+        return STAND_SCRIPT_OR_SPECIAL_SCRIPT;
     }
 	
     op = opcode;
@@ -7362,7 +7382,7 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 
     if (!scriptIn.GetOp(pc, opcode, vchParam1) || opcode < 0 || opcode > OP_PUSHDATA4)
     {
-        return false;
+        return STAND_SCRIPT_OR_SPECIAL_SCRIPT;
     }
 
 	std::string sName(vchParam1.begin(),vchParam1.end());
@@ -7384,6 +7404,10 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 			s_tempname = m_it->first;
 			m_vStringName.erase(s_tempname);
 		}
+		if ( !m_it->first.compare(sName) )
+		{
+			return ACCOUNTNAME_EXISTS;
+		}
 	}
 	
 	if ( i_times == 0  )
@@ -7392,100 +7416,62 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
 		b_r = std::regex_match( sName,reg);
 		if ( !b_r )
 		{
-			throw JSONRPCError(RPC_ACCOUNTNAME_ILLEGAL, "The account name is illegal");
+			return ACCOUNTNAME_ILLEGAL;
 		}
+		
 		for (m_strit = v_banname.begin(); m_strit != v_banname.end(); m_strit++)
 		{
 			if (!m_strit->compare(sName))
 			{
-				throw JSONRPCError(RPC_ACCOUNTNAME_ILLEGAL, "The account name is illegal");
+				return ACCOUNTNAME_ILLEGAL;
 			}
 		}
+		
 		if ( txout.nValue != MAX_ACCOUNT_NAME )
 		{
-			throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
+			throw ACCOUNTNAME_INVAILDCASH;
 		}
+		
 		if (pclaimTrie->getInfoForName(sName, claim))
 		{
-			throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
-		}
-		for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; m_it++ )
-		{
-			if ( !m_it->first.compare(sName) )
-			{
-				throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
-			}
+			return ACCOUNTNAME_EXISTS;
 		}
 		m_vStringName.insert(std::pair<std::string,int>(sName,i_currentheight));
 	}
-	else 
-	{
-		if ( !is_Init )
-		{
-			is_Init = true;
-			b_r = std::regex_match( sName,reg);
-			if ( !b_r )
-			{
-				throw JSONRPCError(RPC_ACCOUNTNAME_ILLEGAL, "The account name is illegal");
-			}
-			for (m_strit = v_banname.begin(); m_strit != v_banname.end(); m_strit++)
-			{
-				if (!m_strit->compare(sName))
-				{
-					throw JSONRPCError(RPC_ACCOUNTNAME_ILLEGAL, "The account name is illegal");
-				}
-			}
-			if ( txout.nValue != MAX_ACCOUNT_NAME )
-			{
-				throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
-			}
-			if (pclaimTrie->getInfoForName(sName, claim))
-			{
-				throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
-			}
-			for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; m_it++ )
-			{
-				if ( !m_it->first.compare(sName) )
-				{
-					throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
-				}
-			}
-		}
-	} 
 	
     if (!scriptIn.GetOp(pc, opcode, vchParam2) || opcode < 0 || opcode > OP_PUSHDATA4)
     {
-        return false;
+        return STAND_SCRIPT_OR_SPECIAL_SCRIPT;
     }
     if (op == OP_UPDATE_CLAIM || op == OP_SUPPORT_CLAIM)
     {
         if (vchParam2.size() != 160/8)
         {
-            return false;
+            return STAND_SCRIPT_OR_SPECIAL_SCRIPT;
         }
     }
     if (op == OP_UPDATE_CLAIM)
     {
         if (!scriptIn.GetOp(pc, opcode, vchParam3) || opcode < 0 || opcode > OP_PUSHDATA4)
         {
-            return false;
+            return STAND_SCRIPT_OR_SPECIAL_SCRIPT;
         }
     }
     if (!scriptIn.GetOp(pc, opcode) || opcode != OP_2DROP)
     {
-        return false;
+        return STAND_SCRIPT_OR_SPECIAL_SCRIPT;
     }
     if (!scriptIn.GetOp(pc, opcode))
     {
-        return false;
+        return STAND_SCRIPT_OR_SPECIAL_SCRIPT;
     }
     if ((op == OP_CLAIM_NAME || op == OP_SUPPORT_CLAIM) && opcode != OP_DROP)
     {
-        return false;
+        return STAND_SCRIPT_OR_SPECIAL_SCRIPT;
     }
     else if ((op == OP_UPDATE_CLAIM) && opcode != OP_2DROP)
     {
-        return false;
+        return STAND_SCRIPT_OR_SPECIAL_SCRIPT;
     }
 	
     vvchParams.push_back(vchParam1);
@@ -7494,5 +7480,5 @@ bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::
     {
         vvchParams.push_back(vchParam3);
     }
-    return true;
+    return STAND_SCRIPT_OR_SPECIAL_SCRIPT;
 }
