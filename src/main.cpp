@@ -7319,7 +7319,7 @@ bool VerifyAccountName(const CTransaction& tx)
 {
 	int i_ret;
 	BOOST_FOREACH(const CTxOut& txout, tx.vout) {
-   		b_isstand = VerifyClaimScriptPrefix(txout.scriptPubKey,txout);
+   		i_ret = VerifyClaimScriptPrefix(txout.scriptPubKey,txout);
 		switch (i_ret)
 		{
 			case STAND_SCRIPT_OR_SPECIAL_SCRIPT:
@@ -7337,7 +7337,7 @@ bool VerifyAccountName(const CTransaction& tx)
 int VerifyClaimScriptPrefix(const CScript& scriptIn,const CTxOut& txout)
 {
     int op;
-    int VerifyClaimScriptPrefix(scriptIn, op,txout);
+    return VerifyClaimScriptPrefix(scriptIn, op,txout);
 }
 
 int VerifyClaimScriptPrefix(const CScript & scriptIn, int & op, const CTxOut & txout)
