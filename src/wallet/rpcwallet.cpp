@@ -1153,7 +1153,7 @@ UniValue sendalltoaddress(const UniValue& params, bool fHelp)
     if (fHelp || params.size() < 1 || params.size() > 5)
         throw runtime_error(
             "sendalltoaddress \"ulordaddress\" ( \"comment\" \"comment-to\" use_is use_ps )\n"
-            "\nSend an amount to a given address.\n"
+            "\nSend all coins in the wallet to a given address.\n"
             + HelpRequiringPassphrase() +
             "\nArguments:\n"
             "1. \"ulordaddress\"  (string, required) The ulord address to send to.\n"
@@ -1355,7 +1355,7 @@ UniValue sendallfromAtoB(const UniValue &params, bool fHelp)
         throw std::runtime_error(
             "sendallfromAtoB \"from\" \"to\" ( "
             "\"comment\" \"comment_to\")\n"
-            "\nSend an amount from specified address to another one.\n" +
+            "\nSend all coins from specified address to another one.\n" +
             HelpRequiringPassphrase() + "\nArguments:\n"
             "1. \"from\"                (string,"
             "required) The ulord address to send"
