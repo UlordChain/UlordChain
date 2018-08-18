@@ -2018,6 +2018,7 @@ bool CMasternodeCenter::RequestLicense(CMasternode &mn)
             mn.certifyPeriod = mstnode._licperiod;
             mn.certificate = mstnode._licence;
             mn.certifyVersion = mstnode._licversion;
+            SaveLicense(mn);
             LogPrintf("CMasternodeCenter::RequestLicense: MasterNode %s check success\n", mstquest._txid);
             CloseSocket(hSocket);
             return true;
@@ -2111,11 +2112,31 @@ bool CMasternodeCenter::RequestCenterKey()
         }
         CloseSocket(hSocket);
         LogPrintf("CMasternodeCenter::RequestCenterKey:Recive total %d Key&version\n", mstres._num);
+        SavePubkey();
         return true;
     }
     CloseSocket(hSocket);
     LogPrintf("CMasternodeCenter::RequestCenterKey:Could't connect to center server\n");
     return false;
+}
+
+void CMasternodeCenter::SavePubkey()
+{
+    char key[20];
+    for(auto & var : mapVersionPubkey_)
+    {
+        memset(key, 0, sizeof(key));
+        sprintf(key, "uctpubkey%d", var.first);
+        write_profile_string_nosection(std::string(key), var.second, GetConfigFile().string());
+    }
+    
+}
+
+void CMasternodeCenter::SaveLicense(const CMasternode &mn)
+{
+    write_profile_string_nosection("certificate", mn.certificate, GetConfigFile().string());
+    write_profile_string_nosection("certifiperiod", std::to_string(mn.certifyPeriod), GetConfigFile().string());
+    write_profile_string_nosection("certifiversion", std::to_string(mn.certifyVersion), GetConfigFile().string());
 }
 
 bool CMasternodeCenter::ReadLicense(CMasternode &mn)
