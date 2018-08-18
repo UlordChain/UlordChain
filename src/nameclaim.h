@@ -18,6 +18,13 @@
 // Scripts exceeding this size are rejected in CheckTransaction in main.cpp
 #define MAX_CLAIM_NAME_SIZE 255
 
+// ACCOUNTNAME CRATE RETURN CODE
+#define STAND_SCRIPT_OR_SPECIAL_SCRIPT 1
+#define ACCOUNTNAME_EXISTS 2
+#define ACCOUNTNAME_ILLEGAL	 3
+#define ACCOUNTNAME_INVAILDCASH	 4
+
+
 CScript ClaimNameScript(std::string name, std::string value);
 CScript SupportClaimScript(std::string name, uint160 claimId);
 CScript UpdateClaimScript(std::string name, uint160 claimId, std::string value); 
@@ -38,11 +45,11 @@ size_t ClaimScriptSize(const CScript& scriptIn);
 size_t ClaimNameSize(const CScript& scriptIn); 
 
 /*Used as Verify that the account name is valid*/
-CScript VerifyClaimScriptPrefix(const CScript& scriptIn,const CTxOut& txout);
-CScript VerifyClaimScriptPrefix(const CScript& scriptIn, int& op,const CTxOut& txout);
-bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector<unsigned char> >& vvchParams,const CTxOut& txout);
-bool VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector<unsigned char> >& vvchParams, CScript::const_iterator& pc,const CTxOut& txout);
-
+int VerifyClaimScriptPrefix(const CScript& scriptIn,const CTxOut& txout);
+int VerifyClaimScriptPrefix(const CScript& scriptIn, int& op,const CTxOut& txout);
+int VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector<unsigned char> >& vvchParams,const CTxOut& txout);
+int VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector<unsigned char> >& vvchParams, CScript::const_iterator& pc,const CTxOut& txout);
+bool VerifyAccountName(const CTransaction& tx);
 
 
 #endif // BITCOIN_NAMECLAIM_H

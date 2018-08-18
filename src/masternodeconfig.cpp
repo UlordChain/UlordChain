@@ -122,9 +122,15 @@ bool CMasternodeConfig::GetMasternodeVin(CTxIn& txinRet,  std::string strTxHash,
         if(masternodeConfig.IsLocalEntry())
         {
             CMasternodeConfig::CMasternodeEntry mne = masternodeConfig.GetLocalEntry();
-            int index = atoi(mne.getOutputIndex().c_str());
+            unsigned int index = atoi(mne.getOutputIndex().c_str());
             uint256 txHash = uint256S(mne.getTxHash());
             txinRet = CTxIn(txHash, index);
+            CCoins coins;
+            if(!pcoinsTip->GetCoins(txHash, coins) || index >=coins.vout.size() || coins.vout[index].IsNull())
+            {
+                LogPrintf("CMasternodeBroadcast::getPubKeyId -- masternode collateraloutputtxid or collateraloutputindex is error,please check it\n");
+                return false;
+            }
             return true;
         }
         LogPrintf("CMasternodeConfig::GetMasternodeVin -- Could not locate the masternode configure vin, please check the ulord.conf\n");
