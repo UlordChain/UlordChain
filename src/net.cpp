@@ -1772,6 +1772,7 @@ bool OpenNetworkConnection(const CAddress& addrConnect, CSemaphoreGrant *grantOu
 }
 
 
+//message process func
 void ThreadMessageHandler()
 {
     boost::mutex condition_mutex;
