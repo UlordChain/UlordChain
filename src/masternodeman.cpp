@@ -944,10 +944,10 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
         if(mnp.CheckAndUpdate(pmn, false, nDos)) return;
 
 		// check the certificate and make sure if the masternode had registered on the Ulord center server
-		if(!mnodecenter.VerifyLicense(mnp))
+		if(!mnodecenter.VerifyLicense(pmn))
 		{
 			if(pmn)
-				pmn->nActiveState = pmn->MASTERNODE_CERTIFICATE_FAILED;
+				pmn->nActiveState = pmn->MASTERNODE_NO_REGISTERED;
 			
 			LogPrintf("MNPING -- Verify license failed masternode=%s\n",mnp.vin.prevout.ToStringShort());
 			return ;

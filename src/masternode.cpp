@@ -319,7 +319,7 @@ void CMasternode::Check(bool fForce)
 		//CMasternode mn(*this);
 		if(!mnodecenter.CheckLicensePeriod(*this))
 		{
-			nActiveState = MASTERNODE_CERTIFICATE_FAILED;
+			nActiveState = MASTERNODE_NO_REGISTERED;
 			LogPrint("masternode", "CMasternode::Check -- Masternode %s is in %s state now. Reasean time is %ld, license period is %ld\n",
                         vin.prevout.ToStringShort(),
                         GetStateString(),
@@ -379,7 +379,6 @@ std::string CMasternode::StateToString(int nStateIn)
         case MASTERNODE_NEW_START_REQUIRED:     return "NEW_START_REQUIRED";
         case MASTERNODE_POSE_BAN:               return "POSE_BAN";
 		case MASTERNODE_NO_REGISTERED:          return "NO_REGISTERED";
-		case MASTERNODE_CERTIFICATE_FAILED:		return "CERTIFICATE_FAILD";
         default:                                return "UNKNOWN";
     }
 }
@@ -755,7 +754,7 @@ bool CMasternodeBroadcast::CheckOutpoint(int& nDos)
     // check if it is registered on the Ulord center server
     if(!mnodecenter.VerifyLicense(*this))
     {
-        nActiveState = MASTERNODE_CERTIFICATE_FAILED;
+        nActiveState = MASTERNODE_NO_REGISTERED;
         LogPrintf("CMasternodeBroadcast::CheckOutpoint -- Failed to check Masternode certificate, masternode=%s\n", vin.prevout.ToStringShort());
         return false;
     }
