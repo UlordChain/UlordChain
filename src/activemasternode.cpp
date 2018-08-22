@@ -233,7 +233,7 @@ LogPrintf("GetLocal() = %c, IsValidNetAddr = %c \n", GetLocal(service, &pnode->a
 #endif // ENABLE_WALLET
 #endif
 
-	if(masternodeConfig.IsLocalEntry())
+	if(masternodeConfig.GetMasternodeVin(vin))
 	{
 		eType = MASTERNODE_LOCAL;
 	}
@@ -261,6 +261,12 @@ void CActiveMasternode::ManageStateRemote()
             LogPrintf("CActiveMasternode::ManageStateRemote -- %s: %s\n", GetStateString(), strNotCapableReason);
             return;
         }
+        if(vin != infoMn.vin) {
+            nState = ACTIVE_MASTERNODE_NOT_CAPABLE;
+            strNotCapableReason = "Specified collateraloutputtxid doesn't match our external vin.";
+            LogPrintf("CActiveMasternode::ManageStateRemote -- %s: %s\n", GetStateString(), strNotCapableReason);
+            return;
+        }
         if(!CMasternode::IsValidStateForAutoStart(infoMn.nActiveState)) {
             nState = ACTIVE_MASTERNODE_NOT_CAPABLE;
             strNotCapableReason = strprintf("Masternode in %s state", CMasternode::StateToString(infoMn.nActiveState));
@@ -282,7 +288,7 @@ void CActiveMasternode::ManageStateRemote()
     }
 }
 
-#ifdef ENABLE_WALLET
+
 void CActiveMasternode::ManageStateLocal()
 {
     LogPrint("masternode", "CActiveMasternode::ManageStateLocal -- status = %s, type = %s, pinger enabled = %d\n", GetStatus(), GetTypeString(), fPingerEnabled);
@@ -343,4 +349,4 @@ void CActiveMasternode::ManageStateLocal()
         mnb.Relay();
     }
 }
-#endif // ENABLE_WALLET
+
