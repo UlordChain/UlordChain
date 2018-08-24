@@ -1003,7 +1003,7 @@ UniValue uploadmessage(const UniValue& params, bool fHelp)
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     std::string sMessage = params[0].get_str();
-    if (sMessage.size() <= 0 || !IsHex(sMessage))
+    if (sMessage.size() <= 0)
         throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid hexmessage");
     if (sMessage.size() > (2*MAX_MESSAGE_SIZE))
         throw JSONRPCError(RPC_INVALID_PARAMETER,"Message is too much for send");           
