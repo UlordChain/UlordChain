@@ -1885,8 +1885,8 @@ bool CMasternodeCenter::InitCenter(std::string strError)
     char uctPubkeyVersion[20];
     int licenseVersion = 1;
     licenseVersion_ = licenseVersion;
-    mapVersionPubkey_.insert(std::pair<int, std::string>(licenseVersion, GetArg("-uctpubkey1", "03e867486ebaeeadda25f1e47612cdaad3384af49fa1242c5821b424937f8ec1f5")));
-    LogPrintf("Load ucenter pubkey <%d: %s>\n", licenseVersion, GetArg("-uctpubkey1", "03e867486ebaeeadda25f1e47612cdaad3384af49fa1242c5821b424937f8ec1f5"));
+    mapVersionPubkey_.insert(std::pair<int, std::string>(licenseVersion, GetArg("-uctpubkey1", "03e947099921ee170da47a7acf48143c624d33950af362fc39a734b1b3188ec1e3")));
+    LogPrintf("Load ucenter pubkey <%d: %s>\n", licenseVersion, GetArg("-uctpubkey1", "03e947099921ee170da47a7acf48143c624d33950af362fc39a734b1b3188ec1e3"));
     std::string strUctPubkey;
     licenseVersion++;
     while(true)
