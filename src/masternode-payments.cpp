@@ -576,7 +576,11 @@ bool CMasternodeBlockPayees::IsTransactionValid(const CTransaction& txNew)
 
     // if we don't have at least MNPAYMENTS_SIGNATURES_REQUIRED signatures on a payee, approve whichever is the longest chain
     if(nMaxSignatures < MNPAYMENTS_SIGNATURES_REQUIRED) return true;
-
+    if(CSuperblockManager::IsSuperblockTriggered(nBlockHeight))
+    {
+        return true;
+    }
+        
     BOOST_FOREACH(CMasternodePayee& payee, vecPayees) {
         if (payee.GetVoteCount() >= MNPAYMENTS_SIGNATURES_REQUIRED) {
             BOOST_FOREACH(CTxOut txout, txNew.vout) {
