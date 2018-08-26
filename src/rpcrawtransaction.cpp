@@ -1054,7 +1054,49 @@ UniValue crosschainparticipate(const UniValue &params, bool fHelp)
 	CScript contract =  CScript() << OP_IF << OP_RIPEMD160 << ToByteVector(secret_hash) << OP_EQUALVERIFY << OP_DUP << OP_HASH160 \
 	<< ToByteVector(addr) << OP_ELSE << l_time << OP_CHECKLOCKTIMEVERIFY << OP_DROP << OP_DUP << OP_HASH160\
 	<< ToByteVector(refund) << OP_ENDIF << OP_EQUALVERIFY << OP_CHECKSIG;
-    UniValue result(UniValue::VOBJ);
+
+	// The build script is 160 hashes.
+	CScriptID contractP2SH = CScriptID(contract);
+	CBitcoinAddress contract_address;
+	contract_address.Set(contractP2SH);	
+	// Start building the lock script for the p2sh type.
+	CScript contractP2SHPkScript = GetScriptForDestination(CTxDestination(contractP2SH));
+
+	// The amount is locked in the redemption script.
+	 vector<CRecipient> vecSend;
+    int nChangePosRet = -1;
+    CRecipient recipient = {contractP2SHPkScript,nAmount,false};
+    vecSend.push_back(recipient);
+
+	// Start building a deal
+	CReserveKey reservekey(pwalletMain);
+	CAmount nFeeRequired = 0;
+    std::string strError;
+	CWalletTx wtxNew;
+	if ( !pwalletMain->CreateTransaction(vecSend,wtxNew,reservekey,nFeeRequired,nChangePosRet,strError))
+	{
+		if ( nAmount + nFeeRequired > pwalletMain->GetBalance() )
+		{
+			strError = strprintf("Error: This transaction requires a transaction fee of at leasst %s because if its amount, complex, or use of recently received funds!",FormatMoney(nFeeRequired));
+		}
+		LogPrintf("%s() : %s\n",__func__,strError);
+		throw JSONRPCError(RPC_WALLET_ERROR,strError);
+	}
+		
+	if ( !pwalletMain->CommitTransaction(wtxNew,reservekey) )
+		throw JSONRPCError(RPC_WALLET_ERROR,"Error: The transaction was rejected! This might hapen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.");
+
+	CBitcoinAddress refund_address;
+	refund_address.Set(CKeyID(refund));
+
+
+	UniValue result(UniValue::VOBJ);
+	result.push_back(Pair("refund_address",refund_address.ToString()));
+	result.push_back(Pair("hexstring",wtxNew.GetHash().GetHex()));
+	result.push_back(Pair("hex",EncodeHexTx(wtxNew)));
+	result.push_back(Pair("Contract(address) ",contract_address.ToString()));
+	result.push_back(Pair("contract",HexStr(contract.begin(),contract.end())));
+	
     return result;
 
 }
