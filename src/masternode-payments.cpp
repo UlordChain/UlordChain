@@ -580,6 +580,12 @@ bool CMasternodeBlockPayees::IsTransactionValid(const CTransaction& txNew)
     {
         return true;
     }
+    const Consensus::Params &cp = Params().GetConsensus();
+    if (nBlockHeight < cp.nMasternodePaymentsStartBlock)
+    {
+    	
+    	return true;
+    }	
         
     BOOST_FOREACH(CMasternodePayee& payee, vecPayees) {
         if (payee.GetVoteCount() >= MNPAYMENTS_SIGNATURES_REQUIRED) {
