@@ -3039,23 +3039,53 @@ bool CWallet::ConvertList(std::vector<CTxIn> vecTxIn, std::vector<CAmount>& vecA
 bool CWallet::select_coin_from_addr(
          const std::vector<COutput> &vAvailableCoins, const CAmount &nTargetValue,
          std::set<std::pair<const CWalletTx *, unsigned int>> &setCoinsRet,
-         CAmount &nValueRet) const
+         CAmount &nValueRet, const CCoinControl* coinControl) const
 {
     std::vector<COutput> vCoins(vAvailableCoins);
 
     // return all selected outpus, used for send from specified address to given address.
-    for (const COutput &out : vCoins)
-    {
-        if (!out.fSpendable)
-        {
-            continue;
-        }
+    set<pair<const CWalletTx*, uint32_t> > setPresetCoins;
+    CAmount nValueFromPresetInputs = 0;
 
-        nValueRet += out.tx->vout[out.i].nValue;
-        setCoinsRet.insert(std::make_pair(out.tx, out.i));
+    std::vector<COutPoint> vPresetInputs;
+    if (coinControl)
+        coinControl->ListSelected(vPresetInputs);
+    BOOST_FOREACH(const COutPoint& outpoint, vPresetInputs)
+    {
+        map<uint256, CWalletTx>::const_iterator it = mapWallet.find(outpoint.hash);
+        if (it != mapWallet.end())
+        {
+            const CWalletTx* pcoin = &it->second;
+            // Clearly invalid input, fail
+            if (pcoin->vout.size() <= outpoint.n)
+                return false;
+            nValueFromPresetInputs += pcoin->vout[outpoint.n].nValue;
+            setPresetCoins.insert(make_pair(pcoin, outpoint.n));
+        } else
+            return false; // TODO: Allow non-wallet inputs
     }
 
-    return (nValueRet >= nTargetValue);
+    // remove preset inputs from vCoins
+    for (vector<COutput>::iterator it = vCoins.begin(); it != vCoins.end() && coinControl && coinControl->HasSelected();)
+    {
+        if (setPresetCoins.count(make_pair(it->tx, it->i)))
+            it = vCoins.erase(it);
+        else
+            ++it;
+    }
+
+    bool res = nTargetValue <= nValueFromPresetInputs ||
+        SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 1, 6, vCoins, setCoinsRet, nValueRet) ||
+        SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 1, 1, vCoins, setCoinsRet, nValueRet) ||
+        (bSpendZeroConfChange && SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 0, 1, vCoins, setCoinsRet, nValueRet));
+
+    // because SelectCoinsMinConf clears the setCoinsRet, we now add the possible inputs to the coinset
+    setCoinsRet.insert(setPresetCoins.begin(), setPresetCoins.end());
+
+    // add preset inputs to the total value selected
+    nValueRet += nValueFromPresetInputs;
+
+    return res;
 }
 
 bool CWallet::CreateTheAddrTrans(const vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet,
@@ -3180,7 +3210,7 @@ bool CWallet::CreateTheAddrTrans(const vector<CRecipient>& vecSend, CWalletTx& w
                 CAmount nValueIn = 0;
 
 		        const std::string ct = std::to_string(Params().GetConsensus().colleteral);
-                if (!select_coin_from_addr(vAvailableCoins,  nValueToSelect, setCoins, nValueIn))
+                if (!select_coin_from_addr(vAvailableCoins,  nValueToSelect, setCoins, nValueIn, coinControl))
                 {
                     strFailReason = _("Insufficient funds");
                     return false;

@@ -527,7 +527,7 @@ private:
             const std::vector<COutput> &vAvailableCoins,
             const CAmount &nTargetValue,
             std::set<std::pair<const CWalletTx *, unsigned int>> &setCoinsRet,
-            CAmount &nValueRet) const;
+            CAmount &nValueRet, const CCoinControl* coinControl) const;
 
     CWalletDB *pwalletdbEncryption;
 
