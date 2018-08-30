@@ -117,7 +117,7 @@ bool AppInit(int argc, char* argv[])
             return false;
         }
 
-        // parse masternode.conf
+        // parse masternode configure
         std::string strErr;
         if(!masternodeConfig.read(strErr)) {
             fprintf(stderr,"Error reading masternode configuration file: %s\n", strErr.c_str());

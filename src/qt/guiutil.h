@@ -117,9 +117,6 @@ namespace GUIUtil
     // Open ulord.conf
     void openConfigfile();	
 
-    // Open masternode.conf
-	
-
     // Browse backup folder
     void showBackups();
 

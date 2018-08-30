@@ -233,7 +233,6 @@ private Q_SLOTS:
 
     /** Open external (default) editor with ulord.conf */
     void showConfEditor();
-    /** Open external (default) editor with masternode.conf */
 
     /** Show folder with wallet backups in default file browser */
     void showBackups();
