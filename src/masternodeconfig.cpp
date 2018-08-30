@@ -116,7 +116,7 @@ bool CMasternodeConfig::AvailableCoins(uint256 txHash, unsigned int index)
     CCoins coins;
     if(!pcoinsTip->GetCoins(txHash, coins) || index >=coins.vout.size() || coins.vout[index].IsNull())
     {
-        LogPrintf("CMasternodeConfig::AvailableCoins -- masternode collateraloutputtxid or collateraloutputindex is error,please check it\n");
+        LogPrintf("CMasternodeConfig::AvailableCoins -- masternode collateral UTXO has already spent,please check it\n");
         return false;
     }
 
