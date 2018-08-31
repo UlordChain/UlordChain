@@ -88,7 +88,11 @@ UniValue getpoolinfo(const UniValue& params, bool fHelp)
     return obj;
 }
 
-
+typedef std::pair<std::string, int> WINPAIR;
+bool cmp_by_value(const WINPAIR& lhs, const WINPAIR& rhs)
+{
+	return lhs.second == rhs.second ? lhs.first < rhs.first : lhs.second > rhs.second;
+}
 UniValue masternode(const UniValue& params, bool fHelp)
 {
     std::string strCommand;
@@ -433,6 +437,27 @@ UniValue masternode(const UniValue& params, bool fHelp)
 
         if (params.size() == 3) {
             strFilter = params[2].get_str();
+			if (params.size() == 3) {
+            	strFilter = params[2].get_str();
+            	if(strFilter == "status" && nLast == 0) {
+                	UniValue obj(UniValue::VOBJ);
+                	std::map<std::string, int> mapStatus;
+                	for(int i = 57600; i < nHeight + 10; i++)
+                	{
+                   		std::string strPayment = GetRequiredPaymentsString(i, false);
+                   		if(mapStatus.count(strPayment) == 0)
+                       		mapStatus.insert(std::pair<std::string, int>(strPayment, 1));
+                   		else
+                   	    	mapStatus[strPayment]++;
+                	}
+					std::vector<WINPAIR>vecStatus(mapStatus.begin(), mapStatus.end());
+					std::sort(vecStatus.begin(), vecStatus.end(), cmp_by_value);
+                	for(auto i:vecStatus)
+                   		obj.push_back(Pair(i.first, i.second));
+					obj.push_back(Pair("Total", vecStatus.size()));
+                	return obj;
+            	}
+        	}
         }
 
         if (params.size() > 3)

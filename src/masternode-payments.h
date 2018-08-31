@@ -36,7 +36,7 @@ extern CMasternodePayments mnpayments;
 bool IsBlockValueValid(const CBlock& block, int nBlockHeight, CAmount blockReward, std::string &strErrorRet);
 bool IsBlockPayeeValid(const CTransaction& txNew, int nBlockHeight, CAmount blockReward);
 void FillBlockPayments(CMutableTransaction& txNew, int nBlockHeight, CAmount blockReward, CTxOut& txoutMasternodeRet, std::vector<CTxOut>& voutSuperblockRet,CTxOut&  txoutFound);
-std::string GetRequiredPaymentsString(int nBlockHeight);
+std::string GetRequiredPaymentsString(int nBlockHeight, bool bIsWithVote=true);
 
 class CMasternodePayee
 {
@@ -102,7 +102,7 @@ public:
 
     bool IsTransactionValid(const CTransaction& txNew);
 
-    std::string GetRequiredPaymentsString();
+    std::string GetRequiredPaymentsString(bool bIsWithVote=true);
 };
 
 // vote for the winning payment
@@ -208,7 +208,7 @@ public:
 
     int GetMinMasternodePaymentsProto();
     void ProcessMessage(CNode* pfrom, std::string& strCommand, CDataStream& vRecv);
-    std::string GetRequiredPaymentsString(int nBlockHeight);
+    std::string GetRequiredPaymentsString(int nBlockHeight, bool bIsWithVote=true);
     void FillBlockPayee(CMutableTransaction& txNew, int nBlockHeight, CAmount blockReward, CTxOut& txoutMasternodeRet);
     std::string ToString() const;
 

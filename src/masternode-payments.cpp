@@ -241,7 +241,7 @@ void FillBlockPayments(CMutableTransaction& txNew, int nBlockHeight, CAmount blo
     }
 }
 
-std::string GetRequiredPaymentsString(int nBlockHeight)
+std::string GetRequiredPaymentsString(int nBlockHeight, bool bIsWithVote)
 {
     // IF WE HAVE A ACTIVATED TRIGGER FOR THIS HEIGHT - IT IS A SUPERBLOCK, GET THE REQUIRED PAYEES
     if(CSuperblockManager::IsSuperblockVoteTriggered(nBlockHeight)) {
@@ -249,7 +249,7 @@ std::string GetRequiredPaymentsString(int nBlockHeight)
     }
 
     // OTHERWISE, PAY MASTERNODE
-    return mnpayments.GetRequiredPaymentsString(nBlockHeight);
+    return mnpayments.GetRequiredPaymentsString(nBlockHeight, bIsWithVote);
 }
 
 void CMasternodePayments::Clear()
@@ -612,11 +612,12 @@ bool CMasternodeBlockPayees::IsTransactionValid(const CTransaction& txNew)
     return false;
 }
 
-std::string CMasternodeBlockPayees::GetRequiredPaymentsString()
+std::string CMasternodeBlockPayees::GetRequiredPaymentsString(bool bIsWithVote)
 {
     LOCK(cs_vecPayees);
 
     std::string strRequiredPayments = "Unknown";
+	int nVotes = 0;
 
     BOOST_FOREACH(CMasternodePayee& payee, vecPayees)
     {
@@ -625,21 +626,33 @@ std::string CMasternodeBlockPayees::GetRequiredPaymentsString()
         CBitcoinAddress address2(address1);
 
         if (strRequiredPayments != "Unknown") {
-            strRequiredPayments += ", " + address2.ToString() + ":" + boost::lexical_cast<std::string>(payee.GetVoteCount());
+			if(bIsWithVote)
+            	strRequiredPayments += ", " + address2.ToString() + ":" + boost::lexical_cast<std::string>(payee.GetVoteCount());
+			else {
+				if(payee.GetVoteCount() > nVotes) {
+					strRequiredPayments = address2.ToString();
+					nVotes = payee.GetVoteCount();
+				}
+			}
         } else {
-            strRequiredPayments = address2.ToString() + ":" + boost::lexical_cast<std::string>(payee.GetVoteCount());
+			if(bIsWithVote)
+            	strRequiredPayments = address2.ToString() + ":" + boost::lexical_cast<std::string>(payee.GetVoteCount());
+			else {
+				strRequiredPayments = address2.ToString();
+				nVotes = payee.GetVoteCount();
+			}
         }
     }
 
     return strRequiredPayments;
 }
 
-std::string CMasternodePayments::GetRequiredPaymentsString(int nBlockHeight)
+std::string CMasternodePayments::GetRequiredPaymentsString(int nBlockHeight, bool bIsWithVote)
 {
     LOCK(cs_mapMasternodeBlocks);
 
     if(mapMasternodeBlocks.count(nBlockHeight)){
-        return mapMasternodeBlocks[nBlockHeight].GetRequiredPaymentsString();
+        return mapMasternodeBlocks[nBlockHeight].GetRequiredPaymentsString(bIsWithVote);
     }
 
     return "Unknown";
