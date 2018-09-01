@@ -3174,7 +3174,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
     // TODO: resync data (both ways?) and try to reprocess this block later.
     CAmount blockReward = nFees + GetBlockSubsidy(pindex->nHeight, chainparams.GetConsensus());
     std::string strError = "";
-    if (!IsBlockValueValid(block, pindex->nHeight, blockReward, strError)) {
+    if (!IsBlockValueValid(block, pindex->nHeight,nFees, blockReward, strError)) {
         return state.DoS(0, error("ConnectBlock(UT): %s", strError), REJECT_INVALID, "bad-cb-amount");
     }
 
