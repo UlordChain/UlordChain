@@ -463,7 +463,6 @@ CTxDestination CMasternode::GetPayeeDestination()
 {
 	if(payeeAddress.IsValid())
 		return payeeAddress.Get();
-	LOCK(cs_main);
     CTransaction tx;
     uint256 hashBlock;
     txnouttype type;
