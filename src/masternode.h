@@ -198,6 +198,7 @@ public:
     int nPoSeBanHeight;
     bool fAllowMixingTx;
     bool fUnitTest;
+	CBitcoinAddress payeeAddress;
 
     // KEEP TRACK OF GOVERNANCE ITEMS EACH MASTERNODE HAS VOTE UPON FOR RECALCULATION
     std::map<uint256, int> mapGovernanceObjectsVotedOn;

@@ -40,7 +40,8 @@ CMasternode::CMasternode() :
     nPoSeBanScore(0),
     nPoSeBanHeight(0),
     fAllowMixingTx(true),
-    fUnitTest(false)
+    fUnitTest(false),
+	payeeAddress()
 {}
 
 CMasternode::CMasternode(CService addrNew, CTxIn vinNew, CPubKey pubKeyCollateralAddressNew, CPubKey pubKeyMasternodeNew, int nProtocolVersionIn) :
@@ -66,7 +67,8 @@ CMasternode::CMasternode(CService addrNew, CTxIn vinNew, CPubKey pubKeyCollatera
     nPoSeBanScore(0),
     nPoSeBanHeight(0),
     fAllowMixingTx(true),
-    fUnitTest(false)
+    fUnitTest(false),
+	payeeAddress()
 {}
 
 CMasternode::CMasternode(const CMasternode& other) :
@@ -92,7 +94,8 @@ CMasternode::CMasternode(const CMasternode& other) :
     nPoSeBanScore(other.nPoSeBanScore),
     nPoSeBanHeight(other.nPoSeBanHeight),
     fAllowMixingTx(other.fAllowMixingTx),
-    fUnitTest(other.fUnitTest)
+    fUnitTest(other.fUnitTest),
+	payeeAddress(other.payeeAddress)
 {}
 
 CMasternode::CMasternode(const CMasternodeBroadcast& mnb) :
@@ -118,7 +121,8 @@ CMasternode::CMasternode(const CMasternodeBroadcast& mnb) :
     nPoSeBanScore(0),
     nPoSeBanHeight(0),
     fAllowMixingTx(true),
-    fUnitTest(false)
+    fUnitTest(false),
+	payeeAddress()
 {}
 
 //
@@ -457,6 +461,9 @@ void CMasternode::UpdateLastPaid(const CBlockIndex *pindex, int nMaxBlocksToScan
 
 CTxDestination CMasternode::GetPayeeDestination()
 {
+	if(payeeAddress.IsValid())
+		return payeeAddress.Get();
+	LOCK(cs_main);
     CTransaction tx;
     uint256 hashBlock;
     txnouttype type;
@@ -468,13 +475,15 @@ CTxDestination CMasternode::GetPayeeDestination()
         {
             if(coin.nValue != Params().GetConsensus().colleteral) {
                 if (ExtractDestinations(coin.scriptPubKey, type, addresses, nRequired)) {
-                    if(addresses.size() == 1)
-                        return addresses[0];
+                    if(addresses.size() == 1) {
+                        payeeAddress.Set(addresses[0]);
+						break;
+					}
                 }
             }
         }
     }
-    return CNoDestination();
+    return payeeAddress.Get();
 }
 
 #ifdef ENABLE_WALLET
