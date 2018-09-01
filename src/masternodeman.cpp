@@ -1832,7 +1832,7 @@ bool CMstNodeData::VerifyLicense()
                     _licence.c_str());
         return false;
     }
-    LogPrintf(" verify succes\n");
+    LogPrintf(" verify success\n");
     return true;
 }
 
