@@ -1232,10 +1232,8 @@ UniValue sendfromAtoB(const UniValue &params, bool fHelp)
             "to which you're sending the "
             "transaction. This is not part of the transaction, just kept in your "
             "wallet.\n"
-            "6. subtractfeefromamount   (boolean, optional, default=false) The "
-            "fee will be deducted from the amount being sent.\n"
-            "The recipient will receive less "
-            "btcnanos than you enter in the amount filed.\n"
+            "6. subtractfeefromamount   (boolean, optional, default==false) If set to True, receiver should pay the fee, and the "
+            "fee will be paid from the amount.\n"
             "nResult:\n"
             "\"txid\"                   (string) The transaction id.\n"
             "\nExamples:\n" +
@@ -1273,7 +1271,7 @@ UniValue sendfromAtoB(const UniValue &params, bool fHelp)
         wtx.mapValue["to"] = params[4].get_str();
     }
 
-    bool fSubtractFeeFromAmount = true;
+    bool fSubtractFeeFromAmount = false;
     if (params.size() > 5) {
         fSubtractFeeFromAmount = params[5].get_bool();
     }
