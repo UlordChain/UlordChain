@@ -32,7 +32,7 @@ CCriticalSection cs_mapMasternodePaymentVotes;
 *   - When non-superblocks are detected, the normal schedule should be maintained
 */
 
-bool IsBlockValueValid(const CBlock& block, int nBlockHeight, CAmount blockReward, std::string &strErrorRet)
+bool IsBlockValueValid(const CBlock& block, int nBlockHeight, CAmount nFees,CAmount blockReward, std::string &strErrorRet)
 {
     strErrorRet = "";
 
@@ -73,8 +73,9 @@ bool IsBlockValueValid(const CBlock& block, int nBlockHeight, CAmount blockRewar
     // superblocks started
 
     CAmount nSuperblockMaxValue = CSuperblock::GetPaymentsLimit(nBlockHeight);
-    bool isSuperblockMaxValueMet = (block.vtx[0].GetValueOut() <= nSuperblockMaxValue);
-
+    bool isSuperblockMaxValueMet = (block.vtx[0].GetValueOut() <= (nSuperblockMaxValue+nFees));  
+	                        // (block.vtx[0].GetValueOut() <= nSuperblockMaxValue);
+                                   
 	if(CSuperblock::IsValidBlockHeight(nBlockHeight)) {
 		if(CSuperblock::IsFounderValid( block.vtx[0], nBlockHeight, blockReward )==false)
 		{
