@@ -46,7 +46,7 @@
 #include "masternode-payments.h"
 #include "masternode-sync.h"
 #include "masternodeman.h"
-
+#include "governance-classes.h"
 #include <sstream>
 #include <regex>
 
