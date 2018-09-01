@@ -41,7 +41,7 @@ CMasternode::CMasternode() :
     nPoSeBanHeight(0),
     fAllowMixingTx(true),
     fUnitTest(false),
-	payeeAddress()
+    payeeAddress()
 {}
 
 CMasternode::CMasternode(CService addrNew, CTxIn vinNew, CPubKey pubKeyCollateralAddressNew, CPubKey pubKeyMasternodeNew, int nProtocolVersionIn) :
@@ -67,9 +67,10 @@ CMasternode::CMasternode(CService addrNew, CTxIn vinNew, CPubKey pubKeyCollatera
     nPoSeBanScore(0),
     nPoSeBanHeight(0),
     fAllowMixingTx(true),
-    fUnitTest(false),
-	payeeAddress()
-{}
+    fUnitTest(false)
+{
+    GetPayeeDestination();
+}
 
 CMasternode::CMasternode(const CMasternode& other) :
     vin(other.vin),
@@ -95,7 +96,7 @@ CMasternode::CMasternode(const CMasternode& other) :
     nPoSeBanHeight(other.nPoSeBanHeight),
     fAllowMixingTx(other.fAllowMixingTx),
     fUnitTest(other.fUnitTest),
-	payeeAddress(other.payeeAddress)
+    payeeAddress(other.payeeAddress)
 {}
 
 CMasternode::CMasternode(const CMasternodeBroadcast& mnb) :
@@ -121,9 +122,10 @@ CMasternode::CMasternode(const CMasternodeBroadcast& mnb) :
     nPoSeBanScore(0),
     nPoSeBanHeight(0),
     fAllowMixingTx(true),
-    fUnitTest(false),
-	payeeAddress()
-{}
+    fUnitTest(false)
+{
+    GetPayeeDestination();
+}
 
 //
 // When a new masternode broadcast is sent, update our information
