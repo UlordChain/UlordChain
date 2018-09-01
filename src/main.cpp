@@ -1817,6 +1817,11 @@ CAmount GetBudget(const int height, const Consensus::Params &cp)
 {
     const int beg = cp.nSuperblockStartBlock;
     const int intval = cp.nSubsidyHalvingInterval;
+
+    if(!CSuperblock::IsValidBlockHeight( height))
+    {
+  	return 0;	
+    } 
 	
     if (height < beg)		     // before starting
     {
