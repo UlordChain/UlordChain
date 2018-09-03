@@ -32,6 +32,13 @@
 
 using namespace std;
 
+UniValue gettotalsubsidy(const UniValue& params)
+{
+    CAmount total = 0;
+    for (int pos = 0; pos <= chainActive.Height(); pos++)
+        total += GetBlockSubsidy(pos, Params().GetConsensus());
+    return ValueFromAmount(total);
+}
 /**
  * @note Do not add or change anything in the information returned by this
  * method. `getinfo` exists for backwards-compatibility only. It combines
@@ -112,11 +119,7 @@ UniValue getinfo(const UniValue& params, bool fHelp)
     obj.push_back(Pair("paytxfee",      ValueFromAmount(payTxFee.GetFeePerK())));
 #endif
     obj.push_back(Pair("relayfee",      ValueFromAmount(::minRelayTxFee.GetFeePerK())));
-
-    CAmount total = 0;
-    for (int pos = 0; pos <= chainActive.Height(); pos++)
-        total += GetBlockSubsidy(pos, Params().GetConsensus());
-    obj.push_back(Pair("totalsubsidy",      ValueFromAmount(total)));
+    obj.push_back(Pair("totalsubsidy",      gettotalsubsidy(params)));
     obj.push_back(Pair("errors",        GetWarnings("statusbar")));
     return obj;
 }
