@@ -54,7 +54,7 @@ UniValue gettotalsubsidy(const UniValue& params)
  **/
 UniValue getinfo(const UniValue& params, bool fHelp)
 {
-    if (fHelp || params.size() != 0)
+    if (fHelp || params.size() >1)
         throw runtime_error(
             "getinfo\n"
             "getinfo subsidy\n"
@@ -85,9 +85,9 @@ UniValue getinfo(const UniValue& params, bool fHelp)
         );
 
     string str_param;
-    if(params.size() >1)
+    if(params.size() ==1)
     {
-      str_param  = params[1].get_str();
+      str_param  = params[0].get_str();
     }
 
 #ifdef ENABLE_WALLET
