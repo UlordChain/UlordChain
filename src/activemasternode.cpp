@@ -104,8 +104,10 @@ bool CActiveMasternode::SendMasternodePing()
     }
 
     if(!mnodeman.Has(vin)) {
-        strNotCapableReason = "Masternode not in masternode list";
-        nState = ACTIVE_MASTERNODE_NOT_CAPABLE;
+        if(nState != ACTIVE_MASTERNODE_NOT_CAPABLE) {
+            strNotCapableReason = "Masternode not in masternode list";
+            nState = ACTIVE_MASTERNODE_NOT_CAPABLE;
+        }
         LogPrintf("CActiveMasternode::SendMasternodePing -- %s: %s\n", GetStateString(), strNotCapableReason);
         return false;
     }
@@ -329,7 +331,7 @@ void CActiveMasternode::ManageStateLocal()
         {
             nState = ACTIVE_MASTERNODE_NOT_CAPABLE;
             strNotCapableReason = strprintf(_("%s didn't registered on Ulord Center"), mnb.vin.prevout.ToStringShort());
-            LogPrintf("CMasternodeBroadcast::ManageStateLocal -- Didn't registered on Ulord Center, masternode=%s\n", mnb.vin.prevout.ToStringShort());
+            LogPrintf("CActiveMasternode::ManageStateLocal -- Didn't registered on Ulord Center, masternode=%s\n", mnb.vin.prevout.ToStringShort());
             return;
         }
         //mnb.certifyPeriod = mn.certifyPeriod;
