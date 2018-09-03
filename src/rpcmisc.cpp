@@ -57,6 +57,7 @@ UniValue getinfo(const UniValue& params, bool fHelp)
     if (fHelp || params.size() != 0)
         throw runtime_error(
             "getinfo\n"
+            "getinfo subsidy\n"
             "Returns an object containing various state info.\n"
             "\nResult:\n"
             "{\n"
@@ -80,8 +81,14 @@ UniValue getinfo(const UniValue& params, bool fHelp)
             "}\n"
             "\nExamples:\n"
             + HelpExampleCli("getinfo", "")
-            + HelpExampleRpc("getinfo", "")
+            + HelpExampleRpc("getinfo", "subsidy")
         );
+
+    string str_param;
+    if(params.size() >1)
+    {
+      str_param  = params[1].get_str();
+    }
 
 #ifdef ENABLE_WALLET
     LOCK2(cs_main, pwalletMain ? &pwalletMain->cs_wallet : NULL);
@@ -119,7 +126,10 @@ UniValue getinfo(const UniValue& params, bool fHelp)
     obj.push_back(Pair("paytxfee",      ValueFromAmount(payTxFee.GetFeePerK())));
 #endif
     obj.push_back(Pair("relayfee",      ValueFromAmount(::minRelayTxFee.GetFeePerK())));
-    obj.push_back(Pair("totalsubsidy",      gettotalsubsidy(params)));
+
+    if(str_param.compare("subsidy"))
+        obj.push_back(Pair("totalsubsidy",      gettotalsubsidy(params)));
+
     obj.push_back(Pair("errors",        GetWarnings("statusbar")));
     return obj;
 }
