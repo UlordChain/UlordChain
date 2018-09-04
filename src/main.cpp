@@ -7429,7 +7429,7 @@ int VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::v
 		
 		if ( txout.nValue != MAX_ACCOUNT_NAME )
 		{
-			throw ACCOUNTNAME_INVAILDCASH;
+			return ACCOUNTNAME_INVAILDCASH;
 		}
 		
 		if (pclaimTrie->getInfoForName(sName, claim))
