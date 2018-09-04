@@ -32,11 +32,21 @@
 
 using namespace std;
 
-UniValue gettotalsubsidy(const UniValue& params)
+UniValue gettotalsubsidy(const int nCount)
 {
+	const Consensus::Params cp = Params().GetConsensus();
     CAmount total = 0;
-    for (int pos = 0; pos <= chainActive.Height(); pos++)
-        total += GetBlockSubsidy(pos, Params().GetConsensus());
+    for (int pos = 0; pos <= nCount; pos++)
+    {
+        total += GetMinerSubsidy(pos, cp);
+        if(pos >= cp.nSuperblockStartBlock && 0 == (pos % cp.nSuperblockCycle)) {
+            total += GetFoundersReward(pos, cp);
+            if(pos >= cp.nMasternodePaymentsStartBlock)
+                total += GetBudget(pos, cp);
+        } else {
+            total += GetMasternodePayment(pos);
+        }
+    }
     return ValueFromAmount(total);
 }
 /**
@@ -127,8 +137,8 @@ UniValue getinfo(const UniValue& params, bool fHelp)
 #endif
     obj.push_back(Pair("relayfee",      ValueFromAmount(::minRelayTxFee.GetFeePerK())));
 
-    if(str_param.compare("subsidy"))
-        obj.push_back(Pair("totalsubsidy",      gettotalsubsidy(params)));
+    if(str_param.compare("subsidy") == 0)
+        obj.push_back(Pair("totalsubsidy",      gettotalsubsidy(chainActive.Height())));
 
     obj.push_back(Pair("errors",        GetWarnings("statusbar")));
     return obj;
