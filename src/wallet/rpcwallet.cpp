@@ -448,7 +448,7 @@ UniValue claimname(const UniValue& params, bool fHelp)
         "\nResult:\n"
         "\"transactionid\"  (string) The transaction id.\n"
 		"\nExamples:\n"
-		+ HelpExampleCli("claimname", "\"AlfredZKY\" \"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" 10")
+		+ HelpExampleCli("claimname", "\"AlfredZKY\" \"uSVYC1k86emWsr3HPMvd5YBDeTJoThyZFN\" 10")
     );
     string sName = params[0].get_str();
     string sAddress= params[1].get_str();
