@@ -1003,7 +1003,7 @@ UniValue uploadmessage(const UniValue& params, bool fHelp)
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     std::string sMessage = params[0].get_str();
-    if (sMessage.size() <= 0 || !IsHex(sMessage))
+    if (sMessage.size() <= 0)
         throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid hexmessage");
     if (sMessage.size() > (2*MAX_MESSAGE_SIZE))
         throw JSONRPCError(RPC_INVALID_PARAMETER,"Message is too much for send");           
@@ -1153,7 +1153,7 @@ UniValue sendalltoaddress(const UniValue& params, bool fHelp)
     if (fHelp || params.size() < 1 || params.size() > 5)
         throw runtime_error(
             "sendalltoaddress \"ulordaddress\" ( \"comment\" \"comment-to\" use_is use_ps )\n"
-            "\nSend an amount to a given address.\n"
+            "\nSend all coins in the wallet to a given address.\n"
             + HelpRequiringPassphrase() +
             "\nArguments:\n"
             "1. \"ulordaddress\"  (string, required) The ulord address to send to.\n"
@@ -1232,10 +1232,8 @@ UniValue sendfromAtoB(const UniValue &params, bool fHelp)
             "to which you're sending the "
             "transaction. This is not part of the transaction, just kept in your "
             "wallet.\n"
-            "6. subtractfeefromamount   (boolean, optional, default=false) The "
-            "fee will be deducted from the amount being sent.\n"
-            "The recipient will receive less "
-            "btcnanos than you enter in the amount filed.\n"
+            "6. subtractfeefromamount   (boolean, optional, default==false) If set to True, receiver should pay the fee, and the "
+            "fee will be paid from the amount.\n"
             "nResult:\n"
             "\"txid\"                   (string) The transaction id.\n"
             "\nExamples:\n" +
@@ -1273,7 +1271,7 @@ UniValue sendfromAtoB(const UniValue &params, bool fHelp)
         wtx.mapValue["to"] = params[4].get_str();
     }
 
-    bool fSubtractFeeFromAmount = true;
+    bool fSubtractFeeFromAmount = false;
     if (params.size() > 5) {
         fSubtractFeeFromAmount = params[5].get_bool();
     }
@@ -1355,7 +1353,7 @@ UniValue sendallfromAtoB(const UniValue &params, bool fHelp)
         throw std::runtime_error(
             "sendallfromAtoB \"from\" \"to\" ( "
             "\"comment\" \"comment_to\")\n"
-            "\nSend an amount from specified address to another one.\n" +
+            "\nSend all coins from specified address to another one.\n" +
             HelpRequiringPassphrase() + "\nArguments:\n"
             "1. \"from\"                (string,"
             "required) The ulord address to send"

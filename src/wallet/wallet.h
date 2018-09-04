@@ -527,7 +527,7 @@ private:
             const std::vector<COutput> &vAvailableCoins,
             const CAmount &nTargetValue,
             std::set<std::pair<const CWalletTx *, unsigned int>> &setCoinsRet,
-            CAmount &nValueRet) const;
+            CAmount &nValueRet, const CCoinControl* coinControl) const;
 
     CWalletDB *pwalletdbEncryption;
 
@@ -665,7 +665,7 @@ public:
     bool SelectCoinsGrouppedByAddresses(std::vector<CompactTallyItem>& vecTallyRet, bool fSkipDenominated = true, bool fAnonymizable = true) const;
 
     /// Get 1000UT output and keys which can be used for the Masternode
-    bool GetMasternodeVinAndKeys(CTxIn& txinRet,  std::string strTxHash = "", std::string strOutputIndex = "");
+	bool GetMasternodeVinAndKeys(CTxIn& txinRet, CPubKey& pubKeyRet, CKey& keyRet, std::string strTxHash = "", std::string strOutputIndex = "");
     /// Extract txin information and keys from output
     bool GetVinAndKeysFromOutput(COutput out, CTxIn& txinRet, CPubKey& pubKeyRet, CKey& keyRet);
     bool GetVinAndKeysFromOutput(CTxOut vout,CTxIn& txinRet, CPubKey& pubKeyRet, CKey& keyRet);

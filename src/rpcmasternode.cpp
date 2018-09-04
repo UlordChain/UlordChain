@@ -88,7 +88,11 @@ UniValue getpoolinfo(const UniValue& params, bool fHelp)
     return obj;
 }
 
-
+typedef std::pair<std::string, int> WINPAIR;
+bool cmp_by_value(const WINPAIR& lhs, const WINPAIR& rhs)
+{
+	return lhs.second == rhs.second ? lhs.first < rhs.first : lhs.second > rhs.second;
+}
 UniValue masternode(const UniValue& params, bool fHelp)
 {
     std::string strCommand;
@@ -397,7 +401,7 @@ UniValue masternode(const UniValue& params, bool fHelp)
         if(mnodeman.Get(activeMasternode.vin, mn)) {
             mnObj.push_back(Pair("payee", CBitcoinAddress(mn.GetPayeeDestination()).ToString()));
             mnObj.push_back(Pair("license version", mn.certifyVersion));
-            mnObj.push_back(Pair("license period", mn.certifyPeriod));
+            mnObj.push_back(Pair("license period", DateTimeStrFormat("%Y-%m-%d %H:%M:%S", mn.certifyPeriod)));
             mnObj.push_back(Pair("license data", mn.certificate));
             if(mn.certifyPeriod <= GetTime())
             {
@@ -433,6 +437,27 @@ UniValue masternode(const UniValue& params, bool fHelp)
 
         if (params.size() == 3) {
             strFilter = params[2].get_str();
+			if (params.size() == 3) {
+            	strFilter = params[2].get_str();
+            	if(strFilter == "status" && nLast == 0) {
+                	UniValue obj(UniValue::VOBJ);
+                	std::map<std::string, int> mapStatus;
+                	for(int i = 57600; i < nHeight + 10; i++)
+                	{
+                   		std::string strPayment = GetRequiredPaymentsString(i, false);
+                   		if(mapStatus.count(strPayment) == 0)
+                       		mapStatus.insert(std::pair<std::string, int>(strPayment, 1));
+                   		else
+                   	    	mapStatus[strPayment]++;
+                	}
+					std::vector<WINPAIR>vecStatus(mapStatus.begin(), mapStatus.end());
+					std::sort(vecStatus.begin(), vecStatus.end(), cmp_by_value);
+                	for(auto i:vecStatus)
+                   		obj.push_back(Pair(i.first, i.second));
+					obj.push_back(Pair("Total", vecStatus.size()));
+                	return obj;
+            	}
+        	}
         }
 
         if (params.size() > 3)
@@ -459,21 +484,24 @@ UniValue masternode(const UniValue& params, bool fHelp)
         CMasternode mn;
         if(mnodeman.Get(activeMasternode.vin, mn)) 
         {
-            mnObj.push_back(Pair(mn.vin.prevout.ToStringShort(), mn.certificate.c_str()));
+            mnObj.push_back(Pair("license version", mn.certifyVersion));
+            mnObj.push_back(Pair("license period", DateTimeStrFormat("%Y-%m-%d %H:%M:%S", mn.certifyPeriod)));
+            mnObj.push_back(Pair("license data", mn.certificate));
+
+            if(mn.certifyPeriod <= GetTime())
+            {
+                mnObj.push_back(Pair("license status", "expire"));
+            }
+            else 
+            {
+                mnObj.push_back(Pair("license status", "enable"));
+            }
         }
         else
         {
             mnObj.push_back(Pair(("status"), activeMasternode.GetStatus()));
         }
 
-        if(mn.certifyPeriod <= GetTime())
-        {
-            mnObj.push_back(Pair("license status", "expire"));
-        }
-        else 
-        {
-            mnObj.push_back(Pair("license status", "enable"));
-        }
         return mnObj;
     }
 

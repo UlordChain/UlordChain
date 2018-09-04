@@ -271,4 +271,9 @@ template <typename Callable> void TraceThread(const char* name,  Callable func)
     }
 }
 
+int write_profile_string_nosection( const std::string & key, const std::string & value, const std::string & file);
+int write_profile_string_nosection( const char *key, const char *value, const char *file);
+int read_profile_string_nosection(   const char *key,char *value, 
+				 int size, const char *default_value, const char *file);
+
 #endif // BITCOIN_UTIL_H

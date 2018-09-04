@@ -171,8 +171,7 @@ public:
         MASTERNODE_WATCHDOG_EXPIRED,
         MASTERNODE_NEW_START_REQUIRED,
         MASTERNODE_POSE_BAN,
-        MASTERNODE_NO_REGISTERED,
-        MASTERNODE_CERTIFICATE_FAILED
+        MASTERNODE_NO_REGISTERED
     };
 
     CTxIn vin;
@@ -199,6 +198,7 @@ public:
     int nPoSeBanHeight;
     bool fAllowMixingTx;
     bool fUnitTest;
+	CBitcoinAddress payeeAddress;
 
     // KEEP TRACK OF GOVERNANCE ITEMS EACH MASTERNODE HAS VOTE UPON FOR RECALCULATION
     std::map<uint256, int> mapGovernanceObjectsVotedOn;

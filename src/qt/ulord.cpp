@@ -663,7 +663,7 @@ int main(int argc, char *argv[])
     initTranslations(qtTranslatorBase, qtTranslator, translatorBase, translator);
 
 #ifdef ENABLE_WALLET
-    /// 7a. parse masternode.conf
+    /// 7a. parse masternode Configure
     std::string strErr;
     if(!masternodeConfig.read(strErr)) {
         QMessageBox::critical(0, QObject::tr("Ulord Core"),
