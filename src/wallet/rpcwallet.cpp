@@ -438,7 +438,7 @@ UniValue claimname(const UniValue& params, bool fHelp)
     }
     if (fHelp || params.size() < 2 || params.size() > 3)
     throw runtime_error(
-        "claimname \"name\" \"value\" amount\n"
+        "claimname \"name\" \"address\" amount\n"
         "\nCreate a transaction which issues a claim assigning a value to a name. The claim will be authoritative if the transaction amount is greater than the transaction amount of all other unspent transactions which issue a claim over the same name, and it will remain authoritative as long as it remains unspent and there are no other greater unspent transactions issuing a claim over the same name. The amount is a real and is rounded to the nearest 0.00000001\n"
         + HelpRequiringPassphrase() +
         "\nArguments:\n"
@@ -448,7 +448,7 @@ UniValue claimname(const UniValue& params, bool fHelp)
         "\nResult:\n"
         "\"transactionid\"  (string) The transaction id.\n"
 		"\nExamples:\n"
-		+ HelpExampleCli("sendtoaddress", "\"AlfredZKY\" \"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" 10")
+		+ HelpExampleCli("claimname", "\"AlfredZKY\" \"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" 10")
     );
     string sName = params[0].get_str();
     string sAddress= params[1].get_str();
