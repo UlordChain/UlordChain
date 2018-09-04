@@ -448,7 +448,7 @@ UniValue claimname(const UniValue& params, bool fHelp)
         "\nResult:\n"
         "\"transactionid\"  (string) The transaction id.\n"
 		"\nExamples:\n"
-		+ HelpExampleCli("claimname", "\"AlfredZKY\" \"uSVYC1k86emWsr3HPMvd5YBDeTJoThyZFN\" 10")
+		+ HelpExampleCli("claimname", "\"alfredzky\" \"uSVYC1k86emWsr3HPMvd5YBDeTJoThyZFN\" 10")
     );
     string sName = params[0].get_str();
     string sAddress= params[1].get_str();
@@ -554,7 +554,7 @@ UniValue updateclaim( const UniValue & params,bool fHelp)
         return NullUniValue;
     if ( fHelp || params.size() != 3 )
      throw runtime_error(
-        "updateclaim \"txid\" \"value\" amount\n"
+        "updateclaim \"txid\" \"newaddress\" amount\n"
         "Create a transaction which issues a claim assigning a value to a name, spending the previous txout which issued a claim over the same name and therefore superseding that claim. The claim will be authoritative if the transaction amount is greater than the transaction amount of all other unspent transactions which issue a claim over the same name, and it will remain authoritative as long as it remains unspent and there are no greater unspent transactions issuing a claim over the same name.\n"
         + HelpRequiringPassphrase() +
         "\nArguments:\n"
@@ -563,6 +563,8 @@ UniValue updateclaim( const UniValue & params,bool fHelp)
         "3.  \"amount\"  (numeric, required) The amount in Ulord to use to bid for the name. eg 0.1\n"
         "\nResult:\n"
         "\"transactionid\"  (string) The new transaction id.\n"
+	"\nExamples:\n"
+	+ HelpExampleCli("updateclaim", "\"770c02b3df6b5707ee79d5915ed85f8f5d2e0d6eca799f02a9d91262041f18f8\" \"uSVYC1k86emWsr3HPMvd5YBDeTJoThyZFN\" 10")  
     );
 
     uint256 hash;
@@ -661,6 +663,8 @@ UniValue abandonclaim(const UniValue&params,bool fHelp)
         "3. \"amount\"  (numeric, required) The amount to send to the ulord address. eg 0.1\n"
         "\nResult:\n"
         "\"transactionid\"  (string) The new transaction id.\n"
+	"\nExamples:\n"
+	+ HelpExampleCli("abandonclaim", "\"770c02b3df6b5707ee79d5915ed85f8f5d2e0d6eca799f02a9d91262041f18f8\" \"uSVYC1k86emWsr3HPMvd5YBDeTJoThyZFN\" 10")   
     );
     uint256 hash;
     hash.SetHex(params[0].get_str());
@@ -3643,7 +3647,7 @@ UniValue sendtoaccountname(const UniValue &params, bool fHelp)
         "\nResult:\n"
         "\"transactionid\"  (string) The transaction id.\n"
         "\nExamples:\n"
-        + HelpExampleCli("sendtoaccountname", "\"AlfredZKY\" 0.1")
+        + HelpExampleCli("sendtoaccountname", "\"alfredzky\" 0.1")
     );
 
     std::string sName = params[0].get_str();
