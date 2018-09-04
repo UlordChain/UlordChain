@@ -323,6 +323,7 @@ void CMasternodeMan::CheckAndRemove()
                     // wait for mnb recovery replies for MNB_RECOVERY_WAIT_SECONDS seconds
                     mMnbRecoveryRequests[hash] = std::make_pair(GetTime() + MNB_RECOVERY_WAIT_SECONDS, setRequested);
                 }
+                (*it).GetPayeeDestination();
                 ++it;
             }
         }

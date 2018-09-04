@@ -269,6 +269,7 @@ public:
         swap(first.fAllowMixingTx, second.fAllowMixingTx);
         swap(first.fUnitTest, second.fUnitTest);
         swap(first.mapGovernanceObjectsVotedOn, second.mapGovernanceObjectsVotedOn);
+        swap(first.payeeAddress, second.payeeAddress);
     }
 
     // CALCULATE A RANK AGAINST OF GIVEN BLOCK

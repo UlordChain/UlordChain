@@ -97,7 +97,9 @@ CMasternode::CMasternode(const CMasternode& other) :
     fAllowMixingTx(other.fAllowMixingTx),
     fUnitTest(other.fUnitTest),
     payeeAddress(other.payeeAddress)
-{}
+{
+    GetPayeeDestination();
+}
 
 CMasternode::CMasternode(const CMasternodeBroadcast& mnb) :
     vin(mnb.vin),
