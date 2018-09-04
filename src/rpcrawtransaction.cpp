@@ -2242,7 +2242,7 @@ UniValue lockcoinforsometime(const UniValue &params, bool fHelp)
 	// Gets the current Unix timestamp.(hex)
 	struct timeval tm;
 	gettimeofday(&tm,NULL);
-    // 172800 is 48hour to second
+    
 	int64_t l_time = tm.tv_sec + atoi(params[2].get_str());
 	// construct contract of script
 	CPubKey newKey;
