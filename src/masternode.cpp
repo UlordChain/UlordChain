@@ -129,6 +129,40 @@ CMasternode::CMasternode(const CMasternodeBroadcast& mnb) :
     GetPayeeDestination();
 }
 
+void CMasternode::swap(CMasternode& first, CMasternode& second) // nothrow
+{
+        // enable ADL (not necessary in our case, but good practice)
+        using std::swap;
+
+        // by swapping the members of two classes,
+        // the two classes are effectively swapped
+        swap(first.vin, second.vin);
+        swap(first.addr, second.addr);
+        swap(first.pubKeyCollateralAddress, second.pubKeyCollateralAddress);
+        swap(first.pubKeyMasternode, second.pubKeyMasternode);
+        swap(first.lastPing, second.lastPing);
+        swap(first.vchSig, second.vchSig);
+        swap(first.certificate, second.certificate);
+        swap(first.certifyPeriod, second.certifyPeriod);
+        swap(first.sigTime, second.sigTime);
+        swap(first.nLastDsq, second.nLastDsq);
+        swap(first.nTimeLastChecked, second.nTimeLastChecked);
+        swap(first.nTimeLastCheckedRegistered, second.nTimeLastCheckedRegistered);
+        swap(first.nTimeLastPaid, second.nTimeLastPaid);
+        swap(first.nTimeLastWatchdogVote, second.nTimeLastWatchdogVote);
+        swap(first.nActiveState, second.nActiveState);
+        swap(first.nCacheCollateralBlock, second.nCacheCollateralBlock);
+        swap(first.nBlockLastPaid, second.nBlockLastPaid);
+        swap(first.nProtocolVersion, second.nProtocolVersion);
+        swap(first.nPoSeBanScore, second.nPoSeBanScore);
+        swap(first.nPoSeBanHeight, second.nPoSeBanHeight);
+        swap(first.fAllowMixingTx, second.fAllowMixingTx);
+        swap(first.fUnitTest, second.fUnitTest);
+        swap(first.mapGovernanceObjectsVotedOn, second.mapGovernanceObjectsVotedOn);
+        swap(first.payeeAddress, second.payeeAddress);
+        LogPrintf("CMasternode::swap-- payeeAdress=%s  second=%s\n", first.payeeAddress.ToString(), second.payeeAddress.ToString());
+}
+
 //
 // When a new masternode broadcast is sent, update our information
 //
