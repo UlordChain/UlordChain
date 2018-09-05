@@ -4255,6 +4255,10 @@ bool ContextualCheckBlock(const CBlock& block, CValidationState& state, CBlockIn
         if (!IsFinalTx(tx, nHeight, nLockTimeCutoff)) {
             return state.DoS(10, error("%s: contains a non-final transaction", __func__), REJECT_INVALID, "bad-txns-nonfinal");
         }
+		if ( !VerifyAccountName(tx) )
+		{
+			return state.DoS(0, false, REJECT_ACOOUNTNAME_CREATE, "reject accountname is created");
+		}
     }
 
     // Enforce block.nVersion=2 rule that the coinbase starts with serialized block height
@@ -7364,7 +7368,7 @@ int VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::v
         return STAND_SCRIPT_OR_SPECIAL_SCRIPT;
     }
     
-    if (opcode != OP_CLAIM_NAME && opcode != OP_SUPPORT_CLAIM && opcode != OP_UPDATE_CLAIM)
+    if (opcode != OP_CLAIM_NAME)
     {
         return STAND_SCRIPT_OR_SPECIAL_SCRIPT;
     }
