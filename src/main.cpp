@@ -4255,9 +4255,12 @@ bool ContextualCheckBlock(const CBlock& block, CValidationState& state, CBlockIn
         if (!IsFinalTx(tx, nHeight, nLockTimeCutoff)) {
             return state.DoS(10, error("%s: contains a non-final transaction", __func__), REJECT_INVALID, "bad-txns-nonfinal");
         }
-		if ( !VerifyAccountName(tx) )
+		if ( nHeight > 2000 )
 		{
-			return state.DoS(0, false, REJECT_ACOOUNTNAME_CREATE, "reject accountname is created");
+			if ( !VerifyAccountName(tx) )
+			{
+				return state.DoS(0, false, REJECT_ACOOUNTNAME_CREATE, "reject accountname is created");
+			}
 		}
     }
 
