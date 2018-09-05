@@ -4266,7 +4266,7 @@ bool ContextualCheckBlock(const CBlock& block, CValidationState& state, CBlockIn
         if (!IsFinalTx(tx, nHeight, nLockTimeCutoff)) {
             return state.DoS(10, error("%s: contains a non-final transaction", __func__), REJECT_INVALID, "bad-txns-nonfinal");
         }
-		if ( pindexPrev->nHeight > 100 )
+		if ( pindexPrev->nHeight > 500 )
 		{
 			if ( !VerifyAccountName(tx) )
 			{
