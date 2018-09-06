@@ -5,7 +5,7 @@
 #include "crypto/hmac_sha256.h"
 
 #include <string.h>
-
+/*sha256 hash calc  key input , keylen is  key size*/
 CHMAC_SHA256::CHMAC_SHA256(const unsigned char* key, size_t keylen)
 {
     unsigned char rkey[64];
@@ -25,7 +25,7 @@ CHMAC_SHA256::CHMAC_SHA256(const unsigned char* key, size_t keylen)
         rkey[n] ^= 0x5c ^ 0x36;
     inner.Write(rkey, 64);
 }
-
+/*serialize*/
 void CHMAC_SHA256::Finalize(unsigned char hash[OUTPUT_SIZE])
 {
     unsigned char temp[32];
