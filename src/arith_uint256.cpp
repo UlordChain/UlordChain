@@ -17,7 +17,7 @@ base_uint<BITS>::base_uint(const std::string& str)
 {
     SetHex(str);
 }
-
+/* struct arith256 user 256bit = 32 byte expresion calc data structure */
 template <unsigned int BITS>
 base_uint<BITS>& base_uint<BITS>::operator<<=(unsigned int shift)
 {
