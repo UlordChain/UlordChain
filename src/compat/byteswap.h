@@ -29,7 +29,7 @@ inline uint32_t bswap_32(uint32_t x)
             ((x & 0x0000ff00U) <<  8) | ((x & 0x000000ffU) << 24));
 }
 #endif // HAVE_DECL_BSWAP32
-
+/*swap 64 byte seq  */
 #if HAVE_DECL_BSWAP_64 == 0
 inline uint64_t bswap_64(uint64_t x)
 {
