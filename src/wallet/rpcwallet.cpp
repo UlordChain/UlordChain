@@ -34,16 +34,13 @@
 #include <regex>
 
 using namespace std;
-std::map<std::string,int> m_vStringName;
+std::map<std::string,int> g_mStringName;
 
 int64_t nWalletUnlockTime;
 static CCriticalSection cs_nWalletUnlockTime;
 
 // ACCOUNT_NAME DEPOSIT
 #define MAX_ACCOUNT_MONEY 10 * COIN
-
-// ACCOUNT_NAME length
-#define MAX_ACCOUNT_SIZE 12
 
 std::string HelpRequiringPassphrase()
 {
@@ -455,13 +452,13 @@ UniValue claimname(const UniValue& params, bool fHelp)
     std::vector<unsigned char>vchName(sName.begin(),sName.end());
     std::vector<unsigned char>vchValue(sAddress.begin(),sAddress.end());
 	std::map<std::string,int>::iterator m_it;
-	std::vector<std::string>:: iterator m_strit;
+	std::vector<std::string>:: iterator v_it;
 	std::string szReg = "^[a-z0-5]+[a-z0-5]$";
 	std::regex reg( szReg );
 	
-	for (m_strit = v_banname.begin(); m_strit != v_banname.end(); m_strit++)
+	for (v_it = g_vBanName.begin(); v_it != g_vBanName.end(); v_it++)
 	{
-		if (!m_strit->compare(sName))
+		if (!v_it->compare(sName))
 		{
 			throw JSONRPCError(RPC_ACCOUNTNAME_ILLEGAL, "The account name is illegal");
 		}
@@ -473,7 +470,7 @@ UniValue claimname(const UniValue& params, bool fHelp)
 	    throw JSONRPCError(RPC_ACCOUNTNAME_ILLEGAL, "The account name is illegal");
 	}
 	
-	for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; m_it++ )
+	for ( m_it = g_mStringName.begin() ; m_it != g_mStringName.end() ; m_it++ )
 	{
 		if ( !m_it->first.compare(sName) )
 		{
@@ -487,7 +484,7 @@ UniValue claimname(const UniValue& params, bool fHelp)
 	
 	if ( vchName.size() > MAX_ACCOUNT_SIZE)
 	{
-	    throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord account_name ,it is too long");
+	    throw JSONRPCError(RPC_ACCOUNTNAME_TOO_LONG, "Invalid Ulord account_name ,it is too long");
 	}
 	
 	CBitcoinAddress address(params[1].get_str());
