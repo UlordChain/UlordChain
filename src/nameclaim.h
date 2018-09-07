@@ -23,6 +23,7 @@
 #define ACCOUNTNAME_EXISTS 2
 #define ACCOUNTNAME_ILLEGAL	 3
 #define ACCOUNTNAME_INVAILDCASH	 4
+#define ACCOUNTNAME_TOOLONG      5
 
 
 CScript ClaimNameScript(std::string name, std::string value);

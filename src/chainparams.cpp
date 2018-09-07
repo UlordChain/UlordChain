@@ -279,9 +279,14 @@ public:
         vFixedSeeds.clear();
         vSeeds.clear();		
         vSeeds.push_back(CDNSSeedData("ulord.one", "seed1.ulord.one"));
-		vSeeds.push_back(CDNSSeedData("ulord.one", "seed2.ulord.one"));  
-		vSeeds.push_back(CDNSSeedData("ulord.one", "seed3.ulord.one"));
-		uCenter = "ucenter.ulord.one";                           // for masternode verify
+	vSeeds.push_back(CDNSSeedData("ulord.one", "seed2.ulord.one"));  
+	vSeeds.push_back(CDNSSeedData("ulord.one", "seed3.ulord.one"));
+	vSeeds.push_back(CDNSSeedData("ulord.one", "seed4.ulord.one"));
+	vSeeds.push_back(CDNSSeedData("ulord.one", "seed5.ulord.one"));
+	vSeeds.push_back(CDNSSeedData("ulord.one", "seed6.ulord.one"));
+	vSeeds.push_back(CDNSSeedData("ulord.one", "seed7.ulord.one"));
+	    
+	uCenter = "ucenter.ulord.one";                           // for masternode verify
 
         fMiningRequiresPeers = true;
         fDefaultConsistencyChecks = false;
@@ -371,7 +376,7 @@ public:
 
         // Deployment of BIP68, BIP112, and BIP113.
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1524057440;               // 2018/4/18 20:57:16
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1524057440;               // 2018/4/18 20:57:16o
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout =   1555592236;               // 2019/4/18 20:57:16
 
         pchMessageStart[0] = 0xc2;

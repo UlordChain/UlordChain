@@ -117,7 +117,7 @@ bool AppInit(int argc, char* argv[])
             return false;
         }
 
-        // parse masternode.conf
+        // parse masternode configure
         std::string strErr;
         if(!masternodeConfig.read(strErr)) {
             fprintf(stderr,"Error reading masternode configuration file: %s\n", strErr.c_str());
@@ -193,7 +193,7 @@ int main(int argc, char* argv[])
 	for ( index = 0; index < sizeof(banname) / sizeof(char*); index++)
 	{
 		std::string tempstr(banname[index]);
-		v_banname.push_back(tempstr);
+		g_vBanName.push_back(tempstr);
 	}
     // Connect ulordd signal handlers
     noui_connect();

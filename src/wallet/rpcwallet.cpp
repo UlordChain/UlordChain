@@ -34,16 +34,13 @@
 #include <regex>
 
 using namespace std;
-std::map<std::string,int> m_vStringName;
+std::map<std::string,int> g_mStringName;
 
 int64_t nWalletUnlockTime;
 static CCriticalSection cs_nWalletUnlockTime;
 
 // ACCOUNT_NAME DEPOSIT
 #define MAX_ACCOUNT_MONEY 10 * COIN
-
-// ACCOUNT_NAME length
-#define MAX_ACCOUNT_SIZE 12
 
 std::string HelpRequiringPassphrase()
 {
@@ -438,7 +435,7 @@ UniValue claimname(const UniValue& params, bool fHelp)
     }
     if (fHelp || params.size() < 2 || params.size() > 3)
     throw runtime_error(
-        "claimname \"name\" \"value\" amount\n"
+        "claimname \"name\" \"ulordaddress\" \"amount\"\n"
         "\nCreate a transaction which issues a claim assigning a value to a name. The claim will be authoritative if the transaction amount is greater than the transaction amount of all other unspent transactions which issue a claim over the same name, and it will remain authoritative as long as it remains unspent and there are no other greater unspent transactions issuing a claim over the same name. The amount is a real and is rounded to the nearest 0.00000001\n"
         + HelpRequiringPassphrase() +
         "\nArguments:\n"
@@ -448,20 +445,20 @@ UniValue claimname(const UniValue& params, bool fHelp)
         "\nResult:\n"
         "\"transactionid\"  (string) The transaction id.\n"
 		"\nExamples:\n"
-		+ HelpExampleCli("sendtoaddress", "\"AlfredZKY\" \"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" 10")
+		+ HelpExampleCli("claimname", "\"alfredzky\" \"uwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" 10")
     );
     string sName = params[0].get_str();
     string sAddress= params[1].get_str();
     std::vector<unsigned char>vchName(sName.begin(),sName.end());
     std::vector<unsigned char>vchValue(sAddress.begin(),sAddress.end());
 	std::map<std::string,int>::iterator m_it;
-	std::vector<std::string>:: iterator m_strit;
+	std::vector<std::string>:: iterator v_it;
 	std::string szReg = "^[a-z0-5]+[a-z0-5]$";
 	std::regex reg( szReg );
 	
-	for (m_strit = v_banname.begin(); m_strit != v_banname.end(); m_strit++)
+	for (v_it = g_vBanName.begin(); v_it != g_vBanName.end(); v_it++)
 	{
-		if (!m_strit->compare(sName))
+		if (!v_it->compare(sName))
 		{
 			throw JSONRPCError(RPC_ACCOUNTNAME_ILLEGAL, "The account name is illegal");
 		}
@@ -473,7 +470,7 @@ UniValue claimname(const UniValue& params, bool fHelp)
 	    throw JSONRPCError(RPC_ACCOUNTNAME_ILLEGAL, "The account name is illegal");
 	}
 	
-	for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; m_it++ )
+	for ( m_it = g_mStringName.begin() ; m_it != g_mStringName.end() ; m_it++ )
 	{
 		if ( !m_it->first.compare(sName) )
 		{
@@ -487,7 +484,7 @@ UniValue claimname(const UniValue& params, bool fHelp)
 	
 	if ( vchName.size() > MAX_ACCOUNT_SIZE)
 	{
-	    throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord account_name ,it is too long");
+	    throw JSONRPCError(RPC_ACCOUNTNAME_TOO_LONG, "Invalid Ulord account_name ,it is too long");
 	}
 	
 	CBitcoinAddress address(params[1].get_str());
@@ -554,7 +551,7 @@ UniValue updateclaim( const UniValue & params,bool fHelp)
         return NullUniValue;
     if ( fHelp || params.size() != 3 )
      throw runtime_error(
-        "updateclaim \"txid\" \"value\" amount\n"
+        "updateclaim \"txid\" \"newaddress\" amount\n"
         "Create a transaction which issues a claim assigning a value to a name, spending the previous txout which issued a claim over the same name and therefore superseding that claim. The claim will be authoritative if the transaction amount is greater than the transaction amount of all other unspent transactions which issue a claim over the same name, and it will remain authoritative as long as it remains unspent and there are no greater unspent transactions issuing a claim over the same name.\n"
         + HelpRequiringPassphrase() +
         "\nArguments:\n"
@@ -563,6 +560,8 @@ UniValue updateclaim( const UniValue & params,bool fHelp)
         "3.  \"amount\"  (numeric, required) The amount in Ulord to use to bid for the name. eg 0.1\n"
         "\nResult:\n"
         "\"transactionid\"  (string) The new transaction id.\n"
+	"\nExamples:\n"
+		+ HelpExampleCli("updateclaim", "\"8fb48e61ccce3cb5083d8ad9ee7ab73c58a40c1594e43386ca425cd12187db6a\" \"uwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" 10")
     );
 
     uint256 hash;
@@ -661,6 +660,8 @@ UniValue abandonclaim(const UniValue&params,bool fHelp)
         "3. \"amount\"  (numeric, required) The amount to send to the ulord address. eg 0.1\n"
         "\nResult:\n"
         "\"transactionid\"  (string) The new transaction id.\n"
+	"\nExamples:\n"
+		+ HelpExampleCli("abandonclaim", "\"alfredzky\" \"8fb48e61ccce3cb5083d8ad9ee7ab73c58a40c1594e43386ca425cd12187db6a\" 10")
     );
     uint256 hash;
     hash.SetHex(params[0].get_str());
@@ -1003,7 +1004,7 @@ UniValue uploadmessage(const UniValue& params, bool fHelp)
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     std::string sMessage = params[0].get_str();
-    if (sMessage.size() <= 0 || !IsHex(sMessage))
+    if (sMessage.size() <= 0)
         throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid hexmessage");
     if (sMessage.size() > (2*MAX_MESSAGE_SIZE))
         throw JSONRPCError(RPC_INVALID_PARAMETER,"Message is too much for send");           
@@ -1153,7 +1154,7 @@ UniValue sendalltoaddress(const UniValue& params, bool fHelp)
     if (fHelp || params.size() < 1 || params.size() > 5)
         throw runtime_error(
             "sendalltoaddress \"ulordaddress\" ( \"comment\" \"comment-to\" use_is use_ps )\n"
-            "\nSend an amount to a given address.\n"
+            "\nSend all coins in the wallet to a given address.\n"
             + HelpRequiringPassphrase() +
             "\nArguments:\n"
             "1. \"ulordaddress\"  (string, required) The ulord address to send to.\n"
@@ -1232,10 +1233,8 @@ UniValue sendfromAtoB(const UniValue &params, bool fHelp)
             "to which you're sending the "
             "transaction. This is not part of the transaction, just kept in your "
             "wallet.\n"
-            "6. subtractfeefromamount   (boolean, optional, default=false) The "
-            "fee will be deducted from the amount being sent.\n"
-            "The recipient will receive less "
-            "btcnanos than you enter in the amount filed.\n"
+            "6. subtractfeefromamount   (boolean, optional, default==false) If set to True, receiver should pay the fee, and the "
+            "fee will be paid from the amount.\n"
             "nResult:\n"
             "\"txid\"                   (string) The transaction id.\n"
             "\nExamples:\n" +
@@ -1273,7 +1272,7 @@ UniValue sendfromAtoB(const UniValue &params, bool fHelp)
         wtx.mapValue["to"] = params[4].get_str();
     }
 
-    bool fSubtractFeeFromAmount = true;
+    bool fSubtractFeeFromAmount = false;
     if (params.size() > 5) {
         fSubtractFeeFromAmount = params[5].get_bool();
     }
@@ -1355,7 +1354,7 @@ UniValue sendallfromAtoB(const UniValue &params, bool fHelp)
         throw std::runtime_error(
             "sendallfromAtoB \"from\" \"to\" ( "
             "\"comment\" \"comment_to\")\n"
-            "\nSend an amount from specified address to another one.\n" +
+            "\nSend all coins from specified address to another one.\n" +
             HelpRequiringPassphrase() + "\nArguments:\n"
             "1. \"from\"                (string,"
             "required) The ulord address to send"
@@ -3636,7 +3635,7 @@ UniValue sendtoaccountname(const UniValue &params, bool fHelp)
 {
 	 if (fHelp ||  params.size() != 2)
         throw std::runtime_error(
-        "sendtoaccountname \"name\" \"amount\n"
+        "sendtoaccountname \"name\" \"amount\" \n"
         "\nSend an amount to a given account name.\n"
         + HelpRequiringPassphrase() +
         "\nArguments:\n"
@@ -3645,7 +3644,7 @@ UniValue sendtoaccountname(const UniValue &params, bool fHelp)
         "\nResult:\n"
         "\"transactionid\"  (string) The transaction id.\n"
         "\nExamples:\n"
-        + HelpExampleCli("sendtoaccountname", "\"AlfredZKY\" 0.1")
+        + HelpExampleCli("sendtoaccountname", "\"alfredzky\" 0.1")
     );
 
     std::string sName = params[0].get_str();

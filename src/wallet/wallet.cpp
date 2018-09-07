@@ -2804,21 +2804,33 @@ bool CWallet::GetCollateralTxIn(CTxIn& txinRet, CAmount& nValueRet) const
     return false;
 }
 
-bool CWallet::GetMasternodeVinAndKeys(CTxIn& txinRet,  std::string strTxHash, std::string strOutputIndex)
+bool CWallet::GetMasternodeVinAndKeys(CTxIn& txinRet, CPubKey& pubKeyRet, CKey& keyRet, std::string strTxHash, std::string strOutputIndex)
 {
     // wait for reindex and/or import to finish
     if (fImporting || fReindex) return false;
 
+    // Find possible candidates
+    std::vector<COutput> vPossibleCoins;
+    AvailableCoins(vPossibleCoins, true, NULL, false, ONLY_10000);
+    if(vPossibleCoins.empty()) {
+        LogPrintf("CWallet::GetMasternodeVinAndKeys -- Could not locate any valid masternode vin\n");
+        return false;
+    }
 
     if(strTxHash.empty()) // No output specified, select the one specified by masternodeConfig
     {
-        if(masternodeConfig.IsLocalEntry())
+        CMasternodeConfig::CMasternodeEntry mne = masternodeConfig.GetLocalEntry();
+        if(mne.getTxHash() != "")
         {
-            CMasternodeConfig::CMasternodeEntry mne = masternodeConfig.GetLocalEntry();
-            int index = atoi(mne.getOutputIndex().c_str());
-            uint256 txHash = uint256S(mne.getTxHash());
-            txinRet = CTxIn(txHash, index);
-            return true;
+            uint256 confTxHash;
+            int confoutid;
+            BOOST_FOREACH(COutput& out, vPossibleCoins)
+            {
+                confTxHash.SetHex(mne.getTxHash());
+                confoutid = boost::lexical_cast<unsigned int>(mne.getOutputIndex());
+                if(out.tx->GetHash() == confTxHash && confoutid == out.i)
+                return GetVinAndKeysFromOutput(out, txinRet, pubKeyRet, keyRet);			
+            }
         }
         LogPrintf("CWallet::GetMasternodeVinAndKeys -- Could not locate the masternode configure vin, please check the ulord.conf\n");
         return false;
@@ -2828,16 +2840,14 @@ bool CWallet::GetMasternodeVinAndKeys(CTxIn& txinRet,  std::string strTxHash, st
     uint256 txHash = uint256S(strTxHash);
     int nOutputIndex = atoi(strOutputIndex.c_str());
 
-    txinRet = CTxIn(txHash,nOutputIndex);
-    CCoins coins;
-    if(pcoinsTip->GetCoins(txHash, coins))	
-    {
-        return true;
-    }
-    
+    BOOST_FOREACH(COutput& out, vPossibleCoins)
+        if(out.tx->GetHash() == txHash && out.i == nOutputIndex) // found it!
+            return GetVinAndKeysFromOutput(out, txinRet, pubKeyRet, keyRet);
+
     LogPrintf("CWallet::GetMasternodeVinAndKeys -- Could not locate specified masternode vin\n");
     return false;
 }
+
 
 bool CWallet::GetVinAndKeysFromOutput(CTxOut vout, CTxIn& txinRet, CPubKey& pubKeyRet, CKey& keyRet)
 {
@@ -3029,23 +3039,53 @@ bool CWallet::ConvertList(std::vector<CTxIn> vecTxIn, std::vector<CAmount>& vecA
 bool CWallet::select_coin_from_addr(
          const std::vector<COutput> &vAvailableCoins, const CAmount &nTargetValue,
          std::set<std::pair<const CWalletTx *, unsigned int>> &setCoinsRet,
-         CAmount &nValueRet) const
+         CAmount &nValueRet, const CCoinControl* coinControl) const
 {
     std::vector<COutput> vCoins(vAvailableCoins);
 
     // return all selected outpus, used for send from specified address to given address.
-    for (const COutput &out : vCoins)
-    {
-        if (!out.fSpendable)
-        {
-            continue;
-        }
+    set<pair<const CWalletTx*, uint32_t> > setPresetCoins;
+    CAmount nValueFromPresetInputs = 0;
 
-        nValueRet += out.tx->vout[out.i].nValue;
-        setCoinsRet.insert(std::make_pair(out.tx, out.i));
+    std::vector<COutPoint> vPresetInputs;
+    if (coinControl)
+        coinControl->ListSelected(vPresetInputs);
+    BOOST_FOREACH(const COutPoint& outpoint, vPresetInputs)
+    {
+        map<uint256, CWalletTx>::const_iterator it = mapWallet.find(outpoint.hash);
+        if (it != mapWallet.end())
+        {
+            const CWalletTx* pcoin = &it->second;
+            // Clearly invalid input, fail
+            if (pcoin->vout.size() <= outpoint.n)
+                return false;
+            nValueFromPresetInputs += pcoin->vout[outpoint.n].nValue;
+            setPresetCoins.insert(make_pair(pcoin, outpoint.n));
+        } else
+            return false; // TODO: Allow non-wallet inputs
     }
 
-    return (nValueRet >= nTargetValue);
+    // remove preset inputs from vCoins
+    for (vector<COutput>::iterator it = vCoins.begin(); it != vCoins.end() && coinControl && coinControl->HasSelected();)
+    {
+        if (setPresetCoins.count(make_pair(it->tx, it->i)))
+            it = vCoins.erase(it);
+        else
+            ++it;
+    }
+
+    bool res = nTargetValue <= nValueFromPresetInputs ||
+        SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 1, 6, vCoins, setCoinsRet, nValueRet) ||
+        SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 1, 1, vCoins, setCoinsRet, nValueRet) ||
+        (bSpendZeroConfChange && SelectCoinsMinConf(nTargetValue - nValueFromPresetInputs, 0, 1, vCoins, setCoinsRet, nValueRet));
+
+    // because SelectCoinsMinConf clears the setCoinsRet, we now add the possible inputs to the coinset
+    setCoinsRet.insert(setPresetCoins.begin(), setPresetCoins.end());
+
+    // add preset inputs to the total value selected
+    nValueRet += nValueFromPresetInputs;
+
+    return res;
 }
 
 bool CWallet::CreateTheAddrTrans(const vector<CRecipient>& vecSend, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet,
@@ -3170,7 +3210,7 @@ bool CWallet::CreateTheAddrTrans(const vector<CRecipient>& vecSend, CWalletTx& w
                 CAmount nValueIn = 0;
 
 		        const std::string ct = std::to_string(Params().GetConsensus().colleteral);
-                if (!select_coin_from_addr(vAvailableCoins,  nValueToSelect, setCoins, nValueIn))
+                if (!select_coin_from_addr(vAvailableCoins,  nValueToSelect, setCoins, nValueIn, coinControl))
                 {
                     strFailReason = _("Insufficient funds");
                     return false;

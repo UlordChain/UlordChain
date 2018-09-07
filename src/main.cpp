@@ -46,7 +46,7 @@
 #include "masternode-payments.h"
 #include "masternode-sync.h"
 #include "masternodeman.h"
-
+#include "governance-classes.h"
 #include <sstream>
 #include <regex>
 
@@ -613,7 +613,7 @@ CBlockIndex* FindForkInGlobalIndex(const CChain& chain, const CBlockLocator& loc
 CCoinsViewCache *pcoinsTip = NULL;
 CClaimTrie *pclaimTrie = NULL; // claim operation
 CBlockTreeDB *pblocktree = NULL;
-std::vector<std::string> v_banname;
+std::vector<std::string> g_vBanName;
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -1817,6 +1817,11 @@ CAmount GetBudget(const int height, const Consensus::Params &cp)
 {
     const int beg = cp.nSuperblockStartBlock;
     const int intval = cp.nSubsidyHalvingInterval;
+
+    if(!CSuperblock::IsValidBlockHeight( height))
+    {
+  	return 0;	
+    } 
 	
     if (height < beg)		     // before starting
     {
@@ -1841,6 +1846,12 @@ CAmount GetFoundersReward(const int height, const Consensus::Params &cp)
 {
     const int beg = cp.nSuperblockStartBlock;
     const int end = cp.endOfFoundersReward();
+    
+    if(!CSuperblock::IsValidBlockHeight( height))
+    {
+  	return 0;	
+    } 	
+	
     if (height >= beg && height < end)			// before super block starting
     {
         return cp.foundersReward;
@@ -3174,7 +3185,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
     // TODO: resync data (both ways?) and try to reprocess this block later.
     CAmount blockReward = nFees + GetBlockSubsidy(pindex->nHeight, chainparams.GetConsensus());
     std::string strError = "";
-    if (!IsBlockValueValid(block, pindex->nHeight, blockReward, strError)) {
+    if (!IsBlockValueValid(block, pindex->nHeight,nFees, blockReward, strError)) {
         return state.DoS(0, error("ConnectBlock(UT): %s", strError), REJECT_INVALID, "bad-cb-amount");
     }
 
@@ -4255,6 +4266,13 @@ bool ContextualCheckBlock(const CBlock& block, CValidationState& state, CBlockIn
         if (!IsFinalTx(tx, nHeight, nLockTimeCutoff)) {
             return state.DoS(10, error("%s: contains a non-final transaction", __func__), REJECT_INVALID, "bad-txns-nonfinal");
         }
+		if ( pindexPrev->nHeight > 500 )
+		{
+			if ( !VerifyAccountName(tx) )
+			{
+				return state.DoS(0, false, REJECT_ACOOUNTNAME_CREATE, "reject accountname is created");
+			}
+		}
     }
 
     // Enforce block.nVersion=2 rule that the coinbase starts with serialized block height
@@ -7327,6 +7345,7 @@ bool VerifyAccountName(const CTransaction& tx)
 			case ACCOUNTNAME_EXISTS:
 			case ACCOUNTNAME_ILLEGAL:
 			case ACCOUNTNAME_INVAILDCASH:
+			case ACCOUNTNAME_TOOLONG:
 			default:
 				return false;
 		}
@@ -7364,7 +7383,7 @@ int VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::v
         return STAND_SCRIPT_OR_SPECIAL_SCRIPT;
     }
     
-    if (opcode != OP_CLAIM_NAME && opcode != OP_SUPPORT_CLAIM && opcode != OP_UPDATE_CLAIM)
+    if (opcode != OP_CLAIM_NAME)
     {
         return STAND_SCRIPT_OR_SPECIAL_SCRIPT;
     }
@@ -7388,25 +7407,26 @@ int VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::v
 	std::string sName(vchParam1.begin(),vchParam1.end());
 	std::string s_tempname;
 	std::map<std::string,int>::iterator m_it;
-	std::vector<std::string>::iterator m_strit;
+	std::vector<std::string>::iterator v_it;
 	int i_currentheight = chainActive.Height();
 	CClaimValue claim;
 	std::string szReg = "^[a-z0-5]+[a-z0-5]$";
 	std::regex reg( szReg );
 	bool b_r;
-	int i_times = m_vStringName.count(sName);
+	int i_times = g_mStringName.count(sName);
 	LogPrintf("i_times is %d\n",i_times);
+	if ( g_mStringName.end() != g_mStringName.find(sName) )
+	{
+		return ACCOUNTNAME_EXISTS;
+	}
 
-	for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; m_it++ )
+	for ( m_it = g_mStringName.begin() ; m_it != m_g_mStringName.end() ; m_it++ )
 	{
 		if ( (chainActive.Height() - m_it->second) >= MIN_ACCOUNT_NAME_NUMBER )
 		{
 			s_tempname = m_it->first;
-			m_vStringName.erase(s_tempname);
-		}
-		if ( !m_it->first.compare(sName) )
-		{
-			return ACCOUNTNAME_EXISTS;
+			g_mStringName.erase(s_tempname);
+			break;
 		}
 	}
 	
@@ -7419,9 +7439,9 @@ int VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::v
 			return ACCOUNTNAME_ILLEGAL;
 		}
 		
-		for (m_strit = v_banname.begin(); m_strit != v_banname.end(); m_strit++)
+		for (v_it = g_vBanName.begin(); v_it != g_vBanName.end(); v_it++)
 		{
-			if (!m_strit->compare(sName))
+			if (!v_it->compare(sName))
 			{
 				return ACCOUNTNAME_ILLEGAL;
 			}
@@ -7429,14 +7449,18 @@ int VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::v
 		
 		if ( txout.nValue != MAX_ACCOUNT_NAME )
 		{
-			throw ACCOUNTNAME_INVAILDCASH;
+			return ACCOUNTNAME_INVAILDCASH;
 		}
 		
 		if (pclaimTrie->getInfoForName(sName, claim))
 		{
 			return ACCOUNTNAME_EXISTS;
 		}
-		m_vStringName.insert(std::pair<std::string,int>(sName,i_currentheight));
+		if ( vchName.size() > MAX_ACCOUNT_SIZE)
+		{
+		    return ACCOUNTNAME_TOOLONG;
+		}
+		g_mStringName.insert(std::pair<std::string,int>(sName,i_currentheight));
 	}
 	
     if (!scriptIn.GetOp(pc, opcode, vchParam2) || opcode < 0 || opcode > OP_PUSHDATA4)

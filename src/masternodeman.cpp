@@ -323,6 +323,7 @@ void CMasternodeMan::CheckAndRemove()
                     // wait for mnb recovery replies for MNB_RECOVERY_WAIT_SECONDS seconds
                     mMnbRecoveryRequests[hash] = std::make_pair(GetTime() + MNB_RECOVERY_WAIT_SECONDS, setRequested);
                 }
+                (*it).GetPayeeDestination();
                 ++it;
             }
         }
@@ -943,15 +944,17 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
         int nDos = 0;
         if(mnp.CheckAndUpdate(pmn, false, nDos)) return;
 
-		// check the certificate and make sure if the masternode had registered on the Ulord center server
-		if(!mnodecenter.VerifyLicense(mnp))
-		{
-			if(pmn)
-				pmn->nActiveState = pmn->MASTERNODE_CERTIFICATE_FAILED;
-			
-			LogPrintf("MNPING -- Verify license failed masternode=%s\n",mnp.vin.prevout.ToStringShort());
-			return ;
-		}
+        // check the certificate and make sure if the masternode had registered on the Ulord center server
+        if(!mnodecenter.VerifyLicense(mnp))
+        {
+            if(pmn)
+            pmn->nActiveState = pmn->MASTERNODE_NO_REGISTERED;
+
+            LogPrintf("MNPING -- Verify license failed masternode=%s\n",mnp.vin.prevout.ToStringShort());
+            nDos += 10;
+        }else{
+            return ;
+        }
 
         if(nDos > 0) {
             // if anything significant failed, mark that node
@@ -1830,7 +1833,7 @@ bool CMstNodeData::VerifyLicense()
                     _licence.c_str());
         return false;
     }
-    LogPrintf(" verify succes\n");
+    LogPrintf(" verify success\n");
     return true;
 }
 
@@ -1883,8 +1886,8 @@ bool CMasternodeCenter::InitCenter(std::string strError)
     char uctPubkeyVersion[20];
     int licenseVersion = 1;
     licenseVersion_ = licenseVersion;
-    mapVersionPubkey_.insert(std::pair<int, std::string>(licenseVersion, GetArg("-uctpubkey1", "03e867486ebaeeadda25f1e47612cdaad3384af49fa1242c5821b424937f8ec1f5")));
-    LogPrintf("Load ucenter pubkey <%d: %s>\n", licenseVersion, GetArg("-uctpubkey1", "03e867486ebaeeadda25f1e47612cdaad3384af49fa1242c5821b424937f8ec1f5"));
+    mapVersionPubkey_.insert(std::pair<int, std::string>(licenseVersion, GetArg("-uctpubkey1", "03e947099921ee170da47a7acf48143c624d33950af362fc39a734b1b3188ec1e3")));
+    LogPrintf("Load ucenter pubkey <%d: %s>\n", licenseVersion, GetArg("-uctpubkey1", "03e947099921ee170da47a7acf48143c624d33950af362fc39a734b1b3188ec1e3"));
     std::string strUctPubkey;
     licenseVersion++;
     while(true)
@@ -2018,6 +2021,7 @@ bool CMasternodeCenter::RequestLicense(CMasternode &mn)
             mn.certifyPeriod = mstnode._licperiod;
             mn.certificate = mstnode._licence;
             mn.certifyVersion = mstnode._licversion;
+            SaveLicense(mn);
             LogPrintf("CMasternodeCenter::RequestLicense: MasterNode %s check success\n", mstquest._txid);
             CloseSocket(hSocket);
             return true;
@@ -2111,11 +2115,31 @@ bool CMasternodeCenter::RequestCenterKey()
         }
         CloseSocket(hSocket);
         LogPrintf("CMasternodeCenter::RequestCenterKey:Recive total %d Key&version\n", mstres._num);
+        SavePubkey();
         return true;
     }
     CloseSocket(hSocket);
     LogPrintf("CMasternodeCenter::RequestCenterKey:Could't connect to center server\n");
     return false;
+}
+
+void CMasternodeCenter::SavePubkey()
+{
+    char key[20];
+    for(auto & var : mapVersionPubkey_)
+    {
+        memset(key, 0, sizeof(key));
+        sprintf(key, "uctpubkey%d", var.first);
+        write_profile_string_nosection(std::string(key), var.second, GetConfigFile().string());
+    }
+    
+}
+
+void CMasternodeCenter::SaveLicense(const CMasternode &mn)
+{
+    write_profile_string_nosection("certificate", mn.certificate, GetConfigFile().string());
+    write_profile_string_nosection("certifiperiod", std::to_string(mn.certifyPeriod), GetConfigFile().string());
+    write_profile_string_nosection("certifiversion", std::to_string(mn.certifyVersion), GetConfigFile().string());
 }
 
 bool CMasternodeCenter::ReadLicense(CMasternode &mn)

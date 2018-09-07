@@ -579,10 +579,12 @@ public:
     bool InitCenter(std::string strError);
     std::string GetCenterPubKey(int version);
     bool IsUse();
-    bool LoadLicense(CMasternode &mn);
     bool CheckLicensePeriod(CMasternode &mn);
     bool VerifyLicense(const CMasternode &mn);
     bool VerifyLicense(const CMasternodePing &mnp);
+    bool LoadLicense(CMasternode &mn);
+    void SavePubkey();
+    void SaveLicense(const CMasternode &mn);
 private:
     bool RequestLicense(CMasternode &mn);
     bool ReadLicense(CMasternode &mn);
