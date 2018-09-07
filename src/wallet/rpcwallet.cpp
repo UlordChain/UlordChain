@@ -567,8 +567,13 @@ UniValue updateclaim( const UniValue & params,bool fHelp)
     uint256 hash;
     hash.SetHex( params[0].get_str());
     std::vector<unsigned char>vchName;
-    string sValue = params[1].get_str();
-    std::vector<unsigned char>vchValue(sValue.begin(),sValue.end());
+    string sAddress = params[1].get_str();
+    std::vector<unsigned char>vchValue(sAddress.begin(),sAddress.end());
+    CBitcoinAddress address(params[1].get_str());
+    if (!address.IsValid())
+    {
+	throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
+    }
     CAmount nAmount = AmountFromValue(params[2]);
     isminefilter filter = ISMINE_CLAIM;
     UniValue entry;
