@@ -10,7 +10,7 @@
 #include "utilstrencodings.h"
 
 using namespace std;
-
+/*money print format tool x.xxxxxxxx */
 std::string FormatMoney(const CAmount& n)
 {
     // Note: not using straight sprintf here because we do NOT want
