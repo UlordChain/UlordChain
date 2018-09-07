@@ -7420,7 +7420,7 @@ int VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::v
 		return ACCOUNTNAME_EXISTS;
 	}
 
-	for ( m_it = g_mStringName.begin() ; m_it != m_g_mStringName.end() ; m_it++ )
+	for ( m_it = g_mStringName.begin() ; m_it != g_mStringName.end() ; m_it++ )
 	{
 		if ( (chainActive.Height() - m_it->second) >= MIN_ACCOUNT_NAME_NUMBER )
 		{
@@ -7456,7 +7456,7 @@ int VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::v
 		{
 			return ACCOUNTNAME_EXISTS;
 		}
-		if ( vchName.size() > MAX_ACCOUNT_SIZE)
+		if ( sName.size() > MAX_ACCOUNT_SIZE)
 		{
 		    return ACCOUNTNAME_TOOLONG;
 		}
