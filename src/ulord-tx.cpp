@@ -31,7 +31,7 @@ static const int CONTINUE_EXECUTION=-1;
 //
 // This function returns either one of EXIT_ codes when it's expected to stop the process or
 // CONTINUE_EXECUTION when it's expected to continue further.
-//
+// command explain and json convert
 static int AppInitRawTx(int argc, char* argv[])
 {
     //
