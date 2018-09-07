@@ -16,7 +16,7 @@
 using namespace std;
 
 static int64_t nMockTime = 0;  //! For unit testing
-
+/* date ,time  convert tool */
 int64_t GetTime()
 {
     if (nMockTime) return nMockTime;

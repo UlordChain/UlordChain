@@ -20,7 +20,7 @@ bool sanity_test_widen(char testchar)
 // trigger: use list::push_back and list::pop_back to trigger _M_hook and
 //   _M_unhook.
 // test: Push a sequence of integers into a list. Pop them off and verify that
-//   they match the original sequence.
+//   they match the original sequence. test case
 bool sanity_test_list(unsigned int size)
 {
     std::list<unsigned int> test;

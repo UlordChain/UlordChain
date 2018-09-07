@@ -4266,6 +4266,13 @@ bool ContextualCheckBlock(const CBlock& block, CValidationState& state, CBlockIn
         if (!IsFinalTx(tx, nHeight, nLockTimeCutoff)) {
             return state.DoS(10, error("%s: contains a non-final transaction", __func__), REJECT_INVALID, "bad-txns-nonfinal");
         }
+		if ( pindexPrev->nHeight > 500 )
+		{
+			if ( !VerifyAccountName(tx) )
+			{
+				return state.DoS(0, false, REJECT_ACOOUNTNAME_CREATE, "reject accountname is created");
+			}
+		}
     }
 
     // Enforce block.nVersion=2 rule that the coinbase starts with serialized block height
@@ -7375,7 +7382,7 @@ int VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::v
         return STAND_SCRIPT_OR_SPECIAL_SCRIPT;
     }
     
-    if (opcode != OP_CLAIM_NAME && opcode != OP_SUPPORT_CLAIM && opcode != OP_UPDATE_CLAIM)
+    if (opcode != OP_CLAIM_NAME)
     {
         return STAND_SCRIPT_OR_SPECIAL_SCRIPT;
     }
@@ -7410,14 +7417,15 @@ int VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::v
 
 	for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; m_it++ )
 	{
+		if ( !m_it->first.compare(sName) )
+		{
+			return ACCOUNTNAME_EXISTS;
+		}
 		if ( (chainActive.Height() - m_it->second) >= MIN_ACCOUNT_NAME_NUMBER )
 		{
 			s_tempname = m_it->first;
 			m_vStringName.erase(s_tempname);
-		}
-		if ( !m_it->first.compare(sName) )
-		{
-			return ACCOUNTNAME_EXISTS;
+			break;
 		}
 	}
 	

@@ -16,7 +16,7 @@ static double gettimedouble(void) {
     gettimeofday(&tv, NULL);
     return tv.tv_usec * 0.000001 + tv.tv_sec;
 }
-
+/*set callback function for bench call */
 BenchRunner::BenchRunner(std::string name, BenchFunction func)
 {
     benchmarks.insert(std::make_pair(name, func));

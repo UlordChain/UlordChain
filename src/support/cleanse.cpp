@@ -6,7 +6,7 @@
 #include "cleanse.h"
 
 #include <openssl/crypto.h>
-
+/* open ssl  library clean memory*/
 void memory_cleanse(void *ptr, size_t len)
 {
     OPENSSL_cleanse(ptr, len);

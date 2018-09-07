@@ -32,7 +32,7 @@ string SanitizeString(const string& str, int rule)
     }
     return strResult;
 }
-
+/*ascII to hex ,rapaid code and decode */
 const signed char p_util_hexdigit[256] =
 { -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
   -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,

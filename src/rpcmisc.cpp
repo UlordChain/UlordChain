@@ -138,7 +138,7 @@ UniValue getinfo(const UniValue& params, bool fHelp)
     obj.push_back(Pair("relayfee",      ValueFromAmount(::minRelayTxFee.GetFeePerK())));
 
     if(str_param.compare("subsidy") == 0)
-        obj.push_back(Pair("totalsubsidy",      gettotalsubsidy(chainActive.Height())));
+        obj.push_back(Pair("circulatingsupply",      gettotalsubsidy(chainActive.Height())));
 
     obj.push_back(Pair("errors",        GetWarnings("statusbar")));
     return obj;

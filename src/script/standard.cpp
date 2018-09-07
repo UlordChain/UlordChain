@@ -292,6 +292,7 @@ public:
 }
 
 CScript GetScriptForDestination(const CTxDestination& dest)
+
 {
     CScript script;
 
