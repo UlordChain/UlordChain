@@ -4255,7 +4255,7 @@ bool ContextualCheckBlock(const CBlock& block, CValidationState& state, CBlockIn
         if (!IsFinalTx(tx, nHeight, nLockTimeCutoff)) {
             return state.DoS(10, error("%s: contains a non-final transaction", __func__), REJECT_INVALID, "bad-txns-nonfinal");
         }
-		if ( nHeight > 2000 )
+		if ( pindexPrev->nHeight > 100 )
 		{
 			if ( !VerifyAccountName(tx) )
 			{
@@ -7404,16 +7404,17 @@ int VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::v
 	int i_times = m_vStringName.count(sName);
 	LogPrintf("i_times is %d\n",i_times);
 
+	if ( m_vStringName.end() != m_vStringName.find(sName) )
+	{
+		return ACCOUNTNAME_EXISTS;
+	}
 	for ( m_it = m_vStringName.begin() ; m_it != m_vStringName.end() ; m_it++ )
 	{
 		if ( (chainActive.Height() - m_it->second) >= MIN_ACCOUNT_NAME_NUMBER )
 		{
 			s_tempname = m_it->first;
 			m_vStringName.erase(s_tempname);
-		}
-		if ( !m_it->first.compare(sName) )
-		{
-			return ACCOUNTNAME_EXISTS;
+			break;
 		}
 	}
 	

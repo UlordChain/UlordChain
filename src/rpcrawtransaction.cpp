@@ -2210,7 +2210,7 @@ UniValue lockcoinforsometime(const UniValue &params, bool fHelp)
             "\"hex\"             (string) The contract raw transaction in hex\n"
             "\nExamples:\n"
             "\nCreate a transaction\n"
-            + HelpExampleCli("crosschaininitial", "\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" 0.1")
+            + HelpExampleCli("lockcoinforsometime", "\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" 0.1" "10000")
         );
 	// parse parameters
 	if (!EnsureWalletIsAvailable(fHelp))

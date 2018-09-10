@@ -449,6 +449,7 @@ UniValue claimname(const UniValue& params, bool fHelp)
         "\"transactionid\"  (string) The transaction id.\n"
 		"\nExamples:\n"
 		+ HelpExampleCli("claimname", "\"alfredzky\" \"uwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" 10")
+		+ HelpExampleRpc("claimname", "\"alfredzky\" \"uwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" 10")
     );
     string sName = params[0].get_str();
     string sAddress= params[1].get_str();
@@ -565,6 +566,7 @@ UniValue updateclaim( const UniValue & params,bool fHelp)
         "\"transactionid\"  (string) The new transaction id.\n"
         "\nExamples:\n"
 		+ HelpExampleCli("updateclaim", "\"8fb48e61ccce3cb5083d8ad9ee7ab73c58a40c1594e43386ca425cd12187db6a\" \"uwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" 10")
+		+ HelpExampleRpc("updateclaim", "\"8fb48e61ccce3cb5083d8ad9ee7ab73c58a40c1594e43386ca425cd12187db6a\" \"uwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" 10")
     );
 
     uint256 hash;
@@ -665,6 +667,7 @@ UniValue abandonclaim(const UniValue&params,bool fHelp)
         "\"transactionid\"  (string) The new transaction id.\n"
         "\nExamples:\n"
 		+ HelpExampleCli("abandonclaim", "\"alfredzky\" \"8fb48e61ccce3cb5083d8ad9ee7ab73c58a40c1594e43386ca425cd12187db6a\" 10")
+		+ HelpExampleRpc("abandonclaim", "\"alfredzky\" \"8fb48e61ccce3cb5083d8ad9ee7ab73c58a40c1594e43386ca425cd12187db6a\" 10")
     );
     uint256 hash;
     hash.SetHex(params[0].get_str());
@@ -3373,6 +3376,7 @@ UniValue sendtoaccountname(const UniValue &params, bool fHelp)
         "\"transactionid\"  (string) The transaction id.\n"
         "\nExamples:\n"
         + HelpExampleCli("sendtoaccountname", "\"alfredzky\" 0.1")
+        + HelpExampleRpc("sendtoaccountname", "\"alfredzky\" 0.1")
     );
 
     std::string sName = params[0].get_str();
