@@ -9,7 +9,8 @@
 #include "univalue.h"
 #include "txmempool.h"
 #include "rpcserver.h"
-#include "base58.h"
+#include "base58.h"
+
 
 
 // Maximum block decrement that is allowed from rpc calls
@@ -308,7 +309,10 @@ UniValue getclaimsforname(const UniValue& params, bool fHelp)
             "      \"nAmount\"  (numeric) the amount of the support\n"
             "    }\n"
             "  ]\n"
-            "}\n"   
+            "}\n" 
+	    "\nExamples:\n"
+	    + HelpExampleCli("getclaimsforname", "\"alfredzky\"")
+	    + HelpExampleRpc("getclaimsforname", "\"alfredzky\"")
         );
 
     LOCK(cs_main);
