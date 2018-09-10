@@ -309,6 +309,9 @@ UniValue getclaimsforname(const UniValue& params, bool fHelp)
             "    }\n"
             "  ]\n"
             "}\n"   
+            "\nExamples:\n"
+			+ HelpExampleCli("getclaimsforname", "\"AlfredZKY\" ")
+			+ HelpExampleRpc("getclaimsforname", "\"AlfredZKY\" ")
         );
 
     LOCK(cs_main);
