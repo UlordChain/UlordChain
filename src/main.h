@@ -49,7 +49,7 @@ struct CNodeStateStats;
 struct LockPoints;
 
 // enough number of block delete map about name
-#define MIN_ACCOUNT_NAME_NUMBER 100
+#define MIN_ACCOUNT_NAME_NUMBER 50
 
 // Displays the maximum number of addresses bound to the same account name
 #define MAX_NUM 5
