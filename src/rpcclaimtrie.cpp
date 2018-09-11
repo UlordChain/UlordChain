@@ -164,6 +164,7 @@ UniValue getaccountnamefromaddress(const UniValue& params, bool fHelp)
 			);
 	LOCK(cs_main);
     UniValue ret(UniValue::VARR);
+	UniValue node(UniValue::VOBJ);
 	std::string sAddress = params[0].get_str();
 	CBitcoinAddress address(sAddress);
 	CClaimValue claim;
@@ -183,7 +184,7 @@ UniValue getaccountnamefromaddress(const UniValue& params, bool fHelp)
         	{
         	    break;
         	}
-			if ( claim.m_NameAddress == sAddress )
+			if ( !claim.saddr.compare(sAddress) )
 	    	{	 
 				node.push_back(Pair("name", it->first));                                                       
 				node.push_back(Pair("hash", it->second.hash.GetHex()));
@@ -191,11 +192,11 @@ UniValue getaccountnamefromaddress(const UniValue& params, bool fHelp)
 				node.push_back(Pair("n", (int)claim.outPoint.n));                                             
 				node.push_back(Pair("value", ValueFromAmount(claim.nAmount)));                                           
 				node.push_back(Pair("height", claim.nHeight)); 
-				node.push_back(Pair("address",claim.m_NameAddress)); 
+				node.push_back(Pair("address",claim.saddr)); 
 		        ret.push_back(node);
+				i_num++;
 	    	}
         }
-		i_num++;
        	continue;
     }
     return ret;
