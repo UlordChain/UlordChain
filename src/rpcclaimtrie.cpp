@@ -112,6 +112,9 @@ UniValue getclaimtrie(const UniValue& params, bool fHelp)
             "  \"value\"          (numeric) (if value exists) txout value\n"
             "  \"height\"         (numeric) (if value exists) the height of the block in which this transaction is located\n"
             "}\n"
+            "\nExamples:\n"
+            + HelpExampleCli("claimname", "\"alfredzky\" \"uwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" 10")
+			+ HelpExampleRpc("claimname", "\"alfredzky\" \"uwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" 10")
         );
 
     LOCK(cs_main);
@@ -135,6 +138,64 @@ UniValue getclaimtrie(const UniValue& params, bool fHelp)
     }
     return ret;
 }
+
+
+UniValue getaccountnamefromaddress(const UniValue& params, bool fHelp)
+{
+	if (fHelp || params.size() != 1)
+		throw std::runtime_error(
+			"getaccountnamefromaddress \n"
+			"Return the entire name trie info from bind address.\n"
+			"Arguments:\n"
+			"None\n"
+			"Result: \n"
+			"{\n"
+			"  \"name\" 		  (string) the name of the node\n"
+			"  \"hash\" 		  (string) the hash of the node\n"
+			"  \"txid\" 		  (string) (if value exists) the hash of the transaction which has successfully claimed this name\n"
+			"  \"n\"			  (numeric) (if value exists) vout value\n"
+			"  \"value\"		  (numeric) (if value exists) txout value\n"
+			"  \"height\"		  (numeric) (if value exists) the height of the block in which this transaction is located\n"
+			"  \"address\"		  (numeric) The ulord address for bind accountname.\n"
+			"}\n"
+			"\nExamples:\n"
+			+ HelpExampleCli("getaccountnamefromaddress", "\"uwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\"")
+			+ HelpExampleRpc("getaccountnamefromaddress", "\"uwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\"")	
+			);
+	LOCK(cs_main);
+    UniValue ret(UniValue::VARR);
+	std::string sAddress = params[0].get_str();
+	CBitcoinAddress address(sAddress);
+	CClaimValue claim;
+	
+	if (!address.IsValid())
+	{
+		throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
+	}
+    std::vector<namedNodeType> nodes = pclaimTrie->flattenTrie();
+    for (std::vector<namedNodeType>::iterator it = nodes.begin(); it != nodes.end(); ++it)
+    {
+		if (it->second.getBestClaim(claim))
+        {
+			if ( claim.m_NameAddress == sAddress )
+	    	{	 
+				node.push_back(Pair("name", it->first));                                                       
+				node.push_back(Pair("hash", it->second.hash.GetHex()));
+				node.push_back(Pair("txid", claim.outPoint.hash.GetHex()));                                    
+				node.push_back(Pair("n", (int)claim.outPoint.n));                                             
+				node.push_back(Pair("value", ValueFromAmount(claim.nAmount)));                                           
+				node.push_back(Pair("height", claim.nHeight)); 
+				node.push_back(Pair("address",claim.m_NameAddress)); 
+		        ret.push_back(node);
+				break;
+	    	}
+        }
+       	continue;
+    }
+    return ret;
+
+}
+
 
 bool getValueForClaim(const COutPoint& out, std::string& sValue)
 {

@@ -334,6 +334,7 @@ extern UniValue gettotalvalueofclaims(const UniValue& params, bool fHelp);
 extern UniValue getclaimsfortx(const UniValue& params, bool fHelp);
 extern UniValue proofToJSON(const CClaimTrieProof& proof);
 extern UniValue getnameproof(const UniValue& params, bool fHelp);
+extern UniValue getaccountnamefromaddress(const UniValue& params, bool fHelp);
 
 // atomic swap contract of transaction about RPC 
 extern UniValue crosschaininitial(const UniValue &params, bool fHelp);
