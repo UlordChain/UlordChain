@@ -172,11 +172,17 @@ UniValue getaccountnamefromaddress(const UniValue& params, bool fHelp)
 	{
 		throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
 	}
+
+	unsigned int i_num = 0;
     std::vector<namedNodeType> nodes = pclaimTrie->flattenTrie();
     for (std::vector<namedNodeType>::iterator it = nodes.begin(); it != nodes.end(); ++it)
     {
 		if (it->second.getBestClaim(claim))
         {
+        	if ( i_num > MAX_NUM )
+        	{
+        	    break;
+        	}
 			if ( claim.m_NameAddress == sAddress )
 	    	{	 
 				node.push_back(Pair("name", it->first));                                                       
@@ -187,9 +193,9 @@ UniValue getaccountnamefromaddress(const UniValue& params, bool fHelp)
 				node.push_back(Pair("height", claim.nHeight)); 
 				node.push_back(Pair("address",claim.m_NameAddress)); 
 		        ret.push_back(node);
-				break;
 	    	}
         }
+		i_num++;
        	continue;
     }
     return ret;
