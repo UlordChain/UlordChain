@@ -352,8 +352,8 @@ extern UniValue crosschainauditcontract(const UniValue &params, bool fHelp);
 
 
 // lock coin for some time
-extern UniValue lockcoinforsometime(const UniValue &params, bool fHelp);
-extern UniValue refundlockcoin(const UniValue &params, bool fHelp);
+extern UniValue lockcoin(const UniValue &params, bool fHelp);
+extern UniValue unlockcoin(const UniValue &params, bool fHelp);
 
 
 bool StartRPC();
