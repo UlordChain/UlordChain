@@ -63,6 +63,8 @@ public:
         READWRITE(nAmount);
         READWRITE(nHeight);
         READWRITE(nValidAtHeight);
+        READWRITE(sname);
+        READWRITE(saddr);
     }
     
     bool operator<(const CClaimValue& other) const

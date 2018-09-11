@@ -185,7 +185,7 @@ UniValue getaccountnamefromaddress(const UniValue& params, bool fHelp)
         	{
         	    break;
         	}
-			if ( !claim.saddr.compare(sAddress) )
+		if ( !claim.saddr.compare(sAddress) )
 	    	{	 
 				node.push_back(Pair("txid", claim.outPoint.hash.GetHex()));                                    
 				node.push_back(Pair("n", (int)claim.outPoint.n));                                             
@@ -194,7 +194,7 @@ UniValue getaccountnamefromaddress(const UniValue& params, bool fHelp)
 				node.push_back(Pair("address",claim.saddr)); 
 				ret.push_back(node);
 				i_num++;
-	    	}
+	   	}
         }
     }
     return ret;
