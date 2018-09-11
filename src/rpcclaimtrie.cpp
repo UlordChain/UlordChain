@@ -164,11 +164,8 @@ UniValue getaccountnamefromaddress(const UniValue& params, bool fHelp)
 			);
 	LOCK(cs_main);
     UniValue ret(UniValue::VARR);
-	UniValue node(UniValue::VOBJ);
 	std::string sAddress = params[0].get_str();
 	CBitcoinAddress address(sAddress);
-	CClaimValue claim;
-	
 	if (!address.IsValid())
 	{
 		throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
@@ -178,6 +175,10 @@ UniValue getaccountnamefromaddress(const UniValue& params, bool fHelp)
     std::vector<namedNodeType> nodes = pclaimTrie->flattenTrie();
     for (std::vector<namedNodeType>::iterator it = nodes.begin(); it != nodes.end(); ++it)
     {
+    	UniValue node(UniValue::VOBJ);
+    	node.push_back(Pair("name", it->first));                                                       
+		node.push_back(Pair("hash", it->second.hash.GetHex()));
+		CClaimValue claim;
 		if (it->second.getBestClaim(claim))
         {
         	if ( i_num > MAX_NUM )
@@ -186,18 +187,15 @@ UniValue getaccountnamefromaddress(const UniValue& params, bool fHelp)
         	}
 			if ( !claim.saddr.compare(sAddress) )
 	    	{	 
-				node.push_back(Pair("name", it->first));                                                       
-				node.push_back(Pair("hash", it->second.hash.GetHex()));
 				node.push_back(Pair("txid", claim.outPoint.hash.GetHex()));                                    
 				node.push_back(Pair("n", (int)claim.outPoint.n));                                             
 				node.push_back(Pair("value", ValueFromAmount(claim.nAmount)));                                           
 				node.push_back(Pair("height", claim.nHeight)); 
 				node.push_back(Pair("address",claim.saddr)); 
-		        ret.push_back(node);
+				ret.push_back(node);
 				i_num++;
 	    	}
         }
-       	continue;
     }
     return ret;
 
