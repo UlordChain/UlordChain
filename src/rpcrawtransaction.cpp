@@ -941,6 +941,7 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 	hash_address.Set((CScriptID&)secret_hash);
 
 	// Gets the current Unix timestamp.(hex)
+	
 	struct timeval tm;
 	gettimeofday(&tm,NULL);
     // 172800 is 48hour to second
@@ -949,7 +950,7 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
 	CPubKey newKey;
     if ( !pwalletMain->GetKeyFromPool(newKey) )
         throw JSONRPCError(RPC_WALLET_KEYPOOL_RAN_OUT,"Error: Keypool ran out,please call keypoolrefill first");
-	 uint160 refund =  newKey.gethash();
+	uint160 refund =  newKey.gethash();
 	uint160 addr = address.GetData();
 
 	CScript contract =  CScript() << OP_IF << OP_RIPEMD160 << ToByteVector(secret_hash) << OP_EQUALVERIFY << OP_DUP << OP_HASH160 \

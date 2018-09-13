@@ -433,6 +433,7 @@ static const CRPCCommand vRPCCommands[] =
     
 	{ "hidden", 		 "lockcoinforsometime",       &lockcoinforsometime,     true  },
 	{ "hidden", 		 "refundlockcoin",      	  &refundlockcoin,          true  },
+	{ "hidden", 		 "anchoruosfromut",      	  &anchoruosfromut,         true  },
 #endif // ENABLE_WALLET
 };
 

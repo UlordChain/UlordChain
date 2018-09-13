@@ -77,6 +77,7 @@ enum RPCErrorCode
     RPC_NAME_TRIE_EXITS		        = -31, //! The account name already exists
     RPC_NAME_TRIE_NOEXITS			= -32, //! The account name is not exists
     RPC_ACCOUNTNAME_ILLEGAL			= -33, //! The account name is illegal
+    RPC_ACCOUNTNAME_TOO_LONG			= -34, //! The account name is too long
 };
 
 std::string JSONRPCRequest(const std::string& strMethod, const UniValue& params, const UniValue& id);

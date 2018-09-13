@@ -39,12 +39,6 @@ std::map<std::string,int> m_vStringName;
 int64_t nWalletUnlockTime;
 static CCriticalSection cs_nWalletUnlockTime;
 
-// ACCOUNT_NAME DEPOSIT
-#define MAX_ACCOUNT_MONEY 10 * COIN
-
-// ACCOUNT_NAME length
-#define MAX_ACCOUNT_SIZE 12
-
 std::string HelpRequiringPassphrase()
 {
     return pwalletMain && pwalletMain->IsCrypted()
@@ -484,11 +478,13 @@ UniValue claimname(const UniValue& params, bool fHelp)
 	
 	CClaimValue claim;
 	if (pclaimTrie->getInfoForName(sName, claim))
-	   throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
+	{
+		throw JSONRPCError(RPC_NAME_TRIE_EXITS, "The account name already exists");
+	}
 	
 	if ( vchName.size() > MAX_ACCOUNT_SIZE)
 	{
-	    throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord account_name ,it is too long");
+	    throw JSONRPCError(RPC_ACCOUNTNAME_TOO_LONG, "Invalid Ulord account_name ,it is too long");
 	}
 	
 	CBitcoinAddress address(params[1].get_str());
@@ -3419,3 +3415,88 @@ UniValue sendtoaccountname(const UniValue &params, bool fHelp)
 		throw JSONRPCError(RPC_WALLET_ERROR, "Error: The transaction was rejected! This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.");
     return wtxNew.GetHash().GetHex();	
 }
+
+
+UniValue anchoruosfromut(const UniValue &params, bool fHelp)
+{
+	if (!EnsureWalletIsAvailable(fHelp))
+        return NullUniValue;
+    
+    if (fHelp || params.size() != 2)
+        throw runtime_error(
+            "anchoruosfromut \"ulordaddress\" \"amount\" \"uosaccountname\" ( \"comment\" \"comment-to\" subtractfeefromamount use_is use_ps )\n"
+            "\nSend an amount to a given address.\n"
+            + HelpRequiringPassphrase() +
+            "\nArguments:\n"
+            "1. \"ulordaddress\"  (string, required) The ulord address to send to.\n"
+            "2. \"amount\"        (numeric or string, required) The amount in " + CURRENCY_UNIT + " to send. eg 0.1\n"
+            "3. \"uosaccountname\"     (string, optional) A account name from uos chain. \n"
+            "\nResult:\n"
+            "\"transactionid\"  (string) The transaction id.\n"
+            "\nExamples:\n"
+            + HelpExampleCli("sendtoaddress", "\"SQGcu1JwhrjybdyrZQYfReZ5jKHGjLP7Rq\" \"0.1\" \"uos_accountname\"")
+            + HelpExampleRpc("sendtoaddress", "\"SQGcu1JwhrjybdyrZQYfReZ5jKHGjLP7Rq\" \"0.1\" \"uos_accountname\"")
+        );
+
+		LOCK2(cs_main, pwalletMain->cs_wallet);
+	    CBitcoinAddress address(params[0].get_str());
+		std::vector<unsigned char>vchName(sName.begin(),sName.end());
+		string sName = params[2].get_str();
+		CWalletTx wtx;
+	    if (!address.IsValid())
+    	{
+	        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
+    	}
+
+	    // Amount
+	    CAmount nAmount = AmountFromValue(params[1]);
+	    if (nAmount <= 0)
+    	{
+	        throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
+    	}
+		EnsureWalletIsUnlocked();
+		CScript uosScript = CScript()<<OP_UOS_NAME<<vchName<<OP_DROP;
+		if ( nAmount > pwalletMain->GetBalance() )
+    	{
+    		throw JSONRPCError( RPC_WALLET_INSUFFICIENT_FUNDS,"Insufficient funds" );
+		}
+		
+		string strError;
+		if ( pwalletMain->IsLocked() )
+		{
+			strError = "Error: Wallet locked,unable to create transaction!";
+			LogPrintf("%s() :%s",__func__,strError);
+			throw JSONRPCError(RPC_WALLET_ERROR,strError);
+		}
+		//get new address
+		CPubKey newKey;
+		if ( !pwalletMain->GetKeyFromPool(newKey) )
+		{
+			throw JSONRPCError(RPC_WALLET_KEYPOOL_RAN_OUT,"Error: Keypool ran out,please call keypoolrefill first");
+		}
+		CScript scriptPubkey = GetScriptForDestination( CTxDestination(newKey.GetID()));
+		uosScript = uosScript + scriptPubkey;
+		
+		vector<CRecipient> vecSend;
+		int nChangePosRet = -1;
+		CRecipient recipient = {uosScript,nAmount,false};
+		vecSend.push_back(recipient);
+		CReserveKey reservekey(pwalletMain);
+		CAmount nFeeRequired;
+		if ( !pwalletMain->CreateTransaction(vecSend,wtx,reservekey,nFeeRequired,nChangePosRet,strError))
+		{
+		    if ( nAmount + nFeeRequired > pwalletMain->GetBalance() )
+		    {
+		        strError = strprintf("Error: This transaction requires a transaction fee of at leasst %s because if its amount, complex, or use of recently received funds!",FormatMoney(nFeeRequired));
+		    }
+		    LogPrintf("%s() : %s\n",__func__,strError);
+		    throw JSONRPCError(RPC_WALLET_ERROR,strError);
+		}
+		    
+		if ( !pwalletMain->CommitTransaction(wtx,reservekey) )
+		{
+			throw JSONRPCError(RPC_WALLET_ERROR,"Error: The transaction was rejected! This might hapen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.");
+		}
+	   return wtx.GetHash().GetHex();
+}
+

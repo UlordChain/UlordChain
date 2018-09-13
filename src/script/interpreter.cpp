@@ -374,7 +374,7 @@ bool EvalScript(vector<vector<unsigned char> >& stack, const CScript& script, un
                 }
 
                 case OP_CLAIM_NAME: case OP_SUPPORT_CLAIM: case OP_UPDATE_CLAIM:
-		case OP_NAME_TRIE:  case OP_NAME_UPDATE:
+				case OP_UOS_NAME:  case OP_NAME_UPDATE:
                 {
                     CScriptNum n(OP_0);
                     stack.push_back(vchZero);

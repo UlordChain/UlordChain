@@ -25,7 +25,8 @@ enum isminetype
     ISMINE_SPENDABLE = 4,
     ISMINE_CLAIM = 8, // used for claim script
     ISMINE_SUPPORT= 16,
-    ISMINE_ALL = ISMINE_WATCH_ONLY | ISMINE_SPENDABLE | ISMINE_CLAIM | ISMINE_SUPPORT
+    ISMINE_UOSNAME = 32,
+    ISMINE_ALL = ISMINE_WATCH_ONLY | ISMINE_SPENDABLE | ISMINE_CLAIM | ISMINE_SUPPORT |ISMINE_UOSNAME
 };
 /** used for bitflags of isminetype */
 typedef uint8_t isminefilter;
