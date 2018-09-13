@@ -3422,7 +3422,7 @@ UniValue anchoruosfromut(const UniValue &params, bool fHelp)
 	if (!EnsureWalletIsAvailable(fHelp))
         return NullUniValue;
     
-    if (fHelp || params.size() != 2)
+    if (fHelp || params.size() != 3)
         throw runtime_error(
             "anchoruosfromut \"ulordaddress\" \"amount\" \"uosaccountname\" ( \"comment\" \"comment-to\" subtractfeefromamount use_is use_ps )\n"
             "\nSend an amount to a given address.\n"
