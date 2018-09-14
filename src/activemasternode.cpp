@@ -204,35 +204,6 @@ void CActiveMasternode::ManageStateInitial()
 
     // Default to REMOTE
     eType = MASTERNODE_REMOTE;
-#if 0
-#ifdef ENABLE_WALLET
-    const CAmount ct = Params().GetConsensus().colleteral;
-    // Check if wallet funds are available
-    if(!pwalletMain) {
-        LogPrintf("CActiveMasternode::ManageStateInitial -- %s: Wallet not available\n", GetStateString());
-        return;
-    }
-
-    if(pwalletMain->IsLocked()) {
-        LogPrintf("CActiveMasternode::ManageStateInitial -- %s: Wallet is locked\n", GetStateString());
-        return;
-    }
-
-    if(pwalletMain->GetBalance() < ct) {
-        LogPrintf("CActiveMasternode::ManageStateInitial -- %s: Wallet balance is < %lld UT\n", GetStateString(), ct);
-        return;
-    }
-
-    // Choose coins to use
-    CPubKey pubKeyCollateral;
-    CKey keyCollateral;
-
-    // If collateral is found switch to LOCAL mode
-    if(pwalletMain->GetMasternodeVinAndKeys(vin, pubKeyCollateral, keyCollateral)) {
-        eType = MASTERNODE_LOCAL;
-    }
-#endif // ENABLE_WALLET
-#endif
 
 	if(masternodeConfig.GetMasternodeVin(vin))
 	{
