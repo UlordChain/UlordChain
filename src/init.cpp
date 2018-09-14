@@ -1804,12 +1804,6 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
         
         LogPrintf("MASTERNODE:\n");
 
-        if(!GetArg("-masternodeaddr", "").empty()) {
-            // Hot masternode (either local or remote) should get its address in
-            // CActiveMasternode::ManageState() automatically and no longer relies on masternodeaddr.
-            return InitError(_("masternodeaddr option is deprecated. Please use ulord.conf to manage your remote masternodes."));
-        }
-
         std::string strMasterNodePrivKey = GetArg("-masternodeprivkey", "");
         if(!strMasterNodePrivKey.empty()) {
             if(!privSendSigner.GetKeysFromSecret(strMasterNodePrivKey, activeMasternode.keyMasternode, activeMasternode.pubKeyMasternode))
