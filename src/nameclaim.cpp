@@ -168,12 +168,7 @@ CScript StripClaimScriptPrefix(const CScript& scriptIn, int& op)
     if (!DecodeClaimScript(scriptIn, op, vvchParams, pc))
     {
         return scriptIn;
-    }
-	if else(!DecodeClaimScript(scriptIn, op, vvchParams, pc))
-	{
-		return scriptIn;
 	}
-
     return CScript(pc, scriptIn.end());
 }
 
