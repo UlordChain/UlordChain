@@ -54,6 +54,9 @@ struct LockPoints;
 // Displays the maximum number of addresses bound to the same account name
 #define MAX_NUM 5
 
+// STANDARD ACCOUNT NAME LENGTH
+#define MAX_ACCOUNT_SIZE 12
+
 /** Default for accepting alerts from the P2P network. */
 static const bool DEFAULT_ALERTS = false;
 /** Default for DEFAULT_WHITELISTRELAY. */

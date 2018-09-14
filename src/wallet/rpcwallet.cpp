@@ -3422,7 +3422,7 @@ UniValue anchoruosfromut(const UniValue &params, bool fHelp)
 	if (!EnsureWalletIsAvailable(fHelp))
         return NullUniValue;
     
-    if (fHelp || params.size() != 2)
+    if (fHelp || params.size() != 3)
         throw runtime_error(
             "anchoruosfromut \"ulordaddress\" \"amount\" \"uosaccountname\" ( \"comment\" \"comment-to\" subtractfeefromamount use_is use_ps )\n"
             "\nSend an amount to a given address.\n"
@@ -3439,9 +3439,9 @@ UniValue anchoruosfromut(const UniValue &params, bool fHelp)
         );
 
 		LOCK2(cs_main, pwalletMain->cs_wallet);
-	    CBitcoinAddress address(params[0].get_str());
-		std::vector<unsigned char>vchName(sName.begin(),sName.end());
+	   	CBitcoinAddress address(params[0].get_str());
 		string sName = params[2].get_str();
+		std::vector<unsigned char>vchName(sName.begin(),sName.end());
 		CWalletTx wtx;
 	    if (!address.IsValid())
     	{
