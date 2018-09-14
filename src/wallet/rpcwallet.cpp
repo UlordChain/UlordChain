@@ -3468,13 +3468,7 @@ UniValue anchoruosfromut(const UniValue &params, bool fHelp)
 			LogPrintf("%s() :%s",__func__,strError);
 			throw JSONRPCError(RPC_WALLET_ERROR,strError);
 		}
-		//get new address
-		CPubKey newKey;
-		if ( !pwalletMain->GetKeyFromPool(newKey) )
-		{
-			throw JSONRPCError(RPC_WALLET_KEYPOOL_RAN_OUT,"Error: Keypool ran out,please call keypoolrefill first");
-		}
-		CScript scriptPubkey = GetScriptForDestination( CTxDestination(newKey.GetID()));
+		CScript scriptPubkey = GetScriptForDestination(address.Get());
 		uosScript = uosScript + scriptPubkey;
 		
 		vector<CRecipient> vecSend;
