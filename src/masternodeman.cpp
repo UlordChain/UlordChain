@@ -120,16 +120,6 @@ void showbuf(const char * buf, int len)
 	printf("\n");
 }
 
-/*void GetRequestMsg(std::string & str)
-{
-	mstnodequest   mstquest(111,MST_QUEST_ONE);
-    mstquest.SetMasterAddr(std::string("NdsRM9waShDUT3TqhgdsGCzqH33Wwb8zDB") );
-    std::ostringstream os;
-    boost::archive::binary_oarchive oa(os);
-    oa<<mstquest;
-	str = os.str();
-}*/
-
 bool SendRequestNsg(SOCKET sock, CMasternode &mn, mstnodequest &mstquest)
 {
 	std::string strReq;
