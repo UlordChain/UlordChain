@@ -69,30 +69,42 @@ bool DecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector
         return false;
     }
     
-    if (opcode != OP_CLAIM_NAME && opcode != OP_SUPPORT_CLAIM && opcode != OP_UPDATE_CLAIM)
+    if (opcode != OP_CLAIM_NAME && opcode != OP_SUPPORT_CLAIM && opcode != OP_UPDATE_CLAIM && opcode != OP_UOS_NAME)
     {
         return false;
     }
 
     op = opcode;
-
     std::vector<unsigned char> vchParam1;
     std::vector<unsigned char> vchParam2;
     std::vector<unsigned char> vchParam3;
+	std::vector<unsigned char> vchParam4;
     // Valid formats:
     // OP_CLAIM_NAME vchName vchValue OP_2DROP OP_DROP pubkeyscript
     // OP_UPDATE_CLAIM vchName vchClaimId vchValue OP_2DROP OP_2DROP pubkeyscript
     // OP_SUPPORT_CLAIM vchName vchClaimId OP_2DROP OP_DROP pubkeyscript
+    // OP_UOS_NAME vchName OP_2DROP pubkeyscript
     // All others are invalid.
 
-    if (!scriptIn.GetOp(pc, opcode, vchParam1) || opcode < 0 || opcode > OP_PUSHDATA4)
-    {
-        return false;
-    }
-    if (!scriptIn.GetOp(pc, opcode, vchParam2) || opcode < 0 || opcode > OP_PUSHDATA4)
-    {
-        return false;
-    }
+	if ( opcode != OP_UOS_NAME )
+	{
+	    if (!scriptIn.GetOp(pc, opcode, vchParam4) || opcode < 0 || opcode > OP_PUSHDATA4)
+		{
+			return false;
+		}
+	}
+	else 
+	{
+		if (!scriptIn.GetOp(pc, opcode, vchParam1) || opcode < 0 || opcode > OP_PUSHDATA4)
+		{
+			return false;
+		}
+		if (!scriptIn.GetOp(pc, opcode, vchParam2) || opcode < 0 || opcode > OP_PUSHDATA4)
+		{
+			return false;
+		}
+	}
+    
     if (op == OP_UPDATE_CLAIM || op == OP_SUPPORT_CLAIM)
     {
         if (vchParam2.size() != 160/8)
@@ -115,6 +127,7 @@ bool DecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector
     {
         return false;
     }
+
     if ((op == OP_CLAIM_NAME || op == OP_SUPPORT_CLAIM) && opcode != OP_DROP)
     {
         return false;
@@ -156,6 +169,10 @@ CScript StripClaimScriptPrefix(const CScript& scriptIn, int& op)
     {
         return scriptIn;
     }
+	if else(!DecodeClaimScript(scriptIn, op, vvchParams, pc))
+	{
+		return scriptIn;
+	}
 
     return CScript(pc, scriptIn.end());
 }

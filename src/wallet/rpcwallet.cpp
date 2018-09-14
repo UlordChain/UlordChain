@@ -3455,7 +3455,7 @@ UniValue anchoruosfromut(const UniValue &params, bool fHelp)
 	        throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
     	}
 		EnsureWalletIsUnlocked();
-		CScript uosScript = CScript()<<OP_UOS_NAME<<vchName<<OP_DROP;
+		CScript uosScript = CScript()<<OP_UOS_NAME<<vchName<<OP_2DROP;
 		if ( nAmount > pwalletMain->GetBalance() )
     	{
     		throw JSONRPCError( RPC_WALLET_INSUFFICIENT_FUNDS,"Insufficient funds" );
