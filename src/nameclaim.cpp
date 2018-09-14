@@ -103,7 +103,7 @@ bool DecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector
 		{
 			return false;
 		}
-		 if (op == OP_UPDATE_CLAIM || op == OP_SUPPORT_CLAIM)
+		if (op == OP_UPDATE_CLAIM || op == OP_SUPPORT_CLAIM)
 		{
 			if (vchParam2.size() != 160/8)
 			{
@@ -117,22 +117,21 @@ bool DecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector
 			    return false;
 			}
 		}
+		if (!scriptIn.GetOp(pc, opcode) || opcode != OP_2DROP)
+		{
+			return false;
+		}
+		if ((op == OP_CLAIM_NAME || op == OP_SUPPORT_CLAIM) && opcode != OP_DROP)
+	    {
+	        return false;
+	    }
+		else if ((op == OP_UPDATE_CLAIM) && opcode != OP_2DROP)
+	    {
+	        return false;
+	    }
 	}
-    
-    if (!scriptIn.GetOp(pc, opcode) || opcode != OP_2DROP)
-    {
-        return false;
-    }
+   
     if (!scriptIn.GetOp(pc, opcode))
-    {
-        return false;
-    }
-
-    if ((op == OP_CLAIM_NAME || op == OP_SUPPORT_CLAIM) && opcode != OP_DROP)
-    {
-        return false;
-    }
-    else if ((op == OP_UPDATE_CLAIM) && opcode != OP_2DROP)
     {
         return false;
     }
