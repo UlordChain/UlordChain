@@ -3055,7 +3055,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
                 {
                     if (op == OP_CLAIM_NAME)
                     {   
-                        assert(vvchParams.size() == 2);
+                        assert(vvchParams.size() == 3);
                         std::string name(vvchParams[0].begin(), vvchParams[0].end());
 						std::string addr(vvchParams[1].begin(),vvchParams[1].end());
                         LogPrintf("%s: Inserting %s into the claim trie. Tx: %s, nOut: %d\n", __func__, name, tx.GetHash().GetHex(), l);
@@ -3066,7 +3066,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
                     }
                     else if (op == OP_UPDATE_CLAIM)
                     {
-                        assert(vvchParams.size() == 3);
+                        assert(vvchParams.size() == 4);
                         std::string name(vvchParams[0].begin(), vvchParams[0].end());
 						std::string addr(vvchParams[2].begin(),vvchParams[2].end());
                         uint160 claimId(vvchParams[1]);
@@ -3090,7 +3090,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
                     }
                     else if (op == OP_SUPPORT_CLAIM)
                     {   
-                        assert(vvchParams.size() == 2);
+                        assert(vvchParams.size() == 3);
                         std::string name(vvchParams[0].begin(), vvchParams[0].end());
                         uint160 supportedClaimId(vvchParams[1]);
                         if (!trieCache.addSupport(name, COutPoint(tx.GetHash(), l), txout.nValue, supportedClaimId, pindex->nHeight))

@@ -288,12 +288,12 @@ CBlockTemplate* CreateNewBlock(const CChainParams& chainparams, const CScript& s
                         uint160 claimId;
                         if (op == OP_CLAIM_NAME)
                         {
-                            assert(vvchParams.size() == 2);
+                            assert(vvchParams.size() == 3);
                             claimId = ClaimIdHash(txin.prevout.hash, txin.prevout.n);
                         }
                         else if (op == OP_UPDATE_CLAIM)
                         {
-                            assert(vvchParams.size() == 3);
+                            assert(vvchParams.size() == 4);
                             claimId = uint160(vvchParams[1]);
                         }
                         std::string name(vvchParams[0].begin(), vvchParams[0].end());
@@ -310,7 +310,7 @@ CBlockTemplate* CreateNewBlock(const CChainParams& chainparams, const CScript& s
                     }
                     else if (op == OP_SUPPORT_CLAIM)
                     {
-                        assert(vvchParams.size() == 2);
+                        assert(vvchParams.size() == 3);
                         std::string name(vvchParams[0].begin(), vvchParams[0].end());
                         int throwaway;
                         if (!trieCache.spendSupport(name, COutPoint(txin.prevout.hash, txin.prevout.n), nTxinHeight, throwaway))
@@ -331,7 +331,7 @@ CBlockTemplate* CreateNewBlock(const CChainParams& chainparams, const CScript& s
                 {
                     if (op == OP_CLAIM_NAME)
                     {
-                        assert(vvchParams.size() == 2);
+                        assert(vvchParams.size() == 3);
                         std::string name(vvchParams[0].begin(), vvchParams[0].end());
 			std::string addr(vvchParams[1].begin(), vvchParams[1].end());
                         if (!trieCache.addClaim(name, COutPoint(tx.GetHash(), i), ClaimIdHash(tx.GetHash(), i), txout.nValue, nHeight,addr))
@@ -341,9 +341,9 @@ CBlockTemplate* CreateNewBlock(const CChainParams& chainparams, const CScript& s
                     }
                     else if (op == OP_UPDATE_CLAIM)
                     {
-                        assert(vvchParams.size() == 3);
+                        assert(vvchParams.size() == 4);
                         std::string name(vvchParams[0].begin(), vvchParams[0].end());
-			std::string addr(vvchParams[2].begin(), vvchParams[2].end());
+						std::string addr(vvchParams[2].begin(), vvchParams[2].end());
                         uint160 claimId(vvchParams[1]);
                         spentClaimsType::iterator itSpent;
                         for (itSpent = spentClaims.begin(); itSpent != spentClaims.end(); ++itSpent)
@@ -368,7 +368,7 @@ CBlockTemplate* CreateNewBlock(const CChainParams& chainparams, const CScript& s
                     }
                     else if (op == OP_SUPPORT_CLAIM)
                     {
-                        assert(vvchParams.size() == 2);
+                        assert(vvchParams.size() == 3);
                         std::string name(vvchParams[0].begin(), vvchParams[0].end());
                         uint160 supportedClaimId(vvchParams[1]);
                         if (!trieCache.addSupport(name, COutPoint(tx.GetHash(), i), txout.nValue, supportedClaimId, nHeight))
