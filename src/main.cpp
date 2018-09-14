@@ -7425,8 +7425,11 @@ int VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::v
 		if ( (chainActive.Height() - m_it->second) >= MIN_ACCOUNT_NAME_NUMBER )
 		{
 			s_tempname = m_it->first;
+			if (pclaimTrie->getInfoForName(s_tempname, claim))
+			{
 			g_mStringName.erase(s_tempname);
-			break;
+				break;
+			}	
 		}
 	}
 	
