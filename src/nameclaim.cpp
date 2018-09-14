@@ -86,7 +86,7 @@ bool DecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector
     // OP_UOS_NAME vchName OP_2DROP pubkeyscript
     // All others are invalid.
 
-	if ( opcode != OP_UOS_NAME )
+	if ( opcode == OP_UOS_NAME )
 	{
 	    if (!scriptIn.GetOp(pc, opcode, vchParam4) || opcode < 0 || opcode > OP_PUSHDATA4)
 		{
@@ -103,22 +103,22 @@ bool DecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector
 		{
 			return false;
 		}
+		 if (op == OP_UPDATE_CLAIM || op == OP_SUPPORT_CLAIM)
+		{
+			if (vchParam2.size() != 160/8)
+			{
+			    return false;
+			}
+		}
+		if (op == OP_UPDATE_CLAIM)
+		{
+			if (!scriptIn.GetOp(pc, opcode, vchParam3) || opcode < 0 || opcode > OP_PUSHDATA4)
+			{
+			    return false;
+			}
+		}
 	}
     
-    if (op == OP_UPDATE_CLAIM || op == OP_SUPPORT_CLAIM)
-    {
-        if (vchParam2.size() != 160/8)
-        {
-            return false;
-        }
-    }
-    if (op == OP_UPDATE_CLAIM)
-    {
-        if (!scriptIn.GetOp(pc, opcode, vchParam3) || opcode < 0 || opcode > OP_PUSHDATA4)
-        {
-            return false;
-        }
-    }
     if (!scriptIn.GetOp(pc, opcode) || opcode != OP_2DROP)
     {
         return false;
@@ -143,6 +143,7 @@ bool DecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector
     {
         vvchParams.push_back(vchParam3);
     }
+	vvchParams.push_back(vchParam4);
     return true;
 }
 
