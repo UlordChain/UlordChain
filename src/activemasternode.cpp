@@ -154,7 +154,6 @@ void CActiveMasternode::ManageStateInitial()
         if(!fFoundLocal) {
             // nothing and no live connections, can't do anything for now
             if (vNodes.empty()) {
-//LogPrintf("empty1234123412342134\n");                
 				nState = ACTIVE_MASTERNODE_NOT_CAPABLE;
                 strNotCapableReason = "Can't detect valid external address. Will retry when there are some connections available.";
                 LogPrintf("CActiveMasternode::ManageStateInitial -- %s: %s\n", GetStateString(), strNotCapableReason);
@@ -162,10 +161,10 @@ void CActiveMasternode::ManageStateInitial()
             }
             // We have some peers, let's try to find our local address from one of them
             BOOST_FOREACH(CNode* pnode, vNodes) {
-LogPrintf("fSuccessfullyConnected = %c, addr.IsIPv4 = %c\n", pnode->fSuccessfullyConnected ? 'y' : 'n', pnode->addr.IsIPv4() ? 'y' : 'n' );            
+                LogPrintf("fSuccessfullyConnected = %c, addr.IsIPv4 = %c\n", pnode->fSuccessfullyConnected ? 'y' : 'n', pnode->addr.IsIPv4() ? 'y' : 'n' );            
 			    if (pnode->fSuccessfullyConnected && pnode->addr.IsIPv4()) {
                     fFoundLocal = GetLocal(service, &pnode->addr) && CMasternode::IsValidNetAddr(service);
-LogPrintf("GetLocal() = %c, IsValidNetAddr = %c \n", GetLocal(service, &pnode->addr), CMasternode::IsValidNetAddr(service));
+                    LogPrintf("GetLocal() = %c, IsValidNetAddr = %c \n", GetLocal(service, &pnode->addr), CMasternode::IsValidNetAddr(service));
                     if(fFoundLocal) break;
                 }
             }
