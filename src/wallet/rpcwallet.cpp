@@ -3429,7 +3429,7 @@ UniValue anchoruosfromut(const UniValue &params, bool fHelp)
             + HelpRequiringPassphrase() +
             "\nArguments:\n"
             "1. \"ulordaddress\"  (string, required) The ulord address to send to.\n"
-            "2. \"amount\"        (numeric or string, required) The amount in " + CURRENCY_UNIT + " to send. eg 0.1\n"
+            "2. \"amount\"        (numeric or string, required) The amount in " + CURRENCY_UNIT + " to send.dont less than 100\n"
             "3. \"uosaccountname\"     (string, optional) A account name from uos chain. \n"
             "\nResult:\n"
             "\"transactionid\"  (string) The transaction id.\n"
@@ -3450,10 +3450,11 @@ UniValue anchoruosfromut(const UniValue &params, bool fHelp)
 
 	    // Amount
 	    CAmount nAmount = AmountFromValue(params[1]);
-	    if (nAmount <= 0)
+	    if (nAmount <= 100 )
     	{
 	        throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
     	}
+
 		EnsureWalletIsUnlocked();
 		CScript uosScript = CScript()<<OP_UOS_NAME<<vchName<<OP_2DROP;
 		if ( nAmount > pwalletMain->GetBalance() )

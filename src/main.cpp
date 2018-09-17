@@ -59,6 +59,8 @@
 
 using namespace std;
 
+std::vector<unsigned char> v_uosname;
+
 #if defined(NDEBUG)
 # error "Ulord Core cannot be compiled without assertions."
 #endif
@@ -3050,12 +3052,13 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
             {
                 const CTxOut& txout = tx.vout[l];
                 int op;
+				int i = 0;
                 std::vector<std::vector<unsigned char> > vvchParams;
                 if (DecodeClaimScript(txout.scriptPubKey, op, vvchParams))
                 {
                     if (op == OP_CLAIM_NAME)
                     {   
-                        assert(vvchParams.size() == 3);
+                        assert(vvchParams.size() == 2);
                         std::string name(vvchParams[0].begin(), vvchParams[0].end());
 						std::string addr(vvchParams[1].begin(),vvchParams[1].end());
                         LogPrintf("%s: Inserting %s into the claim trie. Tx: %s, nOut: %d\n", __func__, name, tx.GetHash().GetHex(), l);
@@ -3066,7 +3069,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
                     }
                     else if (op == OP_UPDATE_CLAIM)
                     {
-                        assert(vvchParams.size() == 4);
+                        assert(vvchParams.size() == 3);
                         std::string name(vvchParams[0].begin(), vvchParams[0].end());
 						std::string addr(vvchParams[2].begin(),vvchParams[2].end());
                         uint160 claimId(vvchParams[1]);
@@ -3090,7 +3093,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
                     }
                     else if (op == OP_SUPPORT_CLAIM)
                     {   
-                        assert(vvchParams.size() == 3);
+                        assert(vvchParams.size() == 2);
                         std::string name(vvchParams[0].begin(), vvchParams[0].end());
                         uint160 supportedClaimId(vvchParams[1]);
                         if (!trieCache.addSupport(name, COutPoint(tx.GetHash(), l), txout.nValue, supportedClaimId, pindex->nHeight))
@@ -3098,8 +3101,20 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
                             LogPrintf("%s: Something went wrong inserting the support\n", __func__);
                         }
                     }
+					else if ( op == OP_UOS_NAME )
+                    {
+                    	if ( v_uosname.size() )
+                    	{
+							std::string name(v_uosname[i].begin(),v_uosname[i].end());
+							int amout = txout.nValue;
+							i++;
+                    	}
+
+						
+                    }
                 }
             }
+			v_uosname.clear();
         }
 
         if (fAddressIndex) {

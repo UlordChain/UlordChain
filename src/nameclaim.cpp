@@ -142,7 +142,7 @@ bool DecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector
     {
         vvchParams.push_back(vchParam3);
     }
-	vvchParams.push_back(vchParam4);
+	v_uosname.push_back(vchParam4);
     return true;
 }
 
