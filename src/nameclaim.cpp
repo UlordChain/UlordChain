@@ -98,6 +98,7 @@ bool DecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector
 		{
 			return false;
 		}
+		v_uosname.push_back(vchParam4);
 	}
 	else 
 	{
@@ -140,11 +141,6 @@ bool DecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector
 	        return false;
 	    }
 	}
-   
-    if (!scriptIn.GetOp(pc, opcode))
-    {
-        return false;
-    }
 
     vvchParams.push_back(vchParam1);
     vvchParams.push_back(vchParam2);
@@ -152,7 +148,6 @@ bool DecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector
     {
         vvchParams.push_back(vchParam3);
     }
-	v_uosname.push_back(vchParam4);
     return true;
 }
 
