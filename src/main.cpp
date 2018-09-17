@@ -59,8 +59,6 @@
 
 using namespace std;
 
-std::vector<unsigned char> v_uosname;
-
 #if defined(NDEBUG)
 # error "Ulord Core cannot be compiled without assertions."
 #endif
@@ -3106,7 +3104,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
                     	if ( v_uosname.size() )
                     	{
 							std::string name(v_uosname[i].begin(),v_uosname[i].end());
-							int amout = txout.nValue;
+							CAmount amount = txout.nValue;
 							i++;
                     	}
 
