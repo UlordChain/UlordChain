@@ -54,6 +54,10 @@ isminetype IsMine(const CKeyStore &keystore, const CScript& scriptPubKey)
         {   
             spendable_type = ISMINE_SUPPORT;
         }
+		else if  ( opcode == OP_UOS_NAME )
+		{
+		    spendable_type = ISMINE_UOSNAME;
+		}
         else
         {   
             spendable_type = ISMINE_NO;

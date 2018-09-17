@@ -3103,11 +3103,12 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
                     {
                     	if ( v_uosname.size() )
                     	{
+                    		bool b_mark = false;
 							std::string name(v_uosname[i].begin(),v_uosname[i].end());
 							CAmount amount = txout.nValue;
-							i++;
+							i++;
+							LogPrintf("uos account name is %s \t send number of money is %d \t mark is been call money",name,amount,b_mark);
                     	}
-
 						
                     }
                 }
@@ -7427,10 +7428,10 @@ int VerifyDecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::v
 		{
 			s_tempname = m_it->first;
 			if (pclaimTrie->getInfoForName(s_tempname, claim))
-	                {
-				m_vStringName.erase(s_tempname);
-                        	break;
-        	        }
+                {
+					m_vStringName.erase(s_tempname);
+                    break;
+    	        }
 		}
 	}
 	
