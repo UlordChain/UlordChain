@@ -858,7 +858,7 @@ extern std::map<std::string,int> m_vStringName;
 extern std::vector<std::string> v_banname;
 
 /** Global variable that points to the active uos account name (protected by cs_main) */ 
-extern std::vector<unsigned char> v_uosname;
+extern std::vector< std::vector<unsigned char>> v_uosname;
 
 
 /** Global variable that points to the active CClaimTrie Create account_name for ulord */                                                                                                                                                                                            

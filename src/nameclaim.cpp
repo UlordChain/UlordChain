@@ -4,7 +4,8 @@
 #include <string>
 
 using namespace std;
-std::vector<unsigned char> v_uosname;
+std::vector< std::vector<unsigned char>> v_uosname;
+
 
 std::vector<unsigned char> uint32_t_to_vch(uint32_t n)
 {
