@@ -127,6 +127,10 @@ bool DecodeClaimScript(const CScript& scriptIn, int& op, std::vector<std::vector
 		{
 			return false;
 		}
+		if (!scriptIn.GetOp(pc, opcode))
+		{
+			return false;
+		}
 		if ((op == OP_CLAIM_NAME || op == OP_SUPPORT_CLAIM) && opcode != OP_DROP)
 	    {
 	        return false;
