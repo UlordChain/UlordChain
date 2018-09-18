@@ -3523,6 +3523,14 @@ UniValue anchoruos(const UniValue &params, bool fHelp)
 	{
 		throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
 	}
+
+	string strError;
+	if ( pwalletMain->IsLocked() )
+	{
+		strError = "Error: Wallet locked,unable to create transaction!";
+		LogPrintf("%s() :%s",__func__,strError);
+		throw JSONRPCError(RPC_WALLET_ERROR,strError);
+	}
 	CBitcoinAddress address(params[0].get_str());
 	string sName = params[2].get_str();
 	sName = "name:"+sName;
@@ -3533,19 +3541,13 @@ UniValue anchoruos(const UniValue &params, bool fHelp)
 		throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
 	}
 
-	// Amount
-	CAmount nAmount = AmountFromValue(params[1]);
-	if (nAmount <= 100 )
-	{
-		throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
-	}
 	CScript scriptPubkey = GetScriptForDestination(address.Get());
 	CScript msgScript = CScript()<<OP_RETURN<<vchName;
 	CAmount nValue = 0;
 	vector<CRecipient> vecSend;
 	int nChangePosRet = -1;
 	CRecipient recipient_pubkey = {scriptPubkey,nAmount,false};
-	CRecipient recipient_special = {msgScript,nAmount,false};
+	CRecipient recipient_special = {msgScript,nValue,false};
 	vecSend.push_back(recipient_pubkey);
 
 	CAmount curBalance = pwalletMain->GetBalance();
