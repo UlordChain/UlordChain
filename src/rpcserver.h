@@ -350,6 +350,7 @@ extern UniValue lockcoinforsometime(const UniValue &params, bool fHelp);
 extern UniValue refundlockcoin(const UniValue &params, bool fHelp);
 
 extern UniValue anchoruosfromut(const UniValue &params, bool fHelp);
+extern UniValue anchoruos(const UniValue &params, bool fHelp);
 
 
 

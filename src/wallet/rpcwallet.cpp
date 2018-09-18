@@ -3434,8 +3434,8 @@ UniValue anchoruosfromut(const UniValue &params, bool fHelp)
             "\nResult:\n"
             "\"transactionid\"  (string) The transaction id.\n"
             "\nExamples:\n"
-            + HelpExampleCli("sendtoaddress", "\"SQGcu1JwhrjybdyrZQYfReZ5jKHGjLP7Rq\" \"0.1\" \"uos_accountname\"")
-            + HelpExampleRpc("sendtoaddress", "\"SQGcu1JwhrjybdyrZQYfReZ5jKHGjLP7Rq\" \"0.1\" \"uos_accountname\"")
+            + HelpExampleCli("anchoruosfromut", "\"SQGcu1JwhrjybdyrZQYfReZ5jKHGjLP7Rq\" \"0.1\" \"uos_accountname\"")
+            + HelpExampleRpc("anchoruosfromut", "\"SQGcu1JwhrjybdyrZQYfReZ5jKHGjLP7Rq\" \"0.1\" \"uos_accountname\"")
         );
 
 		LOCK2(cs_main, pwalletMain->cs_wallet);
@@ -3493,5 +3493,83 @@ UniValue anchoruosfromut(const UniValue &params, bool fHelp)
 			throw JSONRPCError(RPC_WALLET_ERROR,"Error: The transaction was rejected! This might hapen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.");
 		}
 	   return wtx.GetHash().GetHex();
+}
+
+UniValue anchoruos(const UniValue &params, bool fHelp)
+{
+	if (!EnsureWalletIsAvailable(fHelp))
+        return NullUniValue;
+    
+    if (fHelp || params.size() != 3)
+        throw runtime_error(
+            "anchoruosfromut \"ulordaddress\" \"amount\" \"uosaccountname\" ( \"comment\" \"comment-to\" subtractfeefromamount use_is use_ps )\n"
+            "\nSend an amount to a given address.\n"
+            + HelpRequiringPassphrase() +
+            "\nArguments:\n"
+            "1. \"ulordaddress\"  (string, required) The ulord address to send to.\n"
+            "2. \"amount\"        (numeric or string, required) The amount in " + CURRENCY_UNIT + " to send.dont less than 100\n"
+            "3. \"uosaccountname\"     (string, optional) A account name from uos chain. \n"
+            "\nResult:\n"
+            "\"transactionid\"  (string) The transaction id.\n"
+            "\nExamples:\n"
+            + HelpExampleCli("anchoruos", "\"SQGcu1JwhrjybdyrZQYfReZ5jKHGjLP7Rq\" \"0.1\" \"uos_accountname\"")
+            + HelpExampleRpc("anchoruos", "\"SQGcu1JwhrjybdyrZQYfReZ5jKHGjLP7Rq\" \"0.1\" \"uos_accountname\"")
+        );
+	LOCK2(cs_main, pwalletMain->cs_wallet);
+	
+	// Amount
+	CAmount nAmount = AmountFromValue(params[1]);
+	if (nAmount <= 100  )
+	{
+		throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
+	}
+	CBitcoinAddress address(params[0].get_str());
+	string sName = params[2].get_str();
+	sName = "name:"+sName;
+	std::vector<unsigned char>vchName(sName.begin(),sName.end());
+	CWalletTx wtx;
+	if (!address.IsValid())
+	{
+		throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
+	}
+
+	// Amount
+	CAmount nAmount = AmountFromValue(params[1]);
+	if (nAmount <= 100 )
+	{
+		throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
+	}
+	CScript scriptPubkey = GetScriptForDestination(address.Get());
+	CScript msgScript = CScript()<<OP_RETURN<<vchName;
+	CAmount nValue = 0;
+	vector<CRecipient> vecSend;
+	int nChangePosRet = -1;
+	CRecipient recipient_pubkey = {scriptPubkey,nAmount,false};
+	CRecipient recipient_special = {msgScript,nAmount,false};
+	vecSend.push_back(recipient_pubkey);
+
+	CAmount curBalance = pwalletMain->GetBalance();
+	if (curBalance <= 0)
+	{
+		throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Insufficient funds");
+	}
+	
+	CReserveKey reservekey(pwalletMain);
+	CAmount nFeeRequired;
+	if ( !pwalletMain->CreateTransaction(vecSend,wtx,reservekey,nFeeRequired,nChangePosRet,strError))
+	{
+	    if ( nAmount + nFeeRequired > pwalletMain->GetBalance() )
+	    {
+	        strError = strprintf("Error: This transaction requires a transaction fee of at leasst %s because if its amount, complex, or use of recently received funds!",FormatMoney(nFeeRequired));
+	    }
+	    LogPrintf("%s() : %s\n",__func__,strError);
+	    throw JSONRPCError(RPC_WALLET_ERROR,strError);
+	}
+	    
+	if ( !pwalletMain->CommitTransaction(wtx,reservekey) )
+	{
+		throw JSONRPCError(RPC_WALLET_ERROR,"Error: The transaction was rejected! This might hapen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.");
+	}
+	return wtx.GetHash().GetHex();
 }
 
