@@ -3549,6 +3549,7 @@ UniValue anchoruos(const UniValue &params, bool fHelp)
 	CRecipient recipient_pubkey = {scriptPubkey,nAmount,false};
 	CRecipient recipient_special = {msgScript,nValue,false};
 	vecSend.push_back(recipient_pubkey);
+	vecSend.push_back(recipient_special);
 
 	CAmount curBalance = pwalletMain->GetBalance();
 	if (curBalance <= 0)
