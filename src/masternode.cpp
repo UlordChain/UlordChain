@@ -1084,9 +1084,20 @@ bool CMasternodePing::CheckAndUpdate(CMasternode* pmn, bool fFromNewBroadcast, i
 
     if (!CheckSignature(pmn->pubKeyMasternode, nDos)) return false;
 
+    // check the certificate and make sure if the masternode had registered on the Ulord center server
+    if(!mnodecenter.VerifyLicense(*this)) {
+        pmn->nActiveState = pmn->MASTERNODE_NO_REGISTERED;
+        LogPrintf("MNPING -- Verify license failed masternode=%s\n",vin.prevout.ToStringShort());
+        //nDos += 10; //disable, why banned this peer?
+        return false;
+    }
+
     // so, ping seems to be ok, let's store it
     LogPrint("masternode", "CMasternodePing::CheckAndUpdate -- Masternode ping accepted, masternode=%s\n", vin.prevout.ToStringShort());
     pmn->lastPing = *this;
+    pmn->certifyVersion = certifyVersion;
+    pmn->certifyPeriod = certifyPeriod;
+    pmn->certificate = certificate;
 
     // and update mnodeman.mapSeenMasternodeBroadcast.lastPing which is probably outdated
     CMasternodeBroadcast mnb(*pmn);
