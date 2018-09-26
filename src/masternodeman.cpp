@@ -2168,9 +2168,10 @@ bool CMasternodeCenter::CheckLicensePeriod(CMasternode &mn)
 {
     if(!IsUse())
         return true;
-    
-    if(mn.certifyPeriod <= 0 || mn.certifyPeriod - LIMIT_MASTERNODE_LICENSE < GetTime())
-        return RequestLicense(mn);
+    if(activeMasternode.vin.prevout.hash == mn.vin.prevout.hash && activeMasternode.vin.prevout.n == mn.vin.prevout.n) {
+        if(mn.certifyPeriod <= 0 || mn.certifyPeriod - LIMIT_MASTERNODE_LICENSE < GetTime())
+            RequestLicense(mn);
+    }
     return mn.certifyPeriod > GetTime();
 }
 
