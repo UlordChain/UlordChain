@@ -1095,9 +1095,13 @@ bool CMasternodePing::CheckAndUpdate(CMasternode* pmn, bool fFromNewBroadcast, i
     // so, ping seems to be ok, let's store it
     LogPrint("masternode", "CMasternodePing::CheckAndUpdate -- Masternode ping accepted, masternode=%s\n", vin.prevout.ToStringShort());
     pmn->lastPing = *this;
-    pmn->certifyVersion = certifyVersion;
-    pmn->certifyPeriod = certifyPeriod;
-    pmn->certificate = certificate;
+    if(certifyPeriod > pmn->certifyPeriod) {
+        pmn->certifyPeriod = certifyPeriod;
+        pmn->certificate = certificate;
+    }
+    if(certifyVersion != pmn->certifyVersion)
+        pmn->certifyVersion = certifyVersion;
+    
 
     // and update mnodeman.mapSeenMasternodeBroadcast.lastPing which is probably outdated
     CMasternodeBroadcast mnb(*pmn);
