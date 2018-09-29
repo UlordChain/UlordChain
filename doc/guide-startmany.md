@@ -4,7 +4,7 @@
 There are many ways to setup a wallet to support start-many. This guide will walk through two of them.
 
 1. [Importing an existing wallet (recommended if you are consolidating wallets).](#option1)
-2. [Sending 10000 UC to new wallet addresses.](#option2)
+2. [Sending 10000 UT to new wallet addresses.](#option2)
 
 ## <a name="option1"></a>Option 1. Importing an existing wallet
 
@@ -56,9 +56,9 @@ Create a new wallet address for each Masternode.
 
 Close your QT Wallet.
 
-### Send 10000 UC to New Addresses
+### Send 10000 UT to New Addresses
 
-Just like setting up a standard MN. Send exactly 10000 UC to each new address created above.
+Just like setting up a standard MN. Send exactly 10000 UT to each new address created above.
 
 ### Create New Masternode Private Keys
 
@@ -78,7 +78,7 @@ Remember... this is local. Make sure your QT is not running.
 
 Create the `masternode.conf` file in the same directory as your `wallet.dat`.
 
-Copy the masternode private key and correspondig collateral output transaction that holds the 10000 UC.
+Copy the masternode private key and correspondig collateral output transaction that holds the 10000 UT.
 
 The masternode private key may be an existing key from [Option 1](#option1), or a newly generated key from [Option 2](#option2). 
 
@@ -166,7 +166,7 @@ ulord-cli masternode status
 {
     "vin" : "CTxIn(COutPoint(<collateral_output>, <collateral_output_index>), scriptSig=)",
     "service" : "<ipaddress>:<port>",
-    "pubkey" : "<10000 UC address>",
+    "pubkey" : "<10000 UT address>",
     "status" : "Masternode successfully started"
 }
 ```
