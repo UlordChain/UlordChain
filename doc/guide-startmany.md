@@ -36,11 +36,11 @@ importprivkey [single_instance_private_key]
 
 The wallet will re-scan and you will see your available balance increase by the amount that was in the imported wallet.
 
-[Skip Option 2. and go to Create masternode.conf file](#masternodeconf)
+[Skip Option 2. and go to Modify ulord.conf file](#ulordconf)
 
 ## <a name="option2"></a>Option 2. Starting with a new wallet
 
-[If you used Option 1 above, then you can skip down to Create masternode.conf file.](#masternodeconf)
+[If you used Option 1 above, then you can skip down to Modify ulord.con file.](#ulordconf)
 
 ### Create New Wallet Addresses
 
@@ -72,17 +72,17 @@ Issue the following:
 
 Close your QT Wallet.
 
-## <a name="masternodeconf"></a>Create masternode.conf file
+## <a name="ulordconf"></a>Modify ulord.conf file
 
 Remember... this is local. Make sure your QT is not running.
 
-Create the `masternode.conf` file in the same directory as your `wallet.dat`.
+Modify the `ulord.conf` file in the same directory as your `wallet.dat`.
 
 Copy the masternode private key and correspondig collateral output transaction that holds the 10000 UT.
 
 The masternode private key may be an existing key from [Option 1](#option1), or a newly generated key from [Option 2](#option2). 
 
-*Note: The masternode priviate key is **not** the same as a wallet private key. **Never** put your wallet private key in the masternode.conf file. That is almost equivalent to putting your 10000 UC on the remote server and defeats the purpose of a hot/cold setup.*
+*Note: The masternode priviate key is **not** the same as a wallet private key. **Never** put your wallet private key in the ulord.conf file. That is almost equivalent to putting your 10000 UT on the remote server and defeats the purpose of a hot/cold setup.*
 
 ### Get the collateral output
 
@@ -94,10 +94,10 @@ Issue the following:
 
 Make note of the hash (which is your collateral_output) and index.
 
-### Enter your Masternode details into your masternode.conf file
+### Enter your Masternode details into your ulord.conf file
 [From the ulord github repo](https://github.com/ulordpay/ulord/blob/master/doc/masternode_conf.md)
 
-`masternode.conf` format is a space seperated text file. Each line consisting of an alias, IP address followed by port, masternode private key, collateral output transaction id and collateral output index.
+the format of Configuration items about masternode is a space seperated text. Each line consisting of an alias, IP address followed by port, masternode private key, collateral output transaction id and collateral output index.
 
 ```
 alias ipaddress:port masternode_private_key collateral_output collateral_output_index
@@ -112,7 +112,7 @@ mn02 127.0.0.2:9888 93WaAb3htPJEV8E9aQcN23Jt97bPex7YvWfgMDTUdWJvzmrMqey aa9f1034
 
 ## What about the ulord.conf file?
 
-If you are using a `masternode.conf` file you no longer need the `ulord.conf` file. The exception is if you need custom settings (_thanks oblox_). In that case you **must** remove `masternode=1` from local `ulord.conf` file. This option should be used only to start local Hot masternode now.
+If you want start a masternode you have to modify the `ulord.conf` file. The exception is if you need custom settings (_thanks oblox_). In that case you **must** remove `masternode=1` from local `ulord.conf` file. This option should be used only to start local Hot masternode now.
 
 ## Update ulord.conf on server
 
@@ -145,13 +145,13 @@ Finally... time to start from local.
 
 From the menu select `Tools` => `Debug Console`
 
-If you want to review your `masternode.conf` setting before starting Masternodes, issue the following in the Debug Console:
+If you want to review your `ulord.conf` setting before starting Masternodes, issue the following in the Debug Console:
 
 ```masternode list-conf```
 
 Give it the eye-ball test. If satisfied, you can start your Masternodes one of two ways.
 
-1. `masternode start-alias [alias_from_masternode.conf]`  
+1. `masternode start-alias [alias_from_ulord.conf]`  
 Example ```masternode start-alias mn01```
 2. `masternode start-many`
 
