@@ -11,8 +11,8 @@ The following are some helpful notes on how to run Ulord on your native platform
 
 Unpack the files into a directory and run:
 
-- `bin/bitcoin-qt` (GUI) or
-- `bin/bitcoind` (headless)
+- `bin/ulord-qt` (GUI) or
+- `bin/ulordd` (headless)
 
 ### Windows
 
