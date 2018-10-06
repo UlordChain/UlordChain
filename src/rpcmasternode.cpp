@@ -267,6 +267,14 @@ UniValue masternode(const UniValue& params, bool fHelp)
                 CMasternodeBroadcast mnb;
 
                 bool fResult = CMasternodeBroadcast::Create(mne.getIp(), mne.getPrivKey(), mne.getTxHash(), mne.getOutputIndex(), strError, mnb);
+                if( fResult ) {
+                    fResult = CBitcoinAddress().Set(mnb.GetPayeeDestination());
+                }
+                
+                if( fResult ) 
+                {
+                    fResult = mnodecenter.LoadLicense(mnb);         
+                }
 
                 statusObj.push_back(Pair("result", fResult ? "successful" : "failed"));
                 if(fResult) {
@@ -316,6 +324,14 @@ UniValue masternode(const UniValue& params, bool fHelp)
             if(strCommand == "start-disabled" && pmn && pmn->IsEnabled()) continue;
 
             bool fResult = CMasternodeBroadcast::Create(mne.getIp(), mne.getPrivKey(), mne.getTxHash(), mne.getOutputIndex(), strError, mnb);
+            if( fResult ) {
+                fResult = CBitcoinAddress().Set(mnb.GetPayeeDestination());
+            }
+              
+            if( fResult ) 
+            {
+                fResult = mnodecenter.LoadLicense(mnb);         
+            }
 
             UniValue statusObj(UniValue::VOBJ);
             statusObj.push_back(Pair("alias", mne.getAlias()));
@@ -682,6 +698,14 @@ UniValue masternodebroadcast(const UniValue& params, bool fHelp)
                 CMasternodeBroadcast mnb;
 
                 bool fResult = CMasternodeBroadcast::Create(mne.getIp(), mne.getPrivKey(), mne.getTxHash(), mne.getOutputIndex(), strError, mnb, true);
+                if( fResult ) {
+                    fResult = CBitcoinAddress().Set(mnb.GetPayeeDestination());
+                }
+                
+                if( fResult ) 
+                {
+                    fResult = mnodecenter.LoadLicense(mnb);         
+                }
 
                 statusObj.push_back(Pair("result", fResult ? "successful" : "failed"));
                 if(fResult) {
@@ -730,6 +754,15 @@ UniValue masternodebroadcast(const UniValue& params, bool fHelp)
             CMasternodeBroadcast mnb;
 
             bool fResult = CMasternodeBroadcast::Create(mne.getIp(), mne.getPrivKey(), mne.getTxHash(), mne.getOutputIndex(), strError, mnb, true);
+
+            if( fResult ) {
+                fResult = CBitcoinAddress().Set(mnb.GetPayeeDestination());
+            }
+            
+            if( fResult ) 
+            {
+                fResult = mnodecenter.LoadLicense(mnb);         
+            }
 
             UniValue statusObj(UniValue::VOBJ);
             statusObj.push_back(Pair("alias", mne.getAlias()));
