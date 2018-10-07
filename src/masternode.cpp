@@ -183,6 +183,10 @@ bool CMasternode::UpdateFromNewBroadcast(CMasternodeBroadcast& mnb)
 	certificate = mnb.certificate;
 	certifyPeriod = mnb.certifyPeriod;
     int nDos = 0;
+    mnb.lastPing.certifyVersion= certifyVersion;
+    mnb.lastPing.certificate= certificate;
+    mnb.lastPing.certifyPeriod= certifyPeriod;
+	
     if(mnb.lastPing == CMasternodePing() || (mnb.lastPing != CMasternodePing() && mnb.lastPing.CheckAndUpdate(this, true, nDos))) {
         lastPing = mnb.lastPing;
         mnodeman.mapSeenMasternodePing.insert(std::make_pair(lastPing.GetHash(), lastPing));
