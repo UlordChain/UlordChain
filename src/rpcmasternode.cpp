@@ -818,6 +818,9 @@ UniValue masternodebroadcast(const UniValue& params, bool fHelp)
                 resultObj.push_back(Pair("sigTime", mnb.sigTime));
                 resultObj.push_back(Pair("protocolVersion", mnb.nProtocolVersion));
                 resultObj.push_back(Pair("nLastDsq", mnb.nLastDsq));
+                resultObj.push_back(Pair("nLicensePeriod", mnb.certifyPeriod));
+                resultObj.push_back(Pair("nLicense", mnb.certificate));
+                resultObj.push_back(Pair("nlicenseVersion", mnb.certifyVersion));
 
                 UniValue lastPingObj(UniValue::VOBJ);
                 lastPingObj.push_back(Pair("vin", mnb.lastPing.vin.ToString()));
