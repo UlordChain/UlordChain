@@ -160,7 +160,7 @@ void CMasternode::swap(CMasternode& first, CMasternode& second) // nothrow
         swap(first.fUnitTest, second.fUnitTest);
         swap(first.mapGovernanceObjectsVotedOn, second.mapGovernanceObjectsVotedOn);
         swap(first.payeeAddress, second.payeeAddress);
-        LogPrintf("CMasternode::swap-- payeeAdress=%s  second=%s\n", first.payeeAddress.ToString(), second.payeeAddress.ToString());
+        //LogPrintf("CMasternode::swap-- payeeAdress=%s  second=%s\n", first.payeeAddress.ToString(), second.payeeAddress.ToString());
 }
 
 //
