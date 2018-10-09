@@ -5631,9 +5631,19 @@ void static ProcessGetData(CNode* pfrom, const Consensus::Params& consensusParam
 
                 if (!pushed && inv.type == MSG_MASTERNODE_ANNOUNCE) {
                     if(mnodeman.mapSeenMasternodeBroadcast.count(inv.hash)){
+                        CMasternode mn = CMasternode(mnodeman.mapSeenMasternodeBroadcast[inv.hash].second);
+                        CMasternode * ptr = mnodeman.Find(mn.vin);
+                        if(ptr != NULL) {
+                            if(mn.certifyPeriod < ptr->certifyPeriod) {
+                                mn.certificate = ptr->certificate;
+                                mn.certifyPeriod = ptr->certifyPeriod;
+                                mn.certifyVersion = ptr->certifyVersion;
+                            }
+                        }
                         CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
                         ss.reserve(1000);
-                        ss << mnodeman.mapSeenMasternodeBroadcast[inv.hash].second;
+                        //ss << mnodeman.mapSeenMasternodeBroadcast[inv.hash].second;
+                        ss << CMasternodeBroadcast(mn);
                         // backward compatibility patch
                         if(pfrom->nVersion < 70204) {
                             ss << (int64_t)0;
@@ -5645,9 +5655,20 @@ void static ProcessGetData(CNode* pfrom, const Consensus::Params& consensusParam
 
                 if (!pushed && inv.type == MSG_MASTERNODE_PING) {
                     if(mnodeman.mapSeenMasternodePing.count(inv.hash)) {
+                        CMasternodePing mnp = CMasternodePing();
+                        mnp = mnodeman.mapSeenMasternodePing[inv.hash];
+                        CMasternode * ptr = mnodeman.Find(mnp.vin);
+                        if(ptr != NULL) {
+                            if(mnp.certifyPeriod < ptr->certifyPeriod) {
+                                mnp.certificate = ptr->certificate;
+                                mnp.certifyPeriod = ptr->certifyPeriod;
+                                mnp.certifyVersion = ptr->certifyVersion;
+                            }
+                        }
                         CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
                         ss.reserve(1000);
-                        ss << mnodeman.mapSeenMasternodePing[inv.hash];
+                        //ss << mnodeman.mapSeenMasternodePing[inv.hash];
+                        ss << mnp;
                         pfrom->PushMessage(NetMsgType::MNPING, ss);
                         pushed = true;
                     }

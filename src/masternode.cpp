@@ -240,7 +240,7 @@ void CMasternode::Check(bool fForce)
     LogPrint("masternode", "CMasternode::Check -- Masternode %s is in %s state\n", vin.prevout.ToStringShort(), GetStateString());
 
     //once spent, stop doing the checks
-    if(IsOutpointSpent() || IsRegistered()) return;
+    if(IsOutpointSpent()) return;
 
     int nHeight = 0;
     if(!fUnitTest) {
@@ -799,6 +799,15 @@ bool CMasternodeBroadcast::CheckOutpoint(int& nDos)
                 return false;
             }
         }
+    }
+
+    //int64_t tespPeriod= certifyPeriod;
+    if(certifyPeriod < lastPing.certifyPeriod)
+    {
+        //LogPrintf("CMasternodeBroadcast::CheckOutpoint Failed certificate, =[%ld] period=%ld\n", lastPing.certifyPeriod,tespPeriod);
+        certifyPeriod= lastPing.certifyPeriod;
+        certifyVersion= lastPing.certifyVersion;
+        certificate = lastPing.certificate;
     }
 
     // check if it is registered on the Ulord center server
