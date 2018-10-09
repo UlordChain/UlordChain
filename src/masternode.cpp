@@ -234,7 +234,7 @@ void CMasternode::Check(bool fForce)
 
     if(ShutdownRequested()) return;
 
-    if(!fForce && (GetTime() - nTimeLastChecked < MASTERNODE_CHECK_SECONDS)) return;
+    if(!fForce && (GetTime() - nTimeLastChecked < MASTERNODE_CHECK_SECONDS*2)) return;
     nTimeLastChecked = GetTime();
 
     LogPrint("masternode", "CMasternode::Check -- Masternode %s is in %s state\n", vin.prevout.ToStringShort(), GetStateString());
