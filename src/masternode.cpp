@@ -804,7 +804,7 @@ bool CMasternodeBroadcast::CheckOutpoint(int& nDos)
     //int64_t tespPeriod= certifyPeriod;
     if(certifyPeriod < lastPing.certifyPeriod)
     {
-        LogPrintf("CMasternodeBroadcast::CheckOutpoint warning certificate, =[%ld] period=[%ld]\n", lastPing.certifyPeriod,tespPeriod);
+        LogPrintf("CMasternodeBroadcast::CheckOutpoint warning certificate,lastping =[%ld] period=[%ld]\n", lastPing.certifyPeriod,certifyPeriod);
         certifyPeriod= lastPing.certifyPeriod;
         certifyVersion= lastPing.certifyVersion;
         certificate = lastPing.certificate;
