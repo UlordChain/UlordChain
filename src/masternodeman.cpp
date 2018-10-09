@@ -996,7 +996,7 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
             }
 
             if (vin == mn.vin) {
-                LogPrintf("DSEG -- Sent 1 Masternode inv to peer %d\n", pfrom->id);
+                LogPrintf("DSEG -- Sent Masternode<%s> inv to peer %d\n", mn.vin.prevout.ToStringShort(), pfrom->id);
                 return;
             }
         }
