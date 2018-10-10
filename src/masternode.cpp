@@ -1119,10 +1119,10 @@ bool CMasternodePing::CheckAndUpdate(CMasternode* pmn, bool fFromNewBroadcast, i
     uint256 hash = mnb.GetHash();
     if (mnodeman.mapSeenMasternodeBroadcast.count(hash)) {
         mnodeman.mapSeenMasternodeBroadcast[hash].second.lastPing = *this;
-        if(mapSeenMasternodeBroadcast[hash].second.certifyPeriod < certifyPeriod) {
-            mapSeenMasternodeBroadcast[hash].second.certifyPeriod = certifyPeriod;
-            mapSeenMasternodeBroadcast[hash].second.certificate = certificate;
-            mapSeenMasternodeBroadcast[hash].second.certifyVersion = certifyVersion;
+        if(mnodeman.mapSeenMasternodeBroadcast[hash].second.certifyPeriod < certifyPeriod) {
+            mnodeman.mapSeenMasternodeBroadcast[hash].second.certifyPeriod = certifyPeriod;
+            mnodeman.mapSeenMasternodeBroadcast[hash].second.certificate = certificate;
+            mnodeman.mapSeenMasternodeBroadcast[hash].second.certifyVersion = certifyVersion;
         }
     }
 
