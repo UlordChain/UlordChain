@@ -1,4 +1,3 @@
-NOTE : 12.1 -- REWRITE
 
 
 Masternode Budget API
@@ -19,13 +18,13 @@ Budgets go through a series of stages before being paid:
 1. Prepare collateral transaction
 --
 
-In this transaction we prepare collateral for "_cool-project_". This proposal will pay _1200_ UT, _12_ times over the course of a year totaling _24000_ UT.
+In this transaction we prepare collateral for "_hello-project_". This proposal will pay _1200_ UT, _12_ times over the course of a year totaling _24000_ UT.
 
 **Warning: if you change any fields within this command, the collateral transaction will become invalid.**
 
 Format: ```mngovernance prepare proposal-name url payment-count block-start ulord-address monthly-payment-ulord```
 
-Example: ```mngovernance prepare cool-project http://www.cool-project/one.json 12 100000 y6R9oN12KnB9zydzTLc3LikD9cCjjQzYG7 1200 true```
+Example: ```mngovernance prepare hello-project http://www.hello-project/one.json 12 100000 ufXcEJXMapMVBbR3tMQ8LJrR9MrpYXfsPk 1200 true```
 
 Output: ```464a0eb70ea91c94295214df48c47baa72b3876cfb658744aaf863c7b5bf1ff0```
 
@@ -38,7 +37,7 @@ Now we can submit our proposal to the network.
 
 Format: ```mngovernance submit proposal-name url payment-count block-start ulord-address monthly-payment-ulord fee-tx```
 
-Example: ```mngovernance submit cool-project http://www.cool-project/one.json 12 100000 y6R9oN12KnB9zydzTLc3LikD9cCjjQzYG7 1200 464a0eb70ea91c94295214df48c47baa72b3876cfb658744aaf863c7b5bf1ff0```
+Example: ```mngovernance submit hello-project http://www.hello-project/one.json 12 100000 ufXcEJXMapMVBbR3tMQ8LJrR9MrpYXfsPk 1200 464a0eb70ea91c94295214df48c47baa72b3876cfb658744aaf863c7b5bf1ff0```
 
 Output : ```a2b29778ae82e45a973a94309ffa6aa2e2388b8f95b39ab3739f0078835f0491```
 
@@ -55,15 +54,15 @@ Example: ```mngovernance getproposal a2b29778ae82e45a973a94309ffa6aa2e2388b8f95b
 ￼
 ```
 {
-    "Name" : "cool-project",
+    "Name" : "hello-project",
     "Hash" : "a2b29778ae82e45a973a94309ffa6aa2e2388b8f95b39ab3739f0078835f0491",
     "FeeHash" : "464a0eb70ea91c94295214df48c47baa72b3876cfb658744aaf863c7b5bf1ff0",
-    "URL" : "http://www.cool-project/one.json",
+    "URL" : "http://www.hello-project/one.json",
     "BlockStart" : 100000,
     "BlockEnd" : 100625,
     "TotalPaymentCount" : 12,
     "RemainingPaymentCount" : 12,
-    "PaymentAddress" : "y6R9oN12KnB9zydzTLc3LikD9cCjjQzYG7",
+    "PaymentAddress" : "ufXcEJXMapMVBbR3tMQ8LJrR9MrpYXfsPk",
     "Ratio" : 0.00000000,
     "Yeas" : 0,
     "Nays" : 0,
@@ -89,15 +88,15 @@ After you get enough votes, execute ```mngovernance projection``` to see if you 
 ```mngovernance projection```:￼
 ```
 {
-    "cool-project" : {
+    "hello-project" : {
         "Hash" : "a2b29778ae82e45a973a94309ffa6aa2e2388b8f95b39ab3739f0078835f0491",
         "FeeHash" : "464a0eb70ea91c94295214df48c47baa72b3876cfb658744aaf863c7b5bf1ff0",
-        "URL" : "http://www.cool-project/one.json",
+        "URL" : "http://www.hello-project/one.json",
         "BlockStart" : 100000,
         "BlockEnd" : 100625,
         "TotalPaymentCount" : 12,
         "RemainingPaymentCount" : 12,
-        "PaymentAddress" : "y6R9oN12KnB9zydzTLc3LikD9cCjjQzYG7",
+        "PaymentAddress" : "ufXcEJXMapMVBbR3tMQ8LJrR9MrpYXfsPk",
         "Ratio" : 1.00000000,
         "Yeas" : 33,
         "Nays" : 0,
@@ -119,7 +118,7 @@ After you get enough votes, execute ```mngovernance projection``` to see if you 
         "Hash" : "6e8bbaba5113de592f6888f200f146448440b7e606fcf62ef84e60e1d5ac7d64",
         "BlockStart" : 100000,
         "BlockEnd" : 100000,
-        "Proposals" : "cool-project",
+        "Proposals" : "hello-project",
         "VoteCount" : 46,
         "Status" : "OK"
     },
@@ -128,7 +127,7 @@ After you get enough votes, execute ```mngovernance projection``` to see if you 
 6. Get paid
 --
 
-When block ```1000000``` is reached you'll receive a payment for ```1200``` UT to ```y6R9oN12KnB9zydzTLc3LikD9cCjjQzYG7```.
+When block ```1000000``` is reached you'll receive a payment for ```1200``` UT to ```ufXcEJXMapMVBbR3tMQ8LJrR9MrpYXfsPk```.
 
 7. Command list
 --
