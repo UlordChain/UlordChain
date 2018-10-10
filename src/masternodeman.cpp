@@ -1447,7 +1447,7 @@ std::string CMasternodeMan::ToString() const
 
 void CMasternodeMan::UpdateMasternodeList(CMasternodeBroadcast mnb)
 {
-    LOCK(cs);
+    LOCK2(cs_main, cs);
     mapSeenMasternodePing.insert(std::make_pair(mnb.lastPing.GetHash(), mnb.lastPing));
     mapSeenMasternodeBroadcast.insert(std::make_pair(mnb.GetHash(), std::make_pair(GetTime(), mnb)));
 
@@ -1484,6 +1484,11 @@ bool CMasternodeMan::CheckMnbAndUpdateMasternodeList(CNode* pfrom, CMasternodeBr
             LogPrint("masternode", "CMasternodeMan::CheckMnbAndUpdateMasternodeList -- masternode=%s seen update\n", mnb.vin.prevout.ToStringShort());
             mapSeenMasternodeBroadcast[hash].first = GetTime();
             masternodeSync.AddedMasternodeList();
+        }
+        if(mapSeenMasternodeBroadcast[hash].second.certifyPeriod < mnb.certifyPeriod && mnodecenter.VerifyLicense(CMasternode(mnb))) {
+            mapSeenMasternodeBroadcast[hash].second.certifyPeriod = mnb.certifyPeriod;
+            mapSeenMasternodeBroadcast[hash].second.certificate = mnb.certificate;
+            mapSeenMasternodeBroadcast[hash].second.certifyVersion = mnb.certifyVersion;
         }
         // did we ask this node for it?
         if(pfrom && IsMnbRecoveryRequested(hash) && GetTime() < mMnbRecoveryRequests[hash].first) {
@@ -1706,6 +1711,11 @@ void CMasternodeMan::SetMasternodeLastPing(const CTxIn& vin, const CMasternodePi
     uint256 hash = mnb.GetHash();
     if(mapSeenMasternodeBroadcast.count(hash)) {
         mapSeenMasternodeBroadcast[hash].second.lastPing = mnp;
+        if(mapSeenMasternodeBroadcast[hash].second.certifyPeriod < mnp.certifyPeriod) {
+            mapSeenMasternodeBroadcast[hash].second.certifyPeriod = mnp.certifyPeriod;
+            mapSeenMasternodeBroadcast[hash].second.certificate = mnp.certificate;
+            mapSeenMasternodeBroadcast[hash].second.certifyVersion = mnp.certifyVersion;
+        }
     }
 }
 
