@@ -1852,6 +1852,23 @@ int mstnodequest::GetMsgBuf(char * buf)
     return buflength;
 }
 
+int mstnodequest::GetMsgBufNew(char * buf)
+{
+    CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
+    ss << *this;
+    std::string strReq = ss.str();
+    int buflength = strReq.length();
+    if(buflength + mstnd_iReqMsgHeadLen > mstnd_iReqBufLen) {
+        LogPrintf("mstnodequest::GetMsgBuf: buff size error, string length is %d, need to increase buff size", buflength + mstnd_iReqMsgHeadLen);
+        return 0;
+    }
+    unsigned int n = HNSwapl(buflength);
+    memcpy(buf, &n, mstnd_iReqMsgHeadLen);
+    memcpy(buf + mstnd_iReqMsgHeadLen, strReq.c_str(), buflength);
+    buflength += mstnd_iReqMsgHeadLen;
+    return buflength;
+}
+
 bool CMasternodeCenter::InitCenter(std::string strError)
 {
     std::vector<CNetAddr> vIPs;

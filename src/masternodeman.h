@@ -430,6 +430,19 @@ public:
     int GetVersion() const {return _msgversion;}
     int GetQuestType() const {return _questtype;}
 	int GetMsgBuf(char * buf);
+    int GetMsgBufNew(char * buf);
+
+    /*serialize without boost*/
+    ADD_SERIALIZE_METHODS;
+
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
+        READWRITE(_msgversion);
+		READWRITE(_timeStamps);
+        READWRITE(_questtype);
+        READWRITE(_txid);
+		READWRITE(_voutid);
+    }
 };
 
 //extern mstnodequest RequestMsgType(Center_Server_Version,MST_QUEST::MST_QUEST_ONE);
@@ -460,6 +473,16 @@ public:
     }
     int GetVersion() const {return _msgversion;}
     int GetNum() const {return _num;}
+
+    /*serialize without boost*/
+    ADD_SERIALIZE_METHODS;
+
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
+        READWRITE(_msgversion);
+		READWRITE(_num);
+        READWRITE(_nodetype);
+    }
 };
 //extern mstnoderes RetMsgType;
 class CcenterKeyData
@@ -478,6 +501,15 @@ public:
     {
         ar & _keyversion;
         ar & _key;
+    }
+
+    /*serialize without boost*/
+    ADD_SERIALIZE_METHODS;
+
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
+        READWRITE(_keyversion);
+		READWRITE(_key);
     }
 };
 
@@ -561,6 +593,22 @@ public:
     /**/
     unsigned int _time;       //read db time
     CPubKey  _pubkey;
+
+    /*serialize without boost*/
+    ADD_SERIALIZE_METHODS;
+
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
+        READWRITE(_version);
+		READWRITE(_txid);
+        READWRITE(_voutid);
+        READWRITE(_privkey);
+		READWRITE(_status);
+        READWRITE(_licversion);
+        READWRITE(_licperiod);
+		READWRITE(_licence);
+        READWRITE(_nodeperiod);
+    }
 };  
 
 class CMasternodeCenter
