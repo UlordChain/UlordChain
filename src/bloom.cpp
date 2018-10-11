@@ -20,7 +20,7 @@
 #define LN2 0.6931471805599453094172321214581765680755001343602552
 
 using namespace std;
-
+// bloom used find  tx by hash
 CBloomFilter::CBloomFilter(unsigned int nElements, double nFPRate, unsigned int nTweakIn, unsigned char nFlagsIn) :
     /**
      * The ideal size for a bloom filter with a given number of elements and false positive rate is:
@@ -41,7 +41,7 @@ CBloomFilter::CBloomFilter(unsigned int nElements, double nFPRate, unsigned int 
 {
 }
 
-// Private constructor used by CRollingBloomFilter
+// Private constructor used by CRollingBloomFilter 
 CBloomFilter::CBloomFilter(unsigned int nElements, double nFPRate, unsigned int nTweakIn) :
     vData((unsigned int)(-1  / LN2SQUARED * nElements * log(nFPRate)) / 8),
     isFull(false),
@@ -84,7 +84,7 @@ void CBloomFilter::insert(const uint256& hash)
     vector<unsigned char> data(hash.begin(), hash.end());
     insert(data);
 }
-
+// find key 
 bool CBloomFilter::contains(const vector<unsigned char>& vKey) const
 {
     if (isFull)
