@@ -1873,9 +1873,12 @@ int mstnodequest::GetMsgBufNew(char * buf)
 
 bool CMasternodeCenter::InitCenter(std::string strError)
 {
-    std::vector<CNetAddr> vIPs;
+    if (!sporkManager.IsSporkActive(SPORK_18_REQUIRE_MASTER_VERIFY_FLAG)) return true;
 
-    if (LookupHost(Params().ucenter().c_str(), vIPs)) {
+    std::vector<CNetAddr> vIPs;
+    std::string sCenterDomain = GetArg("centerdomain", Params().ucenter());
+
+    if (LookupHost(sCenterDomain.c_str(), vIPs)) {
         if (vIPs.empty()) {
             strError = "ucenter ip resolving failed, IPs empty.";
             return false;
@@ -1917,6 +1920,9 @@ bool CMasternodeCenter::InitCenter(std::string strError)
 
 std::string CMasternodeCenter::GetCenterPubKey(int version)
 {
+    if(!IsUse())
+            return "";
+    
     map_it it = mapVersionPubkey_.find(version);
     if(it != mapVersionPubkey_.end()) {
         return it->second;

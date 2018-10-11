@@ -630,9 +630,9 @@ public:
     bool VerifyLicense(const CMasternode &mn);
     bool VerifyLicense(const CMasternodePing &mnp);
     bool LoadLicense(CMasternode &mn);
+private:
     void SavePubkey();
     void SaveLicense(const CMasternode &mn);
-private:
     bool RequestLicense(CMasternode &mn);
     bool ReadLicense(CMasternode &mn);
     bool RequestCenterKey();
