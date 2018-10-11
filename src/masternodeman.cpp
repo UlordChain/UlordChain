@@ -1995,7 +1995,7 @@ bool CMasternodeCenter::RequestLicense(CMasternode &mn)
         mstnoderes  mstres;
         /*std::istringstream strstream(str);
         boost::archive::binary_iarchive ia(strstream);*/
-        std:vector<char> vRcv;
+        std::vector<char> vRcv;
         vRcv.insert(vRcv.end(), str.begin(), str.end());
         CDataStream ia(vRcv, SER_NETWORK, PROTOCOL_VERSION);
         ia >> mstres;
@@ -2101,7 +2101,7 @@ bool CMasternodeCenter::RequestCenterKey()
         mstnoderes  mstres;
         /*std::istringstream strstream(str);
         boost::archive::binary_iarchive ia(strstream);*/
-        std:vector<char> vRcv;
+        std::vector<char> vRcv;
         vRcv.insert(vRcv.end(), str.begin(), str.end());
         CDataStream ia(vRcv, SER_NETWORK, PROTOCOL_VERSION);
         ia >> mstres;
