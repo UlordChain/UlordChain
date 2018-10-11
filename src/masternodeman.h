@@ -400,11 +400,7 @@ enum MST_QUEST
 class mstnodequest
 {
 public:
-    mstnodequest(int version, MST_QUEST  type  ):_msgversion(version), _questtype(type)
-    {
-       //_verfyflag=std::string("#$%@");  
-       
-    }  
+    mstnodequest(int version, MST_QUEST  type  ):_msgversion(version), _questtype(type){}  
     mstnodequest(){}
     int        _msgversion; 	
     int        _questtype;
@@ -412,9 +408,10 @@ public:
     //std::string     _verfyflag;
     //std::string     _masteraddr;
     std::string     _txid;
-	unsigned int    _voutid;    
+	unsigned int    _voutid;
+
+    /*keep this serialize function for old version*/
     friend class boost::serialization::access;
-    
     template<class Archive>
     void serialize(Archive& ar, const unsigned int version)
     {  
@@ -461,8 +458,9 @@ public:
     int             _msgversion;
     int             _num;
     int             _nodetype;
-    friend class boost::serialization::access;
 
+    /*keep this serialize function for old version*/
+    friend class boost::serialization::access;
     template<class Archive>
     void serialize(Archive& ar, const unsigned int version)
     {
@@ -493,9 +491,9 @@ public:
 
     int             _keyversion;
     std::string     _key;
-    
-    friend class boost::serialization::access;
 
+    /*keep this serialize function for old version*/
+    friend class boost::serialization::access;
     template<class Archive>
     void serialize(Archive& ar, const unsigned int version)
     {
@@ -535,13 +533,14 @@ public:
 18	 `auditor` VARCHAR (32) DEFAULT NULL COMMENT '绑定确认审核人',
 19	 `gmt_audit` BIGINT (20) DEFAULT NULL COMMENT '绑定确认审核时间',
 20   `node_period' BIGINT (20) DEFAULT NULL COMMENT '节点有效时间',
-21	 `ext_info` VARCHAR (255) DEFAULT NULL COMMENT '扩展信息',
+21   `cert_version' INT (3) DEFAULT '0' COMMENT '节点有效时间',
+22	 `ext_info` VARCHAR (255) DEFAULT NULL COMMENT '扩展信息',
  */
 class CMstNodeData  
 {  
-private:  
-    friend class boost::serialization::access;  
-  
+private:
+    /*keep this serialize function for old version*/
+    friend class boost::serialization::access;
     template<class Archive>  
     void serialize(Archive& ar, const unsigned int version)  
     {
