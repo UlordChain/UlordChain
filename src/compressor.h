@@ -21,7 +21,7 @@ class CScriptID;
  *  * Pay to pubkey hash (encoded as 21 bytes)
  *  * Pay to script hash (encoded as 21 bytes)
  *  * Pay to pubkey starting with 0x02, 0x03 or 0x04 (encoded as 33 bytes)
- *
+ *  
  *  Other scripts up to 121 bytes require 1 byte + script length. Above
  *  that, scripts up to 16505 bytes require 2 bytes + script length.
  */
@@ -35,7 +35,7 @@ private:
      * and nHeight of the enclosing transaction.
      */
     static const unsigned int nSpecialScripts = 6;
-
+    // txout script
     CScript &script;
 protected:
     /**
@@ -54,7 +54,7 @@ protected:
     bool Decompress(unsigned int nSize, const std::vector<unsigned char> &out);
 public:
     CScriptCompressor(CScript &scriptIn) : script(scriptIn) { }
-
+   // return size of script 
     unsigned int GetSerializeSize(int nType, int nVersion) const {
         std::vector<unsigned char> compr;
         if (Compress(compr))
