@@ -1876,7 +1876,7 @@ bool CMasternodeCenter::InitCenter(std::string strError)
     if (!sporkManager.IsSporkActive(SPORK_18_REQUIRE_MASTER_VERIFY_FLAG)) return true;
 
     std::vector<CNetAddr> vIPs;
-    std::string sCenterDomain = GetArg("centerdomain", Params().ucenter());
+    std::string sCenterDomain = GetArg("-centerdomain", Params().ucenter());
 
     if (LookupHost(sCenterDomain.c_str(), vIPs)) {
         if (vIPs.empty()) {
