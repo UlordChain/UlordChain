@@ -1204,6 +1204,8 @@ UniValue sendalltoaddress(const UniValue& params, bool fHelp)
     CAmount curBalance = pwalletMain->GetBalance();
     if (curBalance <= 0)
         throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Insufficient funds");
+	
+	//fee of the tx from amount,the wallet which sendfrom will be no coins
     bool fSubtractFeeFromAmount = true;
     SendAllMoney(address.Get(), curBalance, fSubtractFeeFromAmount, wtx, fUseInstantSend, fUsePrivateSend);
 
