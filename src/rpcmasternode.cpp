@@ -728,7 +728,7 @@ UniValue masternodebroadcast(const UniValue& params, bool fHelp)
         return statusObj;
 
     }
-
+// manual create mnb message and broadcast
     if (strCommand == "create-all")
     {
         // wait for reindex and/or import to finish
