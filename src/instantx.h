@@ -197,8 +197,8 @@ private:
     std::map<COutPoint, CTxLockVote> mapMasternodeVotes; // masternode outpoint - vote
 
 public:
-    static const int SIGNATURES_REQUIRED        = 6;
-    static const int SIGNATURES_TOTAL           = 10;
+    static const int SIGNATURES_REQUIRED        = 6;        //every outpoint have to get 6 signatures at least
+    static const int SIGNATURES_TOTAL           = 10;       //number of masternodes to vote
 
     COutPointLock(const COutPoint& outpointIn) :
         outpoint(outpointIn),
