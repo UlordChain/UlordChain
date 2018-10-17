@@ -111,7 +111,7 @@ class CTxLockRequest : public CTransaction
 {
 private:
     static const int TIMEOUT_SECONDS        = 5 * 60;
-    static const CAmount MIN_FEE            = 0.001 * COIN;
+    static const CAmount MIN_FEE            = 0.001 * COIN;       //the fee of per input via instantsend 
 
     int64_t nTimeCreated;
 
