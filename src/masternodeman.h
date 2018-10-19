@@ -297,6 +297,8 @@ public:
     CMasternode* GetNextMasternodeInQueueForPayment(int nBlockHeight, bool fFilterSigTime, int& nCount);
     /// Same as above but use current block height
     CMasternode* GetNextMasternodeInQueueForPayment(bool fFilterSigTime, int& nCount);
+    /// Get the list that is next to be paid
+    std::vector<std::pair<int, CMasternode*>> GetNextMasternodeListForPayment();
 
     /// Find a random entry
     CMasternode* FindRandomNotInVec(const std::vector<CTxIn> &vecToExclude, int nProtocolVersion = -1);
