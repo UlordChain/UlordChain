@@ -107,7 +107,7 @@ UniValue masternode(const UniValue& params, bool fHelp)
         (strCommand != "start" && strCommand != "start-alias" && strCommand != "start-all" && strCommand != "start-missing" &&
          strCommand != "start-disabled" && strCommand != "list" && strCommand != "list-conf" && strCommand != "count" &&
          strCommand != "debug" && strCommand != "current" && strCommand != "winner" && strCommand != "winners" && strCommand != "genkey" &&
-         strCommand != "connect" && strCommand != "outputs" && strCommand != "status"  && strCommand != "license"))
+         strCommand != "connect" && strCommand != "outputs" && strCommand != "status"  && strCommand != "license" && strCommand != "payvote"))
             throw std::runtime_error(
                 "masternode \"command\"... ( \"passphrase\" )\n"
                 "Set of commands to execute masternode related actions\n"
@@ -129,6 +129,7 @@ UniValue masternode(const UniValue& params, bool fHelp)
                 "  winner       - Print info on next masternode winner to vote for\n"
                 "  winners      - Print list of masternode winners\n"
                 "  license      - Print masternode register license\n"
+                "  payvote      - Print masternode payment vote at specify block height\n"
                 );
 
     if (strCommand == "list")
@@ -519,6 +520,39 @@ UniValue masternode(const UniValue& params, bool fHelp)
         }
 
         return mnObj;
+    }
+
+    if (strCommand == "payvote")    //check payment vote info
+    {
+        if (params.size() != 2) throw JSONRPCError(RPC_INVALID_PARAMETER, "Please specify an block height!");
+
+        int nHeight = atoi(params[1].get_str());
+    
+        UniValue tObj(UniValue::VARR);
+
+        if(mnpayments.mapMasternodeBlocks.count(nHeight)) {
+            for(auto payee : mnpayments.mapMasternodeBlocks[nHeight].vecPayees)
+            {
+                std::vector<uint256> vecVoteHashes = payee.GetVoteHashes();
+                CBitcoinAddress payeeAddress;
+                txnouttype type;
+                std::vector<CTxDestination> addresses;
+                int nRequired;
+                if (ExtractDestinations(payee.GetPayee(), type, addresses, nRequired)) {
+                    payeeAddress.Set(addresses[0]);
+                    tObj.push_back(payeeAddress.ToString());
+                } else tObj.push_back("Unknow");
+
+                UniValue voteObj(UniValue::VARR);
+                for(auto hash : vecVoteHashes)
+                {
+                    voteObj.push_back(mnpayments.mapMasternodePaymentVotes[hash].vinMasternode.prevout.ToStringShort());
+                }
+                tObj.push_back(voteObj);
+            }
+        }
+
+        return tObj;
     }
 
     return NullUniValue;
