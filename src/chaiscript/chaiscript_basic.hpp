@@ -1,8 +1,4 @@
 // This file is distributed under the BSD License.
-// See "license.txt" for details.
-// Copyright 2009-2012, Jonathan Turner (jonathan@emptycrate.com)
-// Copyright 2009-2017, Jason Turner (jason@emptycrate.com)
-// http://www.chaiscript.com
 
 #ifndef CHAISCRIPT_BASIC_HPP_
 #define CHAISCRIPT_BASIC_HPP_
@@ -22,13 +18,6 @@
 //
 
 /*
-
-#include "chaiscript_stdlib.hpp"
-#include "language/chaiscript_parser.hpp"
-
-ChaiScript_Basic chai(
-          chaiscript::Std_Lib::library(),
-          std::make_unique<parser::ChaiScript_Parser<eval::Noop_Tracer, optimizer::Optimizer_Default>>());
 
 */
 
