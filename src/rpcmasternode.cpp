@@ -107,7 +107,7 @@ UniValue masternode(const UniValue& params, bool fHelp)
         (strCommand != "start" && strCommand != "start-alias" && strCommand != "start-all" && strCommand != "start-missing" &&
          strCommand != "start-disabled" && strCommand != "list" && strCommand != "list-conf" && strCommand != "count" &&
          strCommand != "debug" && strCommand != "current" && strCommand != "winner" && strCommand != "winners" && strCommand != "genkey" &&
-         strCommand != "connect" && strCommand != "outputs" && strCommand != "status"  && strCommand != "license" && strCommand != "payvote"))
+         strCommand != "connect" && strCommand != "outputs" && strCommand != "status"  && strCommand != "license" && strCommand != "payvote" && strCommand != "votelist"))
             throw std::runtime_error(
                 "masternode \"command\"... ( \"passphrase\" )\n"
                 "Set of commands to execute masternode related actions\n"
@@ -130,6 +130,7 @@ UniValue masternode(const UniValue& params, bool fHelp)
                 "  winners      - Print list of masternode winners\n"
                 "  license      - Print masternode register license\n"
                 "  payvote      - Print masternode payment vote at specify block height\n"
+                "  votelist     - Print masternode payment vote list\n"
                 );
 
     if (strCommand == "list")
@@ -553,6 +554,24 @@ UniValue masternode(const UniValue& params, bool fHelp)
         }
 
         return tObj;
+    }
+
+    if (strCommand == "votelist")
+    {
+        std::vector<std::pair<int, CMasternode*>> vecQueue;
+        UniValue mnObj(UniValue::VOBJ);
+        vecQueue = mnodeman.GetNextMasternodeListForPayment();
+        int ncount = 0;
+        int nWin = mnodeman.CountEnabled()/10;
+        for(auto t:vecQueue)
+        {
+            mnObj.push_back(Pair(to_string(t.first), t.second->vin.prevout.ToStringShort()));
+            ncount++;
+            if(ncount == nWin) mnObj.push_back(Pair("------", to_string(nWin)));
+        }
+        mnObj.push_back(Pair("top number:", to_string(nWin)));
+        mnObj.push_back(Pair("total number:", to_string(vecQueue.size())));
+        return mnObj;
     }
 
     return NullUniValue;
