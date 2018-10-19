@@ -353,7 +353,7 @@ extern UniValue crosschainauditcontract(const UniValue &params, bool fHelp);
 
 // ut fed1 rpc
 extern UniValue anchoruos(const UniValue &params, bool fHelp);
-
+extern UniValue addmultiaddress(const UniValue &params, bool fHelp);
 
 
 // lock coin for some time
