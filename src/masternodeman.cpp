@@ -685,6 +685,40 @@ CMasternode* CMasternodeMan::GetNextMasternodeInQueueForPayment(int nBlockHeight
     return pBestMasternode;
 }
 
+std::vector<std::pair<int, CMasternode*>> CMasternodeMan::GetNextMasternodeListForPayment()
+{
+    // Need LOCK2 here to ensure consistent locking order because the GetBlockHash call below locks cs_main
+    LOCK2(cs_main,cs);
+
+    std::vector<std::pair<int, CMasternode*>> vecMasternodeLastPaid;
+    if(!pCurrentBlockIndex) return vecMasternodeLastPaid;
+
+    /*
+        Make a vector with all of the last paid times
+    */
+    int nMnCount = CountEnabled();
+    BOOST_FOREACH(CMasternode &mn, vMasternodes)
+    {
+        if(!mn.IsValidForPayment()) continue;
+
+        // //check protocol version
+        if(mn.nProtocolVersion < mnpayments.GetMinMasternodePaymentsProto()) continue;
+
+        //it's in the list (up to 8 entries ahead of current block to allow propagation) -- so let's skip it
+        if(mnpayments.IsScheduled(mn, pCurrentBlockIndex->nHeight)) continue;
+
+        //it's too new, wait for a cycle
+        if(mn.sigTime + (nMnCount*2.6*60) > GetAdjustedTime()) continue;
+
+        //make sure it has at least as many confirmations as there are masternodes
+        if(mn.GetCollateralAge() < nMnCount) continue;
+
+        vecMasternodeLastPaid.push_back(std::make_pair(mn.GetLastPaidBlock(), &mn));
+    }
+    sort(vecMasternodeLastPaid.begin(), vecMasternodeLastPaid.end(), CompareLastPaidBlock());
+    return vecMasternodeLastPaid;
+}
+
 CMasternode* CMasternodeMan::FindRandomNotInVec(const std::vector<CTxIn> &vecToExclude, int nProtocolVersion)
 {
     LOCK(cs);

@@ -1151,6 +1151,7 @@ static void SendAllMoney(const CTxDestination &address, CAmount nValue, bool fSu
         throw JSONRPCError(RPC_WALLET_ERROR, "Error: The transaction was rejected! This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.");
 }
 
+//send all coins from a wallet to an address
 UniValue sendalltoaddress(const UniValue& params, bool fHelp)
 {
     if (!EnsureWalletIsAvailable(fHelp))
@@ -1206,8 +1207,8 @@ UniValue sendalltoaddress(const UniValue& params, bool fHelp)
         throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Insufficient funds");
 	
 	//fee of the tx from amount,the wallet which sendfrom will be no coins
-    bool fSubtractFeeFromAmount = true;
-    SendAllMoney(address.Get(), curBalance, fSubtractFeeFromAmount, wtx, fUseInstantSend, fUsePrivateSend);
+    //bool fSubtractFeeFromAmount = true;
+    SendAllMoney(address.Get(), curBalance, true, wtx, fUseInstantSend, fUsePrivateSend);
 
     return wtx.GetHash().GetHex();
 }
@@ -1353,6 +1354,7 @@ static bool getAllCoinsFromAddr(std::string fromaddr,  CAmount &nValueRet)
     return (nValueRet > 0);
 }
 
+//send all coins from adress A to address B
 UniValue sendallfromAtoB(const UniValue &params, bool fHelp)
 {
     if (!EnsureWalletIsAvailable(fHelp))
