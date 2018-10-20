@@ -781,7 +781,7 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
         return false;
     }
 
-    LogPrintf("CMasternodePayments::ProcessBlock -- Masternode found by GetNextMasternodeInQueueForPayment(): %s\n", pmn->vin.prevout.ToStringShort());
+    LogPrintf("CMasternodePayments::ProcessBlock -- Masternode found by GetNextMasternodeInQueueForPayment(): %s status:\n", pmn->vin.prevout.ToStringShort(),pmn->GetStatus());
 
 
     CScript payee = GetScriptForDestination(pmn->GetPayeeDestination());
