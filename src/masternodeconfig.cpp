@@ -104,6 +104,8 @@ bool CMasternodeConfig::AvailableCoins(uint256 txHash, unsigned int index)
 {
     CTransaction tx;
     uint256 hashBlock;
+
+    //check collateraloutputtxid or collateraloutputindex is right and available
     if(!GetTransaction(txHash, tx, Params().GetConsensus(), hashBlock, true))
     {
         LogPrintf("CMasternodeConfig::AvailableCoins -- masternode collateraloutputtxid or collateraloutputindex is error,please check it\n");
