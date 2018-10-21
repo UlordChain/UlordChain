@@ -177,6 +177,7 @@ bool CMasternodeConfig::GetMasternodeVin(CTxIn& txinRet,  std::string strTxHash,
         return false;
     }
 
+    //Check if the mortgage 10000UT is valid
     if(!masternodeConfig.AvailableCoins(txHash, nOutputIndex))
     {
         LogPrintf("CMasternodeConfig::GetMasternodeVin -- collateraloutputtxid or collateraloutputindex is AvailableCoins,please check it\n");
