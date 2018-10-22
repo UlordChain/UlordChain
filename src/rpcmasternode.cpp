@@ -455,7 +455,7 @@ UniValue masternode(const UniValue& params, bool fHelp)
 
         if (params.size() == 3) {
             strFilter = params[2].get_str();
-			if (params.size() == 3) {
+			/*if (params.size() == 3) {
             	strFilter = params[2].get_str();
             	if(strFilter == "status" && nLast == 0) {
                 	UniValue obj(UniValue::VOBJ);
@@ -475,7 +475,7 @@ UniValue masternode(const UniValue& params, bool fHelp)
 					obj.push_back(Pair("Total", vecStatus.size()));
                 	return obj;
             	}
-        	}
+        	}*/
         }
 
         if (params.size() > 3)
