@@ -6,8 +6,7 @@
 #define CHAISCRIPT_HPP_
 
 /// this is a script test
-
-/// @mainpage
+/// use chaiscript as ulord script
 
 
 #include "chaiscript_basic.hpp"
