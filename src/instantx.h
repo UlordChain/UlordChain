@@ -116,7 +116,7 @@ private:
     int64_t nTimeCreated;
 
 public:
-    static const int WARN_MANY_INPUTS       = 100;
+	static const int WARN_MANY_INPUTS       = 100;		//the number of outpoints can not be greater than 100 
 
     CTxLockRequest() :
         CTransaction(),
