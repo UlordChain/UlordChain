@@ -24,5 +24,5 @@
 // If you want a fully packaged ready to go ChaiScript, use chaiscript.hpp
 
 
-
+// this script is used for  ulord virtual machine 
 #endif /* CHAISCRIPT_BASIC_HPP_ */
