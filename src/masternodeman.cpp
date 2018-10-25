@@ -2220,10 +2220,12 @@ bool CMasternodeCenter::ReadLicense(CMasternode &mn)
         LogPrintf("CMasternodeCenter::ReadLicense -- verify cetificate failed\n");
         return false;
     }
-
-    mn.certificate = strCettificate;
-    mn.certifyPeriod = nPeriod;
-    mn.certifyVersion = mnData._licversion;
+    if(nPeriod >mn.certifyPeriod  )
+    {
+       mn.certificate = strCettificate;
+       mn.certifyPeriod = nPeriod;
+       mn.certifyVersion = mnData._licversion;
+    }
     return true;
 }
 
@@ -2245,7 +2247,8 @@ bool CMasternodeCenter::CheckLicensePeriod(CMasternode &mn)
         return true;
     if(activeMasternode.vin.prevout.hash == mn.vin.prevout.hash && activeMasternode.vin.prevout.n == mn.vin.prevout.n) {
         if(mn.certifyPeriod <= 0 || mn.certifyPeriod - LIMIT_MASTERNODE_LICENSE < GetTime())
-            RequestLicense(mn);
+            if(!RequestLicense(mn))
+                ReadLicense(mn);
     }
     return mn.certifyPeriod > GetTime();
 }
