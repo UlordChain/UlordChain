@@ -295,7 +295,7 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int nBlockH
             LogPrintf("CMasternodePayments::FillBlockPayee -- Failed to detect masternode to pay\n");
             return;
         }
-        LogPrintf("CMasternodePayments::FillBlockPayee -- Masternode found by GetNextMasternodeInQueueForPayment(): %s status:\n", winningNode->vin.prevout.ToStringShort(),winningNode->GetStatus());
+        LogPrintf("CMasternodePayments::FillBlockPayee -- Masternode found by GetNextMasternodeInQueueForPayment(): %s status:%s\n", winningNode->vin.prevout.ToStringShort(),winningNode->GetStatus());
         // fill payee with locally calculated winner and hope for the best
         payee = GetScriptForDestination(winningNode->GetPayeeDestination());
     }
