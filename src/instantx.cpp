@@ -510,6 +510,8 @@ bool CInstantSend::ResolveConflicts(const CTxLockCandidate& txLockCandidate, int
             }
         }
     } // FOREACH
+
+	//deal with some conflicts in mempool
     if(fMempoolConflict) {
         std::list<CTransaction> removed;
         // remove every tx conflicting with current Transaction Lock Request

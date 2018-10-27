@@ -25,7 +25,7 @@ extern CInstantSend instantsend;
     (1000/2900.0)**5 = 0.004875397277841433
 */
 static const int INSTANTSEND_CONFIRMATIONS_REQUIRED = 6;
-static const int DEFAULT_INSTANTSEND_DEPTH          = 5;
+static const int DEFAULT_INSTANTSEND_DEPTH          = 5;           //the number of masternode-level confirmations, it can be 0 to 60
 
 static const int MIN_INSTANTSEND_PROTO_VERSION      = 70205;
 
@@ -116,7 +116,7 @@ private:
     int64_t nTimeCreated;
 
 public:
-    static const int WARN_MANY_INPUTS       = 100;
+	static const int WARN_MANY_INPUTS       = 100;		//the number of outpoints can not be greater than 100 
 
     CTxLockRequest() :
         CTransaction(),
