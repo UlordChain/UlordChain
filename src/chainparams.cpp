@@ -203,7 +203,7 @@ public:
         consensus.nMasternodePaymentsStartBlock = 57600;                // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
         //consensus.nMasternodePaymentsIncreaseBlock = 576 * 365;         //576 * 365
         consensus.nMasternodePaymentsIncreasePeriod = 576 * 365;        // 17280 - actual historical value
-        consensus.nInstantSendKeepLock = 24;
+        consensus.nInstantSendKeepLock = 24;				//number of blocks for instantsend lock
         consensus.nBudgetPaymentsStartBlock = 2;                        // actual historical value
         consensus.nBudgetPaymentsCycleBlocks = 576 * 30;                // ~(60*24*30)/2.6, actual number of blocks per month is 200700 / 12 = 16725
         consensus.nBudgetPaymentsWindowBlocks = 100;
