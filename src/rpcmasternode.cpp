@@ -588,7 +588,8 @@ UniValue masternodelist(const UniValue& params, bool fHelp)
     if (fHelp || (
                 strMode != "activeseconds" && strMode != "addr" && strMode != "full" &&
                 strMode != "lastseen" && strMode != "lastpaidtime" && strMode != "lastpaidblock" &&
-                strMode != "protocol" && strMode != "payee" && strMode != "rank" && strMode != "status"))
+                strMode != "protocol" && strMode != "payee" && strMode != "rank" && strMode != "status"
+                && strMode != "check"))
     {
         throw std::runtime_error(
                 "masternodelist ( \"mode\" \"filter\" )\n"
@@ -678,6 +679,19 @@ UniValue masternodelist(const UniValue& params, bool fHelp)
                 if (strFilter !="" && strStatus.find(strFilter) == std::string::npos &&
                     strOutpoint.find(strFilter) == std::string::npos) continue;
                 obj.push_back(Pair(strOutpoint, strStatus));
+            } else if (strMode == "check") {
+                if (strFilter !="" && strOutpoint.find(strFilter) == std::string::npos) continue;
+                int64_t paytime = 0, sigtime = 0;
+                paytime = mn.GetLastPaidTime();
+                sigtime = mn.lastPing.sigTime;
+                if(paytime > sigtime + MASTERNODE_EXPIRATION_SECONDS) {
+                    std::ostringstream streamFull;
+                    streamFull << CBitcoinAddress(mn.GetPayeeDestination()).ToString() << " LastPaid:" <<
+                                   std::setw(10) << paytime << " LastSeen:"  << std::setw(10) <<
+                                   sigtime << " IP:" << mn.addr.ToString();
+                    std::string strFull = streamFull.str();
+                    obj.push_back(Pair(strOutpoint, strFull));
+                }
             }
         }
     }
