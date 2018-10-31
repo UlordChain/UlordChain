@@ -1,8 +1,7 @@
 // This file is distributed under the BSD License.
 // See "license.txt" for details.
-// and Jason Turner (jason@emptycrate.com)
-// http://www.chaiscript.com
 
+// add std lib for ulord virtual machine
 #ifndef CHAISCRIPT_STDLIB_HPP_
 #define CHAISCRIPT_STDLIB_HPP_
 
