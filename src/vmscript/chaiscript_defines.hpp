@@ -1,8 +1,6 @@
 // This file is distributed under the BSD License.
 // See "license.txt" for details.
-// Copyright 2009-2012, Jonathan Turner (jonathan@emptycrate.com)
-// Copyright 2009-2017, Jason Turner (jason@emptycrate.com)
-// http://www.chaiscript.com
+// add draft for ulord virtual mashine
 
 #ifndef CHAISCRIPT_DEFINES_HPP_
 #define CHAISCRIPT_DEFINES_HPP_
