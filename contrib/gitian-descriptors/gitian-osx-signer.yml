@@ -8,7 +8,7 @@ packages:
 - "faketime"
 reference_datetime: "2017-01-01 00:00:00"
 remotes:
-- "url": "https://github.com/ulordpay/ulord-detached-sigs.git"
+- "url": "https://github.com/UlordChain/ulord-detached-sigs.git"
   "dir": "signature"
 files:
 - "ulord-osx-unsigned.tar.gz"
