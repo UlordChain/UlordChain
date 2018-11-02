@@ -3800,7 +3800,7 @@ ví dụ: alertnotify=echo %%s | mail -s "Ulord Alert" admin@foo.com
     </message>
     <message>
         <source>Copyright (C) 2014-%i The Dash Core Developers</source>
-        <translation>Bản quyền (C) 2014-%i bởi Nhóm phát triển Ulord Core</translation>
+        <translation>Bản quyền (C) 2014-%i bởi Nhóm phát triển Dash Core</translation>
     </message>
     <message>
         <source>Could not parse -rpcbind value %s as network address</source>
