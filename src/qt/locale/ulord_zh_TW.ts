@@ -3531,7 +3531,11 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Copyright (C) 2014-%i The Dash Core Developers</source>
-        <translation>版權為Ulord全节点钱包開發人員自西元 2014 至 %i 年起所有</translation>
+        <translation>版權為Dash全节点钱包開發人員自西元 2014 至 %i 年起所有</translation>
+    </message>
+    <message>
+        <source>Copyright (C) 2017-%i The Ulord Core Developers</source>
+        <translation>版權為Ulord全节点钱包開發人員自西元 2017 至 %i 年起所有</translation>
     </message>
     <message>
         <source>Could not parse -rpcbind value %s as network address</source>
