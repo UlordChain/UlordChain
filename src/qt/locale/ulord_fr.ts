@@ -3804,6 +3804,10 @@ Pour exemple: alertnotify=echo %%s | mail -s "Alerte Ulord" admin@foo.com
         <translation>Copyright (C) 2014-%i The Dash Core Developers</translation>
     </message>
     <message>
+        <source>Copyright (C) 2017-%i The Ulord Core Developers</source>
+        <translation>Copyright (C) 2017-%i The Ulord Core Developers</translation>
+    </message>
+    <message>
         <source>Could not parse -rpcbind value %s as network address</source>
         <translation>Impossible d'analyser la valeur -rpcbind %s en tant qu'adresse réseau</translation>
     </message>
