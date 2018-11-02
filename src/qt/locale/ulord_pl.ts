@@ -3800,7 +3800,11 @@ Zaleca się również aby ustawić alarm powiadomień tzw. alertnotify, aby dać
     </message>
     <message>
         <source>Copyright (C) 2014-%i The Dash Core Developers</source>
-        <translation>Prawa autorskie (C) 2014-%i deweloperzy Ulord</translation>
+        <translation>Prawa autorskie (C) 2014-%i deweloperzy Dash</translation>
+    </message>
+    <message>
+        <source>Copyright (C) 2017-%i The Ulord Core Developers</source>
+        <translation>Prawa autorskie (C) 2017-%i deweloperzy Ulord</translation>
     </message>
     <message>
         <source>Could not parse -rpcbind value %s as network address</source>
