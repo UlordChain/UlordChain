@@ -3700,6 +3700,10 @@ https://www.transifex.com/projects/p/ulord/</translation>
         <translation>Copyright (C) 2014-%i Dash Core Developers</translation>
     </message>
     <message>
+        <source>Copyright (C) 2017-%i The Ulord Core Developers</source>
+        <translation>Copyright (C) 2017-%i Ulord Core Developers</translation>
+    </message>
+    <message>
         <source>Could not parse -rpcbind value %s as network address</source>
         <translation>Incapaz de analizar -rpcbind value %s como endereço de rede</translation>
     </message>
