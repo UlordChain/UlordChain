@@ -3803,6 +3803,10 @@ zum Beispiel: alertnotify=echo %%s | mail -s \"Ulord Alert\" admin@foo.com</tran
         <translation>Copyright (C) 2014-%i Die "Dash Core"-Entwickler</translation>
     </message>
     <message>
+        <source>Copyright (C) 2017-%i The Ulord Core Developers</source>
+        <translation>Copyright (C) 2017-%i Die "Ulord Core"-Entwickler</translation>
+    </message>
+    <message>
         <source>Could not parse -rpcbind value %s as network address</source>
         <translation>-rpcbind Wert %s konnte nicht als Netzwerkadresse erkannt werden</translation>
     </message>
