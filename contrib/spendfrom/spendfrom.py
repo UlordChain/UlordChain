@@ -26,7 +26,7 @@ from jsonrpc import ServiceProxy, json
 BASE_FEE=Decimal("0.001")
 
 def check_json_precision():
-    """Make sure json library being used does not lose precision converting UC values"""
+    """Make sure json library being used does not lose precision converting UT values"""
     n = Decimal("20000000.00000003")
     satoshis = int(json.loads(json.dumps(float(n)))*1.0e8)
     if satoshis != 2000000000000003:
@@ -152,7 +152,7 @@ def create_tx(ulordd, fromaddresses, toaddress, amount, fee):
         total_available += all_coins[addr]["total"]
 
     if total_available < needed:
-        sys.stderr.write("Error, only %f UC available, need %f\n"%(total_available, needed));
+        sys.stderr.write("Error, only %f UT available, need %f\n"%(total_available, needed));
         sys.exit(1)
 
     #
