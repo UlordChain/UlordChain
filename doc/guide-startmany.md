@@ -95,7 +95,7 @@ Issue the following:
 Make note of the hash (which is your collateral_output) and index.
 
 ### Enter your Masternode details into your ulord.conf file
-[From the ulord github repo](https://github.com/ulordpay/ulord/blob/master/doc/masternode_conf.md)
+[From the ulord github repo](https://github.com/UlordChain/UlordChain/blob/master/doc/masternode_conf.md)
 
 the format of Configuration items about masternode is a space seperated text. Each line consisting of an alias, IP address followed by port, masternode private key, collateral output transaction id and collateral output index.
 
