@@ -4841,6 +4841,11 @@ for example: alertnotify=echo %%s | mail -s &quot;Ulord Alert&quot; admin@foo.co
         <translation>Copyright (C) 2014-%i The Dash Core Developers</translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Copyright (C) 2017-%i The Ulord Core Developers</source>
+        <translation>Copyright (C) 2017-%i The Ulord Core Developers</translation>
+    </message>
+    <message>
         <location line="+2"/>
         <source>Could not parse -rpcbind value %s as network address</source>
         <translation>Could not parse -rpcbind value %s as network address</translation>
