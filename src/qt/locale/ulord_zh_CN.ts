@@ -3899,6 +3899,10 @@ https://www.transifex.com/projects/p/ulord/</translation>
     </message>
     <message>
         <source>Copyright (C) 2014-%i The Dash Core Developers</source>
+        <translation>版权 (C) 2014-%i Dash Foundation Ltd.</translation>
+    </message>
+    <message>
+        <source>Copyright (C) 2017-%i The Ulord Core Developers</source>
         <translation>版权 (C) 2017-%i Ulord Foundation Ltd.</translation>
     </message>
     <message>
