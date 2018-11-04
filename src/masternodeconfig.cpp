@@ -20,7 +20,7 @@ void CMasternodeConfig::add(std::string alias, std::string ip, std::string privK
 
 bool CMasternodeConfig::read(std::string& strErr) {
 
-
+    //Load the masternode node information when masternode is true 
     bool masternodeflag = GetBoolArg("-masternode", false);
     if(masternodeflag)
     {
