@@ -130,6 +130,7 @@ bool CMasternodeConfig::AvailableCoins(uint256 txHash, unsigned int index)
         return false;
     }
 
+    //check colleteral UTXO confirmations 
     if(chainActive.Height() - coins.nHeight + 1 < Params().GetConsensus().nMasternodeMinimumConfirmations) 
     {
         LogPrintf("CMasternodeConfig::AvailableCoins -- Masternode UTXO must have at least %d confirmations\n",Params().GetConsensus().nMasternodeMinimumConfirmations);
