@@ -419,6 +419,8 @@ UniValue masternode(const UniValue& params, bool fHelp)
         if(mnodeman.Get(activeMasternode.vin, mn)) {
             mnObj.push_back(Pair("payee", CBitcoinAddress(mn.GetPayeeDestination()).ToString()));
             mnObj.push_back(Pair("license version", mn.certifyVersion));
+            
+            //Time is 0 time zone
             mnObj.push_back(Pair("license period", DateTimeStrFormat("%Y-%m-%d %H:%M:%S", mn.certifyPeriod)));
             mnObj.push_back(Pair("license data", mn.certificate));
             if(mn.certifyPeriod <= GetTime())
