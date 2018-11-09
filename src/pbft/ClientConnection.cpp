@@ -2,7 +2,7 @@
 #include "Database.h"
 
 namespace Pbft {
-
+// pbft algorithm
 ClientConnection::ClientConnection(ClientId idToSet)
     : connection(Database::Instance())
     , id(idToSet)
