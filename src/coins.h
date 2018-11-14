@@ -240,6 +240,9 @@ public:
 
     //! mark a vout spent
     bool Spend(uint32_t nPos);
+    bool IsSpent() const {
+        return (vout.size() > 0 ? false : true);
+    }
 
     //! check whether a particular output is still available
     bool IsAvailable(unsigned int nPos) const {
@@ -400,6 +403,7 @@ public:
 
     // Standard CCoinsView methods
     bool GetCoins(const uint256 &txid, CCoins &coins) const;
+    bool GetCoins(const COutPoint &outpoint, CCoins &coins) const ;
     bool HaveCoins(const uint256 &txid) const;
     uint256 GetBestBlock() const;
     void SetBestBlock(const uint256 &hashBlock);
