@@ -332,7 +332,6 @@ bool CInstantSend::ProcessTxLockVote(CNode* pfrom, CTxLockVote& vote)
                     // to let all other nodes know about this node's misbehaviour and let them apply
                     // pose ban score too.
 					std::map<uint256, CTxLockCandidate>::iterator it3 = mapTxLockCandidates.find(txHash);
-					//LogPrintf("CInstantSend::%s -- masternode sent conflicting votes! %s\n", __func__, vote.GetMasternodeOutpoint().ToStringShort());
                     it3->second.MarkOutpointAsAttacked(vote.GetOutpoint());
                     it2->second.MarkOutpointAsAttacked(vote.GetOutpoint());
 					mnodeman.PoSeBan(vote.GetMasternodeOutpoint());
@@ -534,26 +533,8 @@ bool CInstantSend::ResolveConflicts(const CTxLockCandidate& txLockCandidate/*, i
     // Not in block yet, make sure all its inputs are still unspent
     BOOST_FOREACH(const CTxIn& txin, txLockCandidate.txLockRequest.vin) {
         CCoins coins;
-        /*if(!pcoinsTip->GetCoins(txin.prevout.hash, coins) ||
-           (unsigned int)txin.prevout.n>=coins.vout.size() ||
-           coins.vout[txin.prevout.n].IsNull()) {
-            // Not in UTXO anymore? A conflicting tx was mined while we were waiting for votes.
-            // Reprocess tip to make sure tx for this lock is included.
-            LogPrintf("CTxLockRequest::ResolveConflicts -- Failed to find UTXO %s - disconnecting tip...\n", txin.prevout.ToStringShort());
-            if(!DisconnectBlocks(1)) {
-                return false;
-            }
-            // Recursively check at "new" old height. Conflicting tx should be rejected by AcceptToMemoryPool.
-            ResolveConflicts(txLockCandidate, nMaxBlocks - 1);
-            LogPrintf("CTxLockRequest::ResolveConflicts -- Failed to find UTXO %s - activating best chain...\n", txin.prevout.ToStringShort());
-            // Activate best chain, block which includes conflicting tx should be rejected by ConnectBlock.
-            CValidationState state;
-            if(!ActivateBestChain(state, Params()) || !state.IsValid()) {
-                LogPrintf("CTxLockRequest::ResolveConflicts -- ActivateBestChain failed, txid=%s\n", txin.prevout.ToStringShort());
-                return false;
-            }*/
-			if(!GetUTXOCoin(txin.prevout, coins)) {
-            // Not in UTXO anymore? A conflicting tx was mined while we were waiting for votes.
+		if(!GetUTXOCoin(txin.prevout, coins)) {
+			// Not in UTXO anymore? A conflicting tx was mined while we were waiting for votes.
             LogPrintf("CInstantSend::ResolveConflicts -- ERROR: Failed to find UTXO %s, can't complete Transaction Lock\n", txin.prevout.ToStringShort());
             return false;
             //LogPrintf("CTxLockRequest::ResolveConflicts -- Failed to find UTXO %s - fixed!\n", txin.prevout.ToStringShort());
@@ -633,6 +614,7 @@ void CInstantSend::CheckAndRemove()
 			++itOrphanVote;
 		}
 	}
+	
 	// remove invalid votes and votes for failed lock attempts
 	itVote = mapTxLockVotes.begin();
     while(itVote != mapTxLockVotes.end()) {
@@ -656,31 +638,6 @@ void CInstantSend::CheckAndRemove()
             ++itMasternodeOrphan;
         }
     }
-	/*
-    // remove expired orphan votes
-    std::map<uint256, CTxLockVote>::iterator itOrphanVote = mapTxLockVotesOrphan.begin();
-    while(itOrphanVote != mapTxLockVotesOrphan.end()) {
-        if(GetTime() - itOrphanVote->second.GetTimeCreated() > ORPHAN_VOTE_SECONDS) {
-            LogPrint("instantsend", "CInstantSend::CheckAndRemove -- Removing expired orphan vote: txid=%s  masternode=%s\n",
-                    itOrphanVote->second.GetTxHash().ToString(), itOrphanVote->second.GetMasternodeOutpoint().ToStringShort());
-            mapTxLockVotes.erase(itOrphanVote->first);
-            mapTxLockVotesOrphan.erase(itOrphanVote++);
-        } else {
-            ++itOrphanVote;
-        }
-    }
-
-    // remove expired masternode orphan votes (DOS protection)
-    std::map<COutPoint, int64_t>::iterator itMasternodeOrphan = mapMasternodeOrphanVotes.begin();
-    while(itMasternodeOrphan != mapMasternodeOrphanVotes.end()) {
-        if(itMasternodeOrphan->second < GetTime()) {
-            LogPrint("instantsend", "CInstantSend::CheckAndRemove -- Removing expired orphan masternode vote: masternode=%s\n",
-                    itMasternodeOrphan->first.ToStringShort());
-            mapMasternodeOrphanVotes.erase(itMasternodeOrphan++);
-        } else {
-            ++itMasternodeOrphan;
-        }
-    }*/
 }
 
 bool CInstantSend::AlreadyHave(const uint256& hash)
@@ -983,26 +940,6 @@ bool CTxLockVote::IsValid(CNode* pnode) const
         return false;
     }
 
-    /*int nPrevoutHeight = GetUTXOHeight(outpoint);
-    if(nPrevoutHeight == -1) {
-        LogPrint("instantsend", "CTxLockVote::IsValid -- Failed to find UTXO %s\n", outpoint.ToStringShort());
-        // Validating utxo set is not enough, votes can arrive after outpoint was already spent,
-        // if lock request was mined. We should process them too to count them later if they are legit.
-        CTransaction txOutpointCreated;
-        uint256 nHashOutpointConfirmed;
-        if(!GetTransaction(outpoint.hash, txOutpointCreated, Params().GetConsensus(), nHashOutpointConfirmed, true) || nHashOutpointConfirmed == uint256()) {
-            LogPrint("instantsend", "CTxLockVote::IsValid -- Failed to find outpoint %s\n", outpoint.ToStringShort());
-            return false;
-        }
-        LOCK(cs_main);
-        BlockMap::iterator mi = mapBlockIndex.find(nHashOutpointConfirmed);
-        if(mi == mapBlockIndex.end() || !mi->second) {
-            // not on this chain?
-            LogPrint("instantsend", "CTxLockVote::IsValid -- Failed to find block %s for outpoint %s\n", nHashOutpointConfirmed.ToString(), outpoint.ToStringShort());
-            return false;
-        }
-        nPrevoutHeight = mi->second->nHeight;
-    }*/
 	CCoins coins;
     if(!GetUTXOCoin(outpoint, coins)) {
         LogPrint("instantsend", "CTxLockVote::IsValid -- Failed to find UTXO %s\n", outpoint.ToStringShort());
@@ -1010,10 +947,8 @@ bool CTxLockVote::IsValid(CNode* pnode) const
     }
 	int nLockInputHeight = coins.nHeight + Params().GetConsensus().nInstantSendConfirmationsRequired - 2;
 
-	//int nLockInputHeight = nPrevoutHeight + 4;
 	//int nMinRequiredProtocol = std::max(MIN_INSTANTSEND_PROTO_VERSION, mnpayments.GetMinMasternodePaymentsProto());
-    //int n = mnodeman.GetMasternodeRank(CTxIn(outpointMasternode), nLockInputHeight, nMinRequiredProtocol);
-
+	//int n = mnodeman.GetMasternodeRank(CTxIn(outpointMasternode), nLockInputHeight, nMinRequiredProtocol);
     int n = mnodeman.GetMasternodeRank(CTxIn(outpointMasternode), nLockInputHeight, MIN_INSTANTSEND_PROTO_VERSION);
 
     if(n == -1) {
