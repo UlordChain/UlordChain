@@ -236,6 +236,17 @@ void CMasternodeMan::SetRegisteredCheckInterval(int time)
     }
 }
 
+bool CMasternodeMan::PoSeBan(const COutPoint &outpoint)
+{
+    LOCK(cs);
+    CMasternode* pmn = Find(outpoint);
+    if (!pmn) {
+        return false;
+    }
+    pmn->PoSeBan();
+
+    return true;
+}
 
 void CMasternodeMan::Check()
 {
@@ -541,6 +552,18 @@ CMasternode* CMasternodeMan::Find(const CTxIn &vin)
     }
     return NULL;
 }
+
+CMasternode* CMasternodeMan::Find(const COutPoint& outpoint)
+{
+	LOCK(cs);
+	BOOST_FOREACH(CMasternode& mn, vMasternodes)
+	{
+		if(mn.vin.prevout == outpoint)
+			return &mn;
+	}
+	return NULL;
+}
+
 
 CMasternode* CMasternodeMan::Find(const CPubKey &pubKeyMasternode)
 {
