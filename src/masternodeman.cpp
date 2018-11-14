@@ -106,52 +106,52 @@ void CMasternodeIndex::RebuildIndex()
 
 void showbuf(const char * buf, int len)
 {
-	int i = 0, count = 0;
+    int i = 0, count = 0;
 	
-	for (i = 0; i < len; ++i)
-	{
-		printf("%02x ", (uint8_t)buf[i]);
-		count++;
-		if(count % 8 == 0)
-			printf("    ");
-		if(count % 16 == 0)
-			printf("\n");
-	}
-	printf("\n");
+    for (i = 0; i < len; ++i)
+    {
+        printf("%02x ", (uint8_t)buf[i]);
+        count++;
+        if(count % 8 == 0)
+            printf("    ");
+        if(count % 16 == 0)
+            printf("\n");
+    }
+    printf("\n");
 }
 
 bool SendRequestNsg(SOCKET sock, CMasternode &mn, mstnodequest &mstquest)
 {
-	std::string strReq;
-	char cbuf[mstnd_iReqBufLen];
-	memset(cbuf,0,sizeof(cbuf));
-	int buflength = 0;
+    std::string strReq;
+    char cbuf[mstnd_iReqBufLen];
+    memset(cbuf,0,sizeof(cbuf));
+    int buflength = 0;
 	
-	mstquest._timeStamps = GetTime();
-	mstquest._txid = mn.vin.prevout.hash.GetHex();
-	mstquest._voutid = mn.vin.prevout.n;
+    mstquest._timeStamps = GetTime();
+    mstquest._txid = mn.vin.prevout.hash.GetHex();
+    mstquest._voutid = mn.vin.prevout.n;
 	
-	//std::cout << "check masternode addr " << mstquest._masteraddr << std::endl;
+    //std::cout << "check masternode addr " << mstquest._masteraddr << std::endl;
 	
     std::ostringstream os;
     boost::archive::binary_oarchive oa(os);
     oa<<mstquest;
-	strReq = os.str();
+    strReq = os.str();
 	
-	buflength = strReq.length();
-	if(buflength + mstnd_iReqMsgHeadLen > mstnd_iReqBufLen)
-		return error("SendRequestNsg : buff size error, string length is %d, need to increase buff size", buflength + mstnd_iReqMsgHeadLen);
-	unsigned int n = HNSwapl(buflength);
-	memcpy(cbuf, &n, mstnd_iReqMsgHeadLen);
-	memcpy(cbuf + mstnd_iReqMsgHeadLen, strReq.c_str(), buflength);
-	buflength += mstnd_iReqMsgHeadLen;
+    buflength = strReq.length();
+    if(buflength + mstnd_iReqMsgHeadLen > mstnd_iReqBufLen)
+        return error("SendRequestNsg : buff size error, string length is %d, need to increase buff size", buflength + mstnd_iReqMsgHeadLen);
+    unsigned int n = HNSwapl(buflength);
+    memcpy(cbuf, &n, mstnd_iReqMsgHeadLen);
+    memcpy(cbuf + mstnd_iReqMsgHeadLen, strReq.c_str(), buflength);
+    buflength += mstnd_iReqMsgHeadLen;
 
-	//showbuf(cbuf, buflength);
+    //showbuf(cbuf, buflength);
 		
-	int nBytes = send(sock, cbuf, buflength, 0);
-	if(nBytes != buflength)
-		return false;
-	return true;
+    int nBytes = send(sock, cbuf, buflength, 0);
+    if(nBytes != buflength)
+        return false;
+    return true;
 }
 
 CMasternodeMan::CMasternodeMan()

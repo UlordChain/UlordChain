@@ -190,8 +190,8 @@ public:
     bool IsValid(CNode* pnode) const;
     void SetConfirmedHeight(int nConfirmedHeightIn) { nConfirmedHeight = nConfirmedHeightIn; }
     bool IsExpired(int nHeight) const;
-	bool IsTimedOut() const;
-	bool IsFailed() const;
+    bool IsTimedOut() const;
+    bool IsFailed() const;
     bool Sign();
     bool CheckSignature() const;
 
@@ -203,7 +203,7 @@ class COutPointLock
 private:
     COutPoint outpoint; // utxo
     std::map<COutPoint, CTxLockVote> mapMasternodeVotes; // masternode outpoint - vote
-	bool fAttacked = false;
+    bool fAttacked = false;
 
 public:
     static const int SIGNATURES_REQUIRED        = 6;
@@ -221,7 +221,7 @@ public:
     bool HasMasternodeVoted(const COutPoint& outpointMasternodeIn) const;
     int CountVotes() const { return mapMasternodeVotes.size(); }
     bool IsReady() const { return CountVotes() >= SIGNATURES_REQUIRED; }
-	void MarkAsAttacked() { fAttacked = true; }
+    void MarkAsAttacked() { fAttacked = true; }
     void Relay() const;
 };
 
@@ -229,7 +229,7 @@ class CTxLockCandidate
 {
 private:
     int nConfirmedHeight; // when corresponding tx is 0-confirmed or conflicted, nConfirmedHeight is -1
-	int64_t nTimeCreated;
+    int64_t nTimeCreated;
 
 public:
     CTxLockCandidate(const CTxLockRequest& txLockRequestIn) :
@@ -246,14 +246,14 @@ public:
     void AddOutPointLock(const COutPoint& outpoint);
     bool AddVote(const CTxLockVote& vote);
     bool IsAllOutPointsReady() const;
-	void MarkOutpointAsAttacked(const COutPoint& outpoint);
+    void MarkOutpointAsAttacked(const COutPoint& outpoint);
 
     bool HasMasternodeVoted(const COutPoint& outpointIn, const COutPoint& outpointMasternodeIn);
     int CountVotes() const;
 
     void SetConfirmedHeight(int nConfirmedHeightIn) { nConfirmedHeight = nConfirmedHeightIn; }
     bool IsExpired(int nHeight) const;
-	bool IsTimedOut() const;
+    bool IsTimedOut() const;
 	
     void Relay() const;
 };
