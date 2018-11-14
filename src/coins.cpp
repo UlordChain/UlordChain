@@ -96,6 +96,15 @@ bool CCoinsViewCache::GetCoins(const uint256 &txid, CCoins &coins) const {
     return false;
 }
 
+bool CCoinsViewCache::GetCoins(const COutPoint &outpoint, CCoins &coins) const {
+    CCoinsMap::const_iterator it = FetchCoins(outpoint.hash);
+    if (it != cacheCoins.end()) {
+        coins = it->second.coins;
+        return !coins.IsSpent();
+    }
+    return false;
+}
+
 CCoinsModifier CCoinsViewCache::ModifyCoins(const uint256 &txid) {
     assert(!hasModifier);
     std::pair<CCoinsMap::iterator, bool> ret = cacheCoins.insert(std::make_pair(txid, CCoinsCacheEntry()));
