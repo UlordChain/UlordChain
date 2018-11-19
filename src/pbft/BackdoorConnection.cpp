@@ -2,10 +2,13 @@
 #include "Database.h"
 
 namespace Pbft {
-
+// pbft algothom 
 BackdoorConnection::BackdoorConnection() : connection(Database::Instance())
-{
+{ // todo 
+    connMgr= vecConn.push(connection);
+    return ;
 }
+
 
 NodeId BackdoorConnection::CreateNode()
 {
