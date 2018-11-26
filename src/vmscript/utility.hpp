@@ -26,16 +26,6 @@ namespace chaiscript
   namespace utility
   {
 
-    /// Single step command for registering a class with ChaiScript
-    /// 
-    /// \param[in,out] t_module Model to add class to
-    /// \param[in] t_class_name Name of the class being registered
-    /// \param[in] t_constructors Vector of constructors to add
-    /// \param[in] t_funcs Vector of methods to add
-    ///
-    /// \example Adding a basic class to ChaiScript in one step
-    /// 
-    /// \code
     /// chaiscript::utility::add_class<test>(*m,
     ///      "test",
     ///      { constructor<test ()>(),
