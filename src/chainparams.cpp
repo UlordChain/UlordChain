@@ -403,7 +403,7 @@ public:
 
         vFixedSeeds.clear();
         vSeeds.clear();
-        //vSeeds.push_back(CDNSSeedData("ulord.one","testnet-seed1.ulord.one"));  
+        vSeeds.push_back(CDNSSeedData("ulord.one","testnet-seed1.ulord.one"));  
 	    //vSeeds.push_back(CDNSSeedData("ulord.io","testnet-seed1.ulord.io"));
 	    //vSeeds.push_back(CDNSSeedData("fcash.cc","testnet-seed1.fcash.cc"));
         uCenter = "test-ucenter.ulord.one";                           // currently ignored
