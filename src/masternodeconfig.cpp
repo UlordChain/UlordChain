@@ -20,7 +20,7 @@ void CMasternodeConfig::add(std::string alias, std::string ip, std::string privK
 
 bool CMasternodeConfig::read(std::string& strErr) {
 
-
+    //Load the masternode node information when masternode is true 
     bool masternodeflag = GetBoolArg("-masternode", false);
     if(masternodeflag)
     {
@@ -104,6 +104,8 @@ bool CMasternodeConfig::AvailableCoins(uint256 txHash, unsigned int index)
 {
     CTransaction tx;
     uint256 hashBlock;
+
+    //check collateraloutputtxid or collateraloutputindex is right and available
     if(!GetTransaction(txHash, tx, Params().GetConsensus(), hashBlock, true))
     {
         LogPrintf("CMasternodeConfig::AvailableCoins -- masternode collateraloutputtxid or collateraloutputindex is error,please check it\n");
@@ -113,6 +115,7 @@ bool CMasternodeConfig::AvailableCoins(uint256 txHash, unsigned int index)
         return false;
     }
 
+    //check if collateral UTXO is already spent 
     CCoins coins;
     if(!pcoinsTip->GetCoins(txHash, coins) || index >=coins.vout.size() || coins.vout[index].IsNull())
     {
@@ -127,6 +130,7 @@ bool CMasternodeConfig::AvailableCoins(uint256 txHash, unsigned int index)
         return false;
     }
 
+    //check colleteral UTXO confirmations 
     if(chainActive.Height() - coins.nHeight + 1 < Params().GetConsensus().nMasternodeMinimumConfirmations) 
     {
         LogPrintf("CMasternodeConfig::AvailableCoins -- Masternode UTXO must have at least %d confirmations\n",Params().GetConsensus().nMasternodeMinimumConfirmations);
@@ -177,6 +181,7 @@ bool CMasternodeConfig::GetMasternodeVin(CTxIn& txinRet,  std::string strTxHash,
         return false;
     }
 
+    //Check if the collateral 10000UT is valid
     if(!masternodeConfig.AvailableCoins(txHash, nOutputIndex))
     {
         LogPrintf("CMasternodeConfig::GetMasternodeVin -- collateraloutputtxid or collateraloutputindex is AvailableCoins,please check it\n");

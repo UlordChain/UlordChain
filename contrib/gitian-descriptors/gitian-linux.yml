@@ -1,5 +1,5 @@
 ---
-name: "ulord-linux-0.12"
+name: "ulord-linux-1.0.0"
 enable_cache: true
 suites:
 - "trusty"
@@ -20,8 +20,8 @@ packages:
 - "python"
 reference_datetime: "2017-01-01 00:00:00"
 remotes:
-- "url": "https://github.com/ulordpay/ulord.git"
-  "dir": "ulord"
+- "url": "https://github.com/UlordChain/UlordChain.git"
+  "dir": "UlordChain"
 files: []
 script: |
   WRAP_DIR=$HOME/wrapped
@@ -68,7 +68,7 @@ script: |
   done
   export PATH=${WRAP_DIR}:${PATH}
 
-  cd ulord
+  cd UlordChain
   BASEPREFIX=`pwd`/depends
   # Build dependencies for each host
   for i in $HOSTS; do

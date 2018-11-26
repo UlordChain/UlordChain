@@ -25,8 +25,8 @@ Build-Depends: debhelper,
  python
 Standards-Version: 3.9.2
 Homepage: https://www.ulord.org/
-Vcs-Git: git://github.com/ulordpay/ulord.git
-Vcs-Browser: https://github.com/ulordpay/ulord
+Vcs-Git: git://github.com/UlordChain/UlordChain.git
+Vcs-Browser: https://github.com/UlordChain/UlordChain
 
 Package: ulordd
 Architecture: any

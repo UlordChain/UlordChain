@@ -1133,6 +1133,9 @@ static void SendAllMoney(const CTxDestination &address, CAmount nValue, bool fSu
     // Parse Ulord address
     CScript scriptPubKey = GetScriptForDestination(address);
 
+	if (nValue <= 0){
+		throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send");
+	}
     // Create and send the transaction
     CReserveKey reservekey(pwalletMain);
     CAmount nFeeRequired;

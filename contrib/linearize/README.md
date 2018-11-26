@@ -3,7 +3,7 @@ Construct a linear, no-fork, best version of the blockchain.
 
 ## Step 0: Install ulord_hash
 
-https://github.com/ulordpay/ulord_hash
+https://github.com/UlordChain/ulord_hash
 
 ## Step 1: Download hash list
 

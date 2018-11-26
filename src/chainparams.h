@@ -98,6 +98,7 @@ protected:
     int nDefaultPort;
     long nMaxTipAge;
     uint64_t nPruneAfterHeight;
+    //Store seed node infomation
     std::vector<CDNSSeedData> vSeeds;
     std::string uCenter;
     std::vector<unsigned char> base58Prefixes[MAX_BASE58_TYPES];

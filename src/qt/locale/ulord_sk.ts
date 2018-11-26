@@ -3800,7 +3800,11 @@ napríklad: alertnotify=echo %%s | mail -s "Ulord Upozornenie" admin@foo.com
     </message>
     <message>
         <source>Copyright (C) 2014-%i The Dash Core Developers</source>
-        <translation>Autorské práva (C) 2014-%i Vývojári jadra Ulord</translation>
+        <translation>Autorské práva (C) 2014-%i Vývojári jadra Dash</translation>
+    </message>
+    <message>
+        <source>Copyright (C) 2017-%i The Ulord Core Developers</source>
+        <translation>Autorské práva (C) 2017-%i Vývojári jadra Ulord</translation>
     </message>
     <message>
         <source>Could not parse -rpcbind value %s as network address</source>

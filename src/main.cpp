@@ -947,6 +947,16 @@ unsigned int GetP2SHSigOpCount(const CTransaction& tx, const CCoinsViewCache& in
     return nSigOps;
 }
 
+bool GetUTXOCoin(const COutPoint& outpoint, CCoins& coins)
+{
+    LOCK(cs_main);
+    if (!pcoinsTip->GetCoins(outpoint, coins))
+        return false;
+    if (coins.IsSpent())
+        return false;
+    return true;
+}
+
 int GetUTXOHeight(const COutPoint& outpoint)
 {
     LOCK(cs_main);

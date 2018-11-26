@@ -3811,6 +3811,10 @@ esimerkiksi: alertnotify=echo %%s | mail -s "Ulord Hälytys" admin@foo.com
         <translation>Copyright (C) 2014-%i Dash Core Kehittäjät</translation>
     </message>
     <message>
+        <source>Copyright (C) 2017-%i The Ulord Core Developers</source>
+        <translation>Copyright (C) 2017-%i Ulord Core Kehittäjät</translation>
+    </message>
+    <message>
         <source>Could not parse -rpcbind value %s as network address</source>
         <translation>Ei voida jäsentää -rpcbind arvoa %s verkko-osoitteena</translation>
     </message>

@@ -1,4 +1,4 @@
-TOR SUPPORT IN UC CORE
+TOR SUPPORT IN ULORD CORE
 =======================
 
 It is possible to run Ulord Core as a Tor hidden service, and connect to such services.

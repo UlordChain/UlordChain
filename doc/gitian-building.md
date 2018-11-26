@@ -304,7 +304,7 @@ Clone the git repositories for Ulord Core and Gitian.
 
 ```bash
 git clone https://github.com/devrandom/gitian-builder.git
-git clone https://github.com/ulordpay/ulord
+git clone https://github.com/UlordChain/UlordChain
 ```
 
 Setting up the Gitian image
@@ -368,7 +368,7 @@ Output from `gbuild` will look something like
     remote: Total 57959 (delta 0), reused 0 (delta 0), pack-reused 57958
     Receiving objects: 100% (57959/57959), 53.76 MiB | 484.00 KiB/s, done.
     Resolving deltas: 100% (41590/41590), done.
-    From https://github.com/ulordpay/ulord
+    From https://github.com/UlordChain/UlordChain
     ... (new tags, new branch etc)
     --- Building for precise amd64 ---
     Stopping target if it is up
@@ -396,9 +396,9 @@ For example:
 ```bash
 URL=https://github.com/crowning-/ulord.git
 COMMIT=b616fb8ef0d49a919b72b0388b091aaec5849b96
-./bin/gbuild --commit ulord=${COMMIT} --url ulord=${URL} ../ulord/contrib/gitian-descriptors/gitian-linux.yml
-./bin/gbuild --commit ulord=${COMMIT} --url ulord=${URL} ../ulord/contrib/gitian-descriptors/gitian-win.yml
-./bin/gbuild --commit ulord=${COMMIT} --url ulord=${URL} ../ulord/contrib/gitian-descriptors/gitian-osx.yml
+./bin/gbuild --commit ulord=${COMMIT} --url ulord=${URL} ../UlordChain/contrib/gitian-descriptors/gitian-linux.yml
+./bin/gbuild --commit ulord=${COMMIT} --url ulord=${URL} ../UlordChain/contrib/gitian-descriptors/gitian-win.yml
+./bin/gbuild --commit ulord=${COMMIT} --url ulord=${URL} ../UlordChain/contrib/gitian-descriptors/gitian-osx.yml
 ```
 
 Building fully offline
@@ -424,7 +424,7 @@ cd /path/to/gitian-builder
 LXC_ARCH=amd64 LXC_SUITE=precise on-target -u root apt-get update
 LXC_ARCH=amd64 LXC_SUITE=precise on-target -u root \
   -e DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends -y install \
-  $( sed -ne '/^packages:/,/[^-] .*/ {/^- .*/{s/"//g;s/- //;p}}' ../ulord/contrib/gitian-descriptors/*|sort|uniq )
+  $( sed -ne '/^packages:/,/[^-] .*/ {/^- .*/{s/"//g;s/- //;p}}' ../UlordChain/contrib/gitian-descriptors/*|sort|uniq )
 LXC_ARCH=amd64 LXC_SUITE=precise on-target -u root apt-get -q -y purge grub
 LXC_ARCH=amd64 LXC_SUITE=precise on-target -u root -e DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade
 ```
@@ -444,12 +444,12 @@ Then when building, override the remote URLs that gbuild would otherwise pull fr
 ```bash
 
 cd /some/root/path/
-git clone https://github.com/ulordpay/ulord-detached-sigs.git
+git clone https://github.com/UlordChain/ulord-detached-sigs.git
 
 UCPATH=/some/root/path/ulord.git
 SIGPATH=/some/root/path/ulord-detached-sigs.git
 
-./bin/gbuild --url ulord=${UCPATH},signature=${SIGPATH} ../ulord/contrib/gitian-descriptors/gitian-win-signer.yml
+./bin/gbuild --url ulord=${UCPATH},signature=${SIGPATH} ../UlordChain/contrib/gitian-descriptors/gitian-win-signer.yml
 ```
 
 Signing externally
@@ -476,6 +476,6 @@ Uploading signatures (not yet implemented)
 ---------------------
 
 In the future it will be possible to push your signatures (both the `.assert` and `.assert.sig` files) to the
-[ulord/gitian.sigs](https://github.com/ulordpay/gitian.sigs/) repository, or if that's not possible to create a pull
+[ulord/gitian.sigs](https://github.com/UlordChain/gitian.sigs/) repository, or if that's not possible to create a pull
 request.
 There will be an official announcement when this repository is online.

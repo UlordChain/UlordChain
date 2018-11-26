@@ -276,4 +276,9 @@ int write_profile_string_nosection( const char *key, const char *value, const ch
 int read_profile_string_nosection(   const char *key,char *value, 
 				 int size, const char *default_value, const char *file);
 
+class StringFormat {
+public:
+  static std::string Format(const char * fmt, ...);
+  static void Append(std::string & dest, const char * fmt, ...);
+};
 #endif // BITCOIN_UTIL_H
