@@ -2,7 +2,7 @@
 #define CHAISCRIPT_SIMPLEJSON_WRAP_HPP
 
 #include "json.hpp"
-
+//ulord vm mashine support json 
 namespace chaiscript
 {
   class json_wrap
