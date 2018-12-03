@@ -85,7 +85,7 @@ Install dependency
     # optional
     sudo apt-get install libqrencode-dev
 
-Configure and build
+Configure and make
 
     ./autogen.sh
     ./configure
