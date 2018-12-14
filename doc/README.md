@@ -24,10 +24,7 @@ Drag Ulord-Qt to your applications folder, and then run Ulord-Qt.
 
 ### Need Help?
 
-* See the [Ulord documentation](https://ulordpay.atlassian.net/wiki/display/DOC)
-for help and more information.
-* Ask for help on [#ulordpay](http://webchat.freenode.net?channels=ulordpay) on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net?channels=ulordpay).
-* Ask for help on the [UlordTalk](https://ulordtalk.org/) forums.
+* Just raise the issues.
 
 Building
 ---------------------
@@ -69,5 +66,4 @@ The Ulord Core repo's [root README](/README.md) contains relevant information on
 License
 ---------------------
 Distributed under the [MIT software license](http://www.opensource.org/licenses/mit-license.php).
-This product includes software developed by the OpenSSL Project for use in the [OpenSSL Toolkit](https://www.openssl.org/). This product includes
-cryptographic software written by Eric Young ([eay@cryptsoft.com](mailto:eay@cryptsoft.com)), and UPnP software written by Thomas Bernard.
+This product includes software developed by the OpenSSL Project for use in the [OpenSSL Toolkit](https://www.openssl.org/). T
