@@ -66,4 +66,4 @@ The Ulord Core repo's [root README](/README.md) contains relevant information on
 License
 ---------------------
 Distributed under the [MIT software license](http://www.opensource.org/licenses/mit-license.php).
-This product includes software developed by the OpenSSL Project for use in the [OpenSSL Toolkit](https://www.openssl.org/). T
+This product includes software developed by the OpenSSL Project for use in the [OpenSSL Toolkit](https://www.openssl.org/). 
