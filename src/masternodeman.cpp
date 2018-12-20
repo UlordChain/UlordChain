@@ -897,7 +897,7 @@ void CMasternodeMan::ProcessMasternodeConnections()
     BOOST_FOREACH(CNode* pnode, vNodes) {
         if(pnode->fMasternode) {
             if(privSendPool.pSubmittedToMasternode != NULL && pnode->addr == privSendPool.pSubmittedToMasternode->addr) continue;
-            LogPrintf("Closing Masternode connection: peer=%d, addr=%s\n", pnode->id, pnode->addr.ToString());
+            LogPrintf("CMasternodeMan::ProcessMasternodeConnections Closing Masternode connection: peer=%d, addr=%s\n", pnode->id, pnode->addr.ToString());
             pnode->fDisconnect = true;
         }
     }
