@@ -728,7 +728,7 @@ bool CMasternodeBroadcast::Update(CMasternode* pmn, int& nDos)
 
     return true;
 }
-
+// check colleteral tx is less  10000 coin
 bool CMasternodeBroadcast::CheckOutpoint(int& nDos)
 {
     // we are a masternode with the same vin (i.e. already activated) and this mnb is ours (matches our Masternode privkey)
