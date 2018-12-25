@@ -2,13 +2,16 @@
 #include "Database.h"
 
 namespace Pbft {
-// pbft algorithm
+// dpos algorithm
 ClientConnection::ClientConnection(ClientId idToSet)
     : connection(Database::Instance())
     , id(idToSet)
 {
 }
-
+//sort dpos list
+void sortlist()
+{
+}
 void ClientConnection::TopUp(uint32_t sum)
 {
     return connection.Database().TopUp(id, sum);
