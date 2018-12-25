@@ -1,7 +1,7 @@
 #include "LinkProxy.h"
 
 namespace Pbft {
-
+//dpos link  
 LinkProxy::LinkProxy()
 {
     try
@@ -35,6 +35,11 @@ void LinkProxy::Uninitialize()
     strand.reset();
     work.reset();
     context.reset();
+}
+
+void LinkProxy::Recv(const Message& message) const
+{
+
 }
 
 void LinkProxy::Send(const Message& message) const
