@@ -14,4 +14,10 @@ namespace Pbft {
     return ::std::make_unique<ClientConnection>(id);
 }
 
+void testConnectionFactory()
+{
+   
+
+
+}
 }
