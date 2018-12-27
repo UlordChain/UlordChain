@@ -17,7 +17,11 @@ public:
     {
         return (messageCount >= (((nodeCount - 1) / 3) + 1));
     }
+    void test()
+    { 
+     
 
+    }
     template<typename Type> static Type Random()
     {
         ::std::random_device device;
