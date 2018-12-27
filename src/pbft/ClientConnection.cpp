@@ -22,6 +22,11 @@ void ClientConnection::Withdraw(uint32_t sum)
     return connection.Database().Withdraw(id, sum);
 }
 
+void ClientConnection::Stat(uint32_t sum)
+{
+   return ;
+}
+
 void ClientConnection::Transmit(ClientId destinationId, uint32_t sum)
 {
     return connection.Database().Transmit(id, destinationId, sum);
