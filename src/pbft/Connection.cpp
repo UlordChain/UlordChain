@@ -11,5 +11,8 @@ DatabaseInterface& Connection::Database() const
 {
     return database;
 }
+Connection::test()
+{
 
+}
 }
