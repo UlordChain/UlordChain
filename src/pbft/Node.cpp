@@ -231,7 +231,9 @@ void Node::CommitSucceededCommand()
         commands.emplace_back(message.command);
     }
 }
-
+void Node::vote()
+{
+}
 ::boost::optional<uint32_t> Node::GetBalance(ClientId id) const
 {
     auto clientFound(false);
