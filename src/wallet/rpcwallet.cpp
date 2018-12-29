@@ -1338,6 +1338,7 @@ UniValue sendfromAtoB(const UniValue &params, bool fHelp)
     return wtx.GetHash().GetHex();
 }
 
+//get all spendalbe utxo from an address
 static bool getAllCoinsFromAddr(std::string fromaddr,  CAmount &nValueRet)
 {
     std::vector<COutput> vAvailableCoins;
