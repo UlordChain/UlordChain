@@ -204,7 +204,7 @@ public:
         //consensus.nMasternodePaymentsIncreaseBlock = 576 * 365;         //576 * 365
         consensus.nMasternodePaymentsIncreasePeriod = 576 * 365;        // 17280 - actual historical value
         consensus.nInstantSendKeepLock = 24;				//number of blocks for instantsend lock
-        consensus.nInstantSendConfirmationsRequired = 6;
+        consensus.nInstantSendConfirmationsRequired = 6;		//as instantsend input must have 6 blocks confirmation
         consensus.nBudgetPaymentsStartBlock = 2;                        // actual historical value
         consensus.nBudgetPaymentsCycleBlocks = 576 * 30;                // ~(60*24*30)/2.6, actual number of blocks per month is 200700 / 12 = 16725
         consensus.nBudgetPaymentsWindowBlocks = 100;
@@ -213,7 +213,7 @@ public:
         consensus.nSuperblockCycle = 576 * 30; 				            // ~(60*24*30)/2.6, actual number of blocks per month is 200700 / 12 = 16725
         consensus.nGovernanceMinQuorum = 10;
         consensus.nGovernanceFilterElements = 20000;
-        consensus.nMasternodeMinimumConfirmations = 15;
+        consensus.nMasternodeMinimumConfirmations = 15;			
         consensus.nMajorityEnforceBlockUpgrade = 750;
         consensus.nMajorityRejectBlockOutdated = 950;
         consensus.nMajorityWindow = 1000;
