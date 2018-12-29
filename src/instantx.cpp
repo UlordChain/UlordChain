@@ -24,7 +24,7 @@ extern CWallet* pwalletMain;
 extern CTxMemPool mempool;
 
 bool fEnableInstantSend = true;
-int nInstantSendDepth = DEFAULT_INSTANTSEND_DEPTH;
+int nInstantSendDepth = DEFAULT_INSTANTSEND_DEPTH;		//default value is 5
 int nCompleteTXLocks;
 
 CInstantSend instantsend;
