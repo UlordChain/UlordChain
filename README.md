@@ -54,7 +54,7 @@ Basic usage resources:
 
 General Info about Ulord:
 
-* [Community](https://www.jianshu.com/c/a63d65402fd7)
+* [Community](https://ulorder.one/)
 
 What is UlordChain?
 ------------------
