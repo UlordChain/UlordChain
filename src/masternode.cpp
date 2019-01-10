@@ -1110,12 +1110,13 @@ bool CMasternodePing::CheckAndUpdate(CMasternode* pmn, bool fFromNewBroadcast, i
         pmn->certifyVersion = certifyVersion;
     }
 
-    // so, ping seems to be ok, let's store it
+    // so, ping is old to check , let's skip it
     if(certifyPeriod <= GetTime())
     {
        LogPrint("masternode", "CMasternodePing::CheckAndUpdate -- certifyPeriod ping old %d , masternode=%s\n",certifyPeriod,  vin.prevout.ToStringShort());
        return false;
     }
+    // so, ping seems to be ok, let's store it
 
     LogPrint("masternode", "CMasternodePing::CheckAndUpdate -- Masternode ping accepted, masternode=%s\n", vin.prevout.ToStringShort());
     pmn->lastPing = *this;    
