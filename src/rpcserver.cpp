@@ -389,6 +389,7 @@ static const CRPCCommand vRPCCommands[] =
     { "wallet",             "keypoolrefill",          &keypoolrefill,          true  },
     { "wallet",             "listaccounts",           &listaccounts,           false },
     { "wallet",             "listaddressgroupings",   &listaddressgroupings,   false },
+    { "wallet",             "listaddressbalances",    &listaddressbalances,    false },
     { "wallet",             "listlockunspent",        &listlockunspent,        false },
     { "wallet",             "listreceivedbyaccount",  &listreceivedbyaccount,  false },
     { "wallet",             "listreceivedbyaddress",  &listreceivedbyaddress,  false },
