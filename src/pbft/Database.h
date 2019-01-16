@@ -27,8 +27,8 @@ private:
     void CheckDatabase() const;
     NodeId FreeNodeId() const;
     void SetNodeCount() const;
+    // pbft connesus  transaction 
     void ExecuteTransaction();
-    void InitiateTransaction();
     void WaitResult();
 
     void OnReceive(const Message& receivedMessage);
