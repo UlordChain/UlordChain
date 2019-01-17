@@ -1,5 +1,5 @@
-#ifndef BITCOIN_TEST_TEST_UC_H
-#define BITCOIN_TEST_TEST_UC_H
+#ifndef ULORD_TEST_TEST_UT_H
+#define ULORD_TEST_TEST_UT_H
 
 #include "chainparamsbase.h"
 #include "key.h"
