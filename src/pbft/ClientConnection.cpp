@@ -37,4 +37,9 @@ uint32_t ClientConnection::Balance() const
     return connection.Database().Balance(id);
 }
 
+uint32_t ClientConnection::GetPeerInfo() const
+{
+    return connection.info;
+}
+
 }
