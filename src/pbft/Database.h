@@ -30,6 +30,7 @@ private:
     // pbft connesus  transaction 
     void ExecuteTransaction();
     void WaitResult();
+    void WaitData();
 
     void OnReceive(const Message& receivedMessage);
 
