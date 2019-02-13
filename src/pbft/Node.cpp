@@ -23,6 +23,14 @@ void Node::SetNodeCount(uint32_t count)
     nodeCount = count;
 }
 
+int  Node::GetNodeCount(uint32_t count)
+{
+    ::std::lock_guard<::std::mutex> lock(mutex);
+    nodeCount = count;
+    return count;
+}
+
+
 void Node::SetFaulty()
 {
     ::std::lock_guard<::std::mutex> lock(mutex);
