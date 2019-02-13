@@ -39,7 +39,10 @@ void LinkProxy::Uninitialize()
 
 void LinkProxy::Recv(const Message& message) const
 {
+}
 
+void LinkProxy::stop(const Message& message) const
+{
 }
 
 void LinkProxy::Send(const Message& message) const
