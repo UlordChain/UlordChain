@@ -17,6 +17,8 @@ public:
 
     ::boost::signals2::signal<void(const Message&)> Receive;
 
+    ::boost::signals2::signal<void(const Message&)> Send;
+
 protected:
     LinkInterface() = default;
 };
