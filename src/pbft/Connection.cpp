@@ -11,6 +11,12 @@ DatabaseInterface& Connection::Database() const
 {
     return database;
 }
+
+DatabaseInterface& Connection::PushData() const
+{
+    return database;
+}
+
 Connection::test()
 {
 
