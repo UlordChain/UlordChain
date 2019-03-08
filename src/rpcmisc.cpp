@@ -735,6 +735,7 @@ UniValue getaddressutxos(const UniValue& params, bool fHelp)
         output.push_back(Pair("script", HexStr(it->second.script.begin(), it->second.script.end())));
         output.push_back(Pair("satoshis", it->second.satoshis));
         output.push_back(Pair("height", it->second.blockHeight));
+        output.push_back(Pair("comfirms", chainActive.Height()-it->second.blockHeight+1));
         result.push_back(output);
     }
 
