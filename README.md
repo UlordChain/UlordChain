@@ -52,7 +52,7 @@ Basic usage resources:
 * [Whitepaper](http://ulord.one/whitepaper/web/viewer.html?lang=zh)
 * [Downloads](http://ulord.one/download.html)
 
-General Info about Ulord:
+Developer proposal of Ulord:
 
 * [Community](https://ulorder.one/)
 
