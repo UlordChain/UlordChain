@@ -30,6 +30,7 @@ class CGovernanceKey
 private:
 	SecureString strName;
 	SecureString strKey;
+    std::string  goversocial;
 
 public:
 	CGovernanceKey::CGovernanceKey(SecureString& strKeyIn, SecureString& strNameIn) {strName = strNameIn; strKey = strKeyIn;}
