@@ -912,6 +912,7 @@ UniValue crosschaininitial(const UniValue &params, bool fHelp)
             "\nExamples:\n"
             "\nCreate a transaction\n"
             + HelpExampleCli("crosschaininitial", "\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" 0.1")
+            + HelpExampleRpc("crosschaininitial", "\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" 0.1")
         );
 	// parse parameters
 	if (!EnsureWalletIsAvailable(fHelp))
