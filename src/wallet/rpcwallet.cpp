@@ -3703,6 +3703,7 @@ UniValue sendtoaccountname(const UniValue &params, bool fHelp)
         + HelpExampleRpc("sendtoaccountname", "\"alfredzky\",\"0.1\" ")
     );
 
+	// send amount to others
     std::string sName = params[0].get_str();
     CClaimValue claim;
     if (!pclaimTrie->getInfoForName(sName, claim))
@@ -3713,7 +3714,7 @@ UniValue sendtoaccountname(const UniValue &params, bool fHelp)
 	if (!address.IsValid())
 		throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Ulord address");
 
-	// Amount
+	// some 
 	CAmount nAmount = AmountFromValue(params[1]);
 	if (nAmount <= 0 || nAmount > MAX_ACCOUNT_NAME_SEND )
 		throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount for send,eg amount must be in 1000UT");
