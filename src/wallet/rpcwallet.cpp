@@ -556,7 +556,7 @@ UniValue updateclaim( const UniValue & params,bool fHelp)
         + HelpRequiringPassphrase() +
         "\nArguments:\n"
         "1.  \"txid\"  (string, required) The transaction containing the unspent txout which should be spent.\n"
-        "2.  \"value\"  (string, required) The value to assign to the name.\n"
+        "2.  \"newaddress\"  (string, required) The value to assign to the name.\n"
         "3.  \"amount\"  (numeric, required) The amount in Ulord to use to bid for the name. eg 0.1\n"
         "\nResult:\n"
         "\"transactionid\"  (string) The new transaction id.\n"
