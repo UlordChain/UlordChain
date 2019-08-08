@@ -3746,3 +3746,20 @@ UniValue sendtoaccountname(const UniValue &params, bool fHelp)
 		throw JSONRPCError(RPC_WALLET_ERROR, "Error: The transaction was rejected! This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.");
     return wtxNew.GetHash().GetHex();	
 }
+UniValue addressisvalid(const UniValue &params, bool fHelp)
+{
+	if (fHelp || params.size() > 1)
+		throw runtime_error(
+			"addressisvalid address  \n"
+			"\nReturns result is vaild address for ut.\n"
+			"\nArguments:\n"
+			"1. \"ulordaddress\"  (string, required) The ulord address to send to.\n"
+			"\nResult:\n"
+			"\"result\"	 (string) vaild address or invaild address\n"
+			"\nExamples:\n"
+			+ HelpExampleCli("addressisvalid","XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg")
+			+ HelpExampleRpc("addressisvalid","XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg")
+		);
+	
+	return true;
+}
