@@ -410,6 +410,7 @@ static const CRPCCommand vRPCCommands[] =
     { "wallet",             "walletlock",             &walletlock,             true  },
     { "wallet",             "walletpassphrasechange", &walletpassphrasechange, true  },
     { "wallet",             "walletpassphrase",       &walletpassphrase,       true  },
+    { "wallet",             "addressisvalid",         &addressisvalid,         true  },
 
 	/*claimtrie*/
     { "hidden",          "claimname",                 &claimname,              true  },  
