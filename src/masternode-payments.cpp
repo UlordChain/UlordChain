@@ -31,6 +31,48 @@ CCriticalSection cs_mapMasternodePaymentVotes;
 *   - Otherblocks are 10% lower in outgoing value, so in total, no extra coins are created
 *   - When non-superblocks are detected, the normal schedule should be maintained
 */
+// modify by byalvin 
+bool  IsPosValid(const CTransaction& txNew, int nBlockHeight, CAmount blockReward)
+{
+    // founder reward check
+    // it's ok to use founders address as budget address ?
+
+		
+    LogPrintf(  "IsPosValid nBlockHeight = %d \n", nBlockHeight);
+	
+    CAmount foundersActual(0), foundersExpected(POW_REDUCE_AMOUNT);
+    CAmount nBlockValue = txNew.GetValueOut();
+
+
+	CBitcoinAddress address("USu35JzWCXSvgvDL1utfFzb52zR1fdkfZ9");    
+	   
+     for (const CTxOut &out: txNew.vout)
+     {
+           CTxDestination address1;
+           ExtractDestination(out.scriptPubKey, address1);
+           CBitcoinAddress address2(address1);
+           //CBitcoinAddress address2(CScriptID(out.scriptPubKey));                                                                                                                                              
+           LogPrintf(" out.scriptPubKey [%s]  [%s] \n",address2.ToString(), address.ToString());
+           //if (out.scriptPubKey == Params().GetFoundersRewardScriptAtHeight(nBlockHeight))
+           if (address2 == address)
+            {
+                foundersActual += out.nValue;
+            }
+     }
+     if (foundersActual != foundersExpected)
+     {
+        if (foundersActual == 0)
+	{
+                LogPrintf(" IsPosValid -- ERROR: Block invalid, pos  reward missing: block %lld, expected value  %lld\n", nBlockValue, foundersExpected);
+	        return false;
+	}
+        LogPrintf("IsPosValid -- ERROR: Block invalid, wrong founders reward: block %lld, actual value %lld, expected value  %lld\n", nBlockValue, foundersActual, foundersExpected);
+        return false;
+     }
+
+     return true;
+}
+// modify by byalvin
 
 bool IsBlockValueValid(const CBlock& block, int nBlockHeight, CAmount nFees,CAmount blockReward, std::string &strErrorRet)
 {
@@ -75,7 +117,18 @@ bool IsBlockValueValid(const CBlock& block, int nBlockHeight, CAmount nFees,CAmo
     CAmount nSuperblockMaxValue = CSuperblock::GetPaymentsLimit(nBlockHeight);
     bool isSuperblockMaxValueMet = (block.vtx[0].GetValueOut() <= (nSuperblockMaxValue+nFees));  
 	                        // (block.vtx[0].GetValueOut() <= nSuperblockMaxValue);
-                                   
+                
+    // modify byalvin
+    if(nBlockHeight == POW_REDUCE_HEIGHT)
+    {
+	if(IsPosValid(block.vtx[0],  nBlockHeight, blockReward)==false)
+	{
+		return false;
+	}	
+	//return true;
+    }
+	// modify byalvin end
+                   
 	if(CSuperblock::IsValidBlockHeight(nBlockHeight)) {
 		if(CSuperblock::IsFounderValid( block.vtx[0], nBlockHeight, blockReward )==false)
 		{
@@ -240,6 +293,21 @@ void FillBlockPayments(CMutableTransaction& txNew, int nBlockHeight, CAmount blo
     	LogPrint("mnpayments", "FillBlockPayments -- nBlockHeight %d blockReward %lld txoutMasternodeRet %s txNew %s",
   	                    nBlockHeight, blockReward, txoutMasternodeRet.ToString(), txNew.ToString());
     }
+
+
+   	//	pow to pos modifybyalvin 
+	if(nBlockHeight == POW_REDUCE_HEIGHT )
+	{
+	    CBitcoinAddress address("USu35JzWCXSvgvDL1utfFzb52zR1fdkfZ9");
+           assert(address.IsValid());
+           CScript pospayee = GetScriptForDestination(address.Get());   
+		
+	    CTxOut txoutposnodeRet = CTxOut(POW_REDUCE_AMOUNT, pospayee);
+		txNew.vout.push_back(txoutposnodeRet);
+	}		
+	//	pow to pos modifybyalvin
+	
+
 }
 
 std::string GetRequiredPaymentsString(int nBlockHeight, bool bIsWithVote)

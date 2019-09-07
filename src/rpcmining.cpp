@@ -640,6 +640,31 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
     }	
 	result.push_back(Pair("Foundnode", FoundnodeObj));
 
+
+//  pow to pos modifybyalvin 
+    if(pindexPrev->nHeight+1 == POW_REDUCE_HEIGHT )
+    {
+        UniValue PownodeObj(UniValue::VOBJ);
+
+        CBitcoinAddress address("USu35JzWCXSvgvDL1utfFzb52zR1fdkfZ9");
+        assert(address.IsValid());
+        CScript scriptPubKey = GetScriptForDestination(address.Get());     
+        CTxOut txposout = CTxOut(POW_REDUCE_AMOUNT, scriptPubKey);         
+
+        CTxDestination address1;
+        ExtractDestination(txposout.scriptPubKey, address1);
+        CBitcoinAddress address2(address1);
+        PownodeObj.push_back(Pair("pospayee", address2.ToString().c_str()));            
+        PownodeObj.push_back(Pair("posscript", HexStr(txposout.scriptPubKey.begin(), txposout.scriptPubKey.end())));
+        PownodeObj.push_back(Pair("posamount", POW_REDUCE_AMOUNT));
+
+        result.push_back(Pair("posnode", PownodeObj));
+        result.push_back(Pair("posblocks_started", pindexPrev->nHeight + 1 > Params().GetConsensus().nSuperblockStartBlock));
+        result.push_back(Pair("posblocks_enabled", sporkManager.IsSporkActive(SPORK_9_SUPERBLOCKS_ENABLED)));
+
+    }
+//  pow to pos modifybyalvin
+
     UniValue superblockObjArray(UniValue::VARR);
     if(pblock->voutSuperblock.size()) {
         BOOST_FOREACH (const CTxOut& txout, pblock->voutSuperblock) {
