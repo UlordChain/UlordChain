@@ -646,7 +646,7 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
     {
         UniValue PownodeObj(UniValue::VOBJ);
 
-        CBitcoinAddress address("USu35JzWCXSvgvDL1utfFzb52zR1fdkfZ9");
+        CBitcoinAddress address("UZJHmNBEZqwMTFPgFx7NiduGue9vBn13tP");
         assert(address.IsValid());
         CScript scriptPubKey = GetScriptForDestination(address.Get());     
         CTxOut txposout = CTxOut(POW_REDUCE_AMOUNT, scriptPubKey);         
