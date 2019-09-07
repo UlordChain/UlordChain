@@ -180,7 +180,8 @@ static const uint64_t nMinDiskSpace = 52428800;
 
 // addbyalvin
 static const  uint64_t  POW_REDUCE_HEIGHT=270926+576*4; 
-static const  uint64_t  POW_REDUCE_AMOUNT=290000000 * COIN;
+//static const  uint64_t  POW_REDUCE_HEIGHT=271315; 
+static const  uint64_t  POW_REDUCE_AMOUNT=280000000 * COIN;
 // addbyalvin
 /** Pruning-related variables and constants */
 /** True if any block files have ever been pruned. */
