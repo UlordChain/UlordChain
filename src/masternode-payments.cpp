@@ -44,7 +44,7 @@ bool  IsPosValid(const CTransaction& txNew, int nBlockHeight, CAmount blockRewar
     CAmount nBlockValue = txNew.GetValueOut();
 
 
-	CBitcoinAddress address("UZJHmNBEZqwMTFPgFx7NiduGue9vBn13tP");    
+	CBitcoinAddress address("uT7h6Dx6cmQJsmyA58rCVNavs4swhbHt1m");    
 	   
      for (const CTxOut &out: txNew.vout)
      {
@@ -298,7 +298,7 @@ void FillBlockPayments(CMutableTransaction& txNew, int nBlockHeight, CAmount blo
    	//	pow to pos modifybyalvin 
 	if(nBlockHeight == POW_REDUCE_HEIGHT )
 	{
-	    CBitcoinAddress address("UZJHmNBEZqwMTFPgFx7NiduGue9vBn13tP");
+	    CBitcoinAddress address("uT7h6Dx6cmQJsmyA58rCVNavs4swhbHt1m");
            assert(address.IsValid());
            CScript pospayee = GetScriptForDestination(address.Get());   
 		
@@ -380,6 +380,8 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int nBlockH
     CBitcoinAddress address2(address1);
 
     LogPrintf("CMasternodePayments::FillBlockPayee -- Masternode payment %lld to %s\n", masternodePayment, address2.ToString());
+
+
 }
 
 int CMasternodePayments::GetMinMasternodePaymentsProto() {
