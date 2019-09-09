@@ -1773,13 +1773,13 @@ CAmount GetMinerSubsidy(const int height, const Consensus::Params &cp)
         else
         {
             int halvings = (height - intval) / intval;
- 	    // force subsidy to 0 when right shift 64 bit is undifined
+ 	        // force subsidy to 0 when right shift 64 bit is undifined
             if (halvings > 63)
-	    {
-	        return 0;
-	    }
-	    CAmount subsidy(cp.minerReward5);
-	    subsidy >>= halvings;
+            {
+                return 0;
+            }
+            CAmount subsidy(cp.minerReward5);
+            subsidy >>= halvings;
             return subsidy;
         }
     }
@@ -2523,7 +2523,7 @@ bool DisconnectBlock(const CBlock& block, CValidationState& state, const CBlockI
                         addressIndex.push_back(make_pair(CAddressIndexKey(addressType, hashBytes, pindex->nHeight, i, hash, j, true), prevout.nValue * -1));
 
                         // restore unspent index
-                        addressUnspentIndex.push_back(make_pair(CAddressUnspentKey(addressType, hashBytes, input.prevout.hash, input.prevout.n), CAddressUnspentValue(prevout.nValue, prevout.scriptPubKey, undo.nHeight)));
+                        addressUnspentIndex.push_back(make_pair(CAddressUnspentKey(addressType, hashBytes, input.prevout.hash, input.prevout.n), CAddressUnspentValue(prevout.nValue, prevout.scriptPubKey, undo.nHeight, tx.IsCoinBase()?1:0, block.GetBlockTime())));
 					}
                 }
 
@@ -3150,7 +3150,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
                     addressIndex.push_back(make_pair(CAddressIndexKey(addressType, hashBytes, pindex->nHeight, i, txhash, k, false), out.nValue));
 
                     // record unspent output
-                    addressUnspentIndex.push_back(make_pair(CAddressUnspentKey(addressType, hashBytes, txhash, k), CAddressUnspentValue(out.nValue, out.scriptPubKey, pindex->nHeight)));
+                    addressUnspentIndex.push_back(make_pair(CAddressUnspentKey(addressType, hashBytes, txhash, k), CAddressUnspentValue(out.nValue, out.scriptPubKey, pindex->nHeight, tx.IsCoinBase()?1:0, block.GetBlockTime())));
 				}
 #ifdef ENABLE_ADDRSTAT
 				AddAddrMyDbIndex(out.scriptPubKey,out.nValue,i,k,pindex->nHeight);
