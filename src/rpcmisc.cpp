@@ -693,10 +693,13 @@ UniValue getaddressutxos(const UniValue& params, bool fHelp)
             "  {\n"
             "    \"address\"  (string) The address base58check encoded\n"
             "    \"txid\"  (string) The output txid\n"
-            "    \"height\"  (number) The block height\n"
-            "    \"outputIndex\"  (number) The output index\n"
+            "    \"vout\"  (number) The output index\n"
             "    \"script\"  (strin) The script hex encoded\n"
             "    \"satoshis\"  (number) The number of satoshis of the output\n"
+            "    \"height\"  (number) The block height\n"
+            "    \"comfirms\"  (number) The number of transaction confirms\n"
+            "    \"coinbase\"  (bool) Is a coinbase output\n"
+            "    \"time\"  (number) Time stamp\n"
             "  }\n"
             "]\n"
             "\nExamples:\n"
@@ -731,11 +734,13 @@ UniValue getaddressutxos(const UniValue& params, bool fHelp)
 
         output.push_back(Pair("address", address));
         output.push_back(Pair("txid", it->first.txhash.GetHex()));
-        output.push_back(Pair("outputIndex", (int)it->first.index));
+        output.push_back(Pair("vout", (int)it->first.index));
         output.push_back(Pair("script", HexStr(it->second.script.begin(), it->second.script.end())));
         output.push_back(Pair("satoshis", it->second.satoshis));
         output.push_back(Pair("height", it->second.blockHeight));
         output.push_back(Pair("comfirms", chainActive.Height()-it->second.blockHeight+1));
+        output.push_back(Pair("coinbase", it->second.coinbase==1?"true":"false"));
+		output.push_back(Pair("time", it->second.blocktime));
         result.push_back(output);
     }
 
