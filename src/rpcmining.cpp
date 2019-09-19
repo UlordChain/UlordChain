@@ -465,8 +465,8 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
     if (IsInitialBlockDownload())
         throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Ulord Core is downloading blocks...");
 
-    //if (!masternodeSync.IsSynced())
-    //    throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Ulord Core is syncing with network...");
+    if (!masternodeSync.IsSynced())
+        throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Ulord Core is syncing with network...");
 
     static unsigned int nTransactionsUpdatedLast;
 
@@ -646,7 +646,7 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
     {
         UniValue PownodeObj(UniValue::VOBJ);
 
-        CBitcoinAddress address("uT7h6Dx6cmQJsmyA58rCVNavs4swhbHt1m");
+        CBitcoinAddress address("UZJHmNBEZqwMTFPgFx7NiduGue9vBn13tP");
         assert(address.IsValid());
         CScript scriptPubKey = GetScriptForDestination(address.Get());     
         CTxOut txposout = CTxOut(POW_REDUCE_AMOUNT, scriptPubKey);         
