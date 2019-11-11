@@ -206,11 +206,11 @@ public:
         consensus.nInstantSendKeepLock = 24;				//number of blocks for instantsend lock
         consensus.nInstantSendConfirmationsRequired = 6;		//as instantsend input must have 6 blocks confirmation
         consensus.nBudgetPaymentsStartBlock = 2;                        // actual historical value
-        consensus.nBudgetPaymentsCycleBlocks = 2 * 60 * 24 * 30;        // number of blocks per month 
+        consensus.nBudgetPaymentsCycleBlocks = 576 * 30;                // ~(60*24*30)/2.6, actual number of blocks per month is 200700 / 12 = 16725
         consensus.nBudgetPaymentsWindowBlocks = 100;
         consensus.nBudgetProposalEstablishingTime = 60*60*24;
         consensus.nSuperblockStartBlock = 100;                          // The block at which 12.1 goes live (end of final 12.0 budget cycle)
-        consensus.nSuperblockCycle = 2 * 60 * 24 * 30; 			// number of blocks per month
+        consensus.nSuperblockCycle = 576 * 30;                		// ~(60*24*30)/2.6, actual number of blocks per month is 200700 / 12 = 16725
         consensus.nGovernanceMinQuorum = 10;
         consensus.nGovernanceFilterElements = 20000;
         consensus.nMasternodeMinimumConfirmations = 15;
@@ -224,7 +224,7 @@ public:
         consensus.nPowMaxAdjustDown = 32;                               // 32% adjustment down
         consensus.nPowMaxAdjustUp = 48;                                 // 48% adjustment up
         consensus.nPowTargetTimespan = 24 * 60 * 60;                    // Ulord: 1 day
-        consensus.nPowTargetSpacing = 30;                         	// Ulord: 2.5 minutes
+        consensus.nPowTargetSpacing = 2.5 * 60;                         // Ulord: 2.5 minutes
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
         consensus.nRuleChangeActivationThreshold = 1916;                // 95% of 2016
